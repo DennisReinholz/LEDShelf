@@ -1,0 +1,99 @@
+#include <Adafruit_NeoPixel.h>
+
+#define PIN        13
+#define NUMPIXELS  18
+
+Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+
+const int buttonFirstRow = 2;
+const int buttonSecondRow = 3;
+const int buttonThridRow = 4;
+
+bool isFirstRowActive = false;
+bool isSecondRowActive = false;
+bool isThirdRowActive = false;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(buttonFirstRow, INPUT);
+  pinMode(buttonSecondRow, INPUT);
+  pinMode(buttonThridRow, INPUT);
+  pixels.begin();
+}
+
+void loop() {
+  int buttonFirst = digitalRead(buttonFirstRow);
+  int buttonSecond = digitalRead(buttonSecondRow);
+  int buttonThird = digitalRead(buttonThridRow);
+  pixels.clear();
+  
+  
+  if(buttonFirst == HIGH) {
+    isFirstRowActive = !isFirstRowActive;
+    firstRow(isFirstRowActive); 
+    delay(300);
+  }
+  if(buttonSecond == HIGH) {
+    isSecondRowActive = !isSecondRowActive;
+    secondRow(isSecondRowActive);
+    delay(300);
+  }
+  if(buttonThird == HIGH) {
+    isThirdRowActive = !isThirdRowActive;
+    thirdRow(isThirdRowActive);
+    delay(300); 
+  }
+}
+
+void firstRow(bool isActive) {
+  
+  if(isActive)
+  {
+    pixels.setPixelColor(0, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(1, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(2, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(3, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(4, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(5, pixels.Color(0, 150, 0));
+  }
+  else
+  {
+  	pixels.clear();
+  }
+  	pixels.show();
+}
+
+void secondRow(bool isActive) {
+  
+  if(isActive)
+  {
+    pixels.setPixelColor(6, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(7, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(8, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(9, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(10, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(11, pixels.Color(0, 150, 0));
+  }
+  else
+  {
+  	pixels.clear();
+  }
+  	pixels.show();
+}
+void thirdRow(bool isActive) {
+  
+  if(isActive)
+  {
+    pixels.setPixelColor(12, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(13, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(14, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(15, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(16, pixels.Color(0, 150, 0));
+    pixels.setPixelColor(17, pixels.Color(0, 150, 0));
+  }
+  else
+  {
+  	pixels.clear();
+  }
+  	pixels.show();
+}
