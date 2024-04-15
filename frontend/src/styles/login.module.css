@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 20rem;
+  width: 20rem;
+  border-radius: 0.5rem;
+  border: 0.125rem solid white;
+  background-color: #1a1a1a;
+}
+.content p {
+  font-size: 2em;
+  margin-left: 2rem;
+  color: white;
+}
+.inputContainer {
+  display: flex;
+  height: 15rem;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.input {
+  border-color: white;
+  color: white;
+}
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 16rem;
+}
+.loginButton {
+  width: 8rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background-color: #2d2d2d;
+  border-color: white;
+  color: white;
+  cursor: pointer;
+  will-change: transform;
+  transition: transform 0.25s ease-in-out;
+}
+.loginButton:hover {
+  transform: scale(1.1);
+}

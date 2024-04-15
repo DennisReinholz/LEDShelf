@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.buttonContainer {
+  display: flex;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+.content {
+  display: flex;
+  flex-direction: row;
+  height: 20rem;
+  width: 100rem;
+  margin-top: 5rem;
+  margin-left: 5rem;
+}
