@@ -1,0 +1,7 @@
+.container {
+  height: 3rem;
+  width: 5rem;
+  cursor: pointer;
+  border-radius: 0.125rem;
+  border: 0.125rem solid white;
+}

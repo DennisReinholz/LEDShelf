@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 10rem;
+  width: 15rem;
+  border: 0.125rem solid white;
+  border-radius: 0.5rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  color: white;
+  justify-content: space-around;
+}
+.content {
+  margin-left: 2rem;
+}
