@@ -18,7 +18,15 @@
   margin-top: 5rem;
   margin-left: 5rem;
 }
+.containerCompartment {
+  cursor: pointer;
+}
 .input {
   height: 2rem;
   margin-left: 5rem;
+}
+.button {
+  cursor: pointer;
+  width: 5rem;
+  margin-left: 1rem;
 }
