@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+.button {
+  cursor: pointer;
+  width: 5rem;
+}
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  height: 25rem;
+  width: 20rem;
+  border: 0.125rem solid white;
+  border-radius: 0.5rem;
+  color: white;
+  margin-top: 3rem;
+  justify-content: space-between;
+}
+.contentHeader {
+  color: white;
+  height: 2rem;
+  margin: 0rem;
+  border-bottom: 0.125rem solid white;
+}
+.contentHeader h3 {
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+}
+.userContainer {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 25rem;
+}

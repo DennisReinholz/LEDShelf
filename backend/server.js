@@ -41,6 +41,12 @@ app.get("/getShelf", (req, res) => {
 app.post("/getCompartment", (req, res) => {
   DataBaseController.getCompartments(req, res, db);
 });
+app.get("/getUser", (req, res) => {
+  DataBaseController.getUsers(req, res, db);
+});
+app.post("/createUser", (req, res) => {
+  DataBaseController.createUser(req, res, db);
+});
 
 // Server starten
 app.listen(PORT, () => {

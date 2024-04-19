@@ -8,6 +8,7 @@ import Applayout from "../pages/Applayout.jsx";
 import { UserProvider } from "../helpers/userAuth.jsx";
 import ShelfLayout from "../pages/ShelfLayout.jsx";
 import CompartmentLayout from "../pages/CompartmentLayout.jsx";
+import UserLayout from "../pages/UserLayout.jsx";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route element={<Applayout />}>
               <Route path="regale" element={<ShelfLayout />} />
               <Route path="regale/:shelfid" element={<CompartmentLayout />} />
+              <Route path="benutzer" element={<UserLayout />} />
             </Route>
           </Routes>
         </BrowserRouter>

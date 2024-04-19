@@ -22,7 +22,7 @@ const MainNav = () => {
           <div className={styles.nav}>
             <BsBookshelf />
             <NavLink
-              to="/home"
+              to="/regale"
               style={{
                 textDecoration: "none",
                 color: "white",
@@ -52,7 +52,7 @@ const MainNav = () => {
           <div className={styles.nav}>
             <HiOutlineUsers />
             <NavLink
-              to="/home"
+              to="/benutzer"
               style={{
                 textDecoration: "none",
                 color: "white",

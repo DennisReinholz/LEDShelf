@@ -60,7 +60,6 @@ const Login = () => {
       toast.error(
         "Fehler bei Abfrage aus Datenbank, bitte starten Sie den Backend server neu."
       );
-      console.log("Error: " + error);
     }
   };
   return (
