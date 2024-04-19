@@ -33,6 +33,5 @@
 .userContainer {
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
   height: 25rem;
 }

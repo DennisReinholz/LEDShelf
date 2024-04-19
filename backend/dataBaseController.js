@@ -57,3 +57,20 @@ module.exports.getCompartments = async (req, res, db) => {
     }
   );
 };
+module.exports.getAllUser = async (req, res, db) => {
+  db.all(
+    `SELECT user.username, role.name FROM user,role WHERE user.role = role.roleid`,
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        const data = {
+          result,
+          serverStatus: 2,
+        };
+        res.status(200).json(data);
+      }
+    }
+  );
+};

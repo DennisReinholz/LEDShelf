@@ -47,6 +47,9 @@ app.get("/getUser", (req, res) => {
 app.post("/createUser", (req, res) => {
   DataBaseController.createUser(req, res, db);
 });
+app.get("/getAllUser", (req, res) => {
+  DataBaseController.getAllUser(req, res, db);
+});
 
 // Server starten
 app.listen(PORT, () => {

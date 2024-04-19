@@ -7,7 +7,6 @@ const CompartmentLayout = () => {
   let { shelfid } = useParams();
   const [compartments, setCompartments] = useState();
   const [activeCompartments, setActiveCompartments] = useState([]);
-  const [isActive, setIsActive] = useState(false);
 
   const handleIsActive = (index) => {
     setActiveCompartments((prevState) => {
@@ -32,6 +31,7 @@ const CompartmentLayout = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setCompartments(data.result);
         setActiveCompartments(Array(data.result.length).fill(false));
       });

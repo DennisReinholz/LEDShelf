@@ -7,7 +7,7 @@ const UserLayout = () => {
   const [addUserIsOpen, setAddUserIsOpen] = useState();
 
   const getUser = async () => {
-    const response = await fetch(`http://localhost:3000/getUser`, {
+    const response = await fetch(`http://localhost:3000/getAllUser`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",

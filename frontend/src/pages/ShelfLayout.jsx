@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Shelf from "../components/Shelf/Shelf";
+import Modal from "../components/common/Modal";
+import AddShelfForm from "../components/Shelf/AddShelfForm";
 import styles from "../styles/shelfLayout.module.css";
 
 const ShelfLayout = () => {
   const [shelfList, setShelfList] = useState();
+  const [isShelfOpen, setIsShelfOpen] = useState(false);
   const navigate = useNavigate();
   const getShelfs = async () => {
     const response = await fetch(`http://localhost:3000/getShelf`, {
@@ -20,10 +23,11 @@ const ShelfLayout = () => {
   useEffect(() => {
     getShelfs();
   }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
-        <button className="button" onClick={() => console.log(shelfList)}>
+        <button className="button" onClick={() => setIsShelfOpen((o) => !o)}>
           Add Regal
         </button>
       </div>
@@ -44,13 +48,11 @@ const ShelfLayout = () => {
             ))
           : "Keine Regale vorhanden"}
       </div>
-
-      {/* <Shelf
-        shelfname={"Schrauben"}
-        place={"Büro"}
-        compantments={3}
-        article={25}
-      /> */}
+      {isShelfOpen && (
+        <Modal onClose={() => setIsShelfOpen(false)}>
+          <AddShelfForm />
+        </Modal>
+      )}
     </div>
   );
 };
