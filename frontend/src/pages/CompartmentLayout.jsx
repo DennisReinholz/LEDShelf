@@ -60,7 +60,7 @@ const CompartmentLayout = () => {
               >
                 <Compartment
                   isActive={activeCompartments[index]}
-                  comp={c.compartment}
+                  comp={c.compartmentname}
                   article={c.articlename}
                   count={c.count}
                 />

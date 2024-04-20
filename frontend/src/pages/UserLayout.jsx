@@ -30,7 +30,7 @@ const UserLayout = () => {
   }, []);
   return (
     <div className={styles.container}>
-      <button className={styles.button} onClick={() => console.log("test")}>
+      <button className="primaryButton" onClick={() => console.log("test")}>
         Add User
       </button>
       <div className={styles.contentContainer}>

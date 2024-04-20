@@ -50,6 +50,10 @@ app.post("/createUser", (req, res) => {
 app.get("/getAllUser", (req, res) => {
   DataBaseController.getAllUser(req, res, db);
 });
+app.post("/createShelf", (req, res) => {
+  console.log(req.body);
+  DataBaseController.postCreateShelf(req, res, db);
+});
 
 // Server starten
 app.listen(PORT, () => {

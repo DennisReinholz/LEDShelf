@@ -27,7 +27,10 @@ const ShelfLayout = () => {
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
-        <button className="button" onClick={() => setIsShelfOpen((o) => !o)}>
+        <button
+          className="primaryButton"
+          onClick={() => setIsShelfOpen((o) => !o)}
+        >
           Add Regal
         </button>
       </div>
@@ -50,7 +53,7 @@ const ShelfLayout = () => {
       </div>
       {isShelfOpen && (
         <Modal onClose={() => setIsShelfOpen(false)}>
-          <AddShelfForm />
+          <AddShelfForm onClose />
         </Modal>
       )}
     </div>

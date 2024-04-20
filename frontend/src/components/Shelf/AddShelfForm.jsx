@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import styles from "../../styles/Shelf/addShelfForm.module.css";
 
 const AddShelfForm = () => {
@@ -7,8 +8,11 @@ const AddShelfForm = () => {
   const [shelfPlace, setShelfPlace] = useState();
   const [createButtonEnabled, setCreateButtonEnabled] = useState(true);
 
-  const createShelf = async () => {
-    return await fetch(`http://localhost:3001/createShelf`, {
+  const createShelf = async ({ onClose }) => {
+    console.log(shelfname);
+    console.log(shelfPlace);
+    console.log(CountCompartment);
+    return await fetch(`http://localhost:3000/createShelf`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",
@@ -17,10 +21,9 @@ const AddShelfForm = () => {
       console.log(result);
       if (result.status === 200) {
         toast.success("Ein neues Regal wurde erstellt");
-        onCloseModal();
+        OnClose();
       } else {
         toast.error("Es konnte kein Regal erstellt werden");
-        onCloseModal();
       }
     });
   };
@@ -39,20 +42,6 @@ const AddShelfForm = () => {
     }
   };
 
-  const handleCreateShelf = () => {
-    if (
-      shelfname != undefined &&
-      shelfname.length > 0 &&
-      shelfPlace != undefined &&
-      shelfPlace.length > 0 &&
-      CountCompartment != undefined &&
-      CountCompartment >= 0
-    ) {
-      setCreateButtonEnabled(false);
-    } else {
-      setCreateButtonEnabled(true);
-    }
-  };
   useEffect(() => {
     handleCreateButtonEnabled();
   }, [shelfname, shelfPlace, CountCompartment]);
@@ -90,7 +79,7 @@ const AddShelfForm = () => {
       <div className={styles.buttonContainer}>
         <button className="secondaryButton">Abbrechen</button>
         <button
-          className="primaryButton"
+          className={!createButtonEnabled ? "primaryButton" : "disabledButton"}
           disabled={createButtonEnabled}
           onClick={createShelf}
         >

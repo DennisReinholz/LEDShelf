@@ -41,7 +41,9 @@ module.exports.getShelf = async (req, res, db) => {
 module.exports.getCompartments = async (req, res, db) => {
   const { shelfid } = req.body;
   db.all(
-    `SELECt article.*, shelf.shelfname FROM article, shelf WHERE shelf=? AND article.shelf = shelf.shelfid`,
+    `
+    SELECT compartment.*FROM shelf,compartment WHERE shelf.shelfid=? AND shelf.shelfid = compartment.shelfId
+    `,
     [shelfid],
     (err, result) => {
       if (err) {
@@ -73,4 +75,38 @@ module.exports.getAllUser = async (req, res, db) => {
       }
     }
   );
+};
+
+module.exports.postCreateShelf = async (req, res, db) => {
+  const { shelfname, shelfPlace, CountCompartment } = req.body;
+  db.all(
+    `INSERT INTO shelf (shelfname,place,countCompartment) VALUES (?,?,?)`,
+    [shelfname, shelfPlace, CountCompartment],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        const data = {
+          result,
+          serverStatus: 2,
+        };
+        CreateCompartments(db, CountCompartment);
+        res.status(200).json(data);
+      }
+    }
+  );
+};
+
+const CreateCompartments = (db, countCompartment) => {
+  db.get("SELECT last_insert_rowid() as shelfId", (err, row) => {
+    const shelfId = row.shelfId;
+
+    for (let i = 0; i < countCompartment; i++) {
+      db.all(`INSERT INTO compartment (compartmentname,shelfid) VALUES(?,?)`, [
+        i + 1 + "-Fach",
+        shelfId,
+      ]);
+    }
+  });
 };

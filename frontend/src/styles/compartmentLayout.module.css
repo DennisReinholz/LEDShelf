@@ -1,7 +1,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
 }
 .buttonContainer {
   display: flex;
@@ -12,11 +11,12 @@
 }
 .content {
   display: flex;
-  flex-direction: row;
-  height: 20rem;
-  width: 100rem;
-  margin-top: 5rem;
+  flex-wrap: wrap;
+  height: 30rem;
+  width: 80rem;
+  margin-top: 1rem;
   margin-left: 5rem;
+  overflow-y: scroll;
 }
 .containerCompartment {
   cursor: pointer;
