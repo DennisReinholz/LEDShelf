@@ -22,6 +22,12 @@ table {
 table th {
   font-weight: bold;
 }
+thead {
+  position: sticky;
+  top: 0;
+  background-color: white; /* Hintergrundfarbe des fixierten Headers */
+  z-index: 1; /* Stellt sicher, dass der Header über den Tabelleneinträgen liegt */
+}
 th,
 td {
   height: 3rem;
