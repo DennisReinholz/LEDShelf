@@ -18,6 +18,7 @@ const CompartmentLayout = () => {
   const hanleAllOff = () => {
     setActiveCompartments(Array(compartments.length).fill(false));
   };
+
   const getCompartments = async () => {
     const response = await fetch(`http://localhost:3000/getCompartment`, {
       method: "Post",
@@ -31,8 +32,12 @@ const CompartmentLayout = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setCompartments(data.result);
+        const sortedData = data.result.sort((a, b) => {
+          if (a.number < b.number) return -1;
+          if (a.number > b.number) return 1;
+          return 0;
+        });
+        setCompartments(sortedData);
         setActiveCompartments(Array(data.result.length).fill(false));
       });
   };
@@ -43,11 +48,15 @@ const CompartmentLayout = () => {
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
         <h2 style={{ color: "white" }}>
-          {compartments != undefined ? compartments[0].shelfname : ""} - Regal
+          {compartments != undefined ? compartments[0].shelfname : ""}- Regal
         </h2>
         <input className={styles.input} placeholder="Artikel suchen" />
       </div>
-      <button className={styles.button} onClick={hanleAllOff}>
+      <button
+        className="primaryButton"
+        style={{ marginLeft: "2rem" }}
+        onClick={hanleAllOff}
+      >
         All off
       </button>
       <div className={styles.content}>
@@ -55,7 +64,7 @@ const CompartmentLayout = () => {
           ? compartments.map((c, index) => (
               <div
                 className={styles.containerCompartment}
-                key={c.articleid}
+                key={c.compartment}
                 onClick={() => handleIsActive(index)}
               >
                 <Compartment

@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  width: 109rem;
+  height: 100vh;
+}
+.buttonContainer {
+  height: 5rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+.content {
+  width: 80rem;
+  margin: 0 auto;
+}
+table {
+  width: 50rem;
+  margin: 0 auto; /* Automatische Zentrierung der Tabelle */
+  border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
+}
+table th {
+  font-weight: bold;
+}
+th,
+td {
+  height: 3rem;
+  border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
+  text-align: center;
+}
+.input::-webkit-inner-spin-button {
+  height: 3rem;
+}
+.editContainer {
+  display: flex;
+  justify-content: space-around;
+}

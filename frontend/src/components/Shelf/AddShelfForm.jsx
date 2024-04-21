@@ -2,26 +2,22 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import styles from "../../styles/Shelf/addShelfForm.module.css";
 
-const AddShelfForm = () => {
+const AddShelfForm = ({ onClose, shelflist, setShelflist }) => {
   const [CountCompartment, setCountCompartment] = useState();
   const [shelfname, setShelfname] = useState();
   const [shelfPlace, setShelfPlace] = useState();
   const [createButtonEnabled, setCreateButtonEnabled] = useState(true);
 
-  const createShelf = async ({ onClose }) => {
-    console.log(shelfname);
-    console.log(shelfPlace);
-    console.log(CountCompartment);
+  const createShelf = async () => {
     return await fetch(`http://localhost:3000/createShelf`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",
       body: JSON.stringify({ shelfname, shelfPlace, CountCompartment }),
     }).then((result) => {
-      console.log(result);
       if (result.status === 200) {
         toast.success("Ein neues Regal wurde erstellt");
-        OnClose();
+        onClose();
       } else {
         toast.error("Es konnte kein Regal erstellt werden");
       }
@@ -45,6 +41,7 @@ const AddShelfForm = () => {
   useEffect(() => {
     handleCreateButtonEnabled();
   }, [shelfname, shelfPlace, CountCompartment]);
+
   return (
     <div className={styles.container}>
       <h2 style={{ color: "white" }}>Erstelle ein Regal</h2>
@@ -77,7 +74,9 @@ const AddShelfForm = () => {
         />
       </div>
       <div className={styles.buttonContainer}>
-        <button className="secondaryButton">Abbrechen</button>
+        <button className="secondaryButton" onClick={() => onClose}>
+          Abbrechen
+        </button>
         <button
           className={!createButtonEnabled ? "primaryButton" : "disabledButton"}
           disabled={createButtonEnabled}

@@ -41,15 +41,17 @@ module.exports.getShelf = async (req, res, db) => {
 module.exports.getCompartments = async (req, res, db) => {
   const { shelfid } = req.body;
   db.all(
-    `
-    SELECT compartment.*FROM shelf,compartment WHERE shelf.shelfid=? AND shelf.shelfid = compartment.shelfId
-    `,
+    `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
+    FROM shelf 
+    JOIN compartment ON shelf.shelfid = compartment.shelfId 
+    WHERE shelf.shelfid =? `,
     [shelfid],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
         return;
       } else {
+        console.log(result);
         const data = {
           result,
           serverStatus: 2,
@@ -87,12 +89,36 @@ module.exports.postCreateShelf = async (req, res, db) => {
         res.status(500).json({ serverStatus: -1 });
         return;
       } else {
-        const data = {
-          result,
-          serverStatus: 2,
-        };
         CreateCompartments(db, CountCompartment);
-        res.status(200).json(data);
+        res.status(200).json(result);
+      }
+    }
+  );
+};
+
+module.exports.getArticle = async (req, res, db) => {
+  db.all(`SELECT * FROM article`, (err, result) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+      return;
+    } else {
+      res.status(200).json(result);
+    }
+  });
+};
+
+module.exports.createArticle = async (req, res, db) => {
+  const { articlename, amount, unit, selectedShelf, selectedCompartment } =
+    req.body;
+  db.all(
+    `INSERT INTO article (articlename,count,compartment,shelf,unit) VALUES (?,?,?,?,?)`,
+    [articlename, amount, selectedCompartment, selectedShelf, unit],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json(result);
       }
     }
   );
@@ -103,10 +129,10 @@ const CreateCompartments = (db, countCompartment) => {
     const shelfId = row.shelfId;
 
     for (let i = 0; i < countCompartment; i++) {
-      db.all(`INSERT INTO compartment (compartmentname,shelfid) VALUES(?,?)`, [
-        i + 1 + "-Fach",
-        shelfId,
-      ]);
+      db.all(
+        `INSERT INTO compartment (compartmentname,shelfid,number) VALUES(?,?,?)`,
+        [i + 1 + "-Fach", shelfId, i + 1]
+      );
     }
   });
 };

@@ -37,7 +37,7 @@ const MainNav = () => {
           <div className={styles.nav}>
             <HiOutlineScale />
             <NavLink
-              to="/home"
+              to="/artikel"
               style={{
                 textDecoration: "none",
                 color: "white",
@@ -67,7 +67,7 @@ const MainNav = () => {
           <div className={styles.nav}>
             <HiOutlineSignal />
             <NavLink
-              to="/home"
+              to="/geraete"
               style={{
                 textDecoration: "none",
                 color: "white",

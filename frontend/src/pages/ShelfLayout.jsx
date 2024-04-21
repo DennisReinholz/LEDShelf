@@ -9,6 +9,7 @@ const ShelfLayout = () => {
   const [shelfList, setShelfList] = useState();
   const [isShelfOpen, setIsShelfOpen] = useState(false);
   const navigate = useNavigate();
+
   const getShelfs = async () => {
     const response = await fetch(`http://localhost:3000/getShelf`, {
       method: "GET",
@@ -53,7 +54,11 @@ const ShelfLayout = () => {
       </div>
       {isShelfOpen && (
         <Modal onClose={() => setIsShelfOpen(false)}>
-          <AddShelfForm onClose />
+          <AddShelfForm
+            onClose={() => setIsShelfOpen(false)}
+            setShelflist={setShelfList}
+            shelflist={shelfList}
+          />
         </Modal>
       )}
     </div>

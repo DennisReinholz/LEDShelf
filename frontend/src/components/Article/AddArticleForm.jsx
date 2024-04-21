@@ -1,0 +1,154 @@
+import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import styles from "../../styles/Article/addArticleForm.module.css";
+
+const AddArticleForm = ({ onClose }) => {
+  const [articlename, setArticlename] = useState("");
+  const [amount, setAmount] = useState(0);
+  const [unit, setUnit] = useState();
+  const [shelf, setShelf] = useState();
+  const [selectedShelf, setSelectedShlef] = useState();
+  const [compartment, setCompartment] = useState();
+  const [selectedCompartment, setSelectedCompartment] = useState();
+
+  const getShelf = async () => {
+    const response = await fetch(`http://localhost:3000/getShelf`, {
+      method: "Get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+    })
+      .then((response) => response.json())
+      .then((shelf) => {
+        setShelf(shelf);
+      });
+  };
+  const getCompartments = async (shelfid) => {
+    const response = await fetch(`http://localhost:3000/getCompartment`, {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+      body: JSON.stringify({
+        shelfid,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCompartment(data.result);
+      });
+  };
+
+  const createArticle = async () => {
+    return await fetch(`http://localhost:3000/createArticle`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      cache: "no-cache",
+      body: JSON.stringify({
+        articlename,
+        amount,
+        unit,
+        selectedShelf,
+        selectedCompartment,
+      }),
+    }).then((result) => {
+      if (result.status === 200) {
+        toast.success("Ein neuer Artikel wurde erstellt");
+        onClose();
+      } else {
+        toast.error("Es konnte kein Artikel erstellt werden");
+      }
+    });
+  };
+
+  const handleShelfSelection = (e) => {
+    setSelectedShlef(e);
+    getCompartments(e);
+  };
+
+  useEffect(() => {
+    getShelf();
+  }, []);
+  return (
+    <div className={styles.container}>
+      <h2>Erstelle einen Artikel</h2>
+      <div className={styles.content}>
+        <input
+          className={styles.input}
+          type="text"
+          placeholder="Artikelname"
+          value={articlename}
+          onChange={(e) => setArticlename(e.target.value)}
+          style={{ height: "2rem", fontSize: "0.75em" }}
+        />
+        <input
+          className={styles.input}
+          type="number"
+          placeholder="Menge"
+          defaultValue={1}
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          style={{ height: "2rem", fontSize: "0.75em" }}
+        />
+        <select
+          style={{ fontSize: "0.75em" }}
+          value={unit}
+          onChange={(e) => setUnit(e.target.value)}
+        >
+          <option value="Stück">Stück</option>
+          <option value="Meter">Meter</option>
+          <option value="Zentimeter">Zentimeter</option>
+          <option value="Kilogramm">Kilogramm</option>
+        </select>
+      </div>
+      <div className={styles.shelfSelection}>
+        <select
+          style={{ fontSize: "0.75em", height: "2rem", width: "10rem" }}
+          value={selectedShelf}
+          onChange={(e) => handleShelfSelection(e.target.value)}
+        >
+          {shelf !== undefined ? (
+            shelf.result.map((s) => (
+              <option key={s.shelfid} value={s.shelfid}>
+                {s.shelfname}
+              </option>
+            ))
+          ) : (
+            <option>Kein Regal gefunden</option>
+          )}
+        </select>
+        <select
+          style={{ fontSize: "0.75em", height: "2rem", width: "10rem" }}
+          value={selectedCompartment}
+          onChange={(e) => setSelectedCompartment(e.target.value)}
+        >
+          {compartment !== undefined ? (
+            compartment.map((c) => (
+              <option key={c.compartmentId} value={c.compartmentId}>
+                {c.compartmentname}
+              </option>
+            ))
+          ) : (
+            <option>Kein Regal gefunden</option>
+          )}
+        </select>
+      </div>
+      <div className={styles.buttonContainer}>
+        <button className="secondaryButton" onClick={onClose}>
+          Abbrechen
+        </button>
+        <button
+          className="primaryButton"
+          style={{ marginRight: "1rem" }}
+          onClick={createArticle}
+        >
+          Erstellen
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default AddArticleForm;

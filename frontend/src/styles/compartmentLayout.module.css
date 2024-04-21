@@ -7,19 +7,19 @@
   align-items: center;
   width: 30rem;
   margin-top: 1rem;
-  margin-left: 1rem;
+  margin-left: 2rem;
 }
 .content {
   display: flex;
   flex-wrap: wrap;
-  height: 30rem;
-  width: 80rem;
+  height: 40rem;
+  width: 100rem;
   margin-top: 1rem;
-  margin-left: 5rem;
   overflow-y: scroll;
 }
 .containerCompartment {
   cursor: pointer;
+  height: 12rem;
 }
 .input {
   height: 2rem;

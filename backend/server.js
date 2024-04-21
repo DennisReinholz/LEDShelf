@@ -51,8 +51,13 @@ app.get("/getAllUser", (req, res) => {
   DataBaseController.getAllUser(req, res, db);
 });
 app.post("/createShelf", (req, res) => {
-  console.log(req.body);
   DataBaseController.postCreateShelf(req, res, db);
+});
+app.get("/getArticle", (req, res) => {
+  DataBaseController.getArticle(req, res, db);
+});
+app.post("/createArticle", (req, res) => {
+  DataBaseController.createArticle(req, res, db);
 });
 
 // Server starten
