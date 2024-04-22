@@ -10,6 +10,7 @@ const AddArticleForm = ({ onClose }) => {
   const [selectedShelf, setSelectedShlef] = useState();
   const [compartment, setCompartment] = useState();
   const [selectedCompartment, setSelectedCompartment] = useState();
+  const [enableCreateButton, setEnableCreateButton] = useState(true);
 
   const getShelf = async () => {
     const response = await fetch(`http://localhost:3000/getShelf`, {
@@ -62,6 +63,20 @@ const AddArticleForm = ({ onClose }) => {
       }
     });
   };
+  const checkFrom = () => {
+    if (
+      articlename === null ||
+      (articlename === undefined && amount === null) ||
+      (amount === undefined && unit === null) ||
+      (unit == undefined && selectedShelf === null) ||
+      (selectedShelf === undefined && selectedCompartment === null) ||
+      selectedCompartment === undefined
+    ) {
+      setEnableCreateButton(true);
+    } else {
+      setEnableCreateButton(false);
+    }
+  };
 
   const handleShelfSelection = (e) => {
     setSelectedShlef(e);
@@ -70,7 +85,15 @@ const AddArticleForm = ({ onClose }) => {
 
   useEffect(() => {
     getShelf();
-  }, []);
+    checkFrom();
+  }, [
+    articlename,
+    selectedCompartment,
+    selectedShelf,
+    amount,
+    unit,
+    enableCreateButton,
+  ]);
   return (
     <div className={styles.container}>
       <h2>Erstelle einen Artikel</h2>
@@ -140,9 +163,10 @@ const AddArticleForm = ({ onClose }) => {
           Abbrechen
         </button>
         <button
-          className="primaryButton"
+          className={enableCreateButton ? "disabledButton" : "primaryButton"}
           style={{ marginRight: "1rem" }}
           onClick={createArticle}
+          disabled={enableCreateButton}
         >
           Erstellen
         </button>

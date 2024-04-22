@@ -10,6 +10,7 @@ import ShelfLayout from "../pages/ShelfLayout.jsx";
 import CompartmentLayout from "../pages/CompartmentLayout.jsx";
 import UserLayout from "../pages/UserLayout.jsx";
 import ArticleLayout from "../pages/ArticleLayout.jsx";
+import DeviceLayout from "../pages/DeviceLayout.jsx";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
               <Route path="regale/:shelfid" element={<CompartmentLayout />} />
               <Route path="benutzer" element={<UserLayout />} />
               <Route path="artikel" element={<ArticleLayout />} />
-              <Route path="geraete" element={<Main />} />
+              <Route path="geraete" element={<DeviceLayout />} />
             </Route>
           </Routes>
         </BrowserRouter>

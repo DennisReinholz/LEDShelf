@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 38rem;
+  width: 85rem;
+  color: white;
+}
+.content {
+  display: flex;
+  margin-top: 2rem;
+  margin-left: 1rem;
+}
