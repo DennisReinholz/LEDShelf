@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../styles/Device/device.module.css";
 
-const Device = () => {
+const Device = ({ shelfList }) => {
+  const [assignedShelf, setAssignedShelf] = useState();
+  const [assignedIsOpen, setAssignedIsOpen] = useState(false);
+  const [wasAssigned, setWasAssigned] = useState(false);
+
+  const handleAssignOpen = () => {
+    if (assignedIsOpen) {
+      //API CALL
+      setShelfToController();
+      setWasAssigned(true);
+      setAssignedIsOpen(false);
+    } else {
+      setAssignedIsOpen(true);
+    }
+  };
+  const setShelfToController = async () => {};
+  useEffect(() => {}, [assignedShelf, wasAssigned]);
   return (
-    <div className={styles.container}>
+    <div
+      className={
+        assignedIsOpen ? styles.container : styles.assignedIsOpenContainer
+      }
+    >
       <div className={styles.containerParameter}>
         <p>Zugewiesenes Regal:</p>
         <p>IP-Adresse:</p>
@@ -11,20 +31,38 @@ const Device = () => {
         <p>Status:</p>
       </div>
       <div className={styles.containerValues}>
-        <p>Regal 1</p>
+        <p>{!wasAssigned ? "Kein Regal zugewiesen" : assignedShelf}</p>
         <p>127.0.0.0.1</p>
         <p>15</p>
         <p>Nicht verbunden</p>
       </div>
-      <div className={styles.declareShelf}>
-        <button className="primaryButton" style={{ width: "7rem" }}>
-          Regal zuweisen
+      <div
+        className={assignedIsOpen ? styles.declareShelf : styles.assignedIsOpen}
+      >
+        <button
+          className="primaryButton"
+          style={{ width: "7rem" }}
+          onClick={handleAssignOpen}
+        >
+          {assignedIsOpen ? "Regal setzen" : "Regal zuweisen"}
         </button>
-        <select style={{ width: "7rem", height: "2rem" }}>
-          <option>Regal1</option>
-          <option>Regal2</option>
-          <option>Regal3</option>
-        </select>
+        {assignedIsOpen && (
+          <select
+            style={{ width: "7rem", height: "2rem" }}
+            value={assignedShelf}
+            onChange={(e) => setAssignedShelf(e.target.value)}
+          >
+            {shelfList.result !== undefined ? (
+              shelfList.result.map((s) => (
+                <option key={s.shelfid} value={s.shelfname}>
+                  {s.shelfname}
+                </option>
+              ))
+            ) : (
+              <option>Kein Regal gefunden</option>
+            )}
+          </select>
+        )}
       </div>
     </div>
   );

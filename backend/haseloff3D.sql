@@ -1,8 +1,10 @@
-CREATE TABLE compartment (
-    compartmentId INTEGER PRIMARY KEY AUTOINCREMENT,
-    compartmentname VARCHAR(255) NOT NULL, 
-    articleId int,  
-    shelfId INT
+CREATE TABLE ledController (
+    ledControllerid INTEGER PRIMARY KEY AUTOINCREMENT,
+    ipAdresse VARCHAR(255) NOT NULL,
+    shelfid INT,
+    numberCompartment INT,
+    status VARCHAR(255)  
+  
 );
 
 SELECT compartment.* FROM shelf,compartment WHERE shelf.shelfid = compartment.shelfId

@@ -154,7 +154,7 @@ const AddArticleForm = ({ onClose }) => {
               </option>
             ))
           ) : (
-            <option>Kein Regal gefunden</option>
+            <option>Kein Fach gefunden</option>
           )}
         </select>
       </div>
