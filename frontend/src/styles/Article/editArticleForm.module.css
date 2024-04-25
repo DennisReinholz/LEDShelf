@@ -2,9 +2,41 @@
   display: flex;
   flex-direction: column;
   width: 30rem;
-  height: 15rem;
+  height: 20rem;
+}
+.container p {
+  font-size: 1.25em;
 }
 .content {
   display: flex;
   flex-direction: row;
+  margin-top: 1rem;
+  width: 30rem;
+  justify-content: space-between;
+  align-items: center;
+}
+.inputArticlename {
+  height: 2rem;
+}
+.unitSelection {
+  height: 2rem;
+}
+.buttonContainer {
+  display: flex;
+  margin-left: 18rem;
+  width: 12rem;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+.inputNumber {
+  height: 1.5rem;
+  width: 5rem;
+}
+.comparmentSelection {
+  height: 2rem;
+  width: 7rem;
+}
+.shelfSelection {
+  height: 2rem;
+  width: 7rem;
 }

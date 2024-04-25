@@ -13,6 +13,7 @@ const ArticleLayout = () => {
   const [editArticle, setEditArticle] = useState();
   const [compartment, setCompartment] = useState();
   const [shelf, setShelf] = useState();
+
   const getArticle = async () => {
     const response = await fetch(`http://localhost:3000/getArticle`, {
       method: "Get",
@@ -42,12 +43,6 @@ const ArticleLayout = () => {
         setCompartment(data.result);
       });
   };
-
-  const handleEditArticle = (article) => {
-    setEditArticleOpen(true);
-    setEditArticle(article);
-  };
-
   const getShelf = async () => {
     const response = await fetch(`http://localhost:3000/getShelf`, {
       method: "Get",
@@ -60,6 +55,10 @@ const ArticleLayout = () => {
       .then((shelf) => {
         setShelf(shelf);
       });
+  };
+  const handleEditArticle = (article) => {
+    setEditArticleOpen(true);
+    setEditArticle(article);
   };
   useEffect(() => {
     getArticle();
@@ -123,9 +122,9 @@ const ArticleLayout = () => {
         </Modal>
       )}
       {editArticleOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
+        <Modal onClose={() => setEditArticleOpen(false)}>
           <EditArticleForm
-            onClose={() => setIsModalOpen(false)}
+            onClose={() => setEditArticleOpen(false)}
             article={editArticle}
             compartment={compartment}
             shelf={shelf}

@@ -59,6 +59,12 @@ app.get("/getArticle", (req, res) => {
 app.post("/createArticle", (req, res) => {
   DataBaseController.createArticle(req, res, db);
 });
+app.post("/getSelectedArticle", (req, res) => {
+  DataBaseController.getSelectedArticle(req, res, db);
+});
+app.post("/upateArticle", (req, res) => {
+  DataBaseController.updateArticle(req, res, db);
+});
 
 // Server starten
 app.listen(PORT, () => {

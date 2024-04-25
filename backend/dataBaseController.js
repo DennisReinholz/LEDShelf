@@ -40,6 +40,7 @@ module.exports.getShelf = async (req, res, db) => {
 };
 module.exports.getCompartments = async (req, res, db) => {
   const { shelfid } = req.body;
+  console.log(shelfid);
   db.all(
     `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
     FROM shelf 
@@ -78,7 +79,6 @@ module.exports.getAllUser = async (req, res, db) => {
     }
   );
 };
-
 module.exports.postCreateShelf = async (req, res, db) => {
   const { shelfname, shelfPlace, CountCompartment } = req.body;
   db.all(
@@ -95,7 +95,6 @@ module.exports.postCreateShelf = async (req, res, db) => {
     }
   );
 };
-
 module.exports.getArticle = async (req, res, db) => {
   db.all(`SELECT * FROM article`, (err, result) => {
     if (err) {
@@ -106,7 +105,6 @@ module.exports.getArticle = async (req, res, db) => {
     }
   });
 };
-
 module.exports.createArticle = async (req, res, db) => {
   const { articlename, amount, unit, selectedShelf, selectedCompartment } =
     req.body;
@@ -123,7 +121,36 @@ module.exports.createArticle = async (req, res, db) => {
     }
   );
 };
-
+module.exports.getSelectedArticle = async (req, res, db) => {
+  const { articleid } = req.body;
+  db.all(
+    `SELECT * FROM article WHERE articleid=?`,
+    [articleid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json(result);
+      }
+    }
+  );
+};
+module.exports.updateArticle = async (req, res, db) => {
+  const { articleid, articlename, unit, amount, shelf, compartment } = req.body;
+  db.all(
+    `UPDATE article SET articlename=?,count=?,unit=?,compartment=?,shelf=? WHERE articleid=?`,
+    [articlename, amount, unit, compartment, shelf, articleid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json({ serverStatus: 2 });
+      }
+    }
+  );
+};
 const CreateCompartments = (db, countCompartment) => {
   db.get("SELECT last_insert_rowid() as shelfId", (err, row) => {
     const shelfId = row.shelfId;
