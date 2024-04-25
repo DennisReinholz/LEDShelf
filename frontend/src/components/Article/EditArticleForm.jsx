@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import styles from "../../styles/Article/editArticleForm.module.css";
 
-const EditArticleForm = ({ onClose, article, shelf, handleCloseModal }) => {
+const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
   const [compartment, setCompartment] = useState();
   const [articleStatus, setArticleStatus] = useState();
   const [newArticleName, setNewArticleName] = useState();
@@ -24,11 +24,9 @@ const EditArticleForm = ({ onClose, article, shelf, handleCloseModal }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setCompartment(data.result);
       });
   };
-
   const getArticle = async () => {
     const response = await fetch(`http://localhost:3000/getSelectedArticle`, {
       method: "Post",
@@ -84,13 +82,13 @@ const EditArticleForm = ({ onClose, article, shelf, handleCloseModal }) => {
       .then((data) => {
         if (data.serverStatus === 2) {
           toast.success("Artikel wurde aktualisiert.");
-          handleCloseModal();
+          setUpdateArticle(true);
+          onClose();
         } else {
           toast.error("Artikel konnte nicht geladen werden.");
         }
       });
   };
-
   const handleShelfSelction = (shelfid) => {
     setNewShelf(shelfid);
     getCompartments(shelfid);
@@ -138,7 +136,7 @@ const EditArticleForm = ({ onClose, article, shelf, handleCloseModal }) => {
       </div>
       <div className={styles.content}>
         <p>
-          Regal: {articleStatus !== undefined ? articleStatus.shelf : ""} -
+          Regal: {articleStatus !== undefined ? articleStatus.shelfname : ""} -
           Fach: {articleStatus !== undefined ? articleStatus.compartment : ""}
         </p>
         <select
@@ -155,7 +153,10 @@ const EditArticleForm = ({ onClose, article, shelf, handleCloseModal }) => {
             <option>Keine Regale gefunden</option>
           )}
         </select>
-        <select className={styles.comparmentSelection}>
+        <select
+          className={styles.comparmentSelection}
+          onChange={(e) => setNewCompartment(e.target.value)}
+        >
           {compartment != undefined ? (
             compartment.map((c) => (
               <option key={c.compartmentid} value={c.compartmentid}>

@@ -31,6 +31,7 @@ const db = new sqlite3.Database("./haseloff3D.db");
 
 //Controller
 const DataBaseController = require("./dataBaseController");
+const Database = require("better-sqlite3");
 
 app.post("/users", (req, res) => {
   DataBaseController.getUser(req, res, db);
@@ -64,6 +65,9 @@ app.post("/getSelectedArticle", (req, res) => {
 });
 app.post("/upateArticle", (req, res) => {
   DataBaseController.updateArticle(req, res, db);
+});
+app.post("/deleteArticle", (req, res) => {
+  DataBaseController.deleteArticle(req, res, db);
 });
 
 // Server starten

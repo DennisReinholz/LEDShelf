@@ -40,7 +40,6 @@ module.exports.getShelf = async (req, res, db) => {
 };
 module.exports.getCompartments = async (req, res, db) => {
   const { shelfid } = req.body;
-  console.log(shelfid);
   db.all(
     `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
     FROM shelf 
@@ -52,7 +51,6 @@ module.exports.getCompartments = async (req, res, db) => {
         res.status(500).json({ serverStatus: -1 });
         return;
       } else {
-        console.log(result);
         const data = {
           result,
           serverStatus: 2,
@@ -96,14 +94,20 @@ module.exports.postCreateShelf = async (req, res, db) => {
   );
 };
 module.exports.getArticle = async (req, res, db) => {
-  db.all(`SELECT * FROM article`, (err, result) => {
-    if (err) {
-      res.status(500).json({ serverStatus: -1 });
-      return;
-    } else {
-      res.status(200).json(result);
+  //Regal name herausfinden
+  db.all(
+    `SELECT article.*, shelf.shelfname 
+    FROM article 
+    LEFT JOIN shelf ON article.shelf = shelf.shelfid`,
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json(result);
+      }
     }
-  });
+  );
 };
 module.exports.createArticle = async (req, res, db) => {
   const { articlename, amount, unit, selectedShelf, selectedCompartment } =
@@ -124,7 +128,10 @@ module.exports.createArticle = async (req, res, db) => {
 module.exports.getSelectedArticle = async (req, res, db) => {
   const { articleid } = req.body;
   db.all(
-    `SELECT * FROM article WHERE articleid=?`,
+    `SELECT article.*, shelf.shelfname 
+    FROM article 
+    LEFT JOIN shelf ON article.shelf = shelf.shelfid
+    WHERE articleid=?`,
     [articleid],
     (err, result) => {
       if (err) {
@@ -141,6 +148,21 @@ module.exports.updateArticle = async (req, res, db) => {
   db.all(
     `UPDATE article SET articlename=?,count=?,unit=?,compartment=?,shelf=? WHERE articleid=?`,
     [articlename, amount, unit, compartment, shelf, articleid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json({ serverStatus: 2 });
+      }
+    }
+  );
+};
+module.exports.deleteArticle = async (req, res, db) => {
+  const { articleid } = req.body;
+  db.all(
+    `DELETE FROM article WHERE articleid=?`,
+    [articleid],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });

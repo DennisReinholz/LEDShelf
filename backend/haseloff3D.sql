@@ -19,3 +19,11 @@ SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname
     WHERE shelf.shelfid = 41 
 
 SELECT * FROM article
+
+
+SELECT article.*, shelf.shelfname FROM article, shelf WHERE article.shelf=shelf.shelfid
+
+
+SELECT article.*, shelf.shelfname 
+FROM article 
+LEFT JOIN shelf ON article.shelf = shelf.shelfid;
