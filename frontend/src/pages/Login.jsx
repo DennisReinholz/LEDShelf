@@ -26,6 +26,12 @@ const Login = () => {
   const [password, setPassword] = useState();
   const [user, setUser] = useContext(UserContext);
 
+  const handleLogin = (event) => {
+    if (event.key === "Enter") {
+      getUser();
+    }
+  };
+
   const getUser = async () => {
     try {
       const response = await fetch(
@@ -62,6 +68,19 @@ const Login = () => {
       );
     }
   };
+  useEffect(() => {
+    const listener = (event) => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        event.preventDefault();
+        getUser();
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -87,9 +106,14 @@ const Login = () => {
             style={{ width: "16rem" }}
             className={styles.input}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={handleLogin}
           />
           <div className={styles.buttonContainer}>
-            <button className={styles.loginButton} onClick={getUser}>
+            <button
+              className={styles.loginButton}
+              onKeyDown={handleLogin}
+              onClick={getUser}
+            >
               Login
             </button>
           </div>

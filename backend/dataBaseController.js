@@ -12,7 +12,7 @@ module.exports.getUser = async (req, res, db) => {
         return;
       } else {
         if (result === undefined || result === null || result.length === 0) {
-          res.send({ serverStatus: -2 });
+          res.status(500).send({ serverStatus: -2 });
         } else if (frontendPassword === result[0].password) {
           const data = {
             result,
