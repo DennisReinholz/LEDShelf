@@ -19,6 +19,7 @@ const ArticleLayout = () => {
   const [deleteState, setDeleteState] = useState();
   const [selectedArticle, setSelectedArticle] = useState();
   const [updateArticle, setUpdateArticle] = useState(false);
+  const [articleCreated, setArticleCreated] = useState(false);
 
   const getArticle = async () => {
     const response = await fetch(`http://localhost:3000/getArticle`, {
@@ -105,7 +106,7 @@ const ArticleLayout = () => {
       getShelf();
       getCompartments();
     }
-  }, [deleteState, updateArticle]);
+  }, [deleteState, updateArticle, articleCreated]);
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
@@ -165,7 +166,10 @@ const ArticleLayout = () => {
       </div>
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-          <AddArticleForm onClose={() => setIsModalOpen(false)} />
+          <AddArticleForm
+            onClose={() => setIsModalOpen(false)}
+            setArticleCreated={setArticleCreated}
+          />
         </Modal>
       )}
       {editArticleOpen && (

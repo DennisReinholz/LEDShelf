@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import styles from "../../styles/Article/addArticleForm.module.css";
 
-const AddArticleForm = ({ onClose }) => {
+const AddArticleForm = ({ onClose, setArticleCreated }) => {
   const [articlename, setArticlename] = useState("");
   const [amount, setAmount] = useState(0);
   const [unit, setUnit] = useState();
@@ -38,7 +38,7 @@ const AddArticleForm = ({ onClose }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setCompartment(data.result);
+        setCompartment([...data.result].sort((a, b) => a.number - b.number));
       });
   };
 
@@ -56,9 +56,11 @@ const AddArticleForm = ({ onClose }) => {
       }),
     }).then((result) => {
       if (result.status === 200) {
+        setArticleCreated(true);
         toast.success("Ein neuer Artikel wurde erstellt");
         onClose();
       } else {
+        setArticleCreated(false);
         toast.error("Es konnte kein Artikel erstellt werden");
       }
     });
