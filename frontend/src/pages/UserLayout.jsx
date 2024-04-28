@@ -2,9 +2,15 @@ import React, { Fragment, useEffect, useState } from "react";
 import styles from "../styles/userLayout.module.css";
 import { Toaster } from "react-hot-toast";
 import User from "../components/User/User";
+import Modal from "../components/common/Modal.jsx";
+import AddUserForm from "../components/User/AddUserForm.jsx";
+
 const UserLayout = () => {
   const [users, setUsers] = useState();
   const [addUserIsOpen, setAddUserIsOpen] = useState();
+  const [createUser, setCreateUser] = useState();
+  const [deleteUser, setDeleteUser] = useState();
+  const [editUser, setEditUser] = useState();
 
   const getUser = async () => {
     const response = await fetch(`http://localhost:3000/getAllUser`, {
@@ -27,10 +33,13 @@ const UserLayout = () => {
   };
   useEffect(() => {
     getUser();
-  }, []);
+  }, [createUser, deleteUser]);
   return (
     <div className={styles.container}>
-      <button className="primaryButton" onClick={() => console.log("test")}>
+      <button
+        className="primaryButton"
+        onClick={() => setAddUserIsOpen((o) => !o)}
+      >
         Add User
       </button>
       <div className={styles.contentContainer}>
@@ -41,12 +50,26 @@ const UserLayout = () => {
           {users !== undefined
             ? users.map((u, index) => (
                 <Fragment key={index}>
-                  <User name={u.username} role={u.name} />
+                  <User
+                    userid={u.userid}
+                    name={u.username}
+                    role={u.name}
+                    setDeleteUser={setDeleteUser}
+                    setEditUser={setEditUser}
+                  />
                 </Fragment>
               ))
             : "kein user angemeldet"}
         </div>
       </div>
+      {addUserIsOpen && (
+        <Modal onClose={() => setAddUserIsOpen(false)}>
+          <AddUserForm
+            onClose={() => setAddUserIsOpen(false)}
+            setCreateUser={setCreateUser}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

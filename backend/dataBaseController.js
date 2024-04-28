@@ -24,6 +24,46 @@ module.exports.getUser = async (req, res, db) => {
     }
   );
 };
+module.exports.updateUser = async (req, res, db) => {
+  const { userid, username, password, role } = req.body;
+  console.log(req.body);
+  db.all(
+    `UPDATE user SET username=?, password=?, role=? where userid=?`,
+    [username, password, role, userid],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        console.log(result);
+        res.status(200).json({ serverStatus: 2 });
+      }
+    }
+  );
+};
+module.exports.getUserData = async (req, res, db) => {
+  const { userid } = req.body;
+  db.all(`SELECT * from user WHERE userid=?`, [userid], (err, result) => {
+    if (err) {
+      console.log(`Unable to get UserData from ${userid}`);
+      res.sendStatus(500);
+    } else {
+      res.status(200).json(result);
+    }
+  });
+};
+module.exports.deleteUser = async (req, res, db) => {
+  const { userid } = req.body;
+  db.all(`DELETE FROM user WHERE userid=?`, [userid], (err, result) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+      return;
+    } else {
+      res.status(200).json({ serverStatus: 2 });
+    }
+  });
+};
 module.exports.getShelf = async (req, res, db) => {
   db.all(`SELECt * FROM shelf`, (err, result) => {
     if (err) {
@@ -62,7 +102,7 @@ module.exports.getCompartments = async (req, res, db) => {
 };
 module.exports.getAllUser = async (req, res, db) => {
   db.all(
-    `SELECT user.username, role.name FROM user,role WHERE user.role = role.roleid`,
+    `SELECT user.userid,user.username, role.name FROM user,role WHERE user.role = role.roleid`,
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
@@ -172,6 +212,31 @@ module.exports.deleteArticle = async (req, res, db) => {
       }
     }
   );
+};
+module.exports.createUser = async (req, res, db) => {
+  const { name, password, roleid } = req.body;
+  db.all(
+    `INSERT INTO user (username, password, role) VALUES (?,?,?)`,
+    [name, password, roleid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json(result);
+      }
+    }
+  );
+};
+module.exports.getRoles = async (req, res, db) => {
+  db.all(`SELECT * from role`, (err, result) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+      return;
+    } else {
+      res.status(200).json(result);
+    }
+  });
 };
 const CreateCompartments = (db, countCompartment) => {
   db.get("SELECT last_insert_rowid() as shelfId", (err, row) => {

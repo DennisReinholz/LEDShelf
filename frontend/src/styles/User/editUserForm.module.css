@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 15rem;
+  width: 20rem;
+}
+.contentContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.inputField {
+  height: 2rem;
+  width: 10rem;
+}
+.roleSelection {
+  height: 2rem;
+  width: 7rem;
+}
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 14rem;
+  margin-left: 6rem;
+  margin-top: 2rem;
+}

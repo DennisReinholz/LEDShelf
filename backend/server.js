@@ -69,6 +69,21 @@ app.post("/upateArticle", (req, res) => {
 app.post("/deleteArticle", (req, res) => {
   DataBaseController.deleteArticle(req, res, db);
 });
+app.post("/cerateUser", (req, res) => {
+  DataBaseController.createUser(req, res, db);
+});
+app.get("/getRoles", (req, res) => {
+  DataBaseController.getRoles(req, res, db);
+});
+app.post("/deleteUser", (req, res) => {
+  DataBaseController.deleteUser(req, res, db);
+});
+app.post("/updateUser", (req, res) => {
+  DataBaseController.updateUser(req, res, db);
+});
+app.post("/getUserData", (req, res) => {
+  DataBaseController.getUserData(req, res, db);
+});
 
 // Server starten
 app.listen(PORT, () => {

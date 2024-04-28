@@ -27,3 +27,5 @@ SELECT article.*, shelf.shelfname FROM article, shelf WHERE article.shelf=shelf.
 SELECT article.*, shelf.shelfname 
 FROM article 
 LEFT JOIN shelf ON article.shelf = shelf.shelfid;
+
+SELECT * from user
