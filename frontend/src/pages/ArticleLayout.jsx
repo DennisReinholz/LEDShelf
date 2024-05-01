@@ -112,7 +112,7 @@ const ArticleLayout = () => {
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
-        {user[0].role == 1 && (
+        {user === undefined && user[0].role !== 1 ? (
           <button
             className="primaryButton"
             style={{ width: "10rem" }}
@@ -121,6 +121,8 @@ const ArticleLayout = () => {
             {" "}
             Artikel erstellen
           </button>
+        ) : (
+          ""
         )}
       </div>
       <div className={styles.content}>
@@ -132,7 +134,7 @@ const ArticleLayout = () => {
               <th>Einheit</th>
               <th>Regal</th>
               <th>Fach</th>
-              <th>Action</th>
+              {user === undefined && user[0].role !== 1 ? <th>Action</th> : ""}
             </tr>
           </thead>
           {articleList !== undefined ? (
@@ -143,19 +145,23 @@ const ArticleLayout = () => {
                   <td>{c.count}</td>
                   <td>{c.unit}</td>
                   <td>{c.shelfname}</td>
-                  <td>{c.compartment}</td>
-                  <td>
-                    <div className={styles.editContainer}>
-                      <FiEdit2
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleEditArticle(c)}
-                      />
-                      <BsTrash
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleDeleteArticle(c)}
-                      />
-                    </div>
-                  </td>
+                  <td>{c.compartmentname}</td>
+                  {user === undefined && user[0].role !== 1 ? (
+                    <td>
+                      <div className={styles.editContainer}>
+                        <FiEdit2
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleEditArticle(c)}
+                        />
+                        <BsTrash
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleDeleteArticle(c)}
+                        />
+                      </div>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               </tbody>
             ))

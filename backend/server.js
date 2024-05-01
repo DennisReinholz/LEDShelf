@@ -87,6 +87,9 @@ app.post("/getUserData", (req, res) => {
 app.post("/getArticleInCompartment", (req, res) => {
   DataBaseController.getArticleInCompartment(req, res, db);
 });
+app.post("/updateArticleCount", (req, res) => {
+  DataBaseController.updateArticleCount(req, res, db);
+});
 
 // Server starten
 app.listen(PORT, () => {

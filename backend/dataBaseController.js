@@ -35,7 +35,6 @@ module.exports.updateUser = async (req, res, db) => {
         res.status(500).json({ serverStatus: -1 });
         return;
       } else {
-        console.log(result);
         res.status(200).json({ serverStatus: 2 });
       }
     }
@@ -135,9 +134,10 @@ module.exports.postCreateShelf = async (req, res, db) => {
 module.exports.getArticle = async (req, res, db) => {
   //Regal name herausfinden
   db.all(
-    `SELECT article.*, shelf.shelfname 
-    FROM article 
-    LEFT JOIN shelf ON article.shelf = shelf.shelfid`,
+    `SELECT article.*, shelf.shelfname, compartment.compartmentname 
+    FROM article, compartment 
+    LEFT JOIN shelf ON article.shelf = shelf.shelfid
+    WHERE article.compartment = compartment.compartmentId`,
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
@@ -150,7 +150,6 @@ module.exports.getArticle = async (req, res, db) => {
 };
 module.exports.getArticleInCompartment = async (req, res, db) => {
   const { compId } = req.body;
-  console.log(compId);
   db.all(
     `SELECT * from article WHERE compartment =?`,
     [compId],
@@ -252,6 +251,21 @@ module.exports.getRoles = async (req, res, db) => {
       res.status(200).json(result);
     }
   });
+};
+module.exports.updateArticleCount = async (req, res, db) => {
+  const { newArticleCount, articleid } = req.body;
+  db.all(
+    `Update article SET count=? WHERE articleid=?`,
+    [newArticleCount, articleid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json(result);
+      }
+    }
+  );
 };
 const CreateCompartments = (db, countCompartment) => {
   db.get("SELECT last_insert_rowid() as shelfId", (err, row) => {

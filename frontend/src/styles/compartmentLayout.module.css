@@ -18,6 +18,9 @@
   overflow-y: scroll;
 }
 .containerCompartment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   cursor: pointer;
   height: 12rem;
 }
@@ -29,4 +32,11 @@
   cursor: pointer;
   width: 5rem;
   margin-left: 1rem;
+}
+.buttonContainerCounter {
+  display: flex;
+  color: white;
+  width: 5rem;
+  justify-content: space-between;
+  align-items: center;
 }

@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import User from "../components/User/User";
 import Modal from "../components/common/Modal.jsx";
 import AddUserForm from "../components/User/AddUserForm.jsx";
+import Main from "./Main.jsx";
 
 const UserLayout = () => {
   const [users, setUsers] = useState();
@@ -61,6 +62,7 @@ const UserLayout = () => {
               ))
             : "kein user angemeldet"}
         </div>
+        <Main />
       </div>
       {addUserIsOpen && (
         <Modal onClose={() => setAddUserIsOpen(false)}>

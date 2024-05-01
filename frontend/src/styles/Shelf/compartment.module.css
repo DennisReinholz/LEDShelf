@@ -1,3 +1,10 @@
+.compartContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
 .container {
   display: flex;
   flex-direction: column;
@@ -27,14 +34,15 @@
   color: white;
   justify-content: space-around;
 }
-.articleButton {
-  width: 1.25rem;
-  height: 1.25rem;
-  cursor: pointer;
-}
 .buttonContainer {
   display: flex;
-  align-items: center;
+  color: white;
   width: 5rem;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+}
+.articleButton {
+  width: 1.75rem;
+  height: 1.75rem;
+  cursor: pointer;
 }

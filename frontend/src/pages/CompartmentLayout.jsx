@@ -34,8 +34,8 @@ const CompartmentLayout = () => {
       .then((data) => {
         if (data.result !== undefined) {
           const sortedData = data.result.sort((a, b) => {
-            if (a.number < b.number) return -1;
-            if (a.number > b.number) return 1;
+            if (a.compartmentId < b.compartmentId) return -1;
+            if (a.compartmentId > b.compartmentId) return 1;
             return 0;
           });
           setCompartments(sortedData);
@@ -65,17 +65,33 @@ const CompartmentLayout = () => {
         {compartments != undefined
           ? compartments.map((c, index) => (
               <div
-                className={styles.containerCompartment}
-                key={c.compartmentId}
-                onClick={() => handleIsActive(index)}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
               >
-                <Compartment
-                  compId={c.compartmentId}
-                  isActive={activeCompartments[index]}
-                  comp={c.compartmentname}
-                  article={c.articlename}
-                  count={c.count}
-                />
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    className={styles.containerCompartment}
+                    key={c.compartmentId}
+                  >
+                    <Compartment
+                      compId={c.compartmentId}
+                      isActive={activeCompartments[c.compartmentId]}
+                      comp={c.compartmentname}
+                      article={c.articlename}
+                      count={c.count}
+                      handleIsActive={handleIsActive}
+                    />
+                  </div>
+                </div>
               </div>
             ))
           : "Keine Regale vorhanden"}
