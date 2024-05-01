@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Shelf from "../components/Shelf/Shelf";
 import Modal from "../components/common/Modal";
 import AddShelfForm from "../components/Shelf/AddShelfForm";
 import styles from "../styles/shelfLayout.module.css";
+import { UserContext } from "../helpers/userAuth.jsx";
 
 const ShelfLayout = () => {
+  const [user, setUser] = useContext(UserContext);
   const [shelfList, setShelfList] = useState();
   const [isShelfOpen, setIsShelfOpen] = useState(false);
   const navigate = useNavigate();
@@ -28,12 +30,14 @@ const ShelfLayout = () => {
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
-        <button
-          className="primaryButton"
-          onClick={() => setIsShelfOpen((o) => !o)}
-        >
-          Add Regal
-        </button>
+        {user[0].role == 1 && (
+          <button
+            className="primaryButton"
+            onClick={() => setIsShelfOpen((o) => !o)}
+          >
+            Add Regal
+          </button>
+        )}
       </div>
       <div className={styles.content}>
         {shelfList != undefined

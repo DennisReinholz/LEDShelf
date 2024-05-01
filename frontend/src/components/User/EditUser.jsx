@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/User/editUserForm.module.css";
 import toast from "react-hot-toast";
 
-const EditUser = ({ userid, onClose, name, role }) => {
+const EditUser = ({ userid, onClose, name, role, setEditUser }) => {
   const [newName, setNewName] = useState();
   const [newPassword, setNewPassword] = useState();
   const [roles, setRoles] = useState();
@@ -72,8 +72,8 @@ const EditUser = ({ userid, onClose, name, role }) => {
               ? newPassword
               : userData.password,
           role:
-            selectedRole != undefined && newPassword.length != 0
-              ? newPassword
+            selectedRole != undefined && selectedRole.length != 0
+              ? selectedRole
               : userData.role,
         }),
       })
@@ -81,8 +81,11 @@ const EditUser = ({ userid, onClose, name, role }) => {
         .then((response) => {
           if (response.serverStatus === 2) {
             toast.success("Benutzer wurde aktualisiert.");
+            setEditUser(true);
+            onClose();
           } else if (response.serverStatus === -2) {
             toast.error("Aktualisierung fehlgeschlagen.");
+            setEditUser(false);
           }
         })
         .catch((error) =>

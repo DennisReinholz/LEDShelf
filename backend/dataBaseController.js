@@ -26,7 +26,6 @@ module.exports.getUser = async (req, res, db) => {
 };
 module.exports.updateUser = async (req, res, db) => {
   const { userid, username, password, role } = req.body;
-  console.log(req.body);
   db.all(
     `UPDATE user SET username=?, password=?, role=? where userid=?`,
     [username, password, role, userid],
@@ -139,6 +138,22 @@ module.exports.getArticle = async (req, res, db) => {
     `SELECT article.*, shelf.shelfname 
     FROM article 
     LEFT JOIN shelf ON article.shelf = shelf.shelfid`,
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json(result);
+      }
+    }
+  );
+};
+module.exports.getArticleInCompartment = async (req, res, db) => {
+  const { compId } = req.body;
+  console.log(compId);
+  db.all(
+    `SELECT * from article WHERE compartment =?`,
+    [compId],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });

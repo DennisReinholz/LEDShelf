@@ -33,7 +33,7 @@ const UserLayout = () => {
   };
   useEffect(() => {
     getUser();
-  }, [createUser, deleteUser]);
+  }, [createUser, deleteUser, editUser]);
   return (
     <div className={styles.container}>
       <button

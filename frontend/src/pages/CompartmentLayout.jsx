@@ -32,13 +32,15 @@ const CompartmentLayout = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const sortedData = data.result.sort((a, b) => {
-          if (a.number < b.number) return -1;
-          if (a.number > b.number) return 1;
-          return 0;
-        });
-        setCompartments(sortedData);
-        setActiveCompartments(Array(data.result.length).fill(false));
+        if (data.result !== undefined) {
+          const sortedData = data.result.sort((a, b) => {
+            if (a.number < b.number) return -1;
+            if (a.number > b.number) return 1;
+            return 0;
+          });
+          setCompartments(sortedData);
+          setActiveCompartments(Array(data.result.length).fill(false));
+        }
       });
   };
   useEffect(() => {
@@ -64,10 +66,11 @@ const CompartmentLayout = () => {
           ? compartments.map((c, index) => (
               <div
                 className={styles.containerCompartment}
-                key={c.compartment}
+                key={c.compartmentId}
                 onClick={() => handleIsActive(index)}
               >
                 <Compartment
+                  compId={c.compartmentId}
                   isActive={activeCompartments[index]}
                   comp={c.compartmentname}
                   article={c.articlename}

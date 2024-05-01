@@ -48,36 +48,42 @@ const MainNav = () => {
             </NavLink>
           </div>
         </li>
-        <li>
-          <div className={styles.nav}>
-            <HiOutlineUsers />
-            <NavLink
-              to="/benutzer"
-              style={{
-                textDecoration: "none",
-                color: "white",
-                marginLeft: "1rem",
-              }}
-            >
-              Benutzer
-            </NavLink>
-          </div>
-        </li>
-        <li>
-          <div className={styles.nav}>
-            <HiOutlineSignal />
-            <NavLink
-              to="/geraete"
-              style={{
-                textDecoration: "none",
-                color: "white",
-                marginLeft: "1rem",
-              }}
-            >
-              Geräte
-            </NavLink>
-          </div>
-        </li>
+        {user !== null
+          ? user[0].role == 1 && (
+              <>
+                <li>
+                  <div className={styles.nav}>
+                    <HiOutlineUsers />
+                    <NavLink
+                      to="/benutzer"
+                      style={{
+                        textDecoration: "none",
+                        color: "white",
+                        marginLeft: "1rem",
+                      }}
+                    >
+                      Benutzer
+                    </NavLink>
+                  </div>
+                </li>
+                <li>
+                  <div className={styles.nav}>
+                    <HiOutlineSignal />
+                    <NavLink
+                      to="/geraete"
+                      style={{
+                        textDecoration: "none",
+                        color: "white",
+                        marginLeft: "1rem",
+                      }}
+                    >
+                      Geräte
+                    </NavLink>
+                  </div>
+                </li>
+              </>
+            )
+          : ""}
         <li>
           <div className={styles.nav} onClick={handleLogout}>
             <HiOutlineArrowRightOnRectangle />

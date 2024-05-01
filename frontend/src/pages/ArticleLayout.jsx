@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "../styles/Article/articleLayout.module.css";
 import Modal from "../components/common/Modal";
 import { FiEdit2 } from "react-icons/fi";
@@ -7,8 +7,10 @@ import AddArticleForm from "../components/Article/AddArticleForm";
 import EditArticleForm from "../components/Article/EditArticleForm";
 import DeleteArticleForm from "../components/Article/DeleteArticleForm";
 import toast, { Toaster } from "react-hot-toast";
+import { UserContext } from "../helpers/userAuth";
 
 const ArticleLayout = () => {
+  const [user, setUser] = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [articleList, setArticleList] = useState([]);
   const [editArticleOpen, setEditArticleOpen] = useState(false);
@@ -110,14 +112,16 @@ const ArticleLayout = () => {
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
-        <button
-          className="primaryButton"
-          style={{ width: "10rem" }}
-          onClick={() => setIsModalOpen(true)}
-        >
-          {" "}
-          Artikel erstellen
-        </button>
+        {user[0].role == 1 && (
+          <button
+            className="primaryButton"
+            style={{ width: "10rem" }}
+            onClick={() => setIsModalOpen(true)}
+          >
+            {" "}
+            Artikel erstellen
+          </button>
+        )}
       </div>
       <div className={styles.content}>
         <table>

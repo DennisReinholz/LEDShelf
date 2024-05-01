@@ -29,3 +29,11 @@ FROM article
 LEFT JOIN shelf ON article.shelf = shelf.shelfid;
 
 SELECT * from user
+
+SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
+    FROM shelf 
+    JOIN compartment ON shelf.shelfid = compartment.shelfId 
+    JOIN article ON compartment.compartmentId = article.compartment
+    WHERE shelf.shelfid = 26
+
+    SELECT * from article WHERE compartment =41

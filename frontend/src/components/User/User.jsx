@@ -31,7 +31,7 @@ const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
         <Modal onClose={() => setEditModalOpen(false)}>
           <EditUser
             onClose={() => setEditModalOpen(false)}
-            setDeleteUser={setDeleteUser}
+            setEditUser={setEditUser}
             userid={userid}
             name={name}
             role={role}
