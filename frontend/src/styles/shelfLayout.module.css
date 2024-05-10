@@ -1,17 +1,59 @@
-.container {
-  display: flex;
-  flex-direction: column;
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 80rem;
+    height: 37rem;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    height: 47rem;
+    width: 85rem;
+    overflow-y: scroll;
+  }
 }
-.buttonContainer {
-  display: flex;
-  margin-top: 1rem;
-  margin-left: 2rem;
+@media only screen and (max-width: 1500px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    height: 25rem;
+    width: 90rem;
+    overflow-y: scroll;
+  }
 }
-.content {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 1rem;
-  height: 47rem;
-  width: 100rem;
-  overflow-y: scroll;
+@media only screen and (max-width: 600px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    height: 47rem;
+    width: 90rem;
+    overflow-y: scroll;
+  }
 }

@@ -1,60 +1,128 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  color: white;
-  width: 109rem;
-  height: 100vh;
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    width: 85rem;
+    height: 100vh;
+  }
+  .buttonContainer {
+    display: flex;
+    align-items: center;
+    width: 23rem;
+    justify-content: space-between;
+    height: 5rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+  }
+  .categoryContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 8rem;
+    width: 85rem;
+    align-self: center;
+    justify-content: center;
+  }
+  .content {
+    width: 80rem;
+    height: 25rem;
+    margin: 0 auto;
+  }
+  table {
+    width: 50rem;
+
+    margin: 0 auto; /* Automatische Zentrierung der Tabelle */
+    border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
+  }
+  table th {
+    font-weight: bold;
+  }
+  thead {
+    height: 3rem;
+    position: sticky;
+    top: 0;
+    color: black;
+    background-color: white; /* Hintergrundfarbe des fixierten Headers */
+    z-index: 1; /* Stellt sicher, dass der Header über den Tabelleneinträgen liegt */
+  }
+  th,
+  td {
+    height: 3rem;
+    border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
+    text-align: center;
+  }
+  .input::-webkit-inner-spin-button {
+    height: 3rem;
+  }
+  .editContainer {
+    display: flex;
+    justify-content: space-around;
+  }
+  .inputSearch {
+    height: 1.5rem;
+  }
 }
-.buttonContainer {
-  display: flex;
-  align-items: center;
-  width: 23rem;
-  justify-content: space-between;
-  height: 5rem;
-  margin-top: 1rem;
-  margin-left: 1rem;
-}
-.categoryContainer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  height: 8rem;
-  width: 100rem;
-  align-self: center;
-  justify-content: center;
-}
-.content {
-  width: 80rem;
-  margin: 0 auto;
-}
-table {
-  width: 50rem;
-  margin: 0 auto; /* Automatische Zentrierung der Tabelle */
-  border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
-}
-table th {
-  font-weight: bold;
-}
-thead {
-  position: sticky;
-  top: 0;
-  color: black;
-  background-color: white; /* Hintergrundfarbe des fixierten Headers */
-  z-index: 1; /* Stellt sicher, dass der Header über den Tabelleneinträgen liegt */
-}
-th,
-td {
-  height: 3rem;
-  border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
-  text-align: center;
-}
-.input::-webkit-inner-spin-button {
-  height: 3rem;
-}
-.editContainer {
-  display: flex;
-  justify-content: space-around;
-}
-.inputSearch {
-  height: 1.5rem;
+@media only screen and (max-width: 1500px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    width: 109rem;
+    height: 100vh;
+  }
+  .buttonContainer {
+    display: flex;
+    align-items: center;
+    width: 23rem;
+    justify-content: space-between;
+    height: 5rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+  }
+  .categoryContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 8rem;
+    width: 100rem;
+    align-self: center;
+    justify-content: center;
+  }
+  .content {
+    width: 80rem;
+    margin: 0 auto;
+  }
+  table {
+    width: 50rem;
+    margin: 0 auto; /* Automatische Zentrierung der Tabelle */
+    border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
+  }
+  table th {
+    font-weight: bold;
+  }
+  thead {
+    position: sticky;
+    height: 3rem;
+    top: 0;
+    color: black;
+    background-color: white; /* Hintergrundfarbe des fixierten Headers */
+    z-index: 1; /* Stellt sicher, dass der Header über den Tabelleneinträgen liegt */
+  }
+  th,
+  td {
+    height: 3rem;
+    border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
+    text-align: center;
+  }
+  .input::-webkit-inner-spin-button {
+    height: 3rem;
+  }
+  .editContainer {
+    display: flex;
+    justify-content: space-around;
+  }
+  .inputSearch {
+    height: 1.5rem;
+  }
 }

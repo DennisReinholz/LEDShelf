@@ -10,6 +10,8 @@
   font-weight: bold;
   font-size: 1.3em;
   cursor: pointer;
+  margin-left: 1rem;
+  margin-right: 1rem;
   will-change: transform;
   transition: transform 0.35s ease-in-out;
 }

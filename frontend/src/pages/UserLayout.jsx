@@ -36,43 +36,46 @@ const UserLayout = () => {
     getUser();
   }, [createUser, deleteUser, editUser]);
   return (
-    <div className={styles.container}>
+    <React.Fragment>
       <button
+        style={{ marginLeft: "1rem" }}
         className="primaryButton"
         onClick={() => setAddUserIsOpen((o) => !o)}
       >
         Add User
       </button>
-      <div className={styles.contentContainer}>
-        <div className={styles.contentHeader}>
-          <h3>Benutzer verwalten</h3>
+      <div className={styles.container}>
+        <div className={styles.contentContainer}>
+          <div className={styles.contentHeader}>
+            <h3>Benutzer verwalten</h3>
+          </div>
+          <div className={styles.userContainer}>
+            {users !== undefined
+              ? users.map((u, index) => (
+                  <Fragment key={index}>
+                    <User
+                      userid={u.userid}
+                      name={u.username}
+                      role={u.name}
+                      setDeleteUser={setDeleteUser}
+                      setEditUser={setEditUser}
+                    />
+                  </Fragment>
+                ))
+              : "kein user angemeldet"}
+          </div>
+          <Main />
         </div>
-        <div className={styles.userContainer}>
-          {users !== undefined
-            ? users.map((u, index) => (
-                <Fragment key={index}>
-                  <User
-                    userid={u.userid}
-                    name={u.username}
-                    role={u.name}
-                    setDeleteUser={setDeleteUser}
-                    setEditUser={setEditUser}
-                  />
-                </Fragment>
-              ))
-            : "kein user angemeldet"}
-        </div>
-        <Main />
+        {addUserIsOpen && (
+          <Modal onClose={() => setAddUserIsOpen(false)}>
+            <AddUserForm
+              onClose={() => setAddUserIsOpen(false)}
+              setCreateUser={setCreateUser}
+            />
+          </Modal>
+        )}
       </div>
-      {addUserIsOpen && (
-        <Modal onClose={() => setAddUserIsOpen(false)}>
-          <AddUserForm
-            onClose={() => setAddUserIsOpen(false)}
-            setCreateUser={setCreateUser}
-          />
-        </Modal>
-      )}
-    </div>
+    </React.Fragment>
   );
 };
 

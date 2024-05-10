@@ -114,17 +114,17 @@ const ArticleLayout = () => {
         setCategoryList(category);
       });
   };
-  const handleCategoryFilter = (id) => {
-    if (!filterIsActive) {
-      setFilteredArticles(
-        filteredArticles.filter((article) => article.categoryid === id)
-      );
-      setFilterIsActive(true);
-    } else {
-      setFilteredArticles(articleList);
-      setFilterIsActive(false);
-    }
-  };
+  // const handleCategoryFilter = (id) => {
+  //   if (!filterIsActive) {
+  //     setFilteredArticles(
+  //       filteredArticles.filter((article) => article.categoryid === id)
+  //     );
+  //     setFilterIsActive(true);
+  //   } else {
+  //     setFilteredArticles(articleList);
+  //     setFilterIsActive(false);
+  //   }
+  // };
   useEffect(() => {
     getArticle();
     getShelf();
