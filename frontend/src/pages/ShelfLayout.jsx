@@ -30,14 +30,16 @@ const ShelfLayout = () => {
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
-        {user[0].role == 1 && (
-          <button
-            className="primaryButton"
-            onClick={() => setIsShelfOpen((o) => !o)}
-          >
-            Add Regal
-          </button>
-        )}
+        {user != undefined
+          ? user[0].role == 1 && (
+              <button
+                className="primaryButton"
+                onClick={() => setIsShelfOpen((o) => !o)}
+              >
+                Add Regal
+              </button>
+            )
+          : ""}
       </div>
       <div className={styles.content}>
         {shelfList != undefined

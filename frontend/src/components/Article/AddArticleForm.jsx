@@ -11,6 +11,8 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
   const [compartment, setCompartment] = useState();
   const [selectedCompartment, setSelectedCompartment] = useState();
   const [enableCreateButton, setEnableCreateButton] = useState(true);
+  const [categoryList, setCategoryList] = useState();
+  const [selectedCategory, setSelectedCategory] = useState();
 
   const getShelf = async () => {
     const response = await fetch(`http://localhost:3000/getShelf`, {
@@ -23,6 +25,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       .then((response) => response.json())
       .then((shelf) => {
         setShelf(shelf);
+        handleShelfSelection(shelf.result[0].shelfid);
       });
   };
   const getCompartments = async (shelfid) => {
@@ -39,10 +42,25 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       .then((response) => response.json())
       .then((data) => {
         setCompartment([...data.result].sort((a, b) => a.number - b.number));
+        setSelectedCompartment(data.result[0]);
       });
   };
-
+  const getCategory = async () => {
+    const response = await fetch(`http://localhost:3000/getCategory`, {
+      method: "Get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCategoryList(data.data.result);
+        setSelectedCategory(data.data.result[0].categoryid);
+      });
+  };
   const createArticle = async () => {
+    console.log(selectedCategory);
     return await fetch(`http://localhost:3000/createArticle`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -53,6 +71,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
         unit,
         selectedShelf,
         selectedCompartment,
+        selectedCategory,
       }),
     }).then((result) => {
       if (result.status === 200) {
@@ -79,15 +98,22 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       setEnableCreateButton(false);
     }
   };
-
   const handleShelfSelection = (e) => {
     setSelectedShlef(e);
     getCompartments(e);
   };
-
+  const consoleForm = () => {
+    console.log("name " + articlename);
+    console.log("amount " + amount);
+    console.log("einheit " + unit);
+    console.log("Shelf " + selectedShelf);
+    console.log("compartment " + selectedCompartment);
+    console.log("category " + selectedCategory);
+  };
   useEffect(() => {
     getShelf();
     checkFrom();
+    getCategory();
   }, [
     articlename,
     selectedCompartment,
@@ -100,6 +126,8 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
     <div className={styles.container}>
       <h2>Erstelle einen Artikel</h2>
       <div className={styles.content}>
+        <button onClick={() => consoleForm()}>dsaads</button>
+        <button onClick={() => console.log(selectedCompartment)}>ff</button>
         <input
           className={styles.input}
           type="text"
@@ -157,6 +185,22 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
             ))
           ) : (
             <option>Kein Fach gefunden</option>
+          )}
+        </select>
+        {/* Category */}
+        <select
+          style={{ fontSize: "0.75em", height: "2rem", width: "10rem" }}
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          {categoryList !== undefined ? (
+            categoryList.map((c) => (
+              <option key={c.categoryid} value={c.categoryid}>
+                {c.categoryname}
+              </option>
+            ))
+          ) : (
+            <option>Keine Kategorie gefunden</option>
           )}
         </select>
       </div>

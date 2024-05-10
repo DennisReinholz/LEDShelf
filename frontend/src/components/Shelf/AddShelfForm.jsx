@@ -74,7 +74,7 @@ const AddShelfForm = ({ onClose, shelflist, setShelflist }) => {
         />
       </div>
       <div className={styles.buttonContainer}>
-        <button className="secondaryButton" onClick={() => onClose}>
+        <button className="secondaryButton" onClick={onClose}>
           Abbrechen
         </button>
         <button

@@ -34,8 +34,8 @@ const CompartmentLayout = () => {
       .then((data) => {
         if (data.result !== undefined) {
           const sortedData = data.result.sort((a, b) => {
-            if (a.compartmentId < b.compartmentId) return -1;
-            if (a.compartmentId > b.compartmentId) return 1;
+            if (a.number < b.number) return -1;
+            if (a.number > b.number) return 1;
             return 0;
           });
           setCompartments(sortedData);
@@ -52,7 +52,6 @@ const CompartmentLayout = () => {
         <h2 style={{ color: "white" }}>
           {compartments != undefined ? compartments[0].shelfname : ""}- Regal
         </h2>
-        <input className={styles.input} placeholder="Artikel suchen" />
       </div>
       <button
         className="primaryButton"

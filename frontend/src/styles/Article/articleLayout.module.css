@@ -6,9 +6,22 @@
   height: 100vh;
 }
 .buttonContainer {
+  display: flex;
+  align-items: center;
+  width: 23rem;
+  justify-content: space-between;
   height: 5rem;
   margin-top: 1rem;
   margin-left: 1rem;
+}
+.categoryContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 8rem;
+  width: 100rem;
+  align-self: center;
+  justify-content: center;
 }
 .content {
   width: 80rem;
@@ -41,4 +54,7 @@ td {
 .editContainer {
   display: flex;
   justify-content: space-around;
+}
+.inputSearch {
+  height: 1.5rem;
 }

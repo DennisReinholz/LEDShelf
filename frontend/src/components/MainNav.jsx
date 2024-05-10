@@ -6,6 +6,7 @@ import { HiOutlineSignal } from "react-icons/hi2";
 import { BsBookshelf } from "react-icons/bs";
 import { HiOutlineScale } from "react-icons/hi2";
 import { UserContext } from "../helpers/userAuth.jsx";
+import { HiOutlineQrCode } from "react-icons/hi2";
 import styles from "../styles/Sidebar/mainNav.module.css";
 
 const MainNav = () => {
@@ -78,6 +79,21 @@ const MainNav = () => {
                       }}
                     >
                       Geräte
+                    </NavLink>
+                  </div>
+                </li>
+                <li>
+                  <div className={styles.nav}>
+                    <HiOutlineQrCode />
+                    <NavLink
+                      to="/kategorie"
+                      style={{
+                        textDecoration: "none",
+                        color: "white",
+                        marginLeft: "1rem",
+                      }}
+                    >
+                      Kategorie
                     </NavLink>
                   </div>
                 </li>

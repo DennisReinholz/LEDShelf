@@ -90,6 +90,12 @@ app.post("/getArticleInCompartment", (req, res) => {
 app.post("/updateArticleCount", (req, res) => {
   DataBaseController.updateArticleCount(req, res, db);
 });
+app.post("/createCategory", (req, res) => {
+  DataBaseController.createCategory(req, res, db);
+});
+app.get("/getCategory", (req, res) => {
+  DataBaseController.getCategory(req, res, db);
+});
 
 // Server starten
 app.listen(PORT, () => {

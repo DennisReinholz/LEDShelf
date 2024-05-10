@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 5rem;
+  width: 10rem;
+  border: 0.125rem solid white;
+  border-radius: 1rem;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.3em;
+  cursor: pointer;
+  will-change: transform;
+  transition: transform 0.35s ease-in-out;
+}
+.container:hover {
+  transform: scale(1.05);
+}

@@ -164,11 +164,24 @@ module.exports.getArticleInCompartment = async (req, res, db) => {
   );
 };
 module.exports.createArticle = async (req, res, db) => {
-  const { articlename, amount, unit, selectedShelf, selectedCompartment } =
-    req.body;
+  const {
+    articlename,
+    amount,
+    unit,
+    selectedShelf,
+    selectedCompartment,
+    selectedCategory,
+  } = req.body;
   db.all(
-    `INSERT INTO article (articlename,count,compartment,shelf,unit) VALUES (?,?,?,?,?)`,
-    [articlename, amount, selectedCompartment, selectedShelf, unit],
+    `INSERT INTO article (articlename,count,compartment,shelf,unit,categoryid) VALUES (?,?,?,?,?,?)`,
+    [
+      articlename,
+      amount,
+      selectedCompartment,
+      selectedShelf,
+      unit,
+      selectedCategory,
+    ],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
@@ -266,6 +279,35 @@ module.exports.updateArticleCount = async (req, res, db) => {
       }
     }
   );
+};
+module.exports.createCategory = async (req, res, db) => {
+  const { categoryName } = req.body;
+  db.all(
+    `INSERT INTO category (categoryname) VALUES(?)`,
+    [categoryName],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json({ serverStatus: 2 });
+      }
+    }
+  );
+};
+module.exports.getCategory = async (req, res, db) => {
+  db.all(`SELECT * from category`, (err, result) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+      return;
+    } else {
+      data = {
+        result: result,
+        serverStatus: 2,
+      };
+      res.status(200).json({ data });
+    }
+  });
 };
 const CreateCompartments = (db, countCompartment) => {
   db.get("SELECT last_insert_rowid() as shelfId", (err, row) => {

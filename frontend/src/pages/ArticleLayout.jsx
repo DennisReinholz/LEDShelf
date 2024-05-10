@@ -7,6 +7,7 @@ import AddArticleForm from "../components/Article/AddArticleForm";
 import EditArticleForm from "../components/Article/EditArticleForm";
 import DeleteArticleForm from "../components/Article/DeleteArticleForm";
 import toast, { Toaster } from "react-hot-toast";
+import Category from "../components/Category/Category";
 import { UserContext } from "../helpers/userAuth";
 
 const ArticleLayout = () => {
@@ -22,6 +23,10 @@ const ArticleLayout = () => {
   const [selectedArticle, setSelectedArticle] = useState();
   const [updateArticle, setUpdateArticle] = useState(false);
   const [articleCreated, setArticleCreated] = useState(false);
+  const [searchArticle, setSearchArticle] = useState("");
+  const [categoryList, setCategoryList] = useState([]);
+  const [filteredArticles, setFilteredArticles] = useState([]);
+  const [filterIsActive, setFilterIsActive] = useState(false);
 
   const getArticle = async () => {
     const response = await fetch(`http://localhost:3000/getArticle`, {
@@ -96,9 +101,34 @@ const ArticleLayout = () => {
     setDeleteArticleOpen(true);
     setSelectedArticle(c);
   };
+  const getCategory = async () => {
+    const response = await fetch(`http://localhost:3000/getCategory`, {
+      method: "Get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+    })
+      .then((response) => response.json())
+      .then((category) => {
+        setCategoryList(category);
+      });
+  };
+  const handleCategoryFilter = (id) => {
+    if (!filterIsActive) {
+      setFilteredArticles(
+        filteredArticles.filter((article) => article.categoryid === id)
+      );
+      setFilterIsActive(true);
+    } else {
+      setFilteredArticles(articleList);
+      setFilterIsActive(false);
+    }
+  };
   useEffect(() => {
     getArticle();
     getShelf();
+    getCategory();
     getCompartments();
     if (deleteState) {
       deleteArticle(selectedArticle);
@@ -112,18 +142,33 @@ const ArticleLayout = () => {
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
-        {user === undefined && user[0].role !== 1 ? (
+        {user !== undefined ? (
           <button
             className="primaryButton"
             style={{ width: "10rem" }}
             onClick={() => setIsModalOpen(true)}
           >
-            {" "}
             Artikel erstellen
           </button>
         ) : (
           ""
         )}
+        <input
+          className={styles.inputSearch}
+          type="text"
+          placeholder="Artikel suche"
+          value={searchArticle}
+          onChange={(e) => setSearchArticle(e.target.value)}
+        />
+      </div>
+      <div className={styles.categoryContainer}>
+        {categoryList.data != undefined
+          ? categoryList.data.result.map((c) => (
+              <div onClick={() => handleCategoryFilter(c.categoryid)}>
+                <Category key={c.categoryid} name={c.categoryname} />
+              </div>
+            ))
+          : ""}
       </div>
       <div className={styles.content}>
         <table>
@@ -137,10 +182,10 @@ const ArticleLayout = () => {
               {user === undefined && user[0].role !== 1 ? <th>Action</th> : ""}
             </tr>
           </thead>
-          {articleList !== undefined ? (
-            articleList.map((c) => (
-              <tbody>
-                <tr key={c.articleid}>
+          {filteredArticles !== undefined ? (
+            filteredArticles.map((c) => (
+              <tbody key={c.articleid}>
+                <tr>
                   <td>{c.articlename}</td>
                   <td>{c.count}</td>
                   <td>{c.unit}</td>

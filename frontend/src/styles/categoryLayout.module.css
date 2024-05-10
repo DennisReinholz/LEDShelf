@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  flex-wrap: wrap;
+  height: 50rem;
+  width: 80rem;
+  margin-top: 1rem;
+  margin-left: 2rem;
+}
+.addCategoryContainer {
+  display: flex;
+  height: 5rem;
+  width: 10rem;
+}
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100rem;
+  height: 30rem;
+  justify-content: space-around;
+}

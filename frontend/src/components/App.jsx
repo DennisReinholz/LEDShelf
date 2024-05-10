@@ -11,6 +11,7 @@ import CompartmentLayout from "../pages/CompartmentLayout.jsx";
 import UserLayout from "../pages/UserLayout.jsx";
 import ArticleLayout from "../pages/ArticleLayout.jsx";
 import DeviceLayout from "../pages/DeviceLayout.jsx";
+import CategoryLayout from "../pages/CategoryLayout.jsx";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path="benutzer" element={<UserLayout />} />
               <Route path="artikel" element={<ArticleLayout />} />
               <Route path="geraete" element={<DeviceLayout />} />
+              <Route path="kategorie" element={<CategoryLayout />} />
             </Route>
           </Routes>
         </BrowserRouter>

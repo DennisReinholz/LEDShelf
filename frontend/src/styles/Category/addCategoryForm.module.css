@@ -1,0 +1,22 @@
+.container {
+  color: white;
+  display: flex;
+  height: 10rem;
+  width: 20rem;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.inputCategory {
+  width: 10rem;
+  height: 1.5rem;
+}
+.buttonContainer {
+  display: flex;
+  width: 15rem;
+  justify-content: space-around;
+}
