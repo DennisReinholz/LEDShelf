@@ -57,9 +57,9 @@ const CategoryLayout = () => {
             <thead>
               <tr>
                 <td>
-                  <th>Kategorie name</th>
+                  <th>Kategorie</th>
                 </td>
-                {user !== undefined && user[0].role != 1 ? (
+                {user !== undefined && user[0].role === 1 ? (
                   <td>
                     {" "}
                     <th>Action</th>{" "}
@@ -74,7 +74,7 @@ const CategoryLayout = () => {
                 <tbody key={c.articleid}>
                   <tr>
                     <td>{c.categoryname}</td>
-                    {user !== undefined && user[0].role != 1 ? (
+                    {user !== undefined && user[0].role === 1 ? (
                       <td>
                         <div className={styles.editContainer}>
                           <FiEdit2

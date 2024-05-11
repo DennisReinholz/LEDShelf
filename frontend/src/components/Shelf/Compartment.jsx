@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 import styles from "../../styles/Shelf/compartment.module.css";
 
 const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
   const [article, setArticle] = useState();
   const [counter, setCounter] = useState(0);
+  const [ip, setIp] = useState();
+  const [controllerFunction, setControllerFunction] = useState();
 
   const decrease = () => {
     setCounter((c) => c - 1);
@@ -69,12 +72,47 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
       toast.error("Es wurde kein Artikel gefunden");
     }
   };
+  const getControllerFunction = async () => {
+    const response = await fetch(
+      `http://localhost:3000/getControllerFunction`,
+      {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        body: JSON.stringify({
+          compId,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setIp(data[0].ipAdresse);
+        setControllerFunction(data[0].functionName);
+      });
+  };
+  const handleLedOn = async () => {
+    try {
+      const response = await fetch(`http://${ip}/${controllerFunction}`);
+      if (response.status !== 200) {
+        throw new Error("Network response was not ok");
+      }
+      // Optional: Handle response if needed
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
+  const handleControllerFunction = async () => {
+    getControllerFunction();
+  };
   useEffect(() => {
     getCompartmentArticle();
-  }, [article]);
+    getControllerFunction();
+  }, [article, ip, controllerFunction]);
 
   return (
-    <div className={styles.compartContainer}>
+    <div className={styles.compartContainer} onClick={() => handleLedOn()}>
       <div
         className={isActive ? styles.containerIsActive : styles.container}
         onClick={() => handleIsActive(compId)}

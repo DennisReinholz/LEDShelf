@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/deviceLayout.module.css";
 import Device from "../components/Devices/Device";
+import ControllerLayout from "./ControllerLayout";
 
 const DeviceLayout = () => {
   const [shelfList, setSehlefList] = useState([]);
@@ -30,6 +31,7 @@ const DeviceLayout = () => {
       </button>
       <div className={styles.content}>
         <Device shelfList={shelfList} />
+        {/* <ControllerLayout /> */}
       </div>
     </div>
   );

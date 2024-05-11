@@ -96,7 +96,44 @@ app.post("/createCategory", (req, res) => {
 app.get("/getCategory", (req, res) => {
   DataBaseController.getCategory(req, res, db);
 });
+app.post("/getControllerFunction", (req, res) => {
+  DataBaseController.getControllerFunction(req, res, db);
+});
 
+app.post("/register-controller", async (req, res) => {
+  try {
+    const { name, ssid, password } = req.body;
+
+    // Überprüfe, ob der Controller bereits registriert ist
+    const existingController = await Controller.findOne({ name });
+
+    if (existingController) {
+      return res
+        .status(400)
+        .json({ message: "Controller bereits registriert" });
+    }
+
+    // Erstelle einen neuen Controller-Eintrag in der Datenbank
+
+    res.status(201).json({ message: "Controller erfolgreich registriert" });
+  } catch (error) {
+    console.error("Fehler beim Registrieren des Controllers:", error);
+    res.status(500).json({ message: "Interner Serverfehler" });
+  }
+});
+
+app.get("/wifi-networks", async (req, res) => {
+  try {
+    // WLAN-Netzwerke scannen
+    const networks = await wifi.scan();
+    console.log(networks);
+    // Liste der Netzwerke senden
+    res.json(networks);
+  } catch (error) {
+    console.error("Fehler beim Scannen der WLAN-Netzwerke:", error);
+    res.status(500).json({ error: "Fehler beim Scannen der WLAN-Netzwerke" });
+  }
+});
 // Server starten
 app.listen(PORT, () => {
   console.log(`Server läuft auf Port ${PORT}`);

@@ -25,7 +25,6 @@ const ArticleLayout = () => {
   const [articleCreated, setArticleCreated] = useState(false);
   const [searchArticle, setSearchArticle] = useState("");
   const [categoryList, setCategoryList] = useState([]);
-  const [filteredArticles, setFilteredArticles] = useState([]);
   const [filterIsActive, setFilterIsActive] = useState(false);
 
   const getArticle = async () => {
@@ -114,17 +113,9 @@ const ArticleLayout = () => {
         setCategoryList(category);
       });
   };
-  // const handleCategoryFilter = (id) => {
-  //   if (!filterIsActive) {
-  //     setFilteredArticles(
-  //       filteredArticles.filter((article) => article.categoryid === id)
-  //     );
-  //     setFilterIsActive(true);
-  //   } else {
-  //     setFilteredArticles(articleList);
-  //     setFilterIsActive(false);
-  //   }
-  // };
+  const filteredArticles = articleList.filter((article) =>
+    article.articlename.toLowerCase().includes(searchArticle.toLowerCase())
+  );
   useEffect(() => {
     getArticle();
     getShelf();
@@ -179,7 +170,7 @@ const ArticleLayout = () => {
               <th>Einheit</th>
               <th>Regal</th>
               <th>Fach</th>
-              {user === undefined && user[0].role !== 1 ? <th>Action</th> : ""}
+              {user !== undefined && user[0].role === 1 ? <th>Action</th> : ""}
             </tr>
           </thead>
           {filteredArticles !== undefined ? (
@@ -191,7 +182,7 @@ const ArticleLayout = () => {
                   <td>{c.unit}</td>
                   <td>{c.shelfname}</td>
                   <td>{c.compartmentname}</td>
-                  {user === undefined && user[0].role !== 1 ? (
+                  {user !== undefined && user[0].role === 1 ? (
                     <td>
                       <div className={styles.editContainer}>
                         <FiEdit2

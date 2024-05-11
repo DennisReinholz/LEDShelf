@@ -1,3 +1,64 @@
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    flex-wrap: wrap;
+    height: 50rem;
+    width: 80rem;
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+  .addCategoryContainer {
+    display: flex;
+    height: 5rem;
+    width: 10rem;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    width: 107rem;
+    height: 45rem;
+    justify-content: space-around;
+    overflow-y: scroll;
+  }
+  .tableContainer {
+    display: flex;
+  }
+  table {
+    width: 20rem;
+    height: 10rem;
+    margin: 0 auto; /* Automatische Zentrierung der Tabelle */
+    border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
+  }
+  table th {
+    font-weight: bold;
+    height: 5rem;
+  }
+  thead {
+    position: sticky;
+    top: 0;
+    color: black;
+    background-color: white; /* Hintergrundfarbe des fixierten Headers */
+    z-index: 1; /* Stellt sicher, dass der Header über den Tabelleneinträgen liegt */
+  }
+  th,
+  td {
+    height: 3rem;
+    border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
+    text-align: center;
+  }
+  .input::-webkit-inner-spin-button {
+    height: 3rem;
+  }
+  .editContainer {
+    display: flex;
+    justify-content: space-around;
+  }
+  .inputSearch {
+    height: 1.5rem;
+  }
+}
 @media only screen and (max-width: 1700px) {
   .container {
     display: flex;

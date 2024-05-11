@@ -42,7 +42,9 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       .then((response) => response.json())
       .then((data) => {
         setCompartment([...data.result].sort((a, b) => a.number - b.number));
-        setSelectedCompartment(data.result[0]);
+        if (selectedCompartment === undefined) {
+          setSelectedCompartment(data.result[0].compartmentId);
+        }
       });
   };
   const getCategory = async () => {
@@ -86,12 +88,13 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
   };
   const checkFrom = () => {
     if (
-      articlename === null ||
-      (articlename === undefined && amount === null) ||
-      (amount === undefined && unit === null) ||
-      (unit == undefined && selectedShelf === null) ||
-      (selectedShelf === undefined && selectedCompartment === null) ||
-      selectedCompartment === undefined
+      (articlename === null ||
+        articlename === undefined ||
+        articlename.length === 0) &&
+      (amount === null || amount === undefined) &&
+      (unit === "undefinded" || unit === undefined) &&
+      (selectedShelf === null || selectedShelf === undefined) &&
+      (selectedCompartment === null || selectedCompartment === undefined)
     ) {
       setEnableCreateButton(true);
     } else {
@@ -101,14 +104,6 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
   const handleShelfSelection = (e) => {
     setSelectedShlef(e);
     getCompartments(e);
-  };
-  const consoleForm = () => {
-    console.log("name " + articlename);
-    console.log("amount " + amount);
-    console.log("einheit " + unit);
-    console.log("Shelf " + selectedShelf);
-    console.log("compartment " + selectedCompartment);
-    console.log("category " + selectedCategory);
   };
   useEffect(() => {
     getShelf();
@@ -126,8 +121,6 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
     <div className={styles.container}>
       <h2>Erstelle einen Artikel</h2>
       <div className={styles.content}>
-        <button onClick={() => consoleForm()}>dsaads</button>
-        <button onClick={() => console.log(selectedCompartment)}>ff</button>
         <input
           className={styles.input}
           type="text"
@@ -150,6 +143,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           value={unit}
           onChange={(e) => setUnit(e.target.value)}
         >
+          <option value="undefined">Einheit</option>
           <option value="Stück">Stück</option>
           <option value="Meter">Meter</option>
           <option value="Zentimeter">Zentimeter</option>
@@ -193,6 +187,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
+          <option value="null">Keine Kategorie</option>
           {categoryList !== undefined ? (
             categoryList.map((c) => (
               <option key={c.categoryid} value={c.categoryid}>
