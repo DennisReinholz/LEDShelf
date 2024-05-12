@@ -326,6 +326,28 @@ module.exports.getControllerFunction = async (req, res, db) => {
     }
   );
 };
+module.exports.getLedOff = async (req, res, db) => {
+  const { shelfid } = req.body;
+  db.all(
+    `
+  SELECT functionName, ledController.ipAdresse 
+  FROM shelf, ledController, ControllerFunctions 
+  WHERE 
+  shelf.shelfid =? AND
+  shelf.controllerId = ledController.ledControllerid AND 
+  ControllerFunctions.controllerId = ledController.ledControllerid AND 
+  compartmentid IS NULL`,
+    [shelfid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json(result);
+      }
+    }
+  );
+};
 const CreateCompartments = (db, countCompartment) => {
   db.get("SELECT last_insert_rowid() as shelfId", (err, row) => {
     const shelfId = row.shelfId;

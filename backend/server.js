@@ -99,6 +99,9 @@ app.get("/getCategory", (req, res) => {
 app.post("/getControllerFunction", (req, res) => {
   DataBaseController.getControllerFunction(req, res, db);
 });
+app.post("/getShelfOff", (req, res) => {
+  DataBaseController.getLedOff(req, res, db);
+});
 
 app.post("/register-controller", async (req, res) => {
   try {

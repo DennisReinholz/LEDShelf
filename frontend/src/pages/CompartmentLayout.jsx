@@ -7,6 +7,8 @@ const CompartmentLayout = () => {
   let { shelfid } = useParams();
   const [compartments, setCompartments] = useState();
   const [activeCompartments, setActiveCompartments] = useState([]);
+  const [ip, setIp] = useState();
+  const [controllerFunction, setControllerFunction] = useState();
 
   const handleIsActive = (index) => {
     setActiveCompartments((prevState) => {
@@ -17,8 +19,36 @@ const CompartmentLayout = () => {
   };
   const hanleAllOff = () => {
     setActiveCompartments(Array(compartments.length).fill(false));
+    handleLedOff();
   };
-
+  const getShelfOf = async () => {
+    const response = await fetch(`http://localhost:3000/getShelfOff`, {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+      body: JSON.stringify({
+        shelfid,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setIp(data[0].ipAdresse);
+        setControllerFunction(data[0].functionName);
+      });
+  };
+  const handleLedOff = async () => {
+    try {
+      const response = await fetch(`http://${ip}/${controllerFunction}`);
+      if (response.status !== 200) {
+        throw new Error("Network response was not ok");
+      }
+      // Optional: Handle response if needed
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
   const getCompartments = async () => {
     const response = await fetch(`http://localhost:3000/getCompartment`, {
       method: "Post",
@@ -45,6 +75,7 @@ const CompartmentLayout = () => {
   };
   useEffect(() => {
     getCompartments();
+    getShelfOf();
   }, []);
   return (
     <div className={styles.container}>
@@ -62,13 +93,14 @@ const CompartmentLayout = () => {
       </button>
       <div className={styles.content}>
         {compartments != undefined
-          ? compartments.map((c, index) => (
+          ? compartments.map((c) => (
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                 }}
+                key={c.compartmentId}
               >
                 <div
                   style={{

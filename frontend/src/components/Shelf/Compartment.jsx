@@ -103,9 +103,6 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
       console.error("There was a problem with the fetch operation:", error);
     }
   };
-  const handleControllerFunction = async () => {
-    getControllerFunction();
-  };
   useEffect(() => {
     getCompartmentArticle();
     getControllerFunction();
