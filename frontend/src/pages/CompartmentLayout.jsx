@@ -68,6 +68,7 @@ const CompartmentLayout = () => {
             if (a.number > b.number) return 1;
             return 0;
           });
+          console.log(data);
           setCompartments(sortedData);
           setActiveCompartments(Array(data.result.length).fill(false));
         }
@@ -81,7 +82,10 @@ const CompartmentLayout = () => {
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
         <h2 style={{ color: "white" }}>
-          {compartments != undefined ? compartments[0].shelfname : ""}- Regal
+          {compartments != undefined && compartments[0] != undefined
+            ? compartments[0].shelfname
+            : ""}
+          - Regal
         </h2>
       </div>
       <button
@@ -110,7 +114,11 @@ const CompartmentLayout = () => {
                   }}
                 >
                   <div
-                    className={styles.containerCompartment}
+                    className={
+                      activeCompartments
+                        ? styles.containerCompartmentIsActiv
+                        : styles.containerCompartment
+                    }
                     key={c.compartmentId}
                   >
                     <Compartment

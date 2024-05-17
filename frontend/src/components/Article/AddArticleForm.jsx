@@ -7,12 +7,14 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
   const [amount, setAmount] = useState(0);
   const [unit, setUnit] = useState();
   const [shelf, setShelf] = useState();
-  const [selectedShelf, setSelectedShlef] = useState();
+  const [selectedShelf, setSelectedShelf] = useState();
   const [compartment, setCompartment] = useState();
   const [selectedCompartment, setSelectedCompartment] = useState();
   const [enableCreateButton, setEnableCreateButton] = useState(true);
   const [categoryList, setCategoryList] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
+  const [companyName, setCompanyName] = useState();
+  const [commissiongoods, setCommissiongoods] = useState();
 
   const getShelf = async () => {
     const response = await fetch(`http://localhost:3000/getShelf`, {
@@ -25,25 +27,38 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       .then((response) => response.json())
       .then((shelf) => {
         setShelf(shelf);
-        handleShelfSelection(shelf.result[0].shelfid);
+        if (selectedShelf === undefined) {
+          handleShelfSelection(shelf.result[0].shelfid);
+        }
       });
   };
   const getCompartments = async (shelfid) => {
-    const response = await fetch(`http://localhost:3000/getCompartment`, {
-      method: "Post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-cache",
-      body: JSON.stringify({
-        shelfid,
-      }),
-    })
+    const response = await fetch(
+      `http://localhost:3000/getArticleCompartments`,
+      {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        body: JSON.stringify({
+          shelfid,
+        }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
-        setCompartment([...data.result].sort((a, b) => a.number - b.number));
-        if (selectedCompartment === undefined) {
-          setSelectedCompartment(data.result[0].compartmentId);
+        if (data.result != undefined) {
+          if (data.result[0] != undefined) {
+            setCompartment(
+              [...data.result].sort((a, b) => a.number - b.number)
+            );
+            if (selectedCompartment === undefined) {
+              setSelectedCompartment(data.result[0].compartmentId);
+            }
+          } else {
+            setCompartment([]);
+          }
         }
       });
   };
@@ -62,7 +77,6 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       });
   };
   const createArticle = async () => {
-    console.log(selectedCategory);
     return await fetch(`http://localhost:3000/createArticle`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -102,9 +116,10 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
     }
   };
   const handleShelfSelection = (e) => {
-    setSelectedShlef(e);
+    setSelectedShelf(e);
     getCompartments(e);
   };
+
   useEffect(() => {
     getShelf();
     checkFrom();
@@ -130,7 +145,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           style={{ height: "2rem", fontSize: "0.75em" }}
         />
         <input
-          className={styles.input}
+          className="inputText"
           type="number"
           placeholder="Menge"
           defaultValue={1}
@@ -149,6 +164,26 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           <option value="Zentimeter">Zentimeter</option>
           <option value="Kilogramm">Kilogramm</option>
         </select>
+      </div>
+      <div className={styles.addFormRow}>
+        <input
+          className="inputText"
+          style={{ height: "2rem", fontSize: "0.75em" }}
+          type="text"
+          placeholder="Firma"
+          defaultValue={companyName}
+          onChange={(e) => setCompanyName(e.target.value)}
+        />
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <input
+            className="inputText"
+            placeholder="Kommissions text"
+            type="text"
+            value={commissiongoods}
+            onChange={(e) => setCommissiongoods(e.target.value)}
+            style={{ height: "2rem", fontSize: "0.75em" }}
+          />
+        </div>
       </div>
       <div className={styles.shelfSelection}>
         <select

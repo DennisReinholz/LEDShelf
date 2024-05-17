@@ -113,6 +113,7 @@ const ArticleLayout = () => {
         setCategoryList(category);
       });
   };
+  const handleCategoryFilter = () => {};
   const filteredArticles = articleList.filter((article) =>
     article.articlename.toLowerCase().includes(searchArticle.toLowerCase())
   );
@@ -155,8 +156,11 @@ const ArticleLayout = () => {
       <div className={styles.categoryContainer}>
         {categoryList.data != undefined
           ? categoryList.data.result.map((c) => (
-              <div onClick={() => handleCategoryFilter(c.categoryid)}>
-                <Category key={c.categoryid} name={c.categoryname} />
+              <div
+                key={c.categoryid}
+                onClick={() => handleCategoryFilter(c.categoryid)}
+              >
+                <Category name={c.categoryname} />
               </div>
             ))
           : ""}
@@ -170,6 +174,8 @@ const ArticleLayout = () => {
               <th>Einheit</th>
               <th>Regal</th>
               <th>Fach</th>
+              <th>Firma</th>
+              <th>Kommission</th>
               {user !== undefined && user[0].role === 1 ? <th>Action</th> : ""}
             </tr>
           </thead>
@@ -182,6 +188,8 @@ const ArticleLayout = () => {
                   <td>{c.unit}</td>
                   <td>{c.shelfname}</td>
                   <td>{c.compartmentname}</td>
+                  <td>{c.company}</td>
+                  <td>{c.commission}</td>
                   {user !== undefined && user[0].role === 1 ? (
                     <td>
                       <div className={styles.editContainer}>

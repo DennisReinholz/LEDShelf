@@ -1,25 +1,33 @@
 require("dotenv").config();
+const bcrypt = require("bcrypt");
 
 module.exports.getUser = async (req, res, db) => {
   const { frontendPassword } = req.body;
   const { user } = req.query;
+
   db.all(
     "SELECT user.*, role.name FROM user, role WHERE username=? AND user.role = role.roleid",
     [user],
-    (err, result) => {
+    async (err, result) => {
+      console.log(result);
       if (err) {
         res.status(500).json({ serverStatus: -1 });
         return;
-      } else {
-        if (result === undefined || result === null || result.length === 0) {
-          res.status(500).send({ serverStatus: -2 });
-        } else if (frontendPassword === result[0].password) {
+      }
+      try {
+        CheckPassword(result);
+        console.log("Match:" + match);
+        if (match) {
+          // Compare the provided password with the stored hashed password
+
           const data = {
             result,
             serverStatus: 2,
           };
           res.status(200).json(data);
         }
+      } catch (compareError) {
+        res.status(500).json({ serverStatus: -1, error: compareError.message });
       }
     }
   );
@@ -76,12 +84,36 @@ module.exports.getShelf = async (req, res, db) => {
     }
   });
 };
+module.exports.getCompartArticleForm = async (req, res, db) => {
+  const { shelfid } = req.body;
+  db.all(
+    `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
+    FROM shelf
+    JOIN compartment ON shelf.shelfid = compartment.shelfId 
+    LEFT JOIN article ON compartment.compartmentId = article.compartment
+    WHERE (article.compartment IS NULL OR article.compartment = '') AND shelf.shelfid =? `,
+    [shelfid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        const data = {
+          result,
+          serverStatus: 2,
+        };
+        res.status(200).json(data);
+      }
+    }
+  );
+};
 module.exports.getCompartments = async (req, res, db) => {
   const { shelfid } = req.body;
   db.all(
     `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
-    FROM shelf 
+    FROM shelf
     JOIN compartment ON shelf.shelfid = compartment.shelfId 
+    LEFT JOIN article ON compartment.compartmentId = article.compartment
     WHERE shelf.shelfid =? `,
     [shelfid],
     (err, result) => {
@@ -241,19 +273,27 @@ module.exports.deleteArticle = async (req, res, db) => {
   );
 };
 module.exports.createUser = async (req, res, db) => {
+  const saltRounds = 10;
   const { name, password, roleid } = req.body;
-  db.all(
-    `INSERT INTO user (username, password, role) VALUES (?,?,?)`,
-    [name, password, roleid],
-    (err, result) => {
-      if (err) {
-        res.status(500).json({ serverStatus: -1 });
-        return;
-      } else {
-        res.status(200).json(result);
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    db.all(
+      `INSERT INTO user (username, password, role) VALUES (?,?,?)`,
+      [name, hashedPassword, roleid],
+      (err, result) => {
+        if (err) {
+          res.status(500).json({ serverStatus: -1 });
+          return;
+        } else {
+          res.status(200).json(result);
+        }
       }
-    }
-  );
+    );
+  } catch (err) {
+    res.status(500).json({ serverStatus: -1, error: err.message });
+  }
 };
 module.exports.getRoles = async (req, res, db) => {
   db.all(`SELECT * from role`, (err, result) => {
@@ -296,7 +336,7 @@ module.exports.createCategory = async (req, res, db) => {
   );
 };
 module.exports.getCategory = async (req, res, db) => {
-  db.all(`SELECT * from category`, (err, result) => {
+  db.all(`SELECT * from category `, (err, result) => {
     if (err) {
       res.status(500).json({ serverStatus: -1 });
       return;
@@ -308,6 +348,21 @@ module.exports.getCategory = async (req, res, db) => {
       res.status(200).json({ data });
     }
   });
+};
+module.exports.deleteCategory = async (req, res, db) => {
+  const { categoryid } = req.body;
+  db.all(
+    `DELETE FROM category WHERE categoryid=?`,
+    [categoryid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json({ serverStatus: 2 });
+      }
+    }
+  );
 };
 module.exports.getControllerFunction = async (req, res, db) => {
   const { compId } = req.body;
@@ -359,4 +414,7 @@ const CreateCompartments = (db, countCompartment) => {
       );
     }
   });
+};
+const CheckPassword = async (user) => {
+  const match = await bcrypt.compare(frontendPassword, user.password);
 };

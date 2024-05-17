@@ -57,6 +57,9 @@ app.post("/createShelf", (req, res) => {
 app.get("/getArticle", (req, res) => {
   DataBaseController.getArticle(req, res, db);
 });
+app.post("/getArticleCompartments", (req, res) => {
+  DataBaseController.getCompartArticleForm(req, res, db);
+});
 app.post("/createArticle", (req, res) => {
   DataBaseController.createArticle(req, res, db);
 });
@@ -68,6 +71,9 @@ app.post("/upateArticle", (req, res) => {
 });
 app.post("/deleteArticle", (req, res) => {
   DataBaseController.deleteArticle(req, res, db);
+});
+app.post("/deleteCategory", (req, res) => {
+  DataBaseController.deleteCategory(req, res, db);
 });
 app.post("/cerateUser", (req, res) => {
   DataBaseController.createUser(req, res, db);

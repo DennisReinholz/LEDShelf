@@ -6,6 +6,8 @@ import { FiEdit2 } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import Modal from "../components/common/Modal.jsx";
 import { UserContext } from "../helpers/userAuth";
+import DeleteCategory from "../components/Category/DeleteCategoryForm.jsx";
+import toast from "react-hot-toast";
 
 const CategoryLayout = () => {
   const [categoryList, setCategoryList] = useState([]);
@@ -15,6 +17,7 @@ const CategoryLayout = () => {
   const [deleteCategoryOpen, setDeleteCategoryOpen] = useState(false);
   const [editCategory, setEditCategory] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
+  const [deleteCategory, setDeleteCategory] = useState(false);
 
   const getCategory = async () => {
     const response = await fetch(`http://localhost:3000/getCategory`, {
@@ -29,6 +32,31 @@ const CategoryLayout = () => {
         setCategoryList(category.data.result);
       });
   };
+  const deleteCategoryById = async () => {
+    const response = await fetch(`http://localhost:3000/deleteCategory`, {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+      body: JSON.stringify({
+        categoryid: selectedCategory.categoryid,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.serverStatus == 2) {
+          toast.success("Kategorie wurde gelöscht.");
+          getCategory();
+          setDeleteCategory(false);
+        } else {
+          toast.error("Kategorie konnte nicht gelöscht werden.");
+          setDeleteCategory(false);
+          getCategory();
+        }
+      });
+  };
+
   const handleEditCategory = (article) => {
     setEditCategoryOpen(true);
     setEditCategory(article);
@@ -39,7 +67,7 @@ const CategoryLayout = () => {
   };
   useEffect(() => {
     getCategory();
-  }, [categoryList]);
+  }, [categoryList, deleteCategory]);
   return (
     <div className={styles.container}>
       <div className={styles.addCategoryContainer}>
@@ -71,27 +99,29 @@ const CategoryLayout = () => {
             </thead>
             {categoryList !== undefined ? (
               categoryList.map((c) => (
-                <tbody key={c.articleid}>
-                  <tr>
-                    <td>{c.categoryname}</td>
-                    {user !== undefined && user[0].role === 1 ? (
-                      <td>
-                        <div className={styles.editContainer}>
-                          <FiEdit2
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleEditCategory(c)}
-                          />
-                          <BsTrash
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleDeleteCategory(c)}
-                          />
-                        </div>
-                      </td>
-                    ) : (
-                      ""
-                    )}
-                  </tr>
-                </tbody>
+                <React.Fragment key={c.articleid}>
+                  <tbody>
+                    <tr>
+                      <td>{c.categoryname}</td>
+                      {user !== undefined && user[0].role === 1 ? (
+                        <td>
+                          <div className={styles.editContainer}>
+                            <FiEdit2
+                              style={{ cursor: "pointer" }}
+                              onClick={() => handleEditCategory(c)}
+                            />
+                            <BsTrash
+                              style={{ cursor: "pointer" }}
+                              onClick={() => handleDeleteCategory(c)}
+                            />
+                          </div>
+                        </td>
+                      ) : (
+                        ""
+                      )}
+                    </tr>
+                  </tbody>
+                </React.Fragment>
               ))
             ) : (
               <tbody>
@@ -103,6 +133,16 @@ const CategoryLayout = () => {
           </table>
         </div>
       </div>
+      {deleteCategoryOpen && (
+        <Modal onClose={() => setDeleteCategoryOpen(false)}>
+          <DeleteCategory
+            onClose={() => setDeleteCategoryOpen(false)}
+            setDelete={setDeleteCategory}
+            category={selectedCategory}
+            deleteCategory={() => deleteCategoryById()}
+          />
+        </Modal>
+      )}
       {addCategoryIsOpen && (
         <Modal onClose={() => setAddIsCategoryIsOpen(false)}>
           <AddCategoryFrom onClose={() => setAddIsCategoryIsOpen(false)} />

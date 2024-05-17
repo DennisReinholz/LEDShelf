@@ -43,3 +43,11 @@ body {
   color: black;
   cursor: pointer;
 }
+.inputText {
+  height: 2rem;
+  width: 13rem;
+  font-size: 0.75em;
+}
+.inputText::-webkit-inner-spin-button {
+  height: 3rem;
+}

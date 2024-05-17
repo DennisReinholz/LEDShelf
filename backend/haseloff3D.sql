@@ -2,7 +2,8 @@ SELECT cf.functionName, cf.compartmentid, lc.ipAdresse, c.compartmentname from C
   WHERE lc.shelfid = shelf.shelfid and c.shelfId = shelf.shelfid and c.compartmentId = cf.compartmentid and c.compartmentid IS NULL
 
 
-  UPDATE shelf SET controllerId = 1 WHERE shelfid =45
+  ALTER TABLE article add  commission varchar(255)
+
 
 
   SELECT functionName, ledController.ipAdresse 
@@ -12,3 +13,16 @@ SELECT cf.functionName, cf.compartmentid, lc.ipAdresse, c.compartmentname from C
   shelf.controllerId = ledController.ledControllerid AND 
   ControllerFunctions.controllerId = ledController.ledControllerid AND 
   compartmentid IS NULL
+
+SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
+FROM shelf
+JOIN compartment ON shelf.shelfid = compartment.shelfId 
+LEFT JOIN article ON compartment.compartmentId = article.compartment
+WHERE (article.compartment IS NULL OR article.compartment = '') AND shelf.shelfid = 46;
+
+
+SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
+    FROM shelf
+    JOIN compartment ON shelf.shelfid = compartment.shelfId 
+    LEFT JOIN article ON compartment.compartmentId = article.compartment
+    WHERE (article.compartment IS NULL OR article.compartment = '') AND shelf.shelfid = 46
