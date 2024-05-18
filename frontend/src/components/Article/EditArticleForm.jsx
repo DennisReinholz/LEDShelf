@@ -10,6 +10,8 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
   const [newUnit, setNewUnit] = useState();
   const [newShelf, setNewShelf] = useState();
   const [newCompartment, setNewCompartment] = useState();
+  const [category, setCategory] = useState();
+  const [newCategory, setNewCategory] = useState();
 
   const getCompartments = async (shelfid) => {
     const response = await fetch(`http://localhost:3000/getCompartment`, {
@@ -42,6 +44,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
       .then((data) => {
         if (data.length > 0) {
           setArticleStatus(data[0]);
+          console.log(data[0]);
         } else {
           toast.error("Artikel konnte nicht geladen werden.");
         }
@@ -75,6 +78,10 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
           newCompartment != undefined && newCompartment.length != 0
             ? newCompartment
             : articleStatus.compartment,
+        category:
+          newCategory != undefined && newCategory.length != 0
+            ? newCategory
+            : articleStatus.categoryid,
       }),
       cache: "no-cache",
     })
@@ -89,21 +96,34 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
         }
       });
   };
+  const getCategory = async () => {
+    const response = await fetch(`http://localhost:3000/getCategory`, {
+      method: "Get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.data.serverStatus === 2) {
+          setCategory(data.data.result);
+        }
+      });
+  };
   const handleShelfSelction = (shelfid) => {
     setNewShelf(shelfid);
     getCompartments(shelfid);
   };
   useEffect(() => {
     getArticle();
+    getCategory();
   }, []);
   return (
     <div className={styles.container}>
       <h2>Artikel bearbeiten</h2>
       <div className={styles.content}>
-        <p>
-          Artikelname:{" "}
-          {articleStatus !== undefined ? articleStatus.articlename : ""}
-        </p>
+        <p>{articleStatus !== undefined ? articleStatus.articlename : ""}</p>
         <input
           type="text"
           placeholder="neuer Artikelname"
@@ -124,6 +144,17 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
           value={newCount}
           onChange={(e) => setNewCount(e.target.value)}
         />
+        <select
+          value={newCategory}
+          className={styles.unitSelection}
+          onChange={(e) => setNewCategory(e.target.value)}
+        >
+          {category !== undefined
+            ? category.map((c) => (
+                <option key={c.categoryid}>{c.categoryname}</option>
+              ))
+            : ""}
+        </select>
         <select
           value={article.unit}
           className={styles.unitSelection}

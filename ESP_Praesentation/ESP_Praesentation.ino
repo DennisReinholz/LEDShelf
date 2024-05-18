@@ -12,10 +12,10 @@
 
 Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
-// const char* ssid = "FRITZ!Box 7530 RW";
-// const char* password = "85201359361900784181";
-const char* ssid = "iPhone von Dennis (2)";
-const char* password = "12345678";
+const char* ssid = "FRITZ!Box 7530 RW";
+const char* password = "85201359361900784181";
+// const char* ssid = "iPhone von Dennis (2)";
+// const char* password = "12345678";
 
 WebServer server(80);
 int ledCounter1 = 1;

@@ -14,8 +14,9 @@ const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
   return (
     <div className={styles.container}>
       <div className={styles.userContent}>
-        <p>{name}</p>
-        <p>{role}</p>
+        <p style={{ width: "2rem" }}>{userid}</p>
+        <p style={{ width: "5rem" }}>{name}</p>
+        <p style={{ width: "2rem" }}>{role}</p>
       </div>
       <div className={styles.editContainer}>
         <FiEdit2

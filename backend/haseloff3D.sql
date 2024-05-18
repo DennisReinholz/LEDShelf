@@ -4,7 +4,7 @@ SELECT cf.functionName, cf.compartmentid, lc.ipAdresse, c.compartmentname from C
 
   ALTER TABLE article add  commission varchar(255)
 
-
+DELETE FROM user WHERE user.userid = 19;
 
   SELECT functionName, ledController.ipAdresse 
   FROM shelf, ledController, ControllerFunctions 

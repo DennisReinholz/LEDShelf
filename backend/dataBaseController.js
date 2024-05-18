@@ -6,28 +6,37 @@ module.exports.getUser = async (req, res, db) => {
   const { user } = req.query;
 
   db.all(
-    "SELECT user.*, role.name FROM user, role WHERE username=? AND user.role = role.roleid",
+    "SELECT user.*, role.name FROM user, role WHERE userid=? AND user.role = role.roleid",
     [user],
     async (err, result) => {
-      console.log(result);
       if (err) {
         res.status(500).json({ serverStatus: -1 });
         return;
       }
-      try {
-        CheckPassword(result);
-        console.log("Match:" + match);
-        if (match) {
-          // Compare the provided password with the stored hashed password
+      if (result.length > 0) {
+        try {
+          console.log(result);
+          console.log(frontendPassword);
+          console.log(result[0].password);
 
-          const data = {
-            result,
-            serverStatus: 2,
-          };
-          res.status(200).json(data);
+          // Compare the provided password with the stored hashed password
+          const match = await bcrypt.compare(
+            frontendPassword,
+            result[0].password
+          );
+          if (match) {
+            console.log("Hier");
+            const data = {
+              result,
+              serverStatus: 2,
+            };
+            res.status(200).json(data);
+          }
+        } catch (compareError) {
+          res
+            .status(500)
+            .json({ serverStatus: -1, error: compareError.message });
         }
-      } catch (compareError) {
-        res.status(500).json({ serverStatus: -1, error: compareError.message });
       }
     }
   );
@@ -414,7 +423,4 @@ const CreateCompartments = (db, countCompartment) => {
       );
     }
   });
-};
-const CheckPassword = async (user) => {
-  const match = await bcrypt.compare(frontendPassword, user.password);
 };

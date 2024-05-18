@@ -64,7 +64,7 @@ const UserLayout = () => {
                 ))
               : "kein user angemeldet"}
           </div>
-          <Main />
+          {/* <Main /> */}
         </div>
         {addUserIsOpen && (
           <Modal onClose={() => setAddUserIsOpen(false)}>

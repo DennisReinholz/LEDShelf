@@ -7,9 +7,9 @@
 }
 .userContent {
   display: flex;
-  justify-content: space-between;
   width: 10rem;
   margin-left: 1rem;
+  justify-content: space-between;
 }
 .editContainer {
   display: flex;
