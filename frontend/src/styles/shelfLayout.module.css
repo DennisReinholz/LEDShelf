@@ -99,3 +99,22 @@
     overflow-y: scroll;
   }
 }
+@media only screen and (max-width: 1200px) and (max-height: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    height: 47rem;
+    width: 90rem;
+    overflow-y: scroll;
+  }
+}

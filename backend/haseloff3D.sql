@@ -26,3 +26,22 @@ SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.
     JOIN compartment ON shelf.shelfid = compartment.shelfId 
     LEFT JOIN article ON compartment.compartmentId = article.compartment
     WHERE (article.compartment IS NULL OR article.compartment = '') AND shelf.shelfid = 46
+
+
+SELECT article.*, shelf.shelfname, compartment.compartmentname 
+    FROM article, compartment 
+    LEFT JOIN shelf ON article.shelf = shelf.shelfid
+    WHERE article.compartment = compartment.compartmentId
+
+
+SELECT 
+   * 
+FROM 
+    article
+    LEFT JOIN compartment ON article.compartment = compartment.compartmentId
+    LEFT JOIN shelf ON article.shelf = shelf.shelfid;
+
+SELECT * from article
+
+
+    UPDATE article SET count=5,unit="Meter",compartment=311,shelf=45,categoryid=18 WHERE articleid=28

@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 module.exports.getUser = async (req, res, db) => {
   const { frontendPassword } = req.body;
   const { user } = req.query;
-
   db.all(
     "SELECT user.*, role.name FROM user, role WHERE userid=? AND user.role = role.roleid",
     [user],
@@ -15,17 +14,12 @@ module.exports.getUser = async (req, res, db) => {
       }
       if (result.length > 0) {
         try {
-          console.log(result);
-          console.log(frontendPassword);
-          console.log(result[0].password);
-
           // Compare the provided password with the stored hashed password
           const match = await bcrypt.compare(
             frontendPassword,
             result[0].password
           );
           if (match) {
-            console.log("Hier");
             const data = {
               result,
               serverStatus: 2,
@@ -175,10 +169,12 @@ module.exports.postCreateShelf = async (req, res, db) => {
 module.exports.getArticle = async (req, res, db) => {
   //Regal name herausfinden
   db.all(
-    `SELECT article.*, shelf.shelfname, compartment.compartmentname 
-    FROM article, compartment 
-    LEFT JOIN shelf ON article.shelf = shelf.shelfid
-    WHERE article.compartment = compartment.compartmentId`,
+    `SELECT 
+   * 
+FROM 
+    article
+    LEFT JOIN compartment ON article.compartment = compartment.compartmentId
+    LEFT JOIN shelf ON article.shelf = shelf.shelfid;`,
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
@@ -188,6 +184,16 @@ module.exports.getArticle = async (req, res, db) => {
       }
     }
   );
+};
+module.exports.getAllArticle = async (req, res, db) => {
+  db.all(`SELECT * from article`, (err, result) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+      return;
+    } else {
+      res.status(200).json(result);
+    }
+  });
 };
 module.exports.getArticleInCompartment = async (req, res, db) => {
   const { compId } = req.body;
@@ -252,10 +258,12 @@ module.exports.getSelectedArticle = async (req, res, db) => {
   );
 };
 module.exports.updateArticle = async (req, res, db) => {
-  const { articleid, articlename, unit, amount, shelf, compartment } = req.body;
+  const { articleid, articlename, unit, amount, shelf, compartment, category } =
+    req.body;
+  console.log(req.body);
   db.all(
-    `UPDATE article SET articlename=?,count=?,unit=?,compartment=?,shelf=? WHERE articleid=?`,
-    [articlename, amount, unit, compartment, shelf, articleid],
+    `UPDATE article SET articlename=?,count=?,unit=?,compartment=?,shelf=?,categoryid=? WHERE articleid=?`,
+    [articlename, amount, unit, compartment, shelf, articleid, category],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });

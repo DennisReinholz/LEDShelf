@@ -26,9 +26,11 @@ const ArticleLayout = () => {
   const [searchArticle, setSearchArticle] = useState("");
   const [categoryList, setCategoryList] = useState([]);
   const [filterIsActive, setFilterIsActive] = useState(false);
+  const [activeUser, setActiveUser] = useState();
+  const [isAdmin, setIsAdmin] = useState();
 
   const getArticle = async () => {
-    const response = await fetch(`http://localhost:3000/getArticle`, {
+    const response = await fetch(`http://localhost:3000/getAllArticle`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -37,6 +39,7 @@ const ArticleLayout = () => {
     })
       .then((response) => response.json())
       .then((article) => {
+        console.log(article);
         setArticleList(article);
       });
   };
@@ -117,11 +120,25 @@ const ArticleLayout = () => {
   const filteredArticles = articleList.filter((article) =>
     article.articlename.toLowerCase().includes(searchArticle.toLowerCase())
   );
+
+  const handleUser = () => {
+    if (user != undefined) {
+      setActiveUser(true);
+      if (user[0].role == 1) {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    } else {
+      setActiveUser(false);
+    }
+  };
   useEffect(() => {
     getArticle();
     getShelf();
     getCategory();
     getCompartments();
+    handleUser();
     if (deleteState) {
       deleteArticle(selectedArticle);
     }
@@ -134,7 +151,7 @@ const ArticleLayout = () => {
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
-        {user !== undefined ? (
+        {isAdmin ? (
           <button
             className="primaryButton"
             style={{ width: "10rem" }}
@@ -176,7 +193,7 @@ const ArticleLayout = () => {
               <th>Fach</th>
               <th>Firma</th>
               <th>Kommission</th>
-              {user !== undefined && user[0].role === 1 ? <th>Action</th> : ""}
+              {isAdmin ? <th>Action</th> : ""}
             </tr>
           </thead>
           {filteredArticles !== undefined ? (
@@ -190,7 +207,7 @@ const ArticleLayout = () => {
                   <td>{c.compartmentname}</td>
                   <td>{c.company}</td>
                   <td>{c.commission}</td>
-                  {user !== undefined && user[0].role === 1 ? (
+                  {isAdmin ? (
                     <td>
                       <div className={styles.editContainer}>
                         <FiEdit2

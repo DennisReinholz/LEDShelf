@@ -44,13 +44,14 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
       .then((data) => {
         if (data.length > 0) {
           setArticleStatus(data[0]);
-          console.log(data[0]);
         } else {
           toast.error("Artikel konnte nicht geladen werden.");
         }
       });
   };
   const updateArticle = async () => {
+    console.log(articleStatus.articlename);
+    console.log(newArticleName);
     const response = await fetch(`http://localhost:3000/upateArticle`, {
       method: "Post",
       headers: {
@@ -80,7 +81,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
             : articleStatus.compartment,
         category:
           newCategory != undefined && newCategory.length != 0
-            ? newCategory
+            ? parseInt(newCategory)
             : articleStatus.categoryid,
       }),
       cache: "no-cache",
@@ -151,7 +152,9 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
         >
           {category !== undefined
             ? category.map((c) => (
-                <option key={c.categoryid}>{c.categoryname}</option>
+                <option key={c.categoryid} value={parseInt(c.categoryid)}>
+                  {c.categoryname}
+                </option>
               ))
             : ""}
         </select>

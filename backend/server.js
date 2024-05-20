@@ -90,6 +90,9 @@ app.post("/updateUser", (req, res) => {
 app.post("/getUserData", (req, res) => {
   DataBaseController.getUserData(req, res, db);
 });
+app.get("/getAllArticle", (req, res) => {
+  DataBaseController.getAllArticle(req, res, db);
+});
 app.post("/getArticleInCompartment", (req, res) => {
   DataBaseController.getArticleInCompartment(req, res, db);
 });
