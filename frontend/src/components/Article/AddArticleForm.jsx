@@ -88,6 +88,8 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
         selectedShelf,
         selectedCompartment,
         selectedCategory,
+        companyName,
+        commissiongoods,
       }),
     }).then((result) => {
       if (result.status === 200) {

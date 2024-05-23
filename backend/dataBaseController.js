@@ -218,9 +218,11 @@ module.exports.createArticle = async (req, res, db) => {
     selectedShelf,
     selectedCompartment,
     selectedCategory,
+    companyName,
+    commissiongoods,
   } = req.body;
   db.all(
-    `INSERT INTO article (articlename,count,compartment,shelf,unit,categoryid) VALUES (?,?,?,?,?,?)`,
+    `INSERT INTO article (articlename,count,compartment,shelf,unit,categoryid,company, commission) VALUES (?,?,?,?,?,?,?,?)`,
     [
       articlename,
       amount,
@@ -228,6 +230,8 @@ module.exports.createArticle = async (req, res, db) => {
       selectedShelf,
       unit,
       selectedCategory,
+      companyName,
+      commissiongoods,
     ],
     (err, result) => {
       if (err) {
@@ -416,6 +420,25 @@ module.exports.getLedOff = async (req, res, db) => {
         return;
       } else {
         res.status(200).json(result);
+      }
+    }
+  );
+};
+module.exports.getArticleWithCategory = async (req, res, db) => {
+  const { categoryid } = req.body;
+  db.all(
+    `SELECT * from article WHERE categoryid ="null" AND categoryid =?`,
+    [categoryid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        data = {
+          serverStatus: 2,
+          result: result,
+        };
+        res.status(200).json(data);
       }
     }
   );

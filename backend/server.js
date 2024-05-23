@@ -111,6 +111,9 @@ app.post("/getControllerFunction", (req, res) => {
 app.post("/getShelfOff", (req, res) => {
   DataBaseController.getLedOff(req, res, db);
 });
+app.post("/getArticleWithCategory", (req, res) => {
+  DataBaseController.getArticleWithCategory(req, res, db);
+});
 
 app.post("/register-controller", async (req, res) => {
   try {
@@ -133,7 +136,6 @@ app.post("/register-controller", async (req, res) => {
     res.status(500).json({ message: "Interner Serverfehler" });
   }
 });
-
 app.get("/wifi-networks", async (req, res) => {
   try {
     // WLAN-Netzwerke scannen

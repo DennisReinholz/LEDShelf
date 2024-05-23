@@ -8,6 +8,7 @@ import Modal from "../components/common/Modal.jsx";
 import { UserContext } from "../helpers/userAuth";
 import DeleteCategory from "../components/Category/DeleteCategoryForm.jsx";
 import toast from "react-hot-toast";
+import EditCategoryForm from "../components/Category/EditCategoryForm.jsx";
 
 const CategoryLayout = () => {
   const [categoryList, setCategoryList] = useState([]);
@@ -56,10 +57,11 @@ const CategoryLayout = () => {
         }
       });
   };
+  const updateCategory = async () => {};
 
-  const handleEditCategory = (article) => {
+  const handleEditCategory = (category) => {
     setEditCategoryOpen(true);
-    setEditCategory(article);
+    setEditCategory(category);
   };
   const handleDeleteCategory = (c) => {
     setDeleteCategoryOpen(true);
@@ -133,6 +135,16 @@ const CategoryLayout = () => {
           </table>
         </div>
       </div>
+      {editCategoryOpen && (
+        <Modal onClose={() => setEditCategoryOpen(false)}>
+          <EditCategoryForm
+            onClose={() => setEditCategoryOpen(false)}
+            setEditCategory={setEditCategory}
+            category={editCategory}
+            updateCategory={() => updateCategory()}
+          />
+        </Modal>
+      )}
       {deleteCategoryOpen && (
         <Modal onClose={() => setDeleteCategoryOpen(false)}>
           <DeleteCategory
