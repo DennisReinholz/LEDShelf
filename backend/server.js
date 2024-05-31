@@ -114,6 +114,9 @@ app.post("/getShelfOff", (req, res) => {
 app.post("/getArticleWithCategory", (req, res) => {
   DataBaseController.getArticleWithCategory(req, res, db);
 });
+app.post("/UpdateArticleCategory", (req, res) => {
+  DataBaseController.UpdateArticleCategory(req, res, db);
+});
 
 app.post("/register-controller", async (req, res) => {
   try {

@@ -47,4 +47,4 @@ SELECT * from article
     UPDATE article SET count=5,unit="Meter",compartment=311,shelf=45,categoryid=18 WHERE articleid=28
 
 
-SELECT * from article WHERE article.categoryid = 11 AND article.categoryid LIKE "null"
+SELECT * from article WHERE article.categoryid = 11 or article.categoryid LIKE "null"

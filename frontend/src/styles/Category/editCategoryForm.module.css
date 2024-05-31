@@ -1,3 +1,27 @@
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 15rem;
+    width: 20rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    height: 12rem;
+    width: 20rem;
+    overflow-y: scroll;
+    justify-content: space-between;
+  }
+  .buttonContainer {
+    display: flex;
+    height: 3rem;
+    width: 12rem;
+    margin-top: 1rem;
+    margin-left: 8rem;
+    justify-content: space-between;
+  }
+}
 @media only screen and (max-width: 1700px) {
   .container {
     display: flex;
@@ -7,6 +31,18 @@
   }
   .content {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    height: 12rem;
+    width: 20rem;
+    overflow-y: scroll;
+    justify-content: space-between;
+  }
+  .buttonContainer {
+    display: flex;
+    height: 3rem;
+    width: 12rem;
+    margin-top: 1rem;
+    margin-left: 8rem;
+    justify-content: space-between;
   }
 }

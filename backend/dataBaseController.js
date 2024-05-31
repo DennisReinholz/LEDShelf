@@ -264,7 +264,6 @@ module.exports.getSelectedArticle = async (req, res, db) => {
 module.exports.updateArticle = async (req, res, db) => {
   const { articleid, articlename, unit, amount, shelf, compartment, category } =
     req.body;
-  console.log(req.body);
   db.all(
     `UPDATE article SET articlename=?,count=?,unit=?,compartment=?,shelf=?,categoryid=? WHERE articleid=?`,
     [articlename, amount, unit, compartment, shelf, articleid, category],
@@ -427,7 +426,7 @@ module.exports.getLedOff = async (req, res, db) => {
 module.exports.getArticleWithCategory = async (req, res, db) => {
   const { categoryid } = req.body;
   db.all(
-    `SELECT * from article WHERE categoryid ="null" AND categoryid =?`,
+    `SELECT * from article WHERE categoryid ="null" or categoryid =?`,
     [categoryid],
     (err, result) => {
       if (err) {
@@ -439,6 +438,23 @@ module.exports.getArticleWithCategory = async (req, res, db) => {
           result: result,
         };
         res.status(200).json(data);
+      }
+    }
+  );
+};
+module.exports.UpdateArticleCategory = async (req, res, db) => {
+  const { selectedCategory, articleid } = req.body;
+  console.log(selectedCategory);
+  console.log(articleid);
+  db.all(
+    `UPDATE article SET category=? WHERE articleid=?`,
+    [selectedCategory, articleid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json({ serverStatus: 2 });
       }
     }
   );

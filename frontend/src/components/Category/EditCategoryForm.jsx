@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/Category/editCategoryForm.module.css";
 import toast from "react-hot-toast";
+import ArticleToCategory from "./ArticleToCategory";
 
 const EditCategoryForm = ({ category }) => {
   const [articleList, setArticleList] = useState([]);
+
   const getArticleWithCategory = async () => {
     const response = await fetch(
       `http://localhost:3000/getArticleWithCategory`,
@@ -20,9 +22,8 @@ const EditCategoryForm = ({ category }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data.serverStatus == 2) {
-          setArticleList(data);
+          setArticleList(data.result);
         } else {
           toast.error("Kategorie konnte nicht gelöscht werden.");
         }
@@ -35,13 +36,18 @@ const EditCategoryForm = ({ category }) => {
     <div className={styles.container}>
       <h3>{category.categoryname}</h3>
       <div className={styles.content}>
-        <button
-          onClick={() => {
-            console.log(articleList);
-          }}
-        >
-          articleListe
-        </button>
+        {articleList != undefined
+          ? articleList.map((article) => (
+              <ArticleToCategory
+                key={article.articleid}
+                articleid={article.articleid}
+                articlename={article.articlename}
+                categoryid={article.categoryid}
+                hasCategory={article.categoryid !== "null" ? true : false}
+                category={category.categoryid}
+              />
+            ))
+          : "Es wurden keine Artikel gefunden"}
       </div>
     </div>
   );
