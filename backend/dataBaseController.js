@@ -426,7 +426,7 @@ module.exports.getLedOff = async (req, res, db) => {
 module.exports.getArticleWithCategory = async (req, res, db) => {
   const { categoryid } = req.body;
   db.all(
-    `SELECT * from article WHERE categoryid ="null" or categoryid =?`,
+    `SELECT * from article WHERE categoryid ="null" or categoryid ISNULL or categoryid =?`,
     [categoryid],
     (err, result) => {
       if (err) {
@@ -443,12 +443,10 @@ module.exports.getArticleWithCategory = async (req, res, db) => {
   );
 };
 module.exports.UpdateArticleCategory = async (req, res, db) => {
-  const { selectedCategory, articleid } = req.body;
-  console.log(selectedCategory);
-  console.log(articleid);
+  const { value, selectedArticle } = req.body;
   db.all(
-    `UPDATE article SET category=? WHERE articleid=?`,
-    [selectedCategory, articleid],
+    `UPDATE article SET categoryid=? WHERE articleid=?`,
+    [value, selectedArticle],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });

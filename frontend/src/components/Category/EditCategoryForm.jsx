@@ -43,8 +43,8 @@ const EditCategoryForm = ({ category }) => {
                 articleid={article.articleid}
                 articlename={article.articlename}
                 categoryid={article.categoryid}
-                hasCategory={article.categoryid !== "null" ? true : false}
-                category={category.categoryid}
+                hasCategory={article.categoryid !== null ? true : false}
+                categoryID={category.categoryid}
               />
             ))
           : "Es wurden keine Artikel gefunden"}

@@ -9,20 +9,15 @@
   .buttonContainer {
     display: flex;
     align-items: center;
-    width: 23rem;
+    width: 45rem;
     justify-content: space-between;
     height: 5rem;
     margin-top: 1rem;
     margin-left: 1rem;
   }
-  .categoryContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    height: 8rem;
-    width: 85rem;
-    align-self: center;
-    justify-content: center;
+  .categorySelection {
+    width: 10rem;
+    height: 1.8rem;
   }
   .content {
     width: 80rem;
@@ -73,20 +68,15 @@
   .buttonContainer {
     display: flex;
     align-items: center;
-    width: 23rem;
+    width: 43rem;
     justify-content: space-between;
     height: 5rem;
     margin-top: 1rem;
     margin-left: 1rem;
   }
-  .categoryContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    height: 6rem;
-    width: 85rem;
-    align-self: center;
-    justify-content: center;
+  .categorySelection {
+    width: 10rem;
+    height: 1.8rem;
   }
   .content {
     width: 80rem;
@@ -139,24 +129,19 @@
   .buttonContainer {
     display: flex;
     align-items: center;
-    width: 23rem;
+    width: 38rem;
     justify-content: space-between;
     height: 5rem;
     margin-top: 1rem;
     margin-left: 1rem;
   }
-  .categoryContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    height: 8rem;
-    width: 100rem;
-    align-self: center;
-    justify-content: center;
-  }
   .content {
     width: 80rem;
     margin: 0 auto;
+  }
+  .categorySelection {
+    width: 10rem;
+    height: 1.8rem;
   }
   table {
     width: 50rem;
@@ -201,19 +186,15 @@
   .buttonContainer {
     display: flex;
     align-items: center;
-    width: 23rem;
+    width: 38rem;
     justify-content: space-between;
     height: 5rem;
     margin-top: 1rem;
     margin-left: 1rem;
   }
-  .categoryContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    height: 8rem;
-    width: 85rem;
-    align-self: center;
+  .categorySelection {
+    width: 10rem;
+    height: 1.8rem;
   }
   .content {
     display: flex;

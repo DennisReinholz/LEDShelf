@@ -7,13 +7,11 @@ import AddArticleForm from "../components/Article/AddArticleForm";
 import EditArticleForm from "../components/Article/EditArticleForm";
 import DeleteArticleForm from "../components/Article/DeleteArticleForm";
 import toast, { Toaster } from "react-hot-toast";
-import Category from "../components/Category/Category";
 import { UserContext } from "../helpers/userAuth";
 
 const ArticleLayout = () => {
   const [user, setUser] = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [articleList, setArticleList] = useState([]);
   const [editArticleOpen, setEditArticleOpen] = useState(false);
   const [deleteArticleOpen, setDeleteArticleOpen] = useState(false);
   const [editArticle, setEditArticle] = useState();
@@ -25,9 +23,11 @@ const ArticleLayout = () => {
   const [articleCreated, setArticleCreated] = useState(false);
   const [searchArticle, setSearchArticle] = useState("");
   const [categoryList, setCategoryList] = useState([]);
-  const [filterIsActive, setFilterIsActive] = useState(false);
   const [activeUser, setActiveUser] = useState();
   const [isAdmin, setIsAdmin] = useState();
+  const [originArticleList, setOriginArticleList] = useState([]);
+  const [articleListToShow, setArticleListToShow] = useState([]);
+  const [filteredArticleList, setFilteredArticleList] = useState([]);
 
   const getArticle = async () => {
     const response = await fetch(`http://localhost:3000/getAllArticle`, {
@@ -39,8 +39,9 @@ const ArticleLayout = () => {
     })
       .then((response) => response.json())
       .then((article) => {
-        console.log(article);
-        setArticleList(article);
+        setOriginArticleList(article);
+        setArticleListToShow(article);
+        setFilteredArticleList(article);
       });
   };
   const getCompartments = async (shelfid) => {
@@ -116,11 +117,27 @@ const ArticleLayout = () => {
         setCategoryList(category);
       });
   };
-  const handleCategoryFilter = () => {};
-  const filteredArticles = articleList.filter((article) =>
-    article.articlename.toLowerCase().includes(searchArticle.toLowerCase())
-  );
-
+  const handleArticleSearch = (search) => {
+    setSearchArticle(search);
+    setArticleListToShow(
+      filteredArticleList.filter((article) =>
+        article.articlename.toLowerCase().includes(search.toLocaleLowerCase())
+      )
+    );
+  };
+  const handleCategoryFilter = (filter) => {
+    if (filter !== "All") {
+      setFilteredArticleList(
+        originArticleList.filter((article) => article.categoryid == filter)
+      );
+      setArticleListToShow(
+        originArticleList.filter((article) => article.categoryid == filter)
+      );
+    } else {
+      setArticleListToShow(originArticleList);
+      setFilteredArticleList(originArticleList);
+    }
+  };
   const handleUser = () => {
     if (user != undefined) {
       setActiveUser(true);
@@ -137,6 +154,7 @@ const ArticleLayout = () => {
     getArticle();
     getShelf();
     getCategory();
+
     getCompartments();
     handleUser();
     if (deleteState) {
@@ -167,20 +185,21 @@ const ArticleLayout = () => {
           type="text"
           placeholder="Artikel suche"
           value={searchArticle}
-          onChange={(e) => setSearchArticle(e.target.value)}
+          onChange={(e) => handleArticleSearch(e.target.value)}
         />
-      </div>
-      <div className={styles.categoryContainer}>
-        {categoryList.data != undefined
-          ? categoryList.data.result.map((c) => (
-              <div
-                key={c.categoryid}
-                onClick={() => handleCategoryFilter(c.categoryid)}
-              >
-                <Category name={c.categoryname} />
-              </div>
-            ))
-          : ""}
+        <select
+          className={styles.categorySelection}
+          onChange={(e) => handleCategoryFilter(e.target.value)}
+        >
+          <option value={"All"}>Alle</option>
+          {categoryList.data != undefined
+            ? categoryList.data.result.map((c) => (
+                <option key={c.categoryid} value={c.categoryid}>
+                  {c.categoryname}
+                </option>
+              ))
+            : ""}
+        </select>
       </div>
       <div className={styles.content}>
         <table>
@@ -196,8 +215,8 @@ const ArticleLayout = () => {
               {isAdmin ? <th>Action</th> : ""}
             </tr>
           </thead>
-          {filteredArticles !== undefined ? (
-            filteredArticles.map((c) => (
+          {articleListToShow !== undefined ? (
+            articleListToShow.map((c) => (
               <tbody key={c.articleid}>
                 <tr>
                   <td>{c.articlename}</td>

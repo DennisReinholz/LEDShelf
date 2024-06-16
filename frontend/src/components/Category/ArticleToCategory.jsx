@@ -7,27 +7,30 @@ const ArticleToCategory = ({
   articlename,
   categoryid,
   hasCategory,
-  category,
+  categoryID,
 }) => {
-  const [inCategory, setInCategory] = useState();
+  const [inCategory, setInCategory] = useState(hasCategory);
   const [selectedArticle, setSelectedArticle] = useState();
 
   const handleInCategory = () => {
     setInCategory(hasCategory);
+    setSelectedArticle(articleid);
   };
 
   const handleUpdateArticle = (state) => {
+    let tempValue = null;
+    let editState = false;
     if (state) {
       setSelectedArticle(articleid);
-      UpdateArticleCategory();
+      editState = true;
+      tempValue = categoryID;
     } else {
-      setSelectedArticle("null");
-      UpdateArticleCategory();
+      tempValue = null;
+      editState = false;
     }
+    UpdateArticleCategory(tempValue, editState);
   };
-  const UpdateArticleCategory = async () => {
-    console.log(category);
-    console.log(selectedArticle);
+  const UpdateArticleCategory = async (value, editState) => {
     const response = await fetch(
       `http://localhost:3000/UpdateArticleCategory`,
       {
@@ -37,19 +40,21 @@ const ArticleToCategory = ({
         },
         cache: "no-cache",
         body: JSON.stringify({
-          category,
-          articleid,
+          value,
+          selectedArticle,
         }),
       }
     )
       .then((response) => response.json())
       .then((data) => {
         if (data.serverStatus == 2) {
-          toast.success("Artikel wurde der Kategorie hinzugefügt.");
+          if (editState) {
+            toast.success("Artikel wurde der Kategorie hinzugefügt");
+          } else {
+            toast.success("Artikel wurde der Kategorie entfernt");
+          }
         } else {
-          toast.error(
-            "Artikel konnte der Kategorie nicht hinzufgefügt werden."
-          );
+          toast.error("Artikel konnte nicht geändert werden.");
         }
       });
   };
@@ -65,7 +70,6 @@ const ArticleToCategory = ({
         onChange={(e) => handleUpdateArticle(e.target.checked)}
       />
       {articlename}
-      <button onClick={() => console.log(selectedArticle)}>dsadas</button>
     </div>
   );
 };
