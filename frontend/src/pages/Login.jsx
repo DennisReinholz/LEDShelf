@@ -49,11 +49,12 @@ const Login = () => {
       )
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           if (data.serverStatus === 2) {
             setUser(data.result);
             localStorage.setItem("user", JSON.stringify(data.result));
             navigate("/regale");
-          } else if (data.serverStatus === -2) {
+          } else if (data.serverStatus === -1) {
             toast.error(
               "Login fehlgeschlagen. \n Username oder Passwort ist falsch."
             );

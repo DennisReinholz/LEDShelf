@@ -25,6 +25,8 @@ module.exports.getUser = async (req, res, db) => {
               serverStatus: 2,
             };
             res.status(200).json(data);
+          } else {
+            res.status(200).json({ serverStatus: -1 });
           }
         } catch (compareError) {
           res
@@ -186,14 +188,19 @@ FROM
   );
 };
 module.exports.getAllArticle = async (req, res, db) => {
-  db.all(`SELECT * from article`, (err, result) => {
-    if (err) {
-      res.status(500).json({ serverStatus: -1 });
-      return;
-    } else {
-      res.status(200).json(result);
+  db.all(
+    `SELECT article.*, COALESCE(company.companyName, 'NULL') AS companyName, company.*
+FROM article
+LEFT JOIN company ON article.company = company.companyId;`,
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json(result);
+      }
     }
-  });
+  );
 };
 module.exports.getArticleInCompartment = async (req, res, db) => {
   const { compId } = req.body;

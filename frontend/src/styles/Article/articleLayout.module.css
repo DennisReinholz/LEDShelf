@@ -8,9 +8,7 @@
   }
   .buttonContainer {
     display: flex;
-    align-items: center;
-    width: 45rem;
-    justify-content: space-between;
+    width: 40rem;
     height: 5rem;
     margin-top: 1rem;
     margin-left: 1rem;
@@ -20,7 +18,11 @@
     height: 1.8rem;
   }
   .content {
-    width: 80rem;
+    display: flex;
+    margin: 1rem;
+  }
+  .tableContainer {
+    width: 52rem;
     height: 35rem;
     margin: 0 auto;
     overflow-y: scroll;
@@ -55,6 +57,7 @@
   }
   .inputSearch {
     height: 1.5rem;
+    margin-left: 10.75rem;
   }
 }
 @media only screen and (max-width: 1700px) {

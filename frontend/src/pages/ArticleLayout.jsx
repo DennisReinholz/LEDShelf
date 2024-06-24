@@ -8,6 +8,7 @@ import EditArticleForm from "../components/Article/EditArticleForm";
 import DeleteArticleForm from "../components/Article/DeleteArticleForm";
 import toast, { Toaster } from "react-hot-toast";
 import { UserContext } from "../helpers/userAuth";
+import ArticleFilter from "../components/Article/ArticleFilter";
 
 const ArticleLayout = () => {
   const [user, setUser] = useContext(UserContext);
@@ -28,6 +29,8 @@ const ArticleLayout = () => {
   const [originArticleList, setOriginArticleList] = useState([]);
   const [articleListToShow, setArticleListToShow] = useState([]);
   const [filteredArticleList, setFilteredArticleList] = useState([]);
+  const [companyList, setCompanyList] = useState([]);
+  const [commissionList, setCommissionList] = useState([]);
 
   const getArticle = async () => {
     const response = await fetch(`http://localhost:3000/getAllArticle`, {
@@ -42,6 +45,9 @@ const ArticleLayout = () => {
         setOriginArticleList(article);
         setArticleListToShow(article);
         setFilteredArticleList(article);
+        console.log(article);
+        GetCompany(article);
+        GetCommission(article);
       });
   };
   const getCompartments = async (shelfid) => {
@@ -73,9 +79,18 @@ const ArticleLayout = () => {
         setShelf(shelf);
       });
   };
-  const handleEditArticle = (article) => {
-    setEditArticleOpen(true);
-    setEditArticle(article);
+  const getCategory = async () => {
+    const response = await fetch(`http://localhost:3000/getCategory`, {
+      method: "Get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+    })
+      .then((response) => response.json())
+      .then((category) => {
+        setCategoryList(category);
+      });
   };
   const deleteArticle = async (article) => {
     const response = await fetch(`http://localhost:3000/deleteArticle`, {
@@ -100,22 +115,13 @@ const ArticleLayout = () => {
         }
       });
   };
+  const handleEditArticle = (article) => {
+    setEditArticleOpen(true);
+    setEditArticle(article);
+  };
   const handleDeleteArticle = (c) => {
     setDeleteArticleOpen(true);
     setSelectedArticle(c);
-  };
-  const getCategory = async () => {
-    const response = await fetch(`http://localhost:3000/getCategory`, {
-      method: "Get",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-cache",
-    })
-      .then((response) => response.json())
-      .then((category) => {
-        setCategoryList(category);
-      });
   };
   const handleArticleSearch = (search) => {
     setSearchArticle(search);
@@ -150,6 +156,31 @@ const ArticleLayout = () => {
       setActiveUser(false);
     }
   };
+  const GetCompany = (article) => {
+    const uniqueCompanies = new Map();
+    const filtered = article.filter((c) => {
+      if (c.company && !uniqueCompanies.has(c.company)) {
+        uniqueCompanies.set(c.company, {
+          id: c.company,
+          company: c.companyName,
+        });
+        return true;
+      }
+      return false;
+    });
+    setCompanyList(filtered);
+  };
+  const GetCommission = (article) => {
+    const uniqueCompanies = new Map();
+    const filtered = article.filter((c) => {
+      if (c.commission && !uniqueCompanies.has(c.commission)) {
+        uniqueCompanies.set(c.commission);
+        return true;
+      }
+      return false;
+    });
+    setCommissionList(filtered);
+  };
   useEffect(() => {
     getArticle();
     getShelf();
@@ -183,76 +214,73 @@ const ArticleLayout = () => {
         <input
           className={styles.inputSearch}
           type="text"
-          placeholder="Artikel suche"
+          placeholder="Suchen..."
           value={searchArticle}
           onChange={(e) => handleArticleSearch(e.target.value)}
         />
-        <select
-          className={styles.categorySelection}
-          onChange={(e) => handleCategoryFilter(e.target.value)}
-        >
-          <option value={"All"}>Alle</option>
-          {categoryList.data != undefined
-            ? categoryList.data.result.map((c) => (
-                <option key={c.categoryid} value={c.categoryid}>
-                  {c.categoryname}
-                </option>
-              ))
-            : ""}
-        </select>
       </div>
       <div className={styles.content}>
-        <table>
-          <thead>
-            <tr>
-              <th>Artikel</th>
-              <th>Menge</th>
-              <th>Einheit</th>
-              <th>Regal</th>
-              <th>Fach</th>
-              <th>Firma</th>
-              <th>Kommission</th>
-              {isAdmin ? <th>Action</th> : ""}
-            </tr>
-          </thead>
-          {articleListToShow !== undefined ? (
-            articleListToShow.map((c) => (
-              <tbody key={c.articleid}>
+        <div>
+          <ArticleFilter
+            handleCategoryFilter={handleCategoryFilter}
+            categoryList={categoryList}
+            companyList={companyList}
+            commissionList={commissionList}
+          />
+        </div>
+        <div className={styles.tableContainer}>
+          <table>
+            <thead>
+              <tr>
+                <th>Artikel</th>
+                <th>Menge</th>
+                <th>Einheit</th>
+                <th>Regal</th>
+                <th>Fach</th>
+                <th>Firma</th>
+                <th>Kommission</th>
+                {isAdmin ? <th>Action</th> : ""}
+              </tr>
+            </thead>
+            {articleListToShow !== undefined ? (
+              articleListToShow.map((c) => (
+                <tbody key={c.articleid}>
+                  <tr>
+                    <td>{c.articlename}</td>
+                    <td>{c.count}</td>
+                    <td>{c.unit}</td>
+                    <td>{c.shelf}</td>
+                    <td>{c.compartment}</td>
+                    <td>{c.companyName}</td>
+                    <td>{c.commission}</td>
+                    {isAdmin ? (
+                      <td>
+                        <div className={styles.editContainer}>
+                          <FiEdit2
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleEditArticle(c)}
+                          />
+                          <BsTrash
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleDeleteArticle(c)}
+                          />
+                        </div>
+                      </td>
+                    ) : (
+                      ""
+                    )}
+                  </tr>
+                </tbody>
+              ))
+            ) : (
+              <tbody>
                 <tr>
-                  <td>{c.articlename}</td>
-                  <td>{c.count}</td>
-                  <td>{c.unit}</td>
-                  <td>{c.shelf}</td>
-                  <td>{c.compartment}</td>
-                  <td>{c.company}</td>
-                  <td>{c.commission}</td>
-                  {isAdmin ? (
-                    <td>
-                      <div className={styles.editContainer}>
-                        <FiEdit2
-                          style={{ cursor: "pointer" }}
-                          onClick={() => handleEditArticle(c)}
-                        />
-                        <BsTrash
-                          style={{ cursor: "pointer" }}
-                          onClick={() => handleDeleteArticle(c)}
-                        />
-                      </div>
-                    </td>
-                  ) : (
-                    ""
-                  )}
+                  <td colSpan="5">Keine Artikel gefunden</td>
                 </tr>
               </tbody>
-            ))
-          ) : (
-            <tbody>
-              <tr>
-                <td colSpan="5">Keine Artikel gefunden</td>
-              </tr>
-            </tbody>
-          )}
-        </table>
+            )}
+          </table>
+        </div>
       </div>
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
