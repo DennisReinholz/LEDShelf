@@ -189,9 +189,12 @@ FROM
 };
 module.exports.getAllArticle = async (req, res, db) => {
   db.all(
-    `SELECT article.*, COALESCE(company.companyName, 'NULL') AS companyName, company.*
+    `
+SELECT article.*, COALESCE(company.companyName, 'NULL') AS companyName, company.*, shelf.shelfName, compartment.compartmentname
 FROM article
-LEFT JOIN company ON article.company = company.companyId;`,
+LEFT JOIN shelf on article.shelf = shelf.shelfId
+LEFT JOIN company ON article.company = company.companyId
+LEFT JOIN compartment on article.compartment = compartment.compartmentId;`,
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });

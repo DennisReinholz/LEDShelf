@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import Shelf from "../components/Shelf/Shelf";
 import Modal from "../components/common/Modal";
 import AddShelfForm from "../components/Shelf/AddShelfForm";
@@ -10,7 +9,6 @@ const ShelfLayout = () => {
   const [user, setUser] = useContext(UserContext);
   const [shelfList, setShelfList] = useState();
   const [isShelfOpen, setIsShelfOpen] = useState(false);
-  const navigate = useNavigate();
 
   const getShelfs = async () => {
     const response = await fetch(`http://localhost:3000/getShelf`, {
@@ -44,17 +42,13 @@ const ShelfLayout = () => {
       <div className={styles.content}>
         {shelfList != undefined
           ? shelfList.map((c) => (
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() => navigate(`/regale/${c.shelfid}`)}
+              <Shelf
                 key={c.shelfid}
-              >
-                <Shelf
-                  shelfname={c.shelfname}
-                  place={c.place}
-                  compantments={c.countCompartment}
-                />
-              </div>
+                shelfname={c.shelfname}
+                place={c.place}
+                compantments={c.countCompartment}
+                shelfId={c.shelfid}
+              />
             ))
           : "Keine Regale vorhanden"}
       </div>

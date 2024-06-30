@@ -1,26 +1,58 @@
-.container {
-  display: flex;
-  color: white;
-  height: 5rem;
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    color: white;
+    height: 5rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    margin-left: 1rem;
+  }
+  .content::after {
+    content: "";
+    display: block;
+    width: 10rem;
+    height: 2px;
+    margin-top: 0.5rem;
+    background-color: white;
+  }
+  .username {
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+  .content p {
+    margin: 0;
+  }
 }
-.content {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-  margin-left: 1rem;
-}
-.content::after {
-  content: "";
-  display: block;
-  width: 10rem;
-  height: 2px;
-  margin-top: 0.5rem;
-  background-color: white;
-}
-.username {
-  font-size: 1.3em;
-  font-weight: bold;
-}
-.content p {
-  margin: 0;
+/* Fertig 1920px */
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    color: white;
+    height: 5rem;
+    font-size: 1.25em;
+    margin-left: 1rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    margin-left: 1rem;
+  }
+  .content::after {
+    content: "";
+    display: block;
+    width: 10rem;
+    height: 2px;
+    margin-top: 0.5rem;
+    background-color: white;
+  }
+  .username {
+    font-weight: bold;
+  }
+  .content p {
+    margin: 0;
+  }
 }

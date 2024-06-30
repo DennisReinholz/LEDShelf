@@ -1,26 +1,85 @@
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 10rem;
-  width: 10rem;
-  margin-top: 3rem;
+@media only screen and (max-width: 20000px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 10rem;
+    width: 10rem;
+    margin-top: 3rem;
+  }
+  .content::after {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 2px;
+    background-color: white;
+  }
+  .logo {
+    display: flex;
+    color: white;
+    font-size: 1.4em;
+  }
+  .name {
+    font-weight: bolder;
+  }
+  .tag {
+    font-weight: 100;
+  }
 }
-.content::after {
-  content: "";
-  display: block;
-  width: 3rem;
-  height: 2px;
-  background-color: white;
+/* Fertig 1920 */
+@media only screen and (max-height: 1920px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 10rem;
+    width: 10rem;
+    margin-top: 3rem;
+  }
+  .content::after {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 2px;
+    background-color: white;
+  }
+  .logo {
+    display: flex;
+    color: white;
+    font-size: 1.4em;
+  }
+  .name {
+    font-weight: bolder;
+  }
+  .tag {
+    font-weight: 100;
+  }
 }
-.logo {
-  display: flex;
-  color: white;
-  font-size: 1.4em;
-}
-.name {
-  font-weight: bolder;
-}
-.tag {
-  font-weight: 100;
+@media only screen and (max-width: 1200px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 5rem;
+    width: 5rem;
+    margin-top: 2rem;
+  }
+  .content::after {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 2px;
+    background-color: white;
+  }
+  .logo {
+    display: flex;
+    color: white;
+    font-size: 0.75em;
+  }
+  .name {
+    font-weight: bolder;
+  }
+  .tag {
+    font-weight: 100;
+  }
 }

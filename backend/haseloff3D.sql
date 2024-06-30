@@ -14,3 +14,10 @@ Update article set company = 2 where articleid=22
 SELECT article.*, COALESCE(company.companyName, 'NULL') AS companyName, company.*
 FROM article
 LEFT JOIN company ON article.company = company.companyId;
+
+
+SELECT article.*, COALESCE(company.companyName, 'NULL') AS companyName, company.*, shelf.shelfName, compartment.compartmentname
+FROM article
+LEFT JOIN shelf on article.shelf = shelf.shelfId
+LEFT JOIN company ON article.company = company.companyId
+LEFT JOIN compartment on article.compartment = compartment.compartmentId

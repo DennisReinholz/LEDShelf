@@ -30,7 +30,7 @@ const MainNav = () => {
                 marginLeft: "1rem",
               }}
             >
-              Regale
+              <p>Regale</p>
             </NavLink>
           </div>
         </li>
@@ -45,7 +45,7 @@ const MainNav = () => {
                 marginLeft: "1rem",
               }}
             >
-              Artikel
+              <p>Artikel</p>
             </NavLink>
           </div>
         </li>
@@ -63,7 +63,7 @@ const MainNav = () => {
                         marginLeft: "1rem",
                       }}
                     >
-                      Benutzer
+                      <p>Benutzer</p>
                     </NavLink>
                   </div>
                 </li>
@@ -78,7 +78,7 @@ const MainNav = () => {
                         marginLeft: "1rem",
                       }}
                     >
-                      Geräte
+                      <p>Geräte</p>
                     </NavLink>
                   </div>
                 </li>
@@ -93,7 +93,7 @@ const MainNav = () => {
                         marginLeft: "1rem",
                       }}
                     >
-                      Kategorie
+                      <p>Kategorie</p>
                     </NavLink>
                   </div>
                 </li>
@@ -110,7 +110,7 @@ const MainNav = () => {
                 marginLeft: "1rem",
               }}
             >
-              Logout
+              <p>Logout</p>
             </NavLink>
           </div>
         </li>

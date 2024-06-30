@@ -45,7 +45,6 @@ const ArticleLayout = () => {
         setOriginArticleList(article);
         setArticleListToShow(article);
         setFilteredArticleList(article);
-        console.log(article);
         GetCompany(article);
         GetCommission(article);
       });
@@ -249,8 +248,8 @@ const ArticleLayout = () => {
                     <td>{c.articlename}</td>
                     <td>{c.count}</td>
                     <td>{c.unit}</td>
-                    <td>{c.shelf}</td>
-                    <td>{c.compartment}</td>
+                    <td>{c.shelfname}</td>
+                    <td>{c.compartmentname}</td>
                     <td>{c.companyName}</td>
                     <td>{c.commission}</td>
                     {isAdmin ? (
