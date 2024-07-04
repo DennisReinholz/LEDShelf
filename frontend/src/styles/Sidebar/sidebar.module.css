@@ -21,6 +21,17 @@
     border-right: 0.125rem solid white;
   }
 }
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 10rem;
+    height: 100vh;
+    font-size: 1em;
+    border-right: 0.125rem solid white;
+  }
+}
 @media only screen and (max-width: 1200px) {
   .container {
     display: flex;

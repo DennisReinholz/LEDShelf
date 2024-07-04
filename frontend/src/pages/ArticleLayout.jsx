@@ -31,6 +31,7 @@ const ArticleLayout = () => {
   const [filteredArticleList, setFilteredArticleList] = useState([]);
   const [companyList, setCompanyList] = useState([]);
   const [commissionList, setCommissionList] = useState([]);
+  const [filterList, setFilterList] = useState([]);
 
   const getArticle = async () => {
     const response = await fetch(`http://localhost:3000/getAllArticle`, {
@@ -131,6 +132,7 @@ const ArticleLayout = () => {
     );
   };
   const handleCategoryFilter = (filter) => {
+    //needs both list, for filter and for search
     if (filter !== "All") {
       setFilteredArticleList(
         originArticleList.filter((article) => article.categoryid == filter)
@@ -143,6 +145,65 @@ const ArticleLayout = () => {
       setFilteredArticleList(originArticleList);
     }
   };
+
+  const ApplyFilter = (categoryFilter, companyFilter, commissionFilter) => {
+    if (
+      categoryFilter === "All" &&
+      companyFilter === "All" &&
+      commissionFilter === "All"
+    ) {
+      setArticleListToShow(originArticleList);
+    } else {
+      let tempList = [];
+      for (let index = 0; index < originArticleList.length; index++) {
+        if (
+          originArticleList[index].companyId == companyFilter &&
+          commissionFilter == "All" &&
+          categoryFilter == "All"
+        ) {
+          tempList.push(originArticleList[index]);
+        } else if (
+          originArticleList[index].commission == commissionFilter &&
+          companyFilter == "All" &&
+          categoryFilter == "All"
+        ) {
+          tempList.push(originArticleList[index]);
+        } else if (
+          companyFilter == "All" &&
+          commissionFilter == "All" &&
+          originArticleList[index].categoryid == categoryFilter
+        ) {
+          tempList.push(originArticleList[index]);
+        } else if (
+          companyFilter == "All" &&
+          originArticleList[index].commission == commissionFilter &&
+          originArticleList[index].categoryid == categoryFilter
+        ) {
+          tempList.push(originArticleList[index]);
+        } else if (
+          originArticleList[index].companyId == companyFilter &&
+          commissionFilter == "All" &&
+          originArticleList[index].categoryid == categoryFilter
+        ) {
+          tempList.push(originArticleList[index]);
+        } else if (
+          originArticleList[index].companyId == companyFilter &&
+          originArticleList[index].commission == commissionFilter &&
+          categoryFilter == "All"
+        ) {
+          tempList.push(originArticleList[index]);
+        } else if (
+          originArticleList[index].companyId == companyFilter &&
+          originArticleList[index].commission == commissionFilter &&
+          originArticleList[index].categoryid == categoryFilter
+        ) {
+          tempList.push(originArticleList[index]);
+        }
+      }
+      setArticleListToShow(tempList);
+    }
+  };
+
   const handleUser = () => {
     if (user != undefined) {
       setActiveUser(true);
@@ -180,6 +241,7 @@ const ArticleLayout = () => {
     });
     setCommissionList(filtered);
   };
+
   useEffect(() => {
     getArticle();
     getShelf();
@@ -221,10 +283,11 @@ const ArticleLayout = () => {
       <div className={styles.content}>
         <div>
           <ArticleFilter
-            handleCategoryFilter={handleCategoryFilter}
             categoryList={categoryList}
             companyList={companyList}
             commissionList={commissionList}
+            setFilterList={setFilterList}
+            ApplyFilter={ApplyFilter}
           />
         </div>
         <div className={styles.tableContainer}>

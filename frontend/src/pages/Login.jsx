@@ -31,7 +31,6 @@ const Login = () => {
       getUser();
     }
   };
-
   const getUser = async () => {
     try {
       const response = await fetch(
@@ -49,7 +48,6 @@ const Login = () => {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           if (data.serverStatus === 2) {
             setUser(data.result);
             localStorage.setItem("user", JSON.stringify(data.result));

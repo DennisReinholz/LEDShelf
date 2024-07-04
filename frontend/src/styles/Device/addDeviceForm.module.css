@@ -1,0 +1,26 @@
+@media only screen and (max-height: 2000px) {
+}
+@media only screen and (max-height: 1920px) {
+}
+@media only screen and (max-height: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 15rem;
+    width: 20rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    height: 6rem;
+    justify-content: space-between;
+  }
+  .buttonContainer {
+    display: flex;
+    width: 20rem;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  }
+}
+@media only screen and (max-height: 1200px) {
+}

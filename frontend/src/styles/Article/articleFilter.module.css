@@ -19,3 +19,24 @@
     margin: 0;
   }
 }
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 15rem;
+    width: 10rem;
+  }
+  .filterRow {
+    display: flex;
+    flex-direction: column;
+  }
+  .categorySelection {
+    width: 10rem;
+    height: 1.8rem;
+    margin: 0;
+  }
+  .container p {
+    margin: 0;
+  }
+}

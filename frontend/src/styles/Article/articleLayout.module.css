@@ -130,32 +130,40 @@
     height: 1.5rem;
   }
 }
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1700px) {
   .container {
     display: flex;
     flex-direction: column;
     color: white;
-    width: 109rem;
+    width: 84rem;
     height: 100vh;
+    font-size: 1em;
   }
   .buttonContainer {
     display: flex;
     align-items: center;
-    width: 38rem;
+    width: 30.125rem;
     justify-content: space-between;
     height: 5rem;
     margin-top: 1rem;
     margin-left: 1rem;
   }
   .content {
+    display: flex;
     width: 80rem;
-    margin: 0 auto;
+    justify-content: space-between;
+    height: 33rem;
   }
   .categorySelection {
     width: 10rem;
     height: 1.8rem;
   }
-  table {
+  .tableContainer {
+    width: 51rem;
+    height: 30rem;
+    overflow-y: scroll;
+  }
+  .tableContainer table {
     width: 50rem;
     margin: 0 auto; /* Automatische Zentrierung der Tabelle */
     border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
