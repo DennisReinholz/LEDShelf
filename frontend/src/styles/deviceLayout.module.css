@@ -1,12 +1,30 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 38rem;
-  width: 85rem;
-  color: white;
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 38rem;
+    width: 85rem;
+    color: white;
+  }
+  .content {
+    display: flex;
+    margin-top: 2rem;
+    margin-left: 1rem;
+  }
 }
-.content {
-  display: flex;
-  margin-top: 2rem;
-  margin-left: 1rem;
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 38rem;
+    width: 85rem;
+    color: white;
+    font-size: 1.5em;
+    margin-left: 1rem;
+  }
+  .content {
+    display: flex;
+    margin-top: 2rem;
+    width: 50rem;
+  }
 }

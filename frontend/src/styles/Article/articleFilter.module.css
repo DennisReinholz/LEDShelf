@@ -18,6 +18,36 @@
   .container p {
     margin: 0;
   }
+  .buttonContainer {
+    font-size: 0.75em;
+    margin-top: 0.5rem;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 15rem;
+    width: 10rem;
+    font-size: 1.25em;
+  }
+  .filterRow {
+    display: flex;
+    flex-direction: column;
+  }
+  .categorySelection {
+    width: 10rem;
+    height: 1.8rem;
+    margin: 0;
+  }
+  .container p {
+    margin: 0;
+  }
+  .buttonContainer {
+    font-size: 0.75em;
+    margin-top: 0.5rem;
+  }
 }
 @media only screen and (max-width: 1700px) {
   .container {
@@ -38,5 +68,9 @@
   }
   .container p {
     margin: 0;
+  }
+  .buttonContainer {
+    font-size: 0.75em;
+    margin-top: 0.5rem;
   }
 }

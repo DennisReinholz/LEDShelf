@@ -1,51 +1,113 @@
-.container {
-  display: flex;
-  flex-direction: row;
-  height: 6rem;
-  width: 38rem;
-  border: 0.125rem solid white;
-  border-radius: 0.5rem;
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: row;
+    height: 6rem;
+    width: 38rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+  }
+  .assignedIsOpenContainer {
+    display: flex;
+    flex-direction: row;
+    height: 6rem;
+    width: 29rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+  }
+  .containerParameter {
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .containerParameter p {
+    margin: 0;
+  }
+  .containerValues {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .containerValues p {
+    margin: 0;
+    margin-left: 1rem;
+  }
+  .declareShelf {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+    justify-content: space-between;
+    width: 15rem;
+    margin-left: 1rem;
+  }
+  .assignedIsOpen {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+    justify-content: space-between;
+    width: 7rem;
+    margin-left: 1rem;
+  }
 }
-.assignedIsOpenContainer {
-  display: flex;
-  flex-direction: row;
-  height: 6rem;
-  width: 29rem;
-  border: 0.125rem solid white;
-  border-radius: 0.5rem;
-}
-.containerParameter {
-  margin-top: 0.5rem;
-  margin-left: 1rem;
-  display: flex;
-  flex-direction: column;
-}
-.containerParameter p {
-  margin: 0;
-}
-.containerValues {
-  display: flex;
-  flex-direction: column;
-  margin-left: 0.5rem;
-  margin-top: 0.5rem;
-}
-.containerValues p {
-  margin: 0;
-  margin-left: 1rem;
-}
-.declareShelf {
-  display: flex;
-  flex-direction: row;
-  margin-top: 0.5rem;
-  justify-content: space-between;
-  width: 15rem;
-  margin-left: 1rem;
-}
-.assignedIsOpen {
-  display: flex;
-  flex-direction: row;
-  margin-top: 0.5rem;
-  justify-content: space-between;
-  width: 7rem;
-  margin-left: 1rem;
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: row;
+    height: 8rem;
+    width: 50rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+  }
+  .assignedIsOpenContainer {
+    display: flex;
+    flex-direction: row;
+    height: 10rem;
+    width: 45rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+  }
+  .containerParameter {
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .containerParameter p {
+    margin: 0;
+  }
+  .containerValues {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .containerValues p {
+    margin: 0;
+    margin-left: 1rem;
+  }
+  .declareShelf {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+    justify-content: space-between;
+    width: 22rem;
+    margin-left: 1rem;
+  }
+  .assignedIsOpen {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+    justify-content: space-between;
+    width: 15rem;
+    margin-left: 1rem;
+  }
+  .shelfSelection {
+    width: 10rem;
+    height: 2.5rem;
+    font-size: 1em;
+    margin-left: 2rem;
+  }
 }

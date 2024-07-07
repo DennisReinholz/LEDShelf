@@ -118,14 +118,16 @@ const ArticleFilter = ({
             : ""}
         </select>
       </div>
-      <button
-        className="primaryButton"
-        onClick={() =>
-          ApplyFilter(categoryFilter, companyFilter, commissionFilter)
-        }
-      >
-        Filter
-      </button>
+      <div className={styles.buttonContainer}>
+        <button
+          className="primaryButton"
+          onClick={() =>
+            ApplyFilter(categoryFilter, companyFilter, commissionFilter)
+          }
+        >
+          Filter
+        </button>
+      </div>
     </div>
   );
 };

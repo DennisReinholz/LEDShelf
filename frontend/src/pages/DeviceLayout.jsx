@@ -32,7 +32,7 @@ const DeviceLayout = () => {
         style={{ marginLeft: "1rem", marginTop: "1rem", width: "10rem" }}
         onClick={() => setIsModalOpen(true)}
       >
-        Geräte hinzufügen
+        Hinzufügen
       </button>
       <div className={styles.content}>
         <Device shelfList={shelfList} />

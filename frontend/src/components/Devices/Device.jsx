@@ -39,16 +39,12 @@ const Device = ({ shelfList }) => {
       <div
         className={assignedIsOpen ? styles.declareShelf : styles.assignedIsOpen}
       >
-        <button
-          className="primaryButton"
-          style={{ width: "7rem" }}
-          onClick={handleAssignOpen}
-        >
-          {assignedIsOpen ? "Regal setzen" : "Regal zuweisen"}
+        <button className="primaryButton" onClick={handleAssignOpen}>
+          {assignedIsOpen ? "Setzen" : "Zuweisen"}
         </button>
         {assignedIsOpen && (
           <select
-            style={{ width: "7rem", height: "2rem" }}
+            className={styles.shelfSelection}
             value={assignedShelf}
             onChange={(e) => setAssignedShelf(e.target.value)}
           >

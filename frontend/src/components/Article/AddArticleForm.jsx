@@ -170,11 +170,11 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       <div className={styles.addFormRow}>
         <input
           className="inputText"
-          style={{ height: "2rem", fontSize: "0.75em" }}
           type="text"
           placeholder="Firma"
           defaultValue={companyName}
           onChange={(e) => setCompanyName(e.target.value)}
+          style={{ width: "17rem" }}
         />
         <div style={{ display: "flex", alignItems: "center" }}>
           <input
@@ -183,13 +183,12 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
             type="text"
             value={commissiongoods}
             onChange={(e) => setCommissiongoods(e.target.value)}
-            style={{ height: "2rem", fontSize: "0.75em" }}
           />
         </div>
       </div>
       <div className={styles.shelfSelection}>
         <select
-          style={{ fontSize: "0.75em", height: "2rem", width: "10rem" }}
+          className={styles.shelfSelect}
           value={selectedShelf}
           onChange={(e) => handleShelfSelection(e.target.value)}
         >
@@ -204,7 +203,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           )}
         </select>
         <select
-          style={{ fontSize: "0.75em", height: "2rem", width: "10rem" }}
+          className={styles.compartmentSelect}
           value={selectedCompartment}
           onChange={(e) => setSelectedCompartment(e.target.value)}
         >
@@ -220,7 +219,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
         </select>
         {/* Category */}
         <select
-          style={{ fontSize: "0.75em", height: "2rem", width: "10rem" }}
+          className={styles.categorySelect}
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
@@ -242,7 +241,6 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
         </button>
         <button
           className={enableCreateButton ? "disabledButton" : "primaryButton"}
-          style={{ marginRight: "1rem" }}
           onClick={createArticle}
           disabled={enableCreateButton}
         >

@@ -72,8 +72,7 @@
   .buttonContainer {
     display: flex;
     align-items: center;
-    width: 43rem;
-    justify-content: space-between;
+    width: 32rem;
     height: 5rem;
     margin-top: 1rem;
     margin-left: 1rem;
@@ -85,7 +84,7 @@
   .content {
     display: flex;
     justify-content: center;
-    width: 103rem;
+    width: 80rem;
     height: 64rem;
     margin: 0 auto;
     margin-left: 1rem;
@@ -127,7 +126,10 @@
     justify-content: space-around;
   }
   .inputSearch {
-    height: 1.5rem;
+    height: 2rem;
+    width: 10rem;
+    font-size: 1.2em;
+    margin-left: 2.5rem;
   }
 }
 @media only screen and (max-width: 1700px) {

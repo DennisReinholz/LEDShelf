@@ -264,10 +264,9 @@ const ArticleLayout = () => {
         {isAdmin ? (
           <button
             className="primaryButton"
-            style={{ width: "10rem" }}
             onClick={() => setIsModalOpen(true)}
           >
-            Artikel erstellen
+            Erstellen
           </button>
         ) : (
           ""

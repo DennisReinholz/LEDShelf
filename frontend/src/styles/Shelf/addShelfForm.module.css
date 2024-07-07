@@ -54,6 +54,7 @@
   }
   .formInput {
     height: 2rem;
+    font-size: 0.75em;
   }
   .numberPicker {
     align-self: center;
@@ -62,6 +63,7 @@
   .inputNumber {
     height: 2rem;
     width: 2.5rem;
+    font-size: 0.75em;
   }
   .inputNumber::-webkit-inner-spin-button {
     height: 2rem;

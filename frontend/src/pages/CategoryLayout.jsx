@@ -78,7 +78,7 @@ const CategoryLayout = () => {
           style={{ width: "13rem" }}
           onClick={() => setAddIsCategoryIsOpen(true)}
         >
-          Kategory erstellen
+          Erstellen
         </button>
       </div>
       <div className={styles.content}>

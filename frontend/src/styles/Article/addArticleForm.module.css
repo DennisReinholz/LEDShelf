@@ -1,28 +1,82 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 15rem;
-  width: 37rem;
-  color: white;
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 15rem;
+    width: 37rem;
+    color: white;
+  }
+  .content {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5em;
+  }
+  .shelfSelection {
+    display: flex;
+    margin-top: 2rem;
+    font-size: 1.5em;
+    height: 10rem;
+    width: 37rem;
+    justify-content: space-between;
+  }
+  .buttonContainer {
+    display: flex;
+    width: 37rem;
+    flex-direction: row-reverse;
+    margin-top: 1rem;
+  }
 }
-.content {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.5em;
-}
-.shelfSelection {
-  display: flex;
-  margin-top: 2rem;
-  font-size: 1.5em;
-  height: 10rem;
-  width: 37rem;
-  justify-content: space-between;
-}
-.buttonContainer {
-  display: flex;
-  width: 37rem;
-  flex-direction: row-reverse;
-  margin-top: 1rem;
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 25rem;
+    width: 45rem;
+    color: white;
+    font-size: 1em;
+  }
+  .content {
+    display: flex;
+    justify-content: space-between;
+  }
+  .addFormRow {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+    width: 34rem;
+    justify-content: space-between;
+  }
+  .shelfSelection {
+    display: flex;
+    margin-top: 2rem;
+    height: 10rem;
+    width: 45rem;
+    justify-content: space-between;
+  }
+  .shelfSelect {
+    height: 2.5rem;
+    width: 17.5rem;
+  }
+  .compartmentSelect {
+    height: 2.5rem;
+    width: 13rem;
+  }
+  .categorySelect {
+    height: 2.5rem;
+    width: 8.5rem;
+  }
+  .shelfSelection select {
+    font-size: 0.75em;
+  }
+  .buttonContainer {
+    display: flex;
+    width: 23rem;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 22rem;
+    margin-top: 1rem;
+    font-size: 1em;
+  }
 }
 @media only screen and (max-width: 1700px) {
   .container {
@@ -31,6 +85,7 @@
     height: 20rem;
     width: 37rem;
     color: white;
+    font-size: 1.5em;
   }
   .content {
     display: flex;

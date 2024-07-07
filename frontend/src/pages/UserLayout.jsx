@@ -36,7 +36,7 @@ const UserLayout = () => {
     getUser();
   }, [createUser, deleteUser, editUser]);
   return (
-    <React.Fragment>
+    <div className={styles.content}>
       <button
         style={{ marginLeft: "1rem" }}
         className="primaryButton"
@@ -75,7 +75,7 @@ const UserLayout = () => {
           </Modal>
         )}
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 
