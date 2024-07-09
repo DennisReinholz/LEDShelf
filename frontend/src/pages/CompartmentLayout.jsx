@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Compartment from "../components/Shelf/Compartment";
 import styles from "../styles/compartmentLayout.module.css";
+import { UserContext } from "../helpers/userAuth.jsx";
+import toast from "react-hot-toast";
 
 const CompartmentLayout = () => {
   let { shelfid } = useParams();
+
+  const [user, setUser] = useContext(UserContext);
   const [compartments, setCompartments] = useState();
   const [activeCompartments, setActiveCompartments] = useState([]);
   const [ip, setIp] = useState();
   const [controllerFunction, setControllerFunction] = useState();
+  const navigate = useNavigate();
 
   const handleIsActive = (index) => {
     setActiveCompartments((prevState) => {
@@ -44,9 +50,8 @@ const CompartmentLayout = () => {
       if (response.status !== 200) {
         throw new Error("Network response was not ok");
       }
-      // Optional: Handle response if needed
     } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
+      toast.error("There was a problem with the fetch operation:", error);
     }
   };
   const getCompartments = async () => {
@@ -68,7 +73,6 @@ const CompartmentLayout = () => {
             if (a.number > b.number) return 1;
             return 0;
           });
-          console.log(data);
           setCompartments(sortedData);
           setActiveCompartments(Array(data.result.length).fill(false));
         }
@@ -76,7 +80,17 @@ const CompartmentLayout = () => {
   };
   useEffect(() => {
     getCompartments();
-    getShelfOf();
+    //getShelfOf();
+    const userStorage = localStorage.getItem("user");
+    if (
+      userStorage !== undefined ||
+      (userStorage !== null && user === undefined)
+    ) {
+      setUser(JSON.parse(userStorage));
+    }
+    if (userStorage === null) {
+      navigate("/login");
+    }
   }, []);
   return (
     <div className={styles.container}>

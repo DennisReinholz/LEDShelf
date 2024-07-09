@@ -14,6 +14,7 @@ const MainNav = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem("user");
     navigate("/login");
   };
   return (

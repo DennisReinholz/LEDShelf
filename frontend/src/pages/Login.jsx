@@ -50,6 +50,7 @@ const Login = () => {
         .then((data) => {
           if (data.serverStatus === 2) {
             setUser(data.result);
+            //set user to local storage
             localStorage.setItem("user", JSON.stringify(data.result));
             navigate("/regale");
           } else if (data.serverStatus === -1) {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import styles from "../styles/categoryLayout.module.css";
 import AddCategoryFrom from "../components/Category/AddCategoryForm.jsx";
-
 import { FiEdit2 } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import Modal from "../components/common/Modal.jsx";
@@ -19,6 +19,7 @@ const CategoryLayout = () => {
   const [editCategory, setEditCategory] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
   const [deleteCategory, setDeleteCategory] = useState(false);
+  const navigate = useNavigate();
 
   const getCategory = async () => {
     const response = await fetch(`http://localhost:3000/getCategory`, {
@@ -57,7 +58,6 @@ const CategoryLayout = () => {
         }
       });
   };
-  const updateCategory = async () => {};
 
   const handleEditCategory = (category) => {
     setEditCategoryOpen(true);
@@ -68,6 +68,16 @@ const CategoryLayout = () => {
     setSelectedCategory(c);
   };
   useEffect(() => {
+    const userStorage = localStorage.getItem("user");
+    if (
+      userStorage !== undefined ||
+      (userStorage !== null && user === undefined)
+    ) {
+      setUser(JSON.parse(userStorage));
+    }
+    if (userStorage === null) {
+      navigate("/login");
+    }
     getCategory();
   }, [categoryList, deleteCategory]);
   return (
@@ -89,7 +99,7 @@ const CategoryLayout = () => {
                 <td>
                   <th>Kategorie</th>
                 </td>
-                {user !== undefined && user[0].role === 1 ? (
+                {user != undefined && user[0].role === 1 ? (
                   <td>
                     {" "}
                     <th>Action</th>{" "}

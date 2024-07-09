@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import styles from "../styles/Article/articleLayout.module.css";
 import Modal from "../components/common/Modal";
 import { FiEdit2 } from "react-icons/fi";
@@ -32,6 +33,7 @@ const ArticleLayout = () => {
   const [companyList, setCompanyList] = useState([]);
   const [commissionList, setCommissionList] = useState([]);
   const [filterList, setFilterList] = useState([]);
+  const navigate = useNavigate();
 
   const getArticle = async () => {
     const response = await fetch(`http://localhost:3000/getAllArticle`, {
@@ -257,20 +259,30 @@ const ArticleLayout = () => {
       getShelf();
       getCompartments();
     }
+    const userStorage = localStorage.getItem("user");
+    if (
+      userStorage !== undefined ||
+      (userStorage !== null && user === undefined)
+    ) {
+      setUser(JSON.parse(userStorage));
+    }
+    if (userStorage === null) {
+      navigate("/login");
+    }
   }, [deleteState, updateArticle, articleCreated]);
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
-        {isAdmin ? (
-          <button
-            className="primaryButton"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Erstellen
-          </button>
-        ) : (
-          ""
-        )}
+        {user != undefined
+          ? user[0].role == 1 && (
+              <button
+                className="primaryButton"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Erstellen
+              </button>
+            )
+          : ""}
         <input
           className={styles.inputSearch}
           type="text"

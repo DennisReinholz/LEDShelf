@@ -115,7 +115,7 @@ module.exports.getCompartArticleForm = async (req, res, db) => {
 module.exports.getCompartments = async (req, res, db) => {
   const { shelfid } = req.body;
   db.all(
-    `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
+    `SELECT DISTINCT(compartment.compartmentId), shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number
     FROM shelf
     JOIN compartment ON shelf.shelfid = compartment.shelfId 
     LEFT JOIN article ON compartment.compartmentId = article.compartment

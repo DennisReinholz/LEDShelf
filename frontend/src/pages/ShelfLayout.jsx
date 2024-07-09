@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import Shelf from "../components/Shelf/Shelf";
 import Modal from "../components/common/Modal";
 import AddShelfForm from "../components/Shelf/AddShelfForm";
@@ -9,6 +10,7 @@ const ShelfLayout = () => {
   const [user, setUser] = useContext(UserContext);
   const [shelfList, setShelfList] = useState();
   const [isShelfOpen, setIsShelfOpen] = useState(false);
+  const navigate = useNavigate();
 
   const getShelfs = async () => {
     const response = await fetch(`http://localhost:3000/getShelf`, {
@@ -23,6 +25,17 @@ const ShelfLayout = () => {
   };
   useEffect(() => {
     getShelfs();
+
+    const userStorage = localStorage.getItem("user");
+    if (
+      userStorage !== undefined ||
+      (userStorage !== null && user === undefined)
+    ) {
+      setUser(JSON.parse(userStorage));
+    }
+    if (userStorage === null) {
+      navigate("/login");
+    }
   }, []);
 
   return (

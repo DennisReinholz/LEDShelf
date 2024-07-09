@@ -21,3 +21,10 @@ FROM article
 LEFT JOIN shelf on article.shelf = shelf.shelfId
 LEFT JOIN company ON article.company = company.companyId
 LEFT JOIN compartment on article.compartment = compartment.compartmentId
+
+
+SELECT DISTINCT(compartment.compartmentId), shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number
+    FROM shelf
+    JOIN compartment ON shelf.shelfid = compartment.shelfId 
+    LEFT JOIN article ON compartment.compartmentId = article.compartment
+    WHERE shelf.shelfid =45

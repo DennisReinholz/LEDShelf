@@ -92,10 +92,12 @@
     align-self: center;
     color: white;
     margin-top: 1rem;
+    font-size: 0.75em;
   }
   .button {
     cursor: pointer;
     width: 5rem;
+    font-size: 0.75em;
   }
   .contentContainer {
     display: flex;
@@ -110,7 +112,7 @@
   }
   .contentHeader {
     color: white;
-    height: 2rem;
+    height: 3rem;
     margin: 0rem;
     border-bottom: 0.125rem solid white;
   }
