@@ -9,6 +9,7 @@ import { UserContext } from "../helpers/userAuth";
 import DeleteCategory from "../components/Category/DeleteCategoryForm.jsx";
 import toast from "react-hot-toast";
 import EditCategoryForm from "../components/Category/EditCategoryForm.jsx";
+import { Tooltip } from "react-tooltip";
 
 const CategoryLayout = () => {
   const [categoryList, setCategoryList] = useState([]);
@@ -82,6 +83,12 @@ const CategoryLayout = () => {
   }, [categoryList, deleteCategory]);
   return (
     <div className={styles.container}>
+      <Tooltip anchorSelect=".edit" place="left">
+        Kategorie bearbeiten
+      </Tooltip>
+      <Tooltip anchorSelect=".delete" place="left">
+        Kategorie löschen
+      </Tooltip>
       <div className={styles.addCategoryContainer}>
         <button
           className="primaryButton"
@@ -119,10 +126,12 @@ const CategoryLayout = () => {
                         <td>
                           <div className={styles.editContainer}>
                             <FiEdit2
+                              className="edit"
                               style={{ cursor: "pointer" }}
                               onClick={() => handleEditCategory(c)}
                             />
                             <BsTrash
+                              className="delete"
                               style={{ cursor: "pointer" }}
                               onClick={() => handleDeleteCategory(c)}
                             />

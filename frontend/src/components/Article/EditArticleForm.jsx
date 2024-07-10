@@ -50,8 +50,6 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
       });
   };
   const updateArticle = async () => {
-    console.log(articleStatus.articlename);
-    console.log(newArticleName);
     const response = await fetch(`http://localhost:3000/upateArticle`, {
       method: "Post",
       headers: {
@@ -138,35 +136,37 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
           Menge: {articleStatus !== undefined ? articleStatus.count : ""}{" "}
           {articleStatus !== undefined ? articleStatus.unit : ""}
         </p>
-        <input
-          type="number"
-          placeholder="Menge"
-          className={styles.inputNumber}
-          value={newCount}
-          onChange={(e) => setNewCount(e.target.value)}
-        />
-        <select
-          value={newCategory}
-          className={styles.unitSelection}
-          onChange={(e) => setNewCategory(e.target.value)}
-        >
-          {category !== undefined
-            ? category.map((c) => (
-                <option key={c.categoryid} value={parseInt(c.categoryid)}>
-                  {c.categoryname}
-                </option>
-              ))
-            : ""}
-        </select>
-        <select
-          value={article.unit}
-          className={styles.unitSelection}
-          onChange={(e) => setNewUnit(e.target.value)}
-        >
-          <option value="Meter">Meter</option>
-          <option vlaue="Kilo">Kilo</option>
-          <option vlaue="Stück">Stück</option>
-        </select>
+        <div className={styles.inputRow}>
+          <input
+            type="number"
+            placeholder="Menge"
+            className={styles.inputNumber}
+            value={newCount}
+            onChange={(e) => setNewCount(e.target.value)}
+          />
+          <select
+            value={newCategory}
+            className={styles.unitSelection}
+            onChange={(e) => setNewCategory(e.target.value)}
+          >
+            {category !== undefined
+              ? category.map((c) => (
+                  <option key={c.categoryid} value={parseInt(c.categoryid)}>
+                    {c.categoryname}
+                  </option>
+                ))
+              : ""}
+          </select>
+          <select
+            value={article.unit}
+            className={styles.unitSelection}
+            onChange={(e) => setNewUnit(e.target.value)}
+          >
+            <option value="Meter">Meter</option>
+            <option value="Kilo">Kilo</option>
+            <option value="Stück">Stück</option>
+          </select>
+        </div>
       </div>
       <div className={styles.content}>
         <p>

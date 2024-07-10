@@ -5,6 +5,7 @@ import styles from "../../styles/User/user.module.css";
 import Modal from "../common/Modal";
 import DeleteUserForm from "./DeleteUserForm";
 import EditUser from "./EditUser";
+import { Tooltip } from "react-tooltip";
 
 const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -13,6 +14,12 @@ const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
   useEffect(() => {}, [deleteModalOpen]);
   return (
     <div className={styles.container}>
+      <Tooltip anchorSelect=".edit" place="left">
+        Benutzer bearbeiten
+      </Tooltip>
+      <Tooltip anchorSelect=".delete" place="left">
+        Benutzer löschen
+      </Tooltip>
       <div className={styles.userContent}>
         <p style={{ width: "2rem" }}>{userid}</p>
         <p style={{ width: "5rem" }}>{name}</p>
@@ -20,10 +27,12 @@ const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
       </div>
       <div className={styles.editContainer}>
         <FiEdit2
+          className="edit"
           style={{ cursor: "pointer" }}
           onClick={() => setEditModalOpen(true)}
         />
         <BsTrash
+          className="delete"
           style={{ cursor: "pointer" }}
           onClick={() => setDeleteModalOpen(true)}
         />

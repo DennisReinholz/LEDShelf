@@ -10,6 +10,7 @@ const ShelfLayout = () => {
   const [user, setUser] = useContext(UserContext);
   const [shelfList, setShelfList] = useState();
   const [isShelfOpen, setIsShelfOpen] = useState(false);
+  const [createdShelf, setCreatedShelf] = useState(false);
   const navigate = useNavigate();
 
   const getShelfs = async () => {
@@ -36,7 +37,10 @@ const ShelfLayout = () => {
     if (userStorage === null) {
       navigate("/login");
     }
-  }, []);
+    if (createdShelf) {
+      getShelfs();
+    }
+  }, [createdShelf]);
 
   return (
     <div className={styles.container}>
@@ -71,6 +75,7 @@ const ShelfLayout = () => {
             onClose={() => setIsShelfOpen(false)}
             setShelflist={setShelfList}
             shelflist={shelfList}
+            setCreatedShelf={setCreatedShelf}
           />
         </Modal>
       )}

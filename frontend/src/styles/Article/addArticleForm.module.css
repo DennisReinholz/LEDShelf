@@ -83,14 +83,19 @@
     display: flex;
     flex-direction: column;
     height: 20rem;
-    width: 37rem;
+    width: 45rem;
     color: white;
-    font-size: 1.5em;
+    font-size: 1em;
   }
   .content {
     display: flex;
     justify-content: space-between;
-    font-size: 1.5em;
+    font-size: 1em;
+  }
+  .unitSelection {
+    height: 2.25rem;
+    width: 9rem;
+    margin-left: 1rem;
   }
   .addFormRow {
     display: flex;
@@ -98,20 +103,26 @@
     margin-top: 1rem;
     align-items: center;
     justify-content: space-between;
-    width: 28.5rem;
+    width: 45rem;
   }
   .shelfSelection {
     display: flex;
     margin-top: 2rem;
     font-size: 1.5em;
     height: 10rem;
-    width: 37rem;
+    width: 45rem;
     justify-content: space-between;
+    font-size: 1em;
   }
   .buttonContainer {
     display: flex;
-    width: 37rem;
-    flex-direction: row-reverse;
+    width: 20rem;
+    flex-direction: row;
     margin-top: 1rem;
+    margin-left: 25rem;
+  }
+  .input {
+    height: 2rem;
+    width: 17rem;
   }
 }

@@ -76,6 +76,46 @@
     font-size: 1.25em;
   }
 }
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 18rem;
+    width: 25rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: row;
+    width: 25rem;
+    justify-content: space-between;
+    color: white;
+    align-items: center;
+    font-size: 1.2em;
+  }
+  .formInput {
+    height: 2rem;
+    font-size: 0.75em;
+  }
+  .numberPicker {
+    align-self: center;
+    width: 10rem;
+  }
+  .inputNumber {
+    height: 2rem;
+    width: 3rem;
+    font-size: 0.75em;
+  }
+  .inputNumber::-webkit-inner-spin-button {
+    height: 2rem;
+  }
+  .buttonContainer {
+    display: flex;
+    width: 15rem;
+    margin-top: 1rem;
+    margin-left: 10rem;
+    justify-content: space-between;
+  }
+}
 @media only screen and (max-width: 1200px) {
   .container {
     display: flex;

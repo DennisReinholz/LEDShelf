@@ -10,6 +10,7 @@ import DeleteArticleForm from "../components/Article/DeleteArticleForm";
 import toast, { Toaster } from "react-hot-toast";
 import { UserContext } from "../helpers/userAuth";
 import ArticleFilter from "../components/Article/ArticleFilter";
+import { Tooltip } from "react-tooltip";
 
 const ArticleLayout = () => {
   const [user, setUser] = useContext(UserContext);
@@ -272,6 +273,12 @@ const ArticleLayout = () => {
   }, [deleteState, updateArticle, articleCreated]);
   return (
     <div className={styles.container}>
+      <Tooltip anchorSelect=".edit" place="left">
+        Bearbeiten des Artikels
+      </Tooltip>
+      <Tooltip anchorSelect=".delete" place="left">
+        Löscht den Artikel
+      </Tooltip>
       <div className={styles.buttonContainer}>
         {user != undefined
           ? user[0].role == 1 && (
@@ -330,10 +337,12 @@ const ArticleLayout = () => {
                       <td>
                         <div className={styles.editContainer}>
                           <FiEdit2
+                            className="edit"
                             style={{ cursor: "pointer" }}
                             onClick={() => handleEditArticle(c)}
                           />
                           <BsTrash
+                            className="delete"
                             style={{ cursor: "pointer" }}
                             onClick={() => handleDeleteArticle(c)}
                           />

@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import styles from "../../styles/Shelf/addShelfForm.module.css";
 
-const AddShelfForm = ({ onClose, shelflist, setShelflist }) => {
+const AddShelfForm = ({
+  onClose,
+  shelflist,
+  setShelflist,
+  setCreatedShelf,
+}) => {
   const [CountCompartment, setCountCompartment] = useState();
   const [shelfname, setShelfname] = useState();
   const [shelfPlace, setShelfPlace] = useState();
@@ -16,6 +21,7 @@ const AddShelfForm = ({ onClose, shelflist, setShelflist }) => {
       body: JSON.stringify({ shelfname, shelfPlace, CountCompartment }),
     }).then((result) => {
       if (result.status === 200) {
+        setCreatedShelf(true);
         toast.success("Ein neues Regal wurde erstellt");
         onClose();
       } else {

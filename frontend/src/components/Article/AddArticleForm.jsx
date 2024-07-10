@@ -144,28 +144,29 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           placeholder="Artikelname"
           value={articlename}
           onChange={(e) => setArticlename(e.target.value)}
-          style={{ height: "2rem", fontSize: "0.75em" }}
         />
-        <input
-          className="inputText"
-          type="number"
-          placeholder="Menge"
-          defaultValue={1}
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          style={{ height: "2rem", fontSize: "0.75em" }}
-        />
-        <select
-          style={{ fontSize: "0.75em" }}
-          value={unit}
-          onChange={(e) => setUnit(e.target.value)}
-        >
-          <option value="undefined">Einheit</option>
-          <option value="Stück">Stück</option>
-          <option value="Meter">Meter</option>
-          <option value="Zentimeter">Zentimeter</option>
-          <option value="Kilogramm">Kilogramm</option>
-        </select>
+        <div>
+          <input
+            style={{ width: "3rem" }}
+            className="inputText"
+            type="number"
+            placeholder="Menge"
+            defaultValue={1}
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <select
+            className={styles.unitSelection}
+            value={unit}
+            onChange={(e) => setUnit(e.target.value)}
+          >
+            <option value="undefined">Einheit</option>
+            <option value="Stück">Stück</option>
+            <option value="Meter">Meter</option>
+            <option value="Zentimeter">Zentimeter</option>
+            <option value="Kilogramm">Kilogramm</option>
+          </select>
+        </div>
       </div>
       <div className={styles.addFormRow}>
         <input
@@ -207,6 +208,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           value={selectedCompartment}
           onChange={(e) => setSelectedCompartment(e.target.value)}
         >
+          {compartment.length === 0 ? <option>Kein freies Regal</option> : ""}
           {compartment !== undefined ? (
             compartment.map((c) => (
               <option key={c.compartmentId} value={c.compartmentId}>
