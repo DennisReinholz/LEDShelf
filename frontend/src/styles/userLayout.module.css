@@ -43,7 +43,6 @@
     display: "flex";
     margin-top: 1rem;
     margin-left: 1rem;
-    font-size: 1.5em;
   }
   .container {
     display: flex;
@@ -91,13 +90,10 @@
     flex-direction: column;
     align-self: center;
     color: white;
-    margin-top: 1rem;
-    font-size: 0.75em;
   }
   .button {
     cursor: pointer;
     width: 5rem;
-    font-size: 0.75em;
   }
   .contentContainer {
     display: flex;

@@ -5,12 +5,12 @@
     color: white;
     width: 85rem;
     height: 100vh;
+    margin-left: 1rem;
   }
   .buttonContainer {
     display: flex;
     width: 40rem;
     height: 5rem;
-    margin-top: 1rem;
     margin-left: 1rem;
   }
   .categorySelection {
@@ -67,14 +67,12 @@
     color: white;
     width: 85rem;
     height: 100vh;
-    font-size: 1.25em;
   }
   .buttonContainer {
     display: flex;
     align-items: center;
     width: 32rem;
     height: 5rem;
-    margin-top: 1rem;
     margin-left: 1rem;
   }
   .categorySelection {
@@ -128,7 +126,6 @@
   .inputSearch {
     height: 2rem;
     width: 10rem;
-    font-size: 1.2em;
     margin-left: 2.5rem;
   }
 }
@@ -147,7 +144,6 @@
     width: 30.125rem;
     justify-content: space-between;
     height: 5rem;
-    margin-top: 1rem;
     margin-left: 1rem;
   }
   .content {
