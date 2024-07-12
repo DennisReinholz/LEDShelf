@@ -16,6 +16,7 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
     setCounter((c) => c + 1);
   };
 
+  //TODO: hier weitermachen
   const getCompartmentArticle = async () => {
     const response = await fetch(
       `http://localhost:3000/getArticleInCompartment`,
@@ -88,19 +89,23 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        setIp(data[0].ipAdresse);
-        setControllerFunction(data[0].functionName);
+        if (data[0] != null || data[0] != undefined) {
+          setIp(data[0].ipAdresse);
+          setControllerFunction(data[0].functionName);
+        }
       });
   };
   const handleLedOn = async () => {
     try {
       const response = await fetch(`http://${ip}/${controllerFunction}`);
       if (response.status !== 200) {
-        throw new Error("Network response was not ok");
+        console.log("Network response was not ok");
+      } else {
+        console.log("test");
       }
       // Optional: Handle response if needed
     } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
+      console.log("There was a problem with the fetch operation:");
     }
   };
   useEffect(() => {
