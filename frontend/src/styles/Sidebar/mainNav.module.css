@@ -128,33 +128,3 @@
     margin: 0;
   }
 }
-/* @media only screen and (max-width: 650px) {
-  .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .container ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  .nav {
-    display: flex;
-    align-items: center;
-    font-size: 1.3em;
-    padding: 10px 10px;
-    cursor: pointer;
-    color: white;
-    will-change: transform;
-    transition: transform 0.35s ease-in-out;
-  }
-  .nav:hover {
-    transform: scale(1.2);
-    border-radius: 5px;
-    padding: 10px 10px;
-  }
-  .nav p {
-    display: none;
-  }
-} */
