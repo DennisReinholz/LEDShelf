@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import styles from "../styles/Article/articleLayout.module.css";
+import styles from "../styles/articleLayout.module.css";
 import Modal from "../components/common/Modal";
 import { FiEdit2 } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";

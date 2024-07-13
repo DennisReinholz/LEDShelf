@@ -95,6 +95,7 @@
   }
   .tableContainer table {
     width: 65rem;
+
     margin: 0 auto; /* Automatische Zentrierung der Tabelle */
     border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
     overflow-y: scroll;
