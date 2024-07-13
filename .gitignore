@@ -31,4 +31,5 @@
 *.out
 *.app
 
+# Node modules
 *node_modules/*
