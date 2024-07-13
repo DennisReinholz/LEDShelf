@@ -170,3 +170,61 @@ body {
     height: 3rem;
   }
 }
+@media only screen and (max-width: 1200px) {
+  html,
+  body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    height: 100vh;
+    width: 100vw;
+    background-color: #0f0f0f;
+  }
+  .primaryButton {
+    width: 8rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border-color: white;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  .primaryButton:hover {
+    background-color: #302f2f;
+  }
+  .secondaryButton {
+    width: 8rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border-color: white;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    font-size: 0.75em;
+  }
+  .secondaryButton:hover {
+    background-color: #6c6a6a;
+  }
+  .disabledButton {
+    width: 5rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    border-color: white;
+    background-color: gray;
+    color: black;
+    cursor: pointer;
+    font-size: 0.75em;
+  }
+  .inputText {
+    height: 2rem;
+    width: 13rem;
+    font-size: 0.75em;
+  }
+  .inputText::-webkit-inner-spin-button {
+    height: 3rem;
+  }
+}

@@ -22,30 +22,29 @@ const MainNav = () => {
       <ul>
         <li>
           <div className={styles.nav}>
-            <BsBookshelf />
             <NavLink
               to="/regale"
               style={{
                 textDecoration: "none",
                 color: "white",
-                marginLeft: "1rem",
               }}
             >
+              <BsBookshelf />
+
               <p>Regale</p>
             </NavLink>
           </div>
         </li>
         <li>
           <div className={styles.nav}>
-            <HiOutlineScale />
             <NavLink
               to="/artikel"
               style={{
                 textDecoration: "none",
                 color: "white",
-                marginLeft: "1rem",
               }}
             >
+              <HiOutlineScale />
               <p>Artikel</p>
             </NavLink>
           </div>
@@ -55,45 +54,42 @@ const MainNav = () => {
               <>
                 <li>
                   <div className={styles.nav}>
-                    <HiOutlineUsers />
                     <NavLink
                       to="/benutzer"
                       style={{
                         textDecoration: "none",
                         color: "white",
-                        marginLeft: "1rem",
                       }}
                     >
+                      <HiOutlineUsers />
                       <p>Benutzer</p>
                     </NavLink>
                   </div>
                 </li>
                 <li>
                   <div className={styles.nav}>
-                    <HiOutlineSignal />
                     <NavLink
                       to="/geraete"
                       style={{
                         textDecoration: "none",
                         color: "white",
-                        marginLeft: "1rem",
                       }}
                     >
+                      <HiOutlineSignal />
                       <p>Geräte</p>
                     </NavLink>
                   </div>
                 </li>
                 <li>
                   <div className={styles.nav}>
-                    <HiOutlineQrCode />
                     <NavLink
                       to="/kategorie"
                       style={{
                         textDecoration: "none",
                         color: "white",
-                        marginLeft: "1rem",
                       }}
                     >
+                      <HiOutlineQrCode />
                       <p>Kategorie</p>
                     </NavLink>
                   </div>
@@ -103,14 +99,13 @@ const MainNav = () => {
           : ""}
         <li>
           <div className={styles.nav} onClick={handleLogout}>
-            <HiOutlineArrowRightOnRectangle />
             <NavLink
               style={{
                 textDecoration: "none",
                 color: "white",
-                marginLeft: "1rem",
               }}
             >
+              <HiOutlineArrowRightOnRectangle />
               <p>Logout</p>
             </NavLink>
           </div>

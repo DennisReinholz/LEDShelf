@@ -35,7 +35,6 @@
     justify-content: space-between;
   }
 }
-/* Fertig 1920px */
 @media only screen and (max-width: 1920px) {
   .container {
     display: flex;
@@ -120,7 +119,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 25rem;
+    height: 20rem;
     width: 25rem;
   }
   .content {
@@ -148,7 +147,7 @@
   }
   .buttonContainer {
     display: flex;
-    width: 25rem;
+    width: 15rem;
     margin-top: 1rem;
     justify-content: space-between;
     font-size: 1.25em;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../../styles/Article/deleteArticleForm.module.css";
+import styles from "../../styles/Category/deleteCategoryForm.module.css";
 
 const DeleteCategoryForm = ({
   category,

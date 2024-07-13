@@ -208,7 +208,11 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           value={selectedCompartment}
           onChange={(e) => setSelectedCompartment(e.target.value)}
         >
-          {compartment.length === 0 ? <option>Kein freies Regal</option> : ""}
+          {compartment !== undefined && compartment.length === 0 ? (
+            <option>Kein freies Regal</option>
+          ) : (
+            ""
+          )}
           {compartment !== undefined ? (
             compartment.map((c) => (
               <option key={c.compartmentId} value={c.compartmentId}>

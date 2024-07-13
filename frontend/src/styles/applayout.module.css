@@ -10,7 +10,6 @@
     height: 100vh;
   }
 }
-/* Fertig 1920px */
 @media only screen and (max-width: 1920px) {
   .applayout {
     display: flex;
@@ -33,5 +32,17 @@
     flex-direction: column;
     width: 88vw;
     height: 98vh;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .applayout {
+    display: flex;
+    flex-direction: row;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    height: 100vh;
   }
 }

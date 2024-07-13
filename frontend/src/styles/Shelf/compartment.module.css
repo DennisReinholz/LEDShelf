@@ -1,48 +1,200 @@
-.compartContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
+@media only screen and (max-width: 2000px) {
+  .compartContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    margin-right: 2rem;
+    color: white;
+    justify-content: space-around;
+  }
+  .content {
+    margin-left: 2rem;
+  }
+  .containerIsActive {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid red;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    color: white;
+    justify-content: space-around;
+  }
+  .buttonContainer {
+    display: flex;
+    color: white;
+    width: 5rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .articleButton {
+    width: 1.75rem;
+    height: 1.75rem;
+    cursor: pointer;
+  }
 }
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 10rem;
-  width: 15rem;
-  border: 0.125rem solid white;
-  border-radius: 0.5rem;
-  margin-left: 2rem;
-  margin-top: 1rem;
-  margin-right: 2rem;
-  color: white;
-  justify-content: space-around;
+@media only screen and (max-width: 1920px) {
+  .compartContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    margin-right: 2rem;
+    color: white;
+    justify-content: space-around;
+  }
+  .content {
+    margin-left: 2rem;
+  }
+  .containerIsActive {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid red;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    color: white;
+    justify-content: space-around;
+  }
+  .buttonContainer {
+    display: flex;
+    color: white;
+    width: 5rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .articleButton {
+    width: 1.75rem;
+    height: 1.75rem;
+    cursor: pointer;
+  }
 }
-.content {
-  margin-left: 2rem;
+@media only screen and (max-width: 1700px) {
+  .compartContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    margin-right: 2rem;
+    color: white;
+    justify-content: space-around;
+  }
+  .content {
+    margin-left: 2rem;
+  }
+  .containerIsActive {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid red;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    color: white;
+    justify-content: space-around;
+  }
+  .buttonContainer {
+    display: flex;
+    color: white;
+    width: 5rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .articleButton {
+    width: 1.75rem;
+    height: 1.75rem;
+    cursor: pointer;
+  }
 }
-.containerIsActive {
-  display: flex;
-  flex-direction: column;
-  height: 10rem;
-  width: 15rem;
-  border: 0.125rem solid red;
-  border-radius: 0.5rem;
-  margin-top: 1rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  color: white;
-  justify-content: space-around;
-}
-.buttonContainer {
-  display: flex;
-  color: white;
-  width: 5rem;
-  justify-content: space-between;
-  align-items: center;
-}
-.articleButton {
-  width: 1.75rem;
-  height: 1.75rem;
-  cursor: pointer;
+@media only screen and (max-width: 1200px) {
+  .compartContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    margin-right: 2rem;
+    color: white;
+    justify-content: space-around;
+  }
+  .content {
+    margin-left: 2rem;
+  }
+  .containerIsActive {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid red;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    color: white;
+    justify-content: space-around;
+  }
+  .buttonContainer {
+    display: flex;
+    color: white;
+    width: 5rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .articleButton {
+    width: 1.75rem;
+    height: 1.75rem;
+    cursor: pointer;
+  }
 }

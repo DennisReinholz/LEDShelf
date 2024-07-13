@@ -28,3 +28,35 @@
     width: 50rem;
   }
 }
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 38rem;
+    width: 85rem;
+    color: white;
+    margin-left: 1rem;
+    font-size: 1.25rem;
+  }
+  .content {
+    display: flex;
+    margin-top: 2rem;
+    width: 50rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 80rem;
+    width: 60rem;
+    color: white;
+    margin-left: 1rem;
+    font-size: 1.25rem;
+  }
+  .content {
+    display: flex;
+    margin-top: 2rem;
+    width: 50rem;
+  }
+}

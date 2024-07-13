@@ -58,3 +58,23 @@
     justify-content: space-between;
   }
 }
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: 15rem;
+    width: 25rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .buttonContainer {
+    margin-top: 5rem;
+    display: flex;
+    margin-left: 7rem;
+    width: 18rem;
+    justify-content: space-between;
+  }
+}
