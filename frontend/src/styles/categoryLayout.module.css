@@ -69,6 +69,7 @@
     width: 80rem;
     margin-top: 1rem;
     margin-left: 2rem;
+    font-size: 1.25rem;
   }
   .addCategoryContainer {
     display: flex;
