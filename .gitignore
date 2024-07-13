@@ -1,7 +1,6 @@
 # Prerequisites
 *.d
-#nodemodules
-node_modules
+
 # Compiled Object files
 *.slo
 *.lo
@@ -31,3 +30,5 @@ node_modules
 *.exe
 *.out
 *.app
+
+*node_modules/*
