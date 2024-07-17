@@ -10,10 +10,8 @@ const Shelf = ({ shelfname, place, compantments, article, shelfId }) => {
       onClick={() => navigate(`/regale/${shelfId}`)}
     >
       <div className={styles.content}>
-        <p>{shelfname} - Regal</p>
+        <p>{shelfname} </p>
         <p>Ort: {place}</p>
-        <p>Anzahl Fächer: {compantments}</p>
-        <p>Anzahl Artikel: {article}</p>
       </div>
     </div>
   );

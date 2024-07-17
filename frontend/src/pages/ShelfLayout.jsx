@@ -51,7 +51,7 @@ const ShelfLayout = () => {
                 className="primaryButton"
                 onClick={() => setIsShelfOpen((o) => !o)}
               >
-                Add Regal
+                Erstellen
               </button>
             )
           : ""}

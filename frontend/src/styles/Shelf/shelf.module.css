@@ -65,12 +65,12 @@
     will-change: transform;
     transition: transform 0.3s ease-in-out;
     cursor: pointer;
+    background-color: rgb(23, 23, 23);
   }
   .content {
     margin-left: 2rem;
   }
   .container:hover {
     transform: scale(1.05);
-    background-color: rgb(23, 23, 23);
   }
 }
