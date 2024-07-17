@@ -11,6 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { UserContext } from "../helpers/userAuth";
 import ArticleFilter from "../components/Article/ArticleFilter";
 import { Tooltip } from "react-tooltip";
+import { FiAirplay } from "react-icons/fi";
 
 const ArticleLayout = () => {
   const [user, setUser] = useContext(UserContext);
@@ -207,6 +208,7 @@ const ArticleLayout = () => {
     }
   };
 
+  const NavToShelf = () => {};
   const handleUser = () => {
     if (user != undefined) {
       setActiveUser(true);
@@ -279,6 +281,9 @@ const ArticleLayout = () => {
       <Tooltip anchorSelect=".delete" place="left">
         Löscht den Artikel
       </Tooltip>
+      <Tooltip anchorSelect=".navigateShelf" place="left">
+        Zum Regal
+      </Tooltip>
       <div className={styles.buttonContainer}>
         {user != undefined
           ? user[0].role == 1 && (
@@ -345,6 +350,11 @@ const ArticleLayout = () => {
                             className="delete"
                             style={{ cursor: "pointer" }}
                             onClick={() => handleDeleteArticle(c)}
+                          />
+                          <FiAirplay
+                            className="navigateShelf"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => navigate(`/regale/${c.shelf}`)}
                           />
                         </div>
                       </td>

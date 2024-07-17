@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import axios from "axios";
 import styles from "../../styles/Shelf/compartment.module.css";
 
 const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
@@ -15,8 +14,6 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
   const increase = () => {
     setCounter((c) => c + 1);
   };
-
-  //TODO: hier weitermachen
   const getCompartmentArticle = async () => {
     const response = await fetch(
       `http://localhost:3000/getArticleInCompartment`,

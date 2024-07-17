@@ -80,7 +80,7 @@ const CompartmentLayout = () => {
   };
   useEffect(() => {
     getCompartments();
-    //getShelfOf();
+
     const userStorage = localStorage.getItem("user");
     if (
       userStorage !== undefined ||
@@ -99,16 +99,15 @@ const CompartmentLayout = () => {
           {compartments != undefined && compartments[0] != undefined
             ? compartments[0].shelfname
             : ""}
-          - Regal
         </h2>
+        <button
+          className="primaryButton"
+          style={{ marginLeft: "2rem" }}
+          onClick={hanleAllOff}
+        >
+          All off
+        </button>
       </div>
-      <button
-        className="primaryButton"
-        style={{ marginLeft: "2rem" }}
-        onClick={hanleAllOff}
-      >
-        All off
-      </button>
       <div className={styles.content}>
         {compartments != undefined
           ? compartments.map((c) => (

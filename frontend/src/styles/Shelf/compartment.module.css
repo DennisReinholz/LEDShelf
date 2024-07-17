@@ -118,6 +118,7 @@
     margin-right: 2rem;
     color: white;
     justify-content: space-around;
+    background-color: rgb(23, 23, 23);
   }
   .content {
     margin-left: 2rem;

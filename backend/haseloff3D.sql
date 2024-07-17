@@ -28,3 +28,6 @@ SELECT DISTINCT(compartment.compartmentId), shelf.shelfid, shelf.shelfname, comp
     JOIN compartment ON shelf.shelfid = compartment.shelfId 
     LEFT JOIN article ON compartment.compartmentId = article.compartment
     WHERE shelf.shelfid =45
+
+
+DELETE FROM article WHERE shelf =44;
