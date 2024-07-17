@@ -3,7 +3,6 @@ import { createContext, useState, useEffect, useNavigate } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Login from "../pages/Login.jsx";
-import Main from "../pages/Main.jsx";
 import Applayout from "../pages/Applayout.jsx";
 import { UserProvider } from "../helpers/userAuth.jsx";
 import ShelfLayout from "../pages/ShelfLayout.jsx";
@@ -12,6 +11,7 @@ import UserLayout from "../pages/UserLayout.jsx";
 import ArticleLayout from "../pages/ArticleLayout.jsx";
 import DeviceLayout from "../pages/DeviceLayout.jsx";
 import CategoryLayout from "../pages/CategoryLayout.jsx";
+import ServiceLayout from "../pages/ServiceLayout.jsx";
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
               <Route path="artikel" element={<ArticleLayout />} />
               <Route path="geraete" element={<DeviceLayout />} />
               <Route path="kategorie" element={<CategoryLayout />} />
+              <Route path="service" element={<ServiceLayout />} />
             </Route>
           </Routes>
         </BrowserRouter>

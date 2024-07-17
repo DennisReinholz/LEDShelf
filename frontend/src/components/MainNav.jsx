@@ -7,6 +7,7 @@ import { BsBookshelf } from "react-icons/bs";
 import { HiOutlineScale } from "react-icons/hi2";
 import { UserContext } from "../helpers/userAuth.jsx";
 import { HiOutlineQrCode } from "react-icons/hi2";
+import { MdOutlineContactSupport } from "react-icons/md";
 import styles from "../styles/Sidebar/mainNav.module.css";
 
 const MainNav = () => {
@@ -18,100 +19,75 @@ const MainNav = () => {
     navigate("/login");
   };
   return (
-    <nav className={styles.container}>
+    <div className={styles.container}>
       <ul>
-        <li>
-          <div className={styles.nav}>
-            <NavLink
-              to="/regale"
-              style={{
-                textDecoration: "none",
-                color: "white",
-              }}
-            >
-              <BsBookshelf />
+        <div className={styles.nav} onClick={() => navigate("/regale")}>
+          <BsBookshelf />
+          <div className={styles.textContainer}>
+            <p>Regale</p>
+          </div>
+        </div>
 
-              <p>Regale</p>
-            </NavLink>
+        <div className={styles.nav} onClick={() => navigate("/artikel")}>
+          <HiOutlineScale />
+          <div className={styles.textContainer}>
+            <p>Artikel</p>
           </div>
-        </li>
-        <li>
-          <div className={styles.nav}>
-            <NavLink
-              to="/artikel"
-              style={{
-                textDecoration: "none",
-                color: "white",
-              }}
-            >
-              <HiOutlineScale />
-              <p>Artikel</p>
-            </NavLink>
-          </div>
-        </li>
+        </div>
+
         {user !== null
           ? user[0].role == 1 && (
               <>
-                <li>
-                  <div className={styles.nav}>
-                    <NavLink
-                      to="/benutzer"
-                      style={{
-                        textDecoration: "none",
-                        color: "white",
-                      }}
-                    >
-                      <HiOutlineUsers />
-                      <p>Benutzer</p>
-                    </NavLink>
+                <div
+                  className={styles.nav}
+                  onClick={() => navigate("/benutzer")}
+                >
+                  <HiOutlineUsers />
+                  <div className={styles.textContainer}>
+                    <p>Benutzer</p>
                   </div>
-                </li>
-                <li>
-                  <div className={styles.nav}>
-                    <NavLink
-                      to="/geraete"
-                      style={{
-                        textDecoration: "none",
-                        color: "white",
-                      }}
-                    >
-                      <HiOutlineSignal />
-                      <p>Geräte</p>
-                    </NavLink>
+                </div>
+
+                <div
+                  className={styles.nav}
+                  onClick={() => navigate("/geraete")}
+                >
+                  <HiOutlineSignal />
+                  <div className={styles.textContainer}>
+                    <p>Geräte</p>
                   </div>
-                </li>
-                <li>
-                  <div className={styles.nav}>
-                    <NavLink
-                      to="/kategorie"
-                      style={{
-                        textDecoration: "none",
-                        color: "white",
-                      }}
-                    >
-                      <HiOutlineQrCode />
-                      <p>Kategorie</p>
-                    </NavLink>
+                </div>
+
+                <div
+                  className={styles.nav}
+                  onClick={() => navigate("/kategorie")}
+                >
+                  <HiOutlineQrCode />
+                  <div className={styles.textContainer}>
+                    <p>Kategorie</p>
                   </div>
-                </li>
+                </div>
+                <div
+                  className={styles.nav}
+                  onClick={() => navigate("/service")}
+                >
+                  <MdOutlineContactSupport />
+                  <div className={styles.textContainer}>
+                    <p>Service</p>
+                  </div>
+                </div>
               </>
             )
           : ""}
-        <li>
-          <div className={styles.nav} onClick={handleLogout}>
-            <NavLink
-              style={{
-                textDecoration: "none",
-                color: "white",
-              }}
-            >
-              <HiOutlineArrowRightOnRectangle />
-              <p>Logout</p>
-            </NavLink>
+
+        <div className={styles.nav} onClick={handleLogout}>
+          <HiOutlineArrowRightOnRectangle />
+          <div className={styles.textContainer}>
+            <p>Logout</p>
           </div>
-        </li>
+        </div>
       </ul>
-    </nav>
+    </div>
   );
 };
 
