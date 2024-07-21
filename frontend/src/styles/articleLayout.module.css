@@ -95,7 +95,7 @@
   }
   .tableContainer table {
     width: 65rem;
-
+    background-color: #171717;
     margin: 0 auto; /* Automatische Zentrierung der Tabelle */
     border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
     overflow-y: scroll;
@@ -115,6 +115,7 @@
   th,
   td {
     height: 5rem;
+    width: 5rem;
     border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
     text-align: center;
   }
@@ -159,7 +160,7 @@
     height: 1.8rem;
   }
   .tableContainer {
-    width: 51rem;
+    width: 52rem;
     height: 30rem;
     overflow-y: scroll;
   }
@@ -167,6 +168,7 @@
     width: 50rem;
     margin: 0 auto; /* Automatische Zentrierung der Tabelle */
     border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
+    background-color: #171717;
   }
   table th {
     font-weight: bold;
@@ -182,6 +184,7 @@
   th,
   td {
     height: 3rem;
+    width: 5rem;
     border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
     text-align: center;
   }
@@ -233,6 +236,7 @@
   .tableContainer table {
     width: 50rem;
     border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
+    background-color: #171717;
   }
   table th {
     font-weight: bold;
@@ -248,6 +252,7 @@
   th,
   td {
     height: 3rem;
+    width: 5rem;
     border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
     text-align: center;
   }

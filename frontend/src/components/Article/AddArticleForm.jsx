@@ -209,7 +209,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           onChange={(e) => setSelectedCompartment(e.target.value)}
         >
           {compartment !== undefined && compartment.length === 0 ? (
-            <option>Kein freies Regal</option>
+            <option>Kein freies Fach</option>
           ) : (
             ""
           )}
