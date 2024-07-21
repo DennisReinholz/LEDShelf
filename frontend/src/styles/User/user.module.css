@@ -33,7 +33,7 @@
   .container {
     display: flex;
     flex-direction: row;
-    width: 30rem;
+    width: 28rem;
     color: white;
     justify-content: space-between;
   }
@@ -48,7 +48,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 5rem;
+    width: 4rem;
     margin-right: 1rem;
   }
 }
@@ -60,7 +60,7 @@
   .container {
     display: flex;
     flex-direction: row;
-    width: 22rem;
+    width: 20rem;
     color: white;
     justify-content: space-between;
   }

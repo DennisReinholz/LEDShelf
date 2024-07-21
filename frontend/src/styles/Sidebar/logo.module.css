@@ -26,7 +26,6 @@
     font-weight: 100;
   }
 }
-/* Fertig 1920 */
 @media only screen and (max-height: 1920px) {
   .content {
     display: flex;
@@ -60,7 +59,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 5rem;
+    height: 10rem;
     width: 10rem;
     margin-top: 3rem;
   }
@@ -75,6 +74,7 @@
     display: flex;
     color: white;
     font-size: 1.4em;
+    height: 5rem;
   }
   .name {
     font-weight: bolder;

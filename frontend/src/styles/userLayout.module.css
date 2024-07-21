@@ -20,6 +20,8 @@
     color: white;
     margin-top: 3rem;
     justify-content: space-between;
+    background-color: #171717;
+    margin: 0 auto;
   }
   .contentHeader {
     color: white;
@@ -62,11 +64,13 @@
     height: 40rem;
     width: 30rem;
     border: 0.125rem solid white;
+    background-color: #171717;
     border-radius: 0.5rem;
     color: white;
     margin-top: 3rem;
     justify-content: space-between;
     margin-left: 1rem;
+    margin: 0 auto;
   }
   .contentHeader {
     color: white;

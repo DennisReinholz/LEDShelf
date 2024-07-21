@@ -27,25 +27,31 @@
   .nav p {
     margin: 0rem;
   }
+  .textContainer {
+    display: flex;
+    width: 5rem;
+  }
 }
 @media only screen and (max-width: 1920px) {
   .container {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 21rem;
-    font-size: 1em;
+    font-size: 0.9em;
   }
   .container ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    margin-top: 2rem;
   }
   .nav {
     display: flex;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    width: 8rem;
     font-size: 1.3em;
-    padding: 10px 10px;
     cursor: pointer;
     color: white;
     will-change: transform;
@@ -54,10 +60,13 @@
   .nav:hover {
     transform: scale(1.2);
     border-radius: 5px;
-    padding: 10px 10px;
   }
   .nav p {
     margin: 0rem;
+  }
+  .textContainer {
+    display: flex;
+    width: 5rem;
   }
 }
 @media only screen and (max-width: 1700px) {
@@ -81,9 +90,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 8rem;
+    width: 7rem;
     font-size: 1.3em;
-    padding: 10px 10px;
     cursor: pointer;
     color: white;
     will-change: transform;
