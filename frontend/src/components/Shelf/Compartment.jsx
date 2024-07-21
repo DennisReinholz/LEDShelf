@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import styles from "../../styles/Shelf/compartment.module.css";
+import RemovalCompartment from "./RemovalCompartment";
 
 const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
   const [article, setArticle] = useState();
@@ -8,12 +9,6 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
   const [ip, setIp] = useState();
   const [controllerFunction, setControllerFunction] = useState();
 
-  const decrease = () => {
-    setCounter((c) => c - 1);
-  };
-  const increase = () => {
-    setCounter((c) => c + 1);
-  };
   const getCompartmentArticle = async () => {
     const response = await fetch(
       `http://localhost:3000/getArticleInCompartment`,
@@ -133,26 +128,12 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
         </div>
       </div>
       {isActive && (
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <div className={styles.buttonContainer}>
-            <button className={styles.articleButton} onClick={() => decrease()}>
-              -
-            </button>
-            <p style={{ fontSize: "1.25em" }}>{counter}</p>
-            <button className={styles.articleButton} onClick={() => increase()}>
-              +
-            </button>
-          </div>
-          <button
-            className="primaryButton"
-            style={{ marginLeft: "1rem" }}
-            onClick={() =>
-              UpdateArticleCount(article != undefined ? article.articleid : "")
-            }
-          >
-            Speichern
-          </button>
-        </div>
+        <RemovalCompartment
+          UpdateArticleCount={UpdateArticleCount}
+          article={article}
+          counter={counter}
+          setCounter={setCounter}
+        />
       )}
     </div>
   );

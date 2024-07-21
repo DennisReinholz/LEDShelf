@@ -20,9 +20,9 @@
     width: 107rem;
     height: 45rem;
     justify-content: space-around;
-    overflow-y: scroll;
   }
   .tableContainer {
+    overflow-y: scroll;
     display: flex;
   }
   table {
@@ -80,13 +80,14 @@
   .content {
     display: flex;
     flex-wrap: wrap;
-    width: 20rem;
+    width: 22rem;
     height: 45rem;
     justify-content: space-around;
-    overflow-y: scroll;
+    margin: 0 auto;
   }
   .tableContainer {
     display: flex;
+    overflow-y: scroll;
   }
   table {
     width: 20rem;
@@ -146,9 +147,9 @@
     width: 83rem;
     height: 30rem;
     justify-content: space-around;
-    overflow-y: scroll;
   }
   .tableContainer {
+    overflow-y: scroll;
     display: flex;
   }
   table {
@@ -208,10 +209,10 @@
     width: 83rem;
     height: 30rem;
     justify-content: space-around;
-    overflow-y: scroll;
   }
   .tableContainer {
     display: flex;
+    overflow-y: scroll;
   }
   table {
     width: 20rem;
@@ -256,7 +257,7 @@
     color: white;
     flex-wrap: wrap;
     height: 50rem;
-    width: 60rem;
+    width: 56rem;
     margin-top: 1rem;
     margin-left: 2rem;
   }
@@ -268,12 +269,12 @@
   .content {
     display: flex;
     flex-wrap: wrap;
-    width: 60rem;
+    width: 56rem;
     height: 30rem;
     justify-content: space-around;
-    overflow-y: scroll;
   }
   .tableContainer {
+    overflow-y: scroll;
     display: flex;
   }
   table {

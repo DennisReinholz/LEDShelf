@@ -63,8 +63,9 @@
     display: flex;
     flex-direction: column;
     height: 39rem;
-    width: 80rem;
+    width: 59rem;
     font-size: 1em;
+    margin: 0 auto;
     color: white;
   }
   .containerContent {
