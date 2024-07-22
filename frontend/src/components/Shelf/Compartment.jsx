@@ -8,6 +8,7 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
   const [counter, setCounter] = useState(0);
   const [ip, setIp] = useState();
   const [controllerFunction, setControllerFunction] = useState();
+  const [controllerAvaiable, setControllerAvaiable] = useState();
 
   const getCompartmentArticle = async () => {
     const response = await fetch(
@@ -81,13 +82,18 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
     )
       .then((response) => response.json())
       .then((data) => {
+        if (data.length === 0) {
+          setControllerAvaiable(false);
+        }
         if (data[0] != null || data[0] != undefined) {
           setIp(data[0].ipAdresse);
           setControllerFunction(data[0].functionName);
+          console.log(data[0].ipAdresse);
         }
       });
   };
   const handleLedOn = async () => {
+    console.log("test");
     try {
       const response = await fetch(`http://${ip}/${controllerFunction}`);
       if (response.status !== 200) {
@@ -103,10 +109,15 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
   useEffect(() => {
     getCompartmentArticle();
     getControllerFunction();
-  }, [article, ip, controllerFunction]);
+  }, [article, ip]);
 
   return (
-    <div className={styles.compartContainer} onClick={() => handleLedOn()}>
+    <div
+      className={styles.compartContainer}
+      onClick={() => {
+        !controllerAvaiable ? handleLedOn() : "";
+      }}
+    >
       <div
         className={isActive ? styles.containerIsActive : styles.container}
         onClick={() => handleIsActive(compId)}
