@@ -5,7 +5,7 @@ module.exports.getUser = async (req, res, db) => {
   const { frontendPassword } = req.body;
   const { user } = req.query;
   db.all(
-    "SELECT user.*, role.name FROM user, role WHERE userid=? AND user.role = role.roleid",
+    "SELECT user.*, role.name FROM user, role WHERE user.username=? AND user.role = role.roleid",
     [user],
     async (err, result) => {
       if (err) {

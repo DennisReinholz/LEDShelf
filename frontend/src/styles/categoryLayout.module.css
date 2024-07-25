@@ -144,13 +144,15 @@
   .content {
     display: flex;
     flex-wrap: wrap;
-    width: 83rem;
+    width: 80rem;
     height: 30rem;
     justify-content: space-around;
   }
   .tableContainer {
     overflow-y: scroll;
     display: flex;
+    height: 30rem;
+    width: 21rem;
   }
   table {
     width: 20rem;
@@ -181,7 +183,9 @@
   }
   .editContainer {
     display: flex;
+    text-align: center;
     justify-content: space-around;
+    width: 5rem;
   }
   .inputSearch {
     height: 1.5rem;

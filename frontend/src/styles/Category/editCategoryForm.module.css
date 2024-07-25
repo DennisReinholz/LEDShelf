@@ -52,13 +52,13 @@
     flex-direction: column;
     height: 15rem;
     width: 20rem;
+    overflow-y: scroll;
   }
   .content {
     display: flex;
     flex-direction: column;
     height: 12rem;
     width: 20rem;
-    overflow-y: scroll;
     justify-content: space-between;
   }
   .buttonContainer {
