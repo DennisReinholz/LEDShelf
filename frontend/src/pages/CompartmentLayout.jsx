@@ -8,13 +8,10 @@ import toast from "react-hot-toast";
 
 const CompartmentLayout = () => {
   let { shelfid } = useParams();
-
+  const navigate = useNavigate();
   const [user, setUser] = useContext(UserContext);
   const [compartments, setCompartments] = useState();
   const [activeCompartments, setActiveCompartments] = useState([]);
-  const [ip, setIp] = useState();
-  const [controllerFunction, setControllerFunction] = useState();
-  const navigate = useNavigate();
 
   const handleIsActive = (index) => {
     setActiveCompartments((prevState) => {
@@ -27,29 +24,26 @@ const CompartmentLayout = () => {
     setActiveCompartments(Array(compartments.length).fill(false));
     handleLedOff();
   };
-  const getShelfOf = async () => {
-    const response = await fetch(`http://localhost:3000/getShelfOff`, {
-      method: "Post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-cache",
-      body: JSON.stringify({
-        shelfid,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setIp(data[0].ipAdresse);
-        setControllerFunction(data[0].functionName);
-      });
-  };
   const handleLedOff = async () => {
     try {
-      const response = await fetch(`http://${ip}/${controllerFunction}`);
-      if (response.status !== 200) {
-        throw new Error("Network response was not ok");
-      }
+      const response = await fetch(`http://localhost:3000/controllerOff`, {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        body: JSON.stringify({
+          shelfid,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.serverStatus !== 2) {
+            toast.error(
+              "Led´s konnten nicht ausgeschaltet werden. Bitte überprüfen Sie die Verbindung zum Controller"
+            );
+          }
+        });
     } catch (error) {
       toast.error("There was a problem with the fetch operation:", error);
     }
@@ -80,7 +74,6 @@ const CompartmentLayout = () => {
   };
   useEffect(() => {
     getCompartments();
-
     const userStorage = localStorage.getItem("user");
     if (
       userStorage !== undefined ||

@@ -1,0 +1,19 @@
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 15rem;
+    width: 25rem;
+  }
+  .content {
+    display: flex;
+    height: 15rem;
+    width: 25rem;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    width: 25rem;
+    justify-content: space-between;
+  }
+}

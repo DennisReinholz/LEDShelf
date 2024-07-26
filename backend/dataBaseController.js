@@ -1,4 +1,6 @@
 require("dotenv").config();
+const axios = require("axios");
+const ping = require("ping");
 const bcrypt = require("bcrypt");
 
 module.exports.getUser = async (req, res, db) => {
@@ -169,7 +171,6 @@ module.exports.postCreateShelf = async (req, res, db) => {
   );
 };
 module.exports.getArticle = async (req, res, db) => {
-  //Regal name herausfinden
   db.all(
     `SELECT 
    * 
@@ -467,6 +468,120 @@ module.exports.UpdateArticleCategory = async (req, res, db) => {
     }
   );
 };
+module.exports.getController = async (req, res, db) => {
+  db.all(
+    `SELECT ledController.*, shelf.*
+FROM ledController
+LEFT JOIN shelf ON ledController.shelfid = shelf.shelfid
+WHERE ledController.shelfid IS NOT NULL
+   OR ledController.shelfid IS NULL;`,
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json(result);
+      }
+    }
+  );
+};
+module.exports.UpdateLedController = async (req, res, db) => {
+  const { ip, shelfid, status, controllerid } = req.body;
+  db.all(
+    `UPDATE ledController SET ipAdresse =?, shelfid=?, status=? WHERE ledControllerid=?`,
+    [ip, shelfid, status, controllerid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json({ serverStatus: 2 });
+      }
+    }
+  );
+};
+module.exports.CreateLedController = async (req, res, db) => {
+  const { ipAdress, shelf } = req.body;
+  //Ping LEDController for status
+  let tempStatus;
+  try {
+    const response = await axios.get("http://192.168.188.48");
+    if (response.status == 200) {
+      tempStatus = "Connected";
+    } else {
+      tempStatus = "Disconnected";
+    }
+  } catch (error) {
+    console.log("Error pinging ESP32:", error);
+    tempStatus = "undefinded";
+  }
+  const status = tempStatus;
+
+  //Create n Controllerfunction with ledControllerid
+  db.all(
+    `INSERT INTO ledController (ipAdresse, shelfid, status) VALUES (?,?,?)`,
+    [ipAdress, shelf, status],
+    (error, result) => {
+      if (error) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json({ result: result, serverStatus: 2 });
+      }
+    }
+  );
+  CreateControllerFunction(db, res, shelf);
+};
+module.exports.DeleteLedController = async (req, res, db) => {
+  const { deviceId } = req.body;
+  db.all(
+    `DELETE FROM ledController WHERE ledControllerid=?`,
+    [deviceId],
+    (error, result) => {
+      if (error) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json({ serverStatus: 2 });
+      }
+    }
+  );
+  await DeleteControllerFunction(db, deviceId);
+};
+module.exports.ControllerOff = async (req, res, db) => {
+  const { shelfid } = req.body;
+  return new Promise((resolve, reject) => {
+    db.get(
+      `SELECT * FROM ledController WHERE shelfid=?`,
+      [shelfid],
+      (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          const ledoff = LedOff(result.ipAdresse);
+          res.status(200).json({ serverStatus: 2 });
+        }
+      }
+    );
+  });
+};
+module.exports.PingController = async (req, res) => {
+  const { ip } = req.body;
+  try {
+    const ping = await fetch(`http://${ip}`);
+    if (ping.status == 200) {
+      res.status(200).json({ serverStatus: 2 });
+    } else {
+      res.status(500).json({ serverStatus: -1 });
+    }
+  } catch (error) {
+    res.status(500).json({ serverStatus: -1 });
+  }
+};
+
+const LedOff = async (ipAdresse) => {
+  const response = await fetch(`http:/${ipAdresse}/led/off`);
+};
 const CreateCompartments = (db, countCompartment) => {
   db.get("SELECT last_insert_rowid() as shelfId", (err, row) => {
     const shelfId = row.shelfId;
@@ -478,4 +593,75 @@ const CreateCompartments = (db, countCompartment) => {
       );
     }
   });
+};
+const CreateControllerFunction = async (db, res, shelf) => {
+  try {
+    //get list of compartments from shelfs
+    const compartmentList = await getCompartments(db, shelf);
+
+    //last created Controller
+    const controllerId = await getLastInsertRowId(db);
+
+    //insert controllerfunction
+    await insertControllerFunction(db, controllerId, compartmentList);
+  } catch (error) {
+    console.error(error);
+  }
+};
+const getLastInsertRowId = (db) => {
+  return new Promise((resolve, reject) => {
+    db.get("SELECT last_insert_rowid() as ledControllerid", (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row.ledControllerid);
+      }
+    });
+  });
+};
+const getCompartments = (db, shelf) => {
+  return new Promise((resolve, reject) => {
+    db.all(
+      `SELECT compartmentId from compartment WHERE shelfId = ?`,
+      [shelf],
+      (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+const DeleteControllerFunction = async (db, deviceId) => {
+  try {
+    await db.all(`DELETE FROM ControllerFunctions WHERE controllerId =?`, [
+      deviceId,
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const insertControllerFunction = async (db, controllerId, compartmentList) => {
+  try {
+    for (let i = 0; i < compartmentList.length; i++) {
+      await db.run(
+        `INSERT INTO ControllerFunctions (controllerId, functionName, compartmentid) VALUES (?,?,?)`,
+        [
+          controllerId,
+          "led" + (i + 1) + "/on",
+          compartmentList[i].compartmentId,
+        ]
+      );
+    }
+
+    // Led off controllerFunction
+    await db.run(
+      `INSERT INTO ControllerFunctions (controllerId, functionName) VALUES (?,?)`,
+      [controllerId, "led/off"]
+    );
+  } catch (error) {
+    throw error;
+  }
 };
