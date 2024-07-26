@@ -44,7 +44,7 @@
     flex-direction: column;
     color: white;
     height: 10rem;
-    width: 15rem;
+    width: 20rem;
   }
   .content {
     display: flex;
@@ -53,8 +53,7 @@
   .buttonContainer {
     margin-top: 1rem;
     display: flex;
-    margin-left: 2rem;
-    width: 13rem;
+    width: 18rem;
     justify-content: space-between;
   }
 }

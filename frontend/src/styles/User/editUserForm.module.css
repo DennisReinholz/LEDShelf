@@ -77,8 +77,8 @@
   .buttonContainer {
     display: flex;
     justify-content: space-between;
-    width: 14rem;
-    margin-left: 6rem;
+    width: 18rem;
+    margin-left: 2rem;
     margin-top: 2rem;
   }
 }

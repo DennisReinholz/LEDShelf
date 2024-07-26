@@ -114,15 +114,20 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
     setNewShelf(shelfid);
     getCompartments(shelfid);
   };
+
   useEffect(() => {
     getArticle();
     getCategory();
   }, []);
+
   return (
     <div className={styles.container}>
       <h2>Artikel bearbeiten</h2>
       <div className={styles.content}>
-        <p>{articleStatus !== undefined ? articleStatus.articlename : ""}</p>
+        <p>
+          <strong>Artikelname: </strong>
+          {articleStatus !== undefined ? articleStatus.articlename : ""}
+        </p>
         <input
           type="text"
           placeholder="neuer Artikelname"
@@ -133,7 +138,8 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
       </div>
       <div className={styles.content}>
         <p>
-          Menge: {articleStatus !== undefined ? articleStatus.count : ""}{" "}
+          <strong>Menge: </strong>
+          {articleStatus !== undefined ? articleStatus.count : ""}{" "}
           {articleStatus !== undefined ? articleStatus.unit : ""}
         </p>
         <div className={styles.inputRow}>
@@ -170,8 +176,9 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
       </div>
       <div className={styles.content}>
         <p>
-          Regal: {articleStatus !== undefined ? articleStatus.shelfname : ""} -
-          Fach: {articleStatus !== undefined ? articleStatus.compartment : ""}
+          <strong>Regal: </strong>
+          {articleStatus !== undefined ? articleStatus.shelfname : ""} - Fach:{" "}
+          {articleStatus !== undefined ? articleStatus.compartment : ""}
         </p>
         <select
           onChange={(e) => handleShelfSelction(e.target.value)}

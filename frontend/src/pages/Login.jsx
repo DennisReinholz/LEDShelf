@@ -90,7 +90,7 @@ const Login = () => {
         <div className={styles.inputContainer}>
           <MyTextField
             id="outlined-basic-1"
-            label="User ID"
+            label="Name"
             variant="outlined"
             size="small"
             style={{ width: "16rem" }}

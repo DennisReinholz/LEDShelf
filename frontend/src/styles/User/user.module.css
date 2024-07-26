@@ -60,7 +60,7 @@
   .container {
     display: flex;
     flex-direction: row;
-    width: 20rem;
+    width: 22rem;
     color: white;
     justify-content: space-between;
   }

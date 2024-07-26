@@ -109,9 +109,9 @@
   }
   .buttonContainer {
     display: flex;
-    width: 15rem;
+    width: 18rem;
     margin-top: 1rem;
-    margin-left: 10rem;
+    margin-left: 7rem;
     justify-content: space-between;
   }
 }

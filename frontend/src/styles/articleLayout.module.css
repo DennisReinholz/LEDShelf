@@ -161,7 +161,7 @@
   }
   .tableContainer {
     width: 52rem;
-    height: 50rem;
+    height: 32rem;
     overflow-y: scroll;
   }
   .tableContainer table {
