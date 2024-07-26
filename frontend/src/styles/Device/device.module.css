@@ -62,12 +62,83 @@
     margin-top: 1rem;
   }
   .assignedIsOpenContainer {
+    background-color: #171717;
     display: flex;
     flex-direction: row;
-    height: 10rem;
+    height: 7rem;
+    width: 30rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+  }
+  .containerParameter {
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .containerParameter p {
+    margin: 0;
+  }
+  .containerValues {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5rem;
+    margin-top: 0.5rem;
+    width: 10rem;
+  }
+  .containerValues p {
+    margin: 0;
+    margin-left: 1rem;
+  }
+  .declareShelf {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+    justify-content: space-between;
+    width: 22rem;
+    margin-left: 1rem;
+  }
+  .assignedIsOpen {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+    justify-content: space-between;
+    width: 15rem;
+    margin-left: 1rem;
+  }
+  .shelfSelection {
+    width: 10rem;
+    height: 2.5rem;
+    font-size: 1em;
+    margin-left: 2rem;
+  }
+  .editContainer {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 3rem;
+    width: 4rem;
+    justify-content: space-between;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: row;
+    height: 7rem;
+    width: 50rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+  }
+  .assignedIsOpenContainer {
+    display: flex;
+    flex-direction: row;
+    height: 7rem;
     width: 45rem;
     border: 0.125rem solid white;
     border-radius: 0.5rem;
+    margin-top: 1rem;
   }
   .containerParameter {
     margin-top: 0.5rem;

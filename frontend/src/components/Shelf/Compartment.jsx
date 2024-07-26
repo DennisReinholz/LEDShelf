@@ -86,24 +86,22 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
           setControllerAvaiable(false);
         }
         if (data[0] != null || data[0] != undefined) {
+          setControllerAvaiable(true);
           setIp(data[0].ipAdresse);
           setControllerFunction(data[0].functionName);
-          console.log(data[0].ipAdresse);
         }
       });
   };
   const handleLedOn = async () => {
-    console.log("test");
-    try {
-      const response = await fetch(`http://${ip}/${controllerFunction}`);
-      if (response.status !== 200) {
-        console.log("Network response was not ok");
-      } else {
-        console.log("test");
+    if (controllerAvaiable) {
+      try {
+        const response = await fetch(`http://${ip}/${controllerFunction}`);
+        if (response.status !== 200) {
+          console.log("Network response was not ok");
+        }
+      } catch (error) {
+        console.log("There was a problem with the fetch operation:");
       }
-      // Optional: Handle response if needed
-    } catch (error) {
-      console.log("There was a problem with the fetch operation:");
     }
   };
   useEffect(() => {
@@ -115,7 +113,7 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
     <div
       className={styles.compartContainer}
       onClick={() => {
-        !controllerAvaiable ? handleLedOn() : "";
+        controllerAvaiable ? handleLedOn() : "";
       }}
     >
       <div

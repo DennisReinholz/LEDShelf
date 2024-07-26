@@ -1,0 +1,84 @@
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    height: 20rem;
+    width: 20rem;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 15rem;
+    width: 18rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .controllerProps {
+    display: flex;
+    flex-direction: row;
+    width: 18rem;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1em;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 18rem;
+    margin-top: 1rem;
+  }
+  .editInput {
+    height: 1.75rem;
+    width: 9.5rem;
+    font-size: 0.75em;
+  }
+  .shelfSelection {
+    height: 1.75rem;
+    width: 10rem;
+    font-size: 0.75em;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    height: 20rem;
+    width: 20rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .controllerProps {
+    display: flex;
+    flex-direction: row;
+    width: 18rem;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1em;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 18rem;
+  }
+  .editInput {
+    height: 1.75rem;
+    width: 7.75rem;
+    font-size: 0.75em;
+  }
+  .shelfSelection {
+    height: 1.75rem;
+    width: 8rem;
+    font-size: 0.75em;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    height: 20rem;
+    width: 20rem;
+  }
+}

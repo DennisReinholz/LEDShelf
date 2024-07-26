@@ -16,7 +16,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 38rem;
+    height: 75rem;
     width: 85rem;
     color: white;
     margin-left: 1rem;
@@ -24,15 +24,19 @@
   }
   .content {
     display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    overflow-y: scroll;
     margin-top: 2rem;
-    width: 50rem;
+    width: 32rem;
+    height: 50rem;
   }
 }
 @media only screen and (max-width: 1700px) {
   .container {
     display: flex;
     flex-direction: column;
-    height: 38rem;
+    height: 75rem;
     width: 85rem;
     color: white;
     margin-left: 1rem;

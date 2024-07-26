@@ -30,4 +30,26 @@ SELECT DISTINCT(compartment.compartmentId), shelf.shelfid, shelf.shelfname, comp
     WHERE shelf.shelfid =45
 
 
-DELETE FROM article WHERE shelf =44;
+DELETE FROM ledController WHERE ledControllerid > 1;
+DELETE FROM ControllerFunctions WHERE controllerfunctionId > 7;
+
+
+SELECT ledController.*, shelf.* from ledController, shelf WHERE ledController.shelfid = shelf.shelfid
+
+
+INSERT INTO ledController (ipAdresse, shelfid, numberCompartment, status) VALUES ("192.162.188.48",46,6,"Connected")
+
+SELECT compartmentId from compartment WHERE shelfId = 45
+
+DELETE FROM controllerFunctions where controllerfunctionId = 68
+
+
+SELECT cf.*, lc.* FROM ControllerFunctions cf, ledController lc WHERE cf.compartmentid= 319 AND cf.controllerId = lc.ledControllerid
+
+
+SELECT ledController.*, shelf.*
+FROM ledController
+LEFT JOIN shelf ON ledController.shelfid = shelf.shelfid
+WHERE ledController.shelfid IS NOT NULL
+   OR ledController.shelfid IS NULL;
+

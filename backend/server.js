@@ -123,39 +123,23 @@ app.post("/getArticleWithCategory", (req, res) => {
 app.post("/UpdateArticleCategory", (req, res) => {
   DataBaseController.UpdateArticleCategory(req, res, db);
 });
-
-app.post("/register-controller", async (req, res) => {
-  try {
-    const { name, ssid, password } = req.body;
-
-    // Überprüfe, ob der Controller bereits registriert ist
-    const existingController = await Controller.findOne({ name });
-
-    if (existingController) {
-      return res
-        .status(400)
-        .json({ message: "Controller bereits registriert" });
-    }
-
-    // Erstelle einen neuen Controller-Eintrag in der Datenbank
-
-    res.status(201).json({ message: "Controller erfolgreich registriert" });
-  } catch (error) {
-    console.error("Fehler beim Registrieren des Controllers:", error);
-    res.status(500).json({ message: "Interner Serverfehler" });
-  }
+app.get("/getController", (req, res) => {
+  DataBaseController.getController(req, res, db);
 });
-app.get("/wifi-networks", async (req, res) => {
-  try {
-    // WLAN-Netzwerke scannen
-    const networks = await wifi.scan();
-    console.log(networks);
-    // Liste der Netzwerke senden
-    res.json(networks);
-  } catch (error) {
-    console.error("Fehler beim Scannen der WLAN-Netzwerke:", error);
-    res.status(500).json({ error: "Fehler beim Scannen der WLAN-Netzwerke" });
-  }
+app.post("/updateLedController", (req, res) => {
+  DataBaseController.UpdateLedController(req, res, db);
+});
+app.post("/createLedController", (req, res) => {
+  DataBaseController.CreateLedController(req, res, db);
+});
+app.post("/deleteLedController", (req, res) => {
+  DataBaseController.DeleteLedController(req, res, db);
+});
+app.post("/controllerOff", (req, res) => {
+  DataBaseController.ControllerOff(req, res, db);
+});
+app.post("/pingController", (req, res) => {
+  DataBaseController.PingController(req, res, db);
 });
 // Server starten
 app.listen(PORT, () => {

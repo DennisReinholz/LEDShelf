@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import styles from "../styles/deviceLayout.module.css";
-import Device from "../components/Devices/Device";
-import ControllerLayout from "./ControllerLayout";
+import Device from "../components/Device/Device";
 import Modal from "../components/common/Modal";
-import AddDeviceForm from "../components/Devices/AddDeviceForm";
+import AddDeviceForm from "../components/Device/AddDeviceForm";
 import { UserContext } from "../helpers/userAuth";
 
 const DeviceLayout = () => {
-  const [shelfList, setSehlefList] = useState([]);
+  const [shelfList, setShelfList] = useState([]);
+  const [controllerList, setControllerList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [user, setUser] = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -23,11 +24,26 @@ const DeviceLayout = () => {
     })
       .then((response) => response.json())
       .then((shelf) => {
-        setSehlefList(shelf);
+        setShelfList(shelf);
       });
   };
+  const getController = async () => {
+    const response = await fetch(`http://localhost:3000/getController`, {
+      method: "Get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+    })
+      .then((response) => response.json())
+      .then((controller) => {
+        setControllerList(controller);
+      });
+  };
+
   useEffect(() => {
     getShelf();
+    getController();
     const userStorage = localStorage.getItem("user");
     if (
       userStorage !== undefined ||
@@ -38,7 +54,8 @@ const DeviceLayout = () => {
     if (userStorage === null) {
       navigate("/login");
     }
-  }, []);
+  }, [controllerList]);
+
   return (
     <div className={styles.container}>
       <button
@@ -49,8 +66,23 @@ const DeviceLayout = () => {
         Hinzufügen
       </button>
       <div className={styles.content}>
-        <Device shelfList={shelfList} />
-        {/* <ControllerLayout /> */}
+        {controllerList != undefined
+          ? controllerList.map((controller) => (
+              <Device
+                key={controller.ledControllerid}
+                deviceId={controller.ledControllerid}
+                ip={controller.ipAdresse}
+                compartment={controller.numberCompartment}
+                status={controller.status}
+                shelfName={controller.shelfname}
+                shelfid={controller.shelfid}
+                place={controller.place}
+                setEditModalIsOpen={setEditModalIsOpen}
+                editModalIsOpen={editModalIsOpen}
+                onClose={() => setEditModalIsOpen(false)}
+              />
+            ))
+          : "Keine Controller gefunden"}
       </div>
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
