@@ -18,6 +18,7 @@ const MyTextField = styled(TextField)({
     color: "white", // Weiße Label-Farbe
   },
 });
+
 const AddDeviceForm = ({ onClose }) => {
   const [ipAdress, setIpAdress] = useState();
   const [shelfid, setShelfid] = useState();

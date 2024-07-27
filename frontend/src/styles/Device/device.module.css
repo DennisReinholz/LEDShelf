@@ -65,11 +65,12 @@
     background-color: #171717;
     display: flex;
     flex-direction: row;
-    height: 7rem;
-    width: 30rem;
+    height: 10rem;
+    width: 40rem;
     border: 0.125rem solid white;
     border-radius: 0.5rem;
     margin-top: 1rem;
+    font-size: 1.15em;
   }
   .containerParameter {
     margin-top: 0.5rem;
@@ -79,6 +80,7 @@
   }
   .containerParameter p {
     margin: 0;
+    margin-top: 0.5rem;
   }
   .containerValues {
     display: flex;
@@ -90,6 +92,7 @@
   .containerValues p {
     margin: 0;
     margin-left: 1rem;
+    margin-top: 0.5rem;
   }
   .declareShelf {
     display: flex;
@@ -115,10 +118,11 @@
   }
   .editContainer {
     display: flex;
-    margin-top: 1rem;
-    margin-left: 3rem;
-    width: 4rem;
     justify-content: space-between;
+    width: 5rem;
+    margin-top: 1rem;
+    margin-left: 10rem;
+    font-size: 1.15em;
   }
 }
 @media only screen and (max-width: 1700px) {

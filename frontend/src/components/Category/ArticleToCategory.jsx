@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 const ArticleToCategory = ({
   articleid,
   articlename,
-  categoryid,
   hasCategory,
   categoryID,
 }) => {
@@ -69,7 +68,7 @@ const ArticleToCategory = ({
         defaultChecked={inCategory}
         onChange={(e) => handleUpdateArticle(e.target.checked)}
       />
-      {articlename}
+      <p className={styles.articleName}>{articlename}</p>
     </div>
   );
 };

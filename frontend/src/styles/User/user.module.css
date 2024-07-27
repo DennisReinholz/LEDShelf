@@ -33,9 +33,10 @@
   .container {
     display: flex;
     flex-direction: row;
-    width: 28rem;
+    width: 30rem;
     color: white;
     justify-content: space-between;
+    font-size: 1.15em;
   }
   .userContent {
     display: flex;
@@ -48,8 +49,9 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 4rem;
+    width: 5rem;
     margin-right: 1rem;
+    font-size: 1.25em;
   }
 }
 @media only screen and (max-width: 1700px) {

@@ -34,18 +34,20 @@
     display: flex;
     flex-direction: column;
     height: 15rem;
-    width: 20rem;
+    width: 25rem;
+    font-size: 1.15em;
   }
   .content {
     display: flex;
     flex-direction: column;
     height: 6rem;
     justify-content: space-between;
+    font-size: 1.15em;
   }
   .regalSelection {
     height: 2.5rem;
     width: 16rem;
-    font-size: 0.75em;
+    font-size: 1.15em;
   }
   .shelfContainer {
     display: flex;
@@ -55,7 +57,7 @@
   }
   .buttonContainer {
     display: flex;
-    width: 18rem;
+    width: 20rem;
     justify-content: space-between;
     margin-top: 1.5rem;
   }

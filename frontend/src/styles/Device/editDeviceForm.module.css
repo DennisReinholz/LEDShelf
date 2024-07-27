@@ -9,8 +9,8 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 15rem;
-    width: 18rem;
+    height: 20rem;
+    width: 22rem;
   }
   .content {
     display: flex;
@@ -19,25 +19,26 @@
   .controllerProps {
     display: flex;
     flex-direction: row;
-    width: 18rem;
+    width: 22rem;
     align-items: center;
     justify-content: space-between;
-    font-size: 1em;
+    font-size: 1.15em;
   }
   .buttonContainer {
     display: flex;
     justify-content: space-between;
     width: 18rem;
     margin-top: 1rem;
+    margin-left: 4rem;
   }
   .editInput {
-    height: 1.75rem;
-    width: 9.5rem;
+    height: 2.5rem;
+    width: 12rem;
     font-size: 0.75em;
   }
   .shelfSelection {
-    height: 1.75rem;
-    width: 10rem;
+    height: 2.5rem;
+    width: 15rem;
     font-size: 0.75em;
   }
 }

@@ -135,21 +135,6 @@ const ArticleLayout = () => {
       )
     );
   };
-  const handleCategoryFilter = (filter) => {
-    //needs both list, for filter and for search
-    if (filter !== "All") {
-      setFilteredArticleList(
-        originArticleList.filter((article) => article.categoryid == filter)
-      );
-      setArticleListToShow(
-        originArticleList.filter((article) => article.categoryid == filter)
-      );
-    } else {
-      setArticleListToShow(originArticleList);
-      setFilteredArticleList(originArticleList);
-    }
-  };
-
   const ApplyFilter = (categoryFilter, companyFilter, commissionFilter) => {
     if (
       categoryFilter === "All" &&
@@ -207,8 +192,6 @@ const ArticleLayout = () => {
       setArticleListToShow(tempList);
     }
   };
-
-  const NavToShelf = () => {};
   const handleUser = () => {
     if (user != undefined) {
       setActiveUser(true);

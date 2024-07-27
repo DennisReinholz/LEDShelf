@@ -57,7 +57,6 @@
   }
   .inputSearch {
     height: 1.5rem;
-    margin-left: 10.75rem;
   }
 }
 @media only screen and (max-width: 1920px) {
@@ -72,7 +71,8 @@
   .buttonContainer {
     display: flex;
     align-items: center;
-    width: 32rem;
+    justify-content: space-between;
+    width: 25.5rem;
     height: 5rem;
     margin-left: 1rem;
   }
@@ -83,18 +83,18 @@
   .content {
     display: flex;
     justify-content: center;
-    width: 80rem;
+    width: 100rem;
     height: 64rem;
     margin: 0 auto;
     margin-left: 1rem;
   }
   .tableContainer {
-    width: 90rem;
+    width: 80rem;
     height: 35rem;
     margin: 0 auto;
   }
   .tableContainer table {
-    width: 65rem;
+    width: 80rem;
     background-color: #171717;
     margin: 0 auto; /* Automatische Zentrierung der Tabelle */
     border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
@@ -115,7 +115,7 @@
   th,
   td {
     height: 5rem;
-    width: 5rem;
+    width: 10rem;
     border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
     text-align: center;
   }
@@ -125,11 +125,13 @@
   .editContainer {
     display: flex;
     justify-content: space-around;
+    width: 10rem;
+    font-size: 1.25em;
   }
   .inputSearch {
     height: 2rem;
     width: 10rem;
-    margin-left: 2.5rem;
+    font-size: 1em;
   }
 }
 @media only screen and (max-width: 1700px) {

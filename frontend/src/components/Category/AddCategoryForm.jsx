@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 
 const AddCategoryFrom = ({ onClose }) => {
   const [categoryName, setCategoryName] = useState();
+
   const handleInput = (event) => {
     setCategoryName(event);
   };
@@ -32,7 +33,7 @@ const AddCategoryFrom = ({ onClose }) => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <p>Kategorie name:</p>
+        <p>Name der Kategorie:</p>
         <input
           type="text"
           placeholder="Kategorie name"

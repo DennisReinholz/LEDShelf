@@ -74,7 +74,7 @@ body {
     background-color: black;
     color: white;
     cursor: pointer;
-    font-size: 0.75em;
+    font-size: 1em;
   }
   .primaryButton:hover {
     background-color: #302f2f;
@@ -87,7 +87,7 @@ body {
     background-color: white;
     color: black;
     cursor: pointer;
-    font-size: 0.75em;
+    font-size: 1em;
   }
   .secondaryButton:hover {
     background-color: #6c6a6a;

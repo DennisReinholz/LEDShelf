@@ -139,16 +139,15 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       <h2>Erstelle einen Artikel</h2>
       <div className={styles.content}>
         <input
-          className={styles.input}
+          className={styles.inputArticleName}
           type="text"
           placeholder="Artikelname"
           value={articlename}
           onChange={(e) => setArticlename(e.target.value)}
         />
-        <div>
+        <div className={styles.inputRow}>
           <input
-            style={{ width: "3rem" }}
-            className="inputText"
+            className={styles.inputAmount}
             type="number"
             placeholder="Menge"
             defaultValue={1}
@@ -170,16 +169,16 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       </div>
       <div className={styles.addFormRow}>
         <input
-          className="inputText"
+          className={styles.inputCompany}
           type="text"
           placeholder="Firma"
           defaultValue={companyName}
           onChange={(e) => setCompanyName(e.target.value)}
           style={{ width: "17rem" }}
         />
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div className={styles.inputRow}>
           <input
-            className="inputText"
+            className={styles.inputCommission}
             placeholder="Kommissions text"
             type="text"
             value={commissiongoods}
