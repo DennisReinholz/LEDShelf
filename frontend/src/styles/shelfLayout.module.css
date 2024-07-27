@@ -23,7 +23,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    width: 60rem;
+    width: 90rem;
     height: 75rem;
     font-size: 1.25em;
   }

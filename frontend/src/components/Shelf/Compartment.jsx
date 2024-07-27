@@ -9,6 +9,7 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
   const [ip, setIp] = useState();
   const [controllerFunction, setControllerFunction] = useState();
   const [controllerAvaiable, setControllerAvaiable] = useState();
+  const [loading, setLoading] = useState(false);
 
   const getCompartmentArticle = async () => {
     const response = await fetch(
@@ -107,14 +108,12 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
   useEffect(() => {
     getCompartmentArticle();
     getControllerFunction();
-  }, [article, ip]);
+  }, [article, ip, controllerAvaiable]);
 
   return (
     <div
       className={styles.compartContainer}
-      onClick={() => {
-        controllerAvaiable ? handleLedOn() : "";
-      }}
+      onClick={() => !loading && handleLedOn()}
     >
       <div
         className={isActive ? styles.containerIsActive : styles.container}
