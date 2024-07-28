@@ -146,3 +146,61 @@
     width: 7rem;
   }
 }
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 45rem;
+    height: 30rem;
+    font-size: 1.5em;
+  }
+  .content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+    width: 45rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .content p {
+    font-size: 1.15em;
+  }
+  .inputArticlename {
+    height: 4rem;
+    width: 24.5rem;
+    font-size: 1.15em;
+  }
+  .inputRow {
+    display: flex;
+    width: 25rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .unitSelection {
+    height: 4rem;
+    width: 8rem;
+    font-size: 1em;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-left: 20rem;
+    width: 25rem;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  .inputNumber {
+    height: 3.5rem;
+    width: 5rem;
+    font-size: 1em;
+  }
+  .comparmentSelection {
+    height: 4rem;
+    width: 10rem;
+    font-size: 1em;
+  }
+  .shelfSelection {
+    height: 4rem;
+    width: 10rem;
+    font-size: 1em;
+  }
+}

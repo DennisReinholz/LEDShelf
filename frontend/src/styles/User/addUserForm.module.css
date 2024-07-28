@@ -91,13 +91,17 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 20rem;
-    width: 20rem;
+    height: 25rem;
+    width: 25rem;
+  }
+  .container h3 {
+    font-size: 1.75em;
   }
   .contentContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 1.25em;
   }
   .inputField {
     height: 2rem;
@@ -110,8 +114,8 @@
   .buttonContainer {
     display: flex;
     justify-content: space-between;
-    width: 15rem;
-    margin-left: 5rem;
+    width: 25rem;
     margin-top: 2rem;
+    margin-left: 0rem;
   }
 }

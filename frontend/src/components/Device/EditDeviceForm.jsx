@@ -116,7 +116,9 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
             <option value="undefined">Regal auswählen</option>
             {shelfList.result != undefined
               ? shelfList.result.map((s) => (
-                  <option value={s.shelfid}>{s.shelfname}</option>
+                  <option value={s.shelfid} key={s.shelfid}>
+                    {s.shelfname}
+                  </option>
                 ))
               : ""}
           </select>

@@ -122,7 +122,9 @@ const AddDeviceForm = ({ onClose }) => {
                   <option>Regal auswählen</option>
                   {shelfList != undefined ? (
                     shelfList.map((s) => (
-                      <option value={s.shelfid}>{s.shelfname}</option>
+                      <option value={s.shelfid} key={s.shelfid}>
+                        {s.shelfname}
+                      </option>
                     ))
                   ) : (
                     <option>Kein Regal</option>

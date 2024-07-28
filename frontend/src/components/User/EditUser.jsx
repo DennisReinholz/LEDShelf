@@ -148,11 +148,7 @@ const EditUser = ({ userid, onClose, name, role, setEditUser }) => {
         <button className="secondaryButton" onClick={onClose}>
           Abbrechen
         </button>
-        <button
-          className="primaryButton"
-          style={{ width: "8rem" }}
-          onClick={() => updateUser()}
-        >
+        <button className="primaryButton" onClick={() => updateUser()}>
           Aktualisieren
         </button>
       </div>

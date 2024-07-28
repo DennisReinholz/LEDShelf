@@ -140,6 +140,7 @@
     display: flex;
     flex-direction: column;
     color: white;
+    height: 100rem;
     margin-left: 1rem;
     margin-top: 1rem;
     font-size: 1.15em;
@@ -151,8 +152,8 @@
   .contentContainer {
     display: flex;
     flex-direction: column;
-    height: 30rem;
-    width: 25rem;
+    height: 60rem;
+    width: 35rem;
     border: 0.125rem solid white;
     border-radius: 0.5rem;
     color: white;
@@ -169,12 +170,14 @@
   .contentHeader h3 {
     margin-left: 1rem;
     margin-top: 0.5rem;
+    font-size: 1.5em;
   }
   .userContainer {
     display: flex;
     flex-direction: column;
-    height: 27rem;
-    width: 25rem;
+    height: 60rem;
+    width: 35rem;
+    font-size: 1.5em;
     overflow-y: scroll;
   }
 }

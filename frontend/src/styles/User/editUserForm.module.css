@@ -86,8 +86,9 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 20rem;
-    width: 20rem;
+    height: 35rem;
+    width: 30rem;
+    font-size: 1.15em;
   }
   .contentContainer {
     display: flex;
@@ -95,18 +96,21 @@
     align-items: center;
   }
   .inputField {
-    height: 2rem;
-    width: 10rem;
+    height: 3rem;
+    width: 15rem;
+    font-size: 1em;
   }
   .roleSelection {
-    height: 2rem;
-    width: 7rem;
+    height: 3rem;
+    width: 10rem;
+    font-size: 0.75em;
   }
   .buttonContainer {
     display: flex;
     justify-content: space-between;
-    width: 18rem;
+    width: 25rem;
     margin-left: 2rem;
     margin-top: 2rem;
+    font-size: 0.5em;
   }
 }

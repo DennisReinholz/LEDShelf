@@ -150,7 +150,6 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
             className={styles.inputAmount}
             type="number"
             placeholder="Menge"
-            defaultValue={1}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
@@ -179,7 +178,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
         <div className={styles.inputRow}>
           <input
             className={styles.inputCommission}
-            placeholder="Kommissions text"
+            placeholder="Kommission"
             type="text"
             value={commissiongoods}
             onChange={(e) => setCommissiongoods(e.target.value)}

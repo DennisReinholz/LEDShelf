@@ -98,7 +98,7 @@
     display: flex;
     flex-direction: column;
     height: 15rem;
-    width: 20rem;
+    width: 25rem;
   }
   .content {
     display: flex;
@@ -119,7 +119,7 @@
   }
   .buttonContainer {
     display: flex;
-    width: 18rem;
+    width: 25rem;
     justify-content: space-between;
     margin-top: 1.5rem;
   }

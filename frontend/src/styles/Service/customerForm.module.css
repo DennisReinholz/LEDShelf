@@ -260,13 +260,12 @@
     resize: none;
     font-size: 1.3em;
   }
-
   .buttonContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 17rem;
-    margin-left: 25rem;
+    width: 20rem;
+    margin-left: 22rem;
     margin-bottom: 1rem;
   }
   .input {

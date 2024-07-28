@@ -79,7 +79,37 @@
 @media only screen and (max-width: 1200px) {
   .container {
     display: flex;
+    flex-direction: column;
     height: 20rem;
-    width: 20rem;
+    width: 25rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .controllerProps {
+    display: flex;
+    flex-direction: row;
+    width: 22rem;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.15em;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 25rem;
+    margin-top: 1rem;
+    margin-left: 0rem;
+  }
+  .editInput {
+    height: 2.5rem;
+    width: 12rem;
+    font-size: 0.75em;
+  }
+  .shelfSelection {
+    height: 2.5rem;
+    width: 15rem;
+    font-size: 0.75em;
   }
 }

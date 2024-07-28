@@ -221,24 +221,25 @@
   .content {
     display: flex;
     flex-direction: column;
-    width: 59rem;
+    width: 62rem;
     justify-content: flex-start;
-    height: 60rem;
+    height: 110rem;
   }
   .categorySelection {
     width: 10rem;
     height: 1.8rem;
   }
   .tableContainer {
-    width: 52rem;
+    width: 60rem;
     height: 60rem;
     overflow-y: scroll;
-    margin-left: 0rem;
+    margin: 0rem;
   }
   .tableContainer table {
-    width: 50rem;
+    width: 58rem;
     border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
     background-color: #171717;
+    margin: 0.5rem;
   }
   table th {
     font-weight: bold;
@@ -266,6 +267,7 @@
     justify-content: space-around;
   }
   .inputSearch {
-    height: 1.5rem;
+    height: 2rem;
+    font-size: 1.15rem;
   }
 }
