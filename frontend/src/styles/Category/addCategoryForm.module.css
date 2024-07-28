@@ -30,7 +30,7 @@
     width: 30rem;
     flex-direction: column;
     justify-content: space-around;
-    font-size: 1.25em;
+    font-size: 1.15em;
   }
   .content {
     display: flex;

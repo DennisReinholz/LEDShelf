@@ -23,18 +23,19 @@
     display: flex;
     flex-direction: column;
     color: white;
-    height: 10rem;
-    width: 15rem;
+    height: 15rem;
+    width: 20rem;
   }
   .content {
     display: flex;
     flex-direction: column;
+    font-size: 1.15em;
   }
   .buttonContainer {
     margin-top: 1rem;
     display: flex;
     margin-left: 2rem;
-    width: 13rem;
+    width: 20rem;
     justify-content: space-between;
   }
 }
@@ -66,15 +67,24 @@
     height: 15rem;
     width: 25rem;
   }
+  .container h3 {
+    font-size: 2em;
+    margin: 0;
+  }
   .content {
     display: flex;
     flex-direction: column;
+    margin-top: 1rem;
+  }
+  .content p {
+    font-size: 1.5em;
+    margin: 0;
   }
   .buttonContainer {
-    margin-top: 5rem;
     display: flex;
-    margin-left: 7rem;
-    width: 18rem;
     justify-content: space-between;
+    width: 25rem;
+    margin-top: 5rem;
+    margin-left: 1rem;
   }
 }

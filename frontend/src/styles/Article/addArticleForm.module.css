@@ -30,7 +30,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 25rem;
+    height: 20rem;
     width: 45rem;
     color: white;
     font-size: 1em;
@@ -38,17 +38,43 @@
   .content {
     display: flex;
     justify-content: space-between;
+    width: 35rem;
   }
   .addFormRow {
     display: flex;
     flex-direction: row;
     margin-top: 1rem;
-    width: 34rem;
+    height: 3rem;
+    width: 40rem;
     justify-content: space-between;
+  }
+  .inputRow {
+    display: flex;
+    width: 20rem;
+    margin-left: 3rem;
+    justify-content: space-between;
+  }
+  .inputArticleName {
+    width: 17rem;
+    font-size: 0.75em;
+  }
+  .inputAmount {
+    width: 5rem;
+    font-size: 0.75em;
+  }
+  .inputCompany {
+    height: 2.5rem;
+    width: 17rem;
+    font-size: 1em;
+  }
+  .inputCommission {
+    height: 2.5rem;
+    width: 14.5rem;
+    font-size: 1em;
   }
   .shelfSelection {
     display: flex;
-    margin-top: 2rem;
+    margin-top: 1rem;
     height: 10rem;
     width: 45rem;
     justify-content: space-between;
@@ -59,13 +85,18 @@
   }
   .compartmentSelect {
     height: 2.5rem;
-    width: 13rem;
+    width: 14.75rem;
+    margin-left: 1rem;
   }
   .categorySelect {
     height: 2.5rem;
     width: 8.5rem;
   }
   .shelfSelection select {
+    font-size: 0.75em;
+  }
+  .unitSelection {
+    height: 3rem;
     font-size: 0.75em;
   }
   .buttonContainer {
@@ -124,5 +155,92 @@
   .input {
     height: 2rem;
     width: 17rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 25rem;
+    width: 45rem;
+    color: white;
+    font-size: 1em;
+  }
+  .content {
+    display: flex;
+    justify-content: space-between;
+    width: 45rem;
+  }
+  .addFormRow {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+    height: 5rem;
+    width: 45rem;
+    justify-content: space-between;
+  }
+  .inputRow {
+    display: flex;
+    width: 20rem;
+    margin-left: 3rem;
+    justify-content: space-between;
+  }
+  .inputArticleName {
+    width: 17rem;
+    height: 4rem;
+    font-size: 1.15em;
+  }
+  .inputAmount {
+    width: 5rem;
+    height: 4rem;
+    font-size: 1.5em;
+  }
+  .inputCompany {
+    height: 4rem;
+    width: 17rem;
+    font-size: 1.15em;
+  }
+  .inputCommission {
+    height: 4rem;
+    width: 20rem;
+    font-size: 1.5em;
+  }
+  .shelfSelection {
+    display: flex;
+    margin-top: 1rem;
+    height: 10rem;
+    width: 45rem;
+    justify-content: space-between;
+  }
+  .shelfSelect {
+    height: 4rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .compartmentSelect {
+    height: 4rem;
+    width: 14.75rem;
+    margin-left: 1rem;
+  }
+  .categorySelect {
+    height: 3.5em;
+    width: 8.5rem;
+  }
+  .shelfSelection select {
+    font-size: 1.15em;
+  }
+  .unitSelection {
+    height: 4rem;
+    width: 10rem;
+    font-size: 1.5em;
+  }
+  .buttonContainer {
+    display: flex;
+    width: 23rem;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 22rem;
+    margin-top: 1rem;
+    font-size: 1em;
   }
 }

@@ -8,16 +8,7 @@ import EditDeviceForm from "../../components/Device/EditDeviceForm";
 import Modal from "../../components/common/Modal";
 import DeleteDeviceForm from "../../components/Device/DeleteDeviceForm";
 
-const Device = ({
-  ip,
-  compartment,
-  status,
-  shelfName,
-  shelfid,
-  place,
-  onClose,
-  deviceId,
-}) => {
+const Device = ({ ip, status, shelfName, shelfid, deviceId }) => {
   const [assignedShelf, setAssignedShelf] = useState();
   const [assignedIsOpen, setAssignedIsOpen] = useState(false);
   const [deleteFormIsOpen, setDeleteFormIsOpen] = useState(false);

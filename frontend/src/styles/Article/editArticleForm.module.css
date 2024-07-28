@@ -46,44 +46,54 @@
   .container {
     display: flex;
     flex-direction: column;
-    width: 30rem;
-    height: 20rem;
-  }
-  .container p {
-    font-size: 1.25em;
+    width: 40rem;
+    height: 25rem;
+    font-size: 1.15em;
   }
   .content {
     display: flex;
     flex-direction: row;
     margin-top: 1rem;
-    width: 30rem;
+    width: 40rem;
     justify-content: space-between;
     align-items: center;
   }
   .inputArticlename {
     height: 2rem;
+    font-size: 1em;
+  }
+  .inputRow {
+    display: flex;
+    width: 25rem;
+    justify-content: space-between;
+    align-items: center;
   }
   .unitSelection {
-    height: 2rem;
+    height: 3rem;
+    width: 8rem;
+    font-size: 1em;
   }
   .buttonContainer {
     display: flex;
-    margin-left: 18rem;
-    width: 12rem;
+    margin-left: 20rem;
+    width: 20rem;
     justify-content: space-between;
     margin-top: 1rem;
   }
   .inputNumber {
-    height: 1.5rem;
+    height: 2.5rem;
     width: 5rem;
+    font-size: 1em;
   }
   .comparmentSelection {
-    height: 2rem;
-    width: 7rem;
+    height: 2.5rem;
+    width: 10rem;
+    font-size: 1em;
   }
   .shelfSelection {
-    height: 2rem;
-    width: 7rem;
+    height: 2.5rem;
+    width: 10rem;
+    font-size: 1em;
   }
 }
 @media only screen and (max-width: 1700px) {
@@ -134,5 +144,63 @@
   .shelfSelection {
     height: 2rem;
     width: 7rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 45rem;
+    height: 30rem;
+    font-size: 1.5em;
+  }
+  .content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+    width: 45rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .content p {
+    font-size: 1.15em;
+  }
+  .inputArticlename {
+    height: 4rem;
+    width: 24.5rem;
+    font-size: 1.15em;
+  }
+  .inputRow {
+    display: flex;
+    width: 25rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .unitSelection {
+    height: 4rem;
+    width: 8rem;
+    font-size: 1em;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-left: 20rem;
+    width: 25rem;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  .inputNumber {
+    height: 3.5rem;
+    width: 5rem;
+    font-size: 1em;
+  }
+  .comparmentSelection {
+    height: 4rem;
+    width: 10rem;
+    font-size: 1em;
+  }
+  .shelfSelection {
+    height: 4rem;
+    width: 10rem;
+    font-size: 1em;
   }
 }

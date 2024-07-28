@@ -15,8 +15,8 @@ const DeleteArticleForm = ({ artikelname, setDelete, onClose }) => {
       <div className={styles.content}>
         <p>
           {artikelname === undefined
-            ? "Arikel wurde nicht gefunden"
-            : "Wollen Sie den Arikel: " +
+            ? "Artikel wurde nicht gefunden"
+            : "Wollen Sie den Artikel: " +
               artikelname.articlename +
               " wirklich löschen?"}
         </p>

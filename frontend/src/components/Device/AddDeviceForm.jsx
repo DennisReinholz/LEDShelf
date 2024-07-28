@@ -18,6 +18,7 @@ const MyTextField = styled(TextField)({
     color: "white", // Weiße Label-Farbe
   },
 });
+
 const AddDeviceForm = ({ onClose }) => {
   const [ipAdress, setIpAdress] = useState();
   const [shelfid, setShelfid] = useState();
@@ -121,7 +122,9 @@ const AddDeviceForm = ({ onClose }) => {
                   <option>Regal auswählen</option>
                   {shelfList != undefined ? (
                     shelfList.map((s) => (
-                      <option value={s.shelfid}>{s.shelfname}</option>
+                      <option value={s.shelfid} key={s.shelfid}>
+                        {s.shelfname}
+                      </option>
                     ))
                   ) : (
                     <option>Kein Regal</option>
