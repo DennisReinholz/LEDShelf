@@ -53,3 +53,5 @@ LEFT JOIN shelf ON ledController.shelfid = shelf.shelfid
 WHERE ledController.shelfid IS NOT NULL
    OR ledController.shelfid IS NULL;
 
+
+INSERT INTO user (username, password, role) VALUES ("Admin", "test",1)

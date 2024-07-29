@@ -3,7 +3,7 @@ import styles from "../../styles/Category/editCategoryForm.module.css";
 import toast from "react-hot-toast";
 import ArticleToCategory from "./ArticleToCategory";
 
-const EditCategoryForm = ({ category }) => {
+const EditCategoryForm = ({ category, onClose }) => {
   const [articleList, setArticleList] = useState([]);
 
   const getArticleWithCategory = async () => {

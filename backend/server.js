@@ -2,6 +2,7 @@ const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
+const backUp = require("./databaseBackup");
 const cors = require("cors");
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(function (req, res, next) {
   res.set("Cache-Control", "no-store");
   next();
 });
+
 app.use(express.json());
 app.use(bodyParser.json());
 
@@ -25,11 +27,15 @@ const corsOptions = {
 
 app.use(cors());
 
-//app.use(bodyParser.json());
 app.set("etag", false);
+
 // SQLite-Datenbankverbindung herstellen
 const db = new sqlite3.Database("./haseloff3D.db");
 const nodemail = require("./nodeMail");
+
+// SQLite-Datenbank BackUp
+
+backUp.StartBackUp();
 
 app.post("/sendEmail", async (req, res) => {
   nodemail.SendMail(req, res, nodemailer);

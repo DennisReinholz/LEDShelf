@@ -40,7 +40,7 @@ const DeleteUserForm = ({ onClose, setDeleteUser, name, userid }) => {
         <p>
           {name === undefined
             ? "Benutzer wurde nicht gefunden"
-            : "Wollen Sie den Benutzer <" + name + "> wirklich entfernen?"}
+            : "Wollen Sie den Benutzer " + name + " wirklich entfernen?"}
         </p>
         <div className={styles.buttonContainer}>
           <button className="secondaryButton" onClick={handleAbort}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/categoryLayout.module.css";
 import AddCategoryFrom from "../components/Category/AddCategoryForm.jsx";
 import { FiEdit2 } from "react-icons/fi";
@@ -103,14 +103,14 @@ const CategoryLayout = () => {
           <table>
             <thead>
               <tr>
-                <td>
-                  <th>Kategorie</th>
-                </td>
+                <th>
+                  <td>Kategorie</td>
+                </th>
                 {user != undefined && user[0].role === 1 ? (
-                  <td>
+                  <th>
                     {" "}
-                    <th>Action</th>{" "}
-                  </td>
+                    <td>Action</td>{" "}
+                  </th>
                 ) : (
                   ""
                 )}
@@ -118,36 +118,34 @@ const CategoryLayout = () => {
             </thead>
             {categoryList !== undefined ? (
               categoryList.map((c) => (
-                <React.Fragment key={c.articleid}>
-                  <tbody>
-                    <tr>
-                      <td>{c.categoryname}</td>
-                      {user !== undefined && user[0].role === 1 ? (
-                        <td>
-                          <div className={styles.editContainer}>
-                            <FiEdit2
-                              className="edit"
-                              style={{ cursor: "pointer" }}
-                              onClick={() => handleEditCategory(c)}
-                            />
-                            <BsTrash
-                              className="delete"
-                              style={{ cursor: "pointer" }}
-                              onClick={() => handleDeleteCategory(c)}
-                            />
-                          </div>
-                        </td>
-                      ) : (
-                        ""
-                      )}
-                    </tr>
-                  </tbody>
-                </React.Fragment>
+                <tbody key={c.articleid}>
+                  <tr>
+                    <td>{c.categoryname}</td>
+                    {user !== undefined && user[0].role === 1 ? (
+                      <td>
+                        <div className={styles.editContainer}>
+                          <FiEdit2
+                            className="edit"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleEditCategory(c)}
+                          />
+                          <BsTrash
+                            className="delete"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleDeleteCategory(c)}
+                          />
+                        </div>
+                      </td>
+                    ) : (
+                      ""
+                    )}
+                  </tr>
+                </tbody>
               ))
             ) : (
               <tbody>
                 <tr>
-                  <td colSpan="5">Keine Artikel gefunden</td>
+                  <td colSpan="5">Keine Kategorie gefunden</td>
                 </tr>
               </tbody>
             )}
@@ -158,9 +156,7 @@ const CategoryLayout = () => {
         <Modal onClose={() => setEditCategoryOpen(false)}>
           <EditCategoryForm
             onClose={() => setEditCategoryOpen(false)}
-            setEditCategory={setEditCategory}
             category={editCategory}
-            updateCategory={() => updateCategory()}
           />
         </Modal>
       )}

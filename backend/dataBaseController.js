@@ -1,6 +1,5 @@
 require("dotenv").config();
 const axios = require("axios");
-const ping = require("ping");
 const bcrypt = require("bcrypt");
 
 module.exports.getUser = async (req, res, db) => {
