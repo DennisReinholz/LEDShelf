@@ -7,6 +7,8 @@ const ArticleFilter = ({
   commissionList,
   setFilterList,
   ApplyFilter,
+  exportToCSV,
+  user,
 }) => {
   const [categoryFilter, setCategoryFilter] = useState();
   const [companyFilter, setCompanyFilter] = useState();
@@ -127,6 +129,11 @@ const ArticleFilter = ({
         >
           Filter
         </button>
+        {user[0].role === 1 && (
+          <button className="primaryButton" onClick={() => exportToCSV()}>
+            Exportieren
+          </button>
+        )}
       </div>
     </div>
   );

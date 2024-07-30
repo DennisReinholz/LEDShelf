@@ -229,6 +229,30 @@ const ArticleLayout = () => {
     });
     setCommissionList(filtered);
   };
+  const convertToCSV = (array) => {
+    if (array.length === 0) return "";
+
+    const keys = Object.keys(array[0]);
+    const csvContent = [
+      keys.join(";"), // Header Zeile
+      ...array.map((item) => keys.map((key) => item[key]).join(";")),
+    ].join("\n");
+    return csvContent;
+  };
+  const ExportToCSV = () => {
+    const csv = convertToCSV(articleListToShow);
+    const utf8Bom = "\uFEFF";
+    const csvWithBom = utf8Bom + csv;
+
+    const blob = new Blob([csvWithBom], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "daten.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     getArticle();
@@ -294,6 +318,8 @@ const ArticleLayout = () => {
             commissionList={commissionList}
             setFilterList={setFilterList}
             ApplyFilter={ApplyFilter}
+            exportToCSV={ExportToCSV}
+            user={user}
           />
         </div>
         <div className={styles.tableContainer}>
