@@ -333,13 +333,24 @@ const ArticleLayout = () => {
                 <th>Fach</th>
                 <th>Firma</th>
                 <th>Kommission</th>
-                {isAdmin ? <th>Action</th> : ""}
+                {user != undefined ? user[0].role == 1 && <th>Action</th> : ""}
               </tr>
             </thead>
             {articleListToShow !== undefined ? (
               articleListToShow.map((c) => (
                 <tbody key={c.articleid}>
-                  <tr>
+                  <button
+                    onClick={() => console.log(c.minRequirement >= c.count)}
+                  >
+                    dawda
+                  </button>
+                  <tr
+                    style={
+                      c.count < c.minRequirement && c.minRequirement !== null
+                        ? { border: "2px solid yellow" }
+                        : { border: "2px solid white" }
+                    }
+                  >
                     <td>{c.articlename}</td>
                     <td>{c.count}</td>
                     <td>{c.unit}</td>
@@ -347,29 +358,29 @@ const ArticleLayout = () => {
                     <td>{c.compartmentname}</td>
                     <td>{c.companyName}</td>
                     <td>{c.commission}</td>
-                    {isAdmin ? (
-                      <td>
-                        <div className={styles.editContainer}>
-                          <FiEdit2
-                            className="edit"
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleEditArticle(c)}
-                          />
-                          <BsTrash
-                            className="delete"
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleDeleteArticle(c)}
-                          />
-                          <FiAirplay
-                            className="navigateShelf"
-                            style={{ cursor: "pointer" }}
-                            onClick={() => navigate(`/regale/${c.shelf}`)}
-                          />
-                        </div>
-                      </td>
-                    ) : (
-                      ""
-                    )}
+                    {user != undefined
+                      ? user[0].role == 1 && (
+                          <td>
+                            <div className={styles.editContainer}>
+                              <FiEdit2
+                                className="edit"
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handleEditArticle(c)}
+                              />
+                              <BsTrash
+                                className="delete"
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handleDeleteArticle(c)}
+                              />
+                              <FiAirplay
+                                className="navigateShelf"
+                                style={{ cursor: "pointer" }}
+                                onClick={() => navigate(`/regale/${c.shelf}`)}
+                              />
+                            </div>
+                          </td>
+                        )
+                      : ""}
                   </tr>
                 </tbody>
               ))

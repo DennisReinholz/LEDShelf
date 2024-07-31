@@ -33,7 +33,7 @@
   .container {
     display: flex;
     flex-direction: row;
-    width: 30rem;
+    width: 28rem;
     color: white;
     justify-content: space-between;
     font-size: 1.15em;

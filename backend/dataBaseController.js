@@ -230,9 +230,10 @@ module.exports.createArticle = async (req, res, db) => {
     selectedCategory,
     companyName,
     commissiongoods,
+    minRequirement,
   } = req.body;
   db.all(
-    `INSERT INTO article (articlename,count,compartment,shelf,unit,categoryid,company, commission) VALUES (?,?,?,?,?,?,?,?)`,
+    `INSERT INTO article (articlename,count,compartment,shelf,unit,categoryid,company,commission,minRequirement) VALUES (?,?,?,?,?,?,?,?,?)`,
     [
       articlename,
       amount,
@@ -242,11 +243,12 @@ module.exports.createArticle = async (req, res, db) => {
       selectedCategory,
       companyName,
       commissiongoods,
+      minRequirement,
     ],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
+        console.log(res);
       } else {
         res.status(200).json(result);
       }
@@ -272,11 +274,28 @@ module.exports.getSelectedArticle = async (req, res, db) => {
   );
 };
 module.exports.updateArticle = async (req, res, db) => {
-  const { articleid, articlename, unit, amount, shelf, compartment, category } =
-    req.body;
+  const {
+    articleid,
+    articlename,
+    unit,
+    amount,
+    shelf,
+    compartment,
+    category,
+    minRequirement,
+  } = req.body;
   db.all(
-    `UPDATE article SET articlename=?,count=?,unit=?,compartment=?,shelf=?,categoryid=? WHERE articleid=?`,
-    [articlename, amount, unit, compartment, shelf, articleid, category],
+    `UPDATE article SET articlename=?,count=?,compartment=?,shelf=?,unit=?,categoryid=?, minRequirement=? WHERE articleid=?`,
+    [
+      articlename,
+      amount,
+      compartment,
+      shelf,
+      unit,
+      category,
+      minRequirement,
+      articleid,
+    ],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });

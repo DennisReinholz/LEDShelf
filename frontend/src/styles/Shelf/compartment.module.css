@@ -48,6 +48,12 @@
     height: 1.75rem;
     cursor: pointer;
   }
+  .articleRequirement {
+    color: white;
+  }
+  .articleLow {
+    color: yellow;
+  }
 }
 @media only screen and (max-width: 1920px) {
   .compartContainer {
@@ -98,6 +104,12 @@
     width: 1.75rem;
     height: 1.75rem;
     cursor: pointer;
+  }
+  .articleRequirement {
+    color: white;
+  }
+  .articleLow {
+    color: yellow;
   }
 }
 @media only screen and (max-width: 1700px) {
@@ -150,6 +162,12 @@
     height: 1.75rem;
     cursor: pointer;
   }
+  .articleRequirement {
+    color: white;
+  }
+  .articleLow {
+    color: yellow;
+  }
 }
 @media only screen and (max-width: 1200px) {
   .compartContainer {
@@ -200,5 +218,11 @@
     width: 1.75rem;
     height: 1.75rem;
     cursor: pointer;
+  }
+  .articleRequirement {
+    color: white;
+  }
+  .articleLow {
+    color: yellow;
   }
 }

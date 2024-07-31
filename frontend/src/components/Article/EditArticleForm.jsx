@@ -12,6 +12,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
   const [newCompartment, setNewCompartment] = useState();
   const [category, setCategory] = useState();
   const [newCategory, setNewCategory] = useState();
+  const [newMinRequirement, setNewMinRequirement] = useState();
 
   const getCompartments = async (shelfid) => {
     const response = await fetch(`http://localhost:3000/getCompartment`, {
@@ -81,6 +82,10 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
           newCategory != undefined && newCategory.length != 0
             ? parseInt(newCategory)
             : articleStatus.categoryid,
+        minRequirement:
+          newMinRequirement != undefined && newMinRequirement.length != 0
+            ? newMinRequirement
+            : articleStatus.minRequirement,
       }),
       cache: "no-cache",
     })
@@ -149,6 +154,13 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
             className={styles.inputNumber}
             value={newCount}
             onChange={(e) => setNewCount(e.target.value)}
+          />
+          <input
+            className={styles.inputMinRequirement}
+            type="number"
+            placeholder="min"
+            value={newMinRequirement}
+            onChange={(e) => setNewMinRequirement(e.target.value)}
           />
           <select
             value={newCategory}
