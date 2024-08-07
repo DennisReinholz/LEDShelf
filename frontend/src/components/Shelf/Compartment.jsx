@@ -122,16 +122,20 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
         <div className={styles.content}>
           <p>{comp}</p>
           <p>
-            {article != undefined && article != undefined
+            {article != undefined
               ? article.articlename
               : "Kein Artikel eingelagert"}
           </p>
-          <p>
+          <p
+            className={
+              article != undefined && article.minRequirement >= article.count
+                ? styles.articleLow
+                : styles.articleRequirement
+            }
+          >
             {" "}
-            {article != undefined && article != undefined
-              ? article.count
-              : ""}{" "}
-            {article != undefined && article != undefined ? article.unit : ""}
+            {article != undefined ? article.count : ""}{" "}
+            {article != undefined ? article.unit : ""}
           </p>
         </div>
       </div>

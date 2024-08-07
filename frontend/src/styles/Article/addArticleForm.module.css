@@ -38,7 +38,7 @@
   .content {
     display: flex;
     justify-content: space-between;
-    width: 35rem;
+    width: 40rem;
   }
   .addFormRow {
     display: flex;
@@ -51,7 +51,7 @@
   .inputRow {
     display: flex;
     width: 20rem;
-    margin-left: 3rem;
+    margin-left: 0rem;
     justify-content: space-between;
   }
   .inputArticleName {
@@ -97,6 +97,11 @@
   }
   .unitSelection {
     height: 3rem;
+    width: 8rem;
+    font-size: 0.75em;
+  }
+  .inputMinRequiment {
+    width: 5rem;
     font-size: 0.75em;
   }
   .buttonContainer {
@@ -155,6 +160,10 @@
   .input {
     height: 2rem;
     width: 17rem;
+  }
+  .inputMinRequiment {
+    width: 5rem;
+    font-size: 1em;
   }
 }
 @media only screen and (max-width: 1200px) {
@@ -233,6 +242,10 @@
     height: 4rem;
     width: 10rem;
     font-size: 1.5em;
+  }
+  .inputMinRequiment {
+    width: 5rem;
+    font-size: 1em;
   }
   .buttonContainer {
     display: flex;

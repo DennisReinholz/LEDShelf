@@ -30,8 +30,8 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 15rem;
-    width: 20rem;
+    height: 22rem;
+    width: 25rem;
   }
   .contentContainer {
     display: flex;
@@ -49,8 +49,8 @@
   .buttonContainer {
     display: flex;
     justify-content: space-between;
-    width: 14rem;
-    margin-left: 6rem;
+    width: 25rem;
+    margin-left: 1rem;
     margin-top: 2rem;
   }
 }

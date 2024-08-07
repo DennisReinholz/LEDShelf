@@ -15,6 +15,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
   const [selectedCategory, setSelectedCategory] = useState();
   const [companyName, setCompanyName] = useState();
   const [commissiongoods, setCommissiongoods] = useState();
+  const [minRequirement, setMinRequirement] = useState();
 
   const getShelf = async () => {
     const response = await fetch(`http://localhost:3000/getShelf`, {
@@ -90,6 +91,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
         selectedCategory,
         companyName,
         commissiongoods,
+        minRequirement,
       }),
     }).then((result) => {
       if (result.status === 200) {
@@ -123,9 +125,13 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
   };
 
   useEffect(() => {
-    getShelf();
+    if (shelf == undefined) {
+      getShelf();
+    }
     checkFrom();
-    getCategory();
+    if (categoryList == undefined) {
+      getCategory();
+    }
   }, [
     articlename,
     selectedCompartment,
@@ -164,6 +170,13 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
             <option value="Zentimeter">Zentimeter</option>
             <option value="Kilogramm">Kilogramm</option>
           </select>
+          <input
+            className={styles.inputMinRequiment}
+            type="number"
+            placeholder="min"
+            value={minRequirement}
+            onChange={(e) => setMinRequirement(e.target.value)}
+          />
         </div>
       </div>
       <div className={styles.addFormRow}>

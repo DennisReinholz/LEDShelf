@@ -33,6 +33,11 @@
     height: 1.5rem;
     width: 5rem;
   }
+  .inputMinRequirement {
+    height: 2.5rem;
+    width: 5rem;
+    font-size: 1em;
+  }
   .comparmentSelection {
     height: 2rem;
     width: 7rem;
@@ -60,17 +65,23 @@
   }
   .inputArticlename {
     height: 2rem;
+    width: 15rem;
     font-size: 1em;
   }
   .inputRow {
     display: flex;
-    width: 25rem;
+    width: 29rem;
     justify-content: space-between;
     align-items: center;
   }
   .unitSelection {
     height: 3rem;
     width: 8rem;
+    font-size: 1em;
+  }
+  .inputMinRequirement {
+    height: 2.5rem;
+    width: 5rem;
     font-size: 1em;
   }
   .buttonContainer {
@@ -81,6 +92,11 @@
     margin-top: 1rem;
   }
   .inputNumber {
+    height: 2.5rem;
+    width: 6rem;
+    font-size: 1em;
+  }
+  .inputMinRequirement {
     height: 2.5rem;
     width: 5rem;
     font-size: 1em;
@@ -145,6 +161,11 @@
     height: 2rem;
     width: 7rem;
   }
+  .inputMinRequirement {
+    height: 2.5rem;
+    width: 5rem;
+    font-size: 1em;
+  }
 }
 @media only screen and (max-width: 1200px) {
   .container {
@@ -201,6 +222,11 @@
   .shelfSelection {
     height: 4rem;
     width: 10rem;
+    font-size: 1em;
+  }
+  .inputMinRequirement {
+    height: 2.5rem;
+    width: 5rem;
     font-size: 1em;
   }
 }

@@ -129,11 +129,13 @@ const ArticleFilter = ({
         >
           Filter
         </button>
-        {user[0].role === 1 && (
-          <button className="primaryButton" onClick={() => exportToCSV()}>
-            Exportieren
-          </button>
-        )}
+        {user != undefined
+          ? user[0].role == 1 && (
+              <button className="primaryButton" onClick={() => exportToCSV()}>
+                Exportieren
+              </button>
+            )
+          : ""}
       </div>
     </div>
   );

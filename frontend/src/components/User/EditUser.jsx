@@ -149,7 +149,7 @@ const EditUser = ({ userid, onClose, name, role, setEditUser }) => {
           Abbrechen
         </button>
         <button className="primaryButton" onClick={() => updateUser()}>
-          Aktualisieren
+          Speichern
         </button>
       </div>
     </div>
