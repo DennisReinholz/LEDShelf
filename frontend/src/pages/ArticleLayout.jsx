@@ -339,11 +339,6 @@ const ArticleLayout = () => {
             {articleListToShow !== undefined ? (
               articleListToShow.map((c) => (
                 <tbody key={c.articleid}>
-                  <button
-                    onClick={() => console.log(c.minRequirement >= c.count)}
-                  >
-                    dawda
-                  </button>
                   <tr
                     style={
                       c.count < c.minRequirement && c.minRequirement !== null
