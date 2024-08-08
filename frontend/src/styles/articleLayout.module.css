@@ -188,7 +188,6 @@
   td {
     height: 3rem;
     width: 5rem;
-    border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
     text-align: center;
   }
   .input::-webkit-inner-spin-button {

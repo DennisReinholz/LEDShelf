@@ -291,6 +291,7 @@ const ArticleLayout = () => {
       <Tooltip anchorSelect=".navigateShelf" place="left">
         Zum Regal
       </Tooltip>
+
       <div className={styles.buttonContainer}>
         {user != undefined
           ? user[0].role == 1 && (
@@ -340,11 +341,14 @@ const ArticleLayout = () => {
               articleListToShow.map((c) => (
                 <tbody key={c.articleid}>
                   <tr
-                    style={
-                      c.count < c.minRequirement && c.minRequirement !== null
-                        ? { border: "2px solid yellow" }
-                        : { border: "2px solid white" }
-                    }
+                    style={{
+                      borderColor:
+                        c.count < c.minRequirement && c.minRequirement !== null
+                          ? "yellow"
+                          : "white",
+                      borderWidth: "2px",
+                      borderStyle: "solid",
+                    }}
                   >
                     <td>{c.articlename}</td>
                     <td>{c.count}</td>

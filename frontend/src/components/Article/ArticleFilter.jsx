@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Tooltip from "../common/Tooltip";
 import styles from "../../styles/Article/articleFilter.module.css";
 
 const ArticleFilter = ({
@@ -131,9 +132,11 @@ const ArticleFilter = ({
         </button>
         {user != undefined
           ? user[0].role == 1 && (
-              <button className="primaryButton" onClick={() => exportToCSV()}>
-                Exportieren
-              </button>
+              <Tooltip text="Erstellt eine csv Datei aus der Artikelliste mit dem angewendeten Filter">
+                <button className="primaryButton" onClick={() => exportToCSV()}>
+                  Exportieren
+                </button>
+              </Tooltip>
             )
           : ""}
       </div>
