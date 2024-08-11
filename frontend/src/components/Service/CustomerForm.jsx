@@ -26,6 +26,7 @@ const CustomerForm = () => {
   const [description, setDescription] = useState("");
   const [createIsEnabled, setCreateIsEnabled] = useState(false);
   const isEmpty = (str) => !str?.length;
+
   const labels = [
     { id: "661ebb0dc4193adb6d2a5517", label: "Software" },
     { id: "661ebb0dc4193adb6d2a5524", label: "Hardware" },

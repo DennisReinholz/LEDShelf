@@ -1,8 +1,11 @@
 const express = require("express");
+
 const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const backUp = require("./databaseBackup");
+const DataBaseController = require("./dataBaseController");
+const TrelloController = require("./trelloController");
 const cors = require("cors");
 
 const app = express();
@@ -41,10 +44,12 @@ app.post("/sendEmail", async (req, res) => {
   nodemail.SendMail(req, res, nodemailer);
 });
 
-//Controller
-const DataBaseController = require("./dataBaseController");
-const Database = require("better-sqlite3");
+//TrelloController
+app.get("/trelloLabels", (req, res) => {
+  TrelloController.getLabels(req, res);
+});
 
+//DatabaseController
 app.post("/users", (req, res) => {
   DataBaseController.getUser(req, res, db);
 });
