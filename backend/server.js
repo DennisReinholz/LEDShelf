@@ -48,6 +48,9 @@ app.post("/sendEmail", async (req, res) => {
 app.get("/trelloLabels", (req, res) => {
   TrelloController.getLabels(req, res);
 });
+app.post("/createTrelloCard", (req, res) => {
+  TrelloController.createCard(req, res);
+});
 
 //DatabaseController
 app.post("/users", (req, res) => {
