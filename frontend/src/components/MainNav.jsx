@@ -8,6 +8,7 @@ import { HiOutlineScale } from "react-icons/hi2";
 import { UserContext } from "../helpers/userAuth.jsx";
 import { HiOutlineQrCode } from "react-icons/hi2";
 import { MdOutlineContactSupport } from "react-icons/md";
+import { VscSettingsGear } from "react-icons/vsc";
 import styles from "../styles/Sidebar/mainNav.module.css";
 
 const MainNav = () => {
@@ -40,40 +41,11 @@ const MainNav = () => {
               <>
                 <div
                   className={styles.nav}
-                  onClick={() => navigate("/benutzer")}
+                  onClick={() => navigate("/einstellung")}
                 >
-                  <HiOutlineUsers />
+                  <VscSettingsGear />
                   <div className={styles.textContainer}>
-                    <p>Benutzer</p>
-                  </div>
-                </div>
-
-                <div
-                  className={styles.nav}
-                  onClick={() => navigate("/geraete")}
-                >
-                  <HiOutlineSignal />
-                  <div className={styles.textContainer}>
-                    <p>Geräte</p>
-                  </div>
-                </div>
-
-                <div
-                  className={styles.nav}
-                  onClick={() => navigate("/kategorie")}
-                >
-                  <HiOutlineQrCode />
-                  <div className={styles.textContainer}>
-                    <p>Kategorie</p>
-                  </div>
-                </div>
-                <div
-                  className={styles.nav}
-                  onClick={() => navigate("/service")}
-                >
-                  <MdOutlineContactSupport />
-                  <div className={styles.textContainer}>
-                    <p>Service</p>
+                    <p>Einstellung</p>
                   </div>
                 </div>
               </>
