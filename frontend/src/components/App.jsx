@@ -12,6 +12,7 @@ import ArticleLayout from "../pages/ArticleLayout.jsx";
 import DeviceLayout from "../pages/DeviceLayout.jsx";
 import CategoryLayout from "../pages/CategoryLayout.jsx";
 import ServiceLayout from "../pages/ServiceLayout.jsx";
+import Administration from "../pages/Administration.jsx";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               <Route path="geraete" element={<DeviceLayout />} />
               <Route path="kategorie" element={<CategoryLayout />} />
               <Route path="service" element={<ServiceLayout />} />
+              <Route path="einstellung" element={<Administration />} />
             </Route>
           </Routes>
         </BrowserRouter>
