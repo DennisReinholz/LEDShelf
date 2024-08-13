@@ -1,13 +1,9 @@
-require("dotenv").config();
-const apiKey = process.env.REACT_APP_TRELLO_API_KEY;
-const apiToken = process.env.REACT_APP_TRELLO_API_TOKEN;
-const boardId = process.env.REACT_APP_CUSTOMERBOARD_ID;
-const listId = process.env.REACT_APP_CUSTOMERREQUESTLIST_ID;
+const config = require("./config.js");
 
 module.exports.getLabels = async (req, res) => {
   try {
     const response = await fetch(
-      `https://api.trello.com/1/boards/${boardId}/labels?key=${apiKey}&token=${apiToken}`,
+      `https://api.trello.com/1/boards/${config.customerBoardId}/labels?key=${config.apiKey}&token=${config.accessToken}`,
       {
         method: "GET",
         headers: {
@@ -29,10 +25,10 @@ module.exports.getLabels = async (req, res) => {
 };
 module.exports.createCard = async (req, res) => {
   const { name, email, reference, reason, description } = req.body;
-  const url = `https://api.trello.com/1/cards?key=${apiKey}&token=${apiToken}`;
+  const url = `https://api.trello.com/1/cards?key=${config.apiKey}&token=${config.accessToken}`;
 
   const body = {
-    idList: listId,
+    idList: config.customerRequestListId,
     idLabels: reason,
     name: reference,
     desc: `From: ${name} \n Email: ${email} \n\n ${description}`,
