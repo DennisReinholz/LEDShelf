@@ -12,6 +12,8 @@
   .nav {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 8rem;
     font-size: 1.3em;
     padding: 10px 10px;
     cursor: pointer;
@@ -37,7 +39,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    font-size: 0.9em;
+    font-size: 1em;
   }
   .container ul {
     list-style-type: none;
@@ -77,7 +79,6 @@
     align-items: center;
     width: 10rem;
     height: 21rem;
-    font-size: 1em;
     margin-top: 3rem;
   }
   .container ul {

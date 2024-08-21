@@ -4,16 +4,17 @@
     flex-direction: row;
     height: 6rem;
     width: 38rem;
-    border: 0.125rem solid white;
     border-radius: 0.5rem;
   }
   .assignedIsOpenContainer {
+    background-color: #171717;
     display: flex;
     flex-direction: row;
-    height: 6rem;
-    width: 29rem;
-    border: 0.125rem solid white;
+    height: 8rem;
+    width: 40rem;
     border-radius: 0.5rem;
+    margin-top: 1rem;
+    font-size: 1.25em;
   }
   .containerParameter {
     margin-top: 0.5rem;
@@ -50,6 +51,14 @@
     width: 7rem;
     margin-left: 1rem;
   }
+  .editContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 5rem;
+    margin-top: 1rem;
+    margin-left: 10rem;
+    font-size: 1.15em;
+  }
 }
 @media only screen and (max-width: 1920px) {
   .container {
@@ -57,7 +66,6 @@
     flex-direction: row;
     height: 8rem;
     width: 50rem;
-    border: 0.125rem solid white;
     border-radius: 0.5rem;
     margin-top: 1rem;
   }
@@ -67,7 +75,6 @@
     flex-direction: row;
     height: 10rem;
     width: 40rem;
-    border: 0.125rem solid white;
     border-radius: 0.5rem;
     margin-top: 1rem;
     font-size: 1.15em;
@@ -129,18 +136,16 @@
   .container {
     display: flex;
     flex-direction: row;
-    height: 7rem;
+    height: 10rem;
     width: 50rem;
-    border: 0.125rem solid white;
     border-radius: 0.5rem;
     margin-top: 1rem;
   }
   .assignedIsOpenContainer {
     display: flex;
     flex-direction: row;
-    height: 7rem;
-    width: 37rem;
-    border: 0.125rem solid white;
+    height: 8rem;
+    width: 40rem;
     border-radius: 0.5rem;
     margin-top: 1rem;
   }
@@ -191,8 +196,7 @@
     display: flex;
     flex-direction: row;
     height: 8rem;
-    width: 50rem;
-    border: 0.125rem solid white;
+    width: 60rem;
     border-radius: 0.5rem;
     margin-top: 1rem;
   }
@@ -202,7 +206,6 @@
     flex-direction: row;
     height: 10rem;
     width: 40rem;
-    border: 0.125rem solid white;
     border-radius: 0.5rem;
     margin-top: 1rem;
     font-size: 1.25em;

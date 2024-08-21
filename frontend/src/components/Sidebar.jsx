@@ -23,7 +23,7 @@ const Sidebar = () => {
         <Logo />
         <MainNav />
       </div>
-      <p style={{ color: "White" }}>v.{version}</p>
+      <p style={{ color: "White", marginLeft: "1rem" }}>v.{version}</p>
     </aside>
   );
 };

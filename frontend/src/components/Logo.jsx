@@ -5,8 +5,7 @@ const Logo = () => {
   return (
     <div className={styles.content}>
       <div className={styles.logo}>
-        <p className={styles.name}>haseloff</p>
-        <p className={styles.tag}>3D²</p>
+        <p className={styles.name}>LedShelf</p>
       </div>
     </div>
   );

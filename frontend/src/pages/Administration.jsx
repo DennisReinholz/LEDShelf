@@ -11,7 +11,9 @@ import { HiOutlineScale } from "react-icons/hi2";
 import { UserContext } from "../helpers/userAuth.jsx";
 import { HiOutlineQrCode } from "react-icons/hi2";
 import { MdOutlineContactSupport } from "react-icons/md";
+import { HiOutlineCircleStack } from "react-icons/hi2";
 import styles from "../styles/administration.module.css";
+import DatabaseLayout from "./DatabaseLayout.jsx";
 
 const Administration = () => {
   const [activeTab, setActiveTab] = useState("1");
@@ -56,8 +58,17 @@ const Administration = () => {
           }`}
           onClick={() => handleTabChange("4")}
         >
-          <p>Kategory</p>
+          <p>Kategorie</p>
           <HiOutlineQrCode />
+        </div>
+        <div
+          className={`${styles.tab} ${
+            activeTab === "5" ? styles.activeTab : ""
+          }`}
+          onClick={() => handleTabChange("5")}
+        >
+          <p>Datenbank</p>
+          <HiOutlineCircleStack />
         </div>
       </div>
       <div className={styles.tabContent}>
@@ -79,6 +90,11 @@ const Administration = () => {
         {activeTab === "4" && (
           <div>
             <CategoryLayout />
+          </div>
+        )}
+        {activeTab === "5" && (
+          <div>
+            <DatabaseLayout />
           </div>
         )}
       </div>

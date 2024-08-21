@@ -32,10 +32,8 @@
     border-bottom: 2px solid transparent;
   }
   .tabContent {
-    padding: 20px;
     height: 60rem;
     background-color: #262626;
-    border-radius: 0 0 5px 5px;
   }
 }
 @media only screen and (max-width: 1920px) {
@@ -72,10 +70,8 @@
     border-bottom: 2px solid transparent;
   }
   .tabContent {
-    padding: 20px;
     height: 60rem;
     background-color: #262626;
-    border-radius: 0 0 5px 5px;
   }
 }
 @media only screen and (max-width: 1700px) {
@@ -108,22 +104,20 @@
   }
   .activeTab {
     background-color: #262626;
+
     font-weight: bold;
     border-bottom: 2px solid transparent;
   }
   .tabContent {
-    padding: 20px;
     height: 60rem;
     background-color: #262626;
-    border-radius: 0 0 5px 5px;
   }
 }
 @media only screen and (max-width: 1200px) {
   .container {
-    margin: 20px;
-    padding: 0;
     background-color: #212121;
     color: white;
+    width: 62rem;
     border-radius: 5px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -136,9 +130,8 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    width: 10rem;
+    width: 9rem;
     height: 2rem;
-    padding: 15px 20px;
     cursor: pointer;
     background-color: #212121;
     border-bottom: none;
@@ -152,9 +145,8 @@
     border-bottom: 2px solid transparent;
   }
   .tabContent {
-    padding: 20px;
     height: 60rem;
+    width: 62rem;
     background-color: #262626;
-    border-radius: 0 0 5px 5px;
   }
 }

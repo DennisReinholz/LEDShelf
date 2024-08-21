@@ -59,9 +59,6 @@ const UserLayout = () => {
       </button>
       <div className={styles.container}>
         <div className={styles.contentContainer}>
-          <div className={styles.contentHeader}>
-            <h3>Benutzer verwalten</h3>
-          </div>
           <div className={styles.userContainer}>
             {users !== undefined
               ? users.map((u, index) => (
