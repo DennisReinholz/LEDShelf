@@ -155,6 +155,9 @@ app.post("/controllerOff", (req, res) => {
 app.post("/pingController", (req, res) => {
   DataBaseController.PingController(req, res, db);
 });
+app.get("/getCompany", (req, res) => {
+  DataBaseController.getCompany(req, res, db);
+});
 // Server starten
 app.listen(PORT, () => {
   console.log(`Server läuft auf Port ${PORT}`);

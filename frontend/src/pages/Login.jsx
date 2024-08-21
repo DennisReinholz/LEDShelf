@@ -85,7 +85,7 @@ const Login = () => {
     <div className={styles.container}>
       <div className={styles.content}>
         <p>
-          <strong>h</strong>3D²
+          <strong>LEDShelf</strong>
         </p>
         <div className={styles.inputContainer}>
           <MyTextField

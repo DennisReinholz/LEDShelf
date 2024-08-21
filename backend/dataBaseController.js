@@ -228,7 +228,7 @@ module.exports.createArticle = async (req, res, db) => {
     selectedShelf,
     selectedCompartment,
     selectedCategory,
-    companyName,
+    selectedCompany,
     commissiongoods,
     minRequirement,
   } = req.body;
@@ -241,7 +241,7 @@ module.exports.createArticle = async (req, res, db) => {
       selectedShelf,
       unit,
       selectedCategory,
-      companyName,
+      selectedCompany,
       commissiongoods,
       minRequirement,
     ],
@@ -386,6 +386,20 @@ module.exports.createCategory = async (req, res, db) => {
 };
 module.exports.getCategory = async (req, res, db) => {
   db.all(`SELECT * from category `, (err, result) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+      return;
+    } else {
+      data = {
+        result: result,
+        serverStatus: 2,
+      };
+      res.status(200).json({ data });
+    }
+  });
+};
+module.exports.getCompany = async (req, res, db) => {
+  db.all(`SELECT * from company `, (err, result) => {
     if (err) {
       res.status(500).json({ serverStatus: -1 });
       return;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import styles from "../../styles/Article/editArticleForm.module.css";
 
 const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
@@ -129,42 +129,53 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
     <div className={styles.container}>
       <h2>Artikel bearbeiten</h2>
       <div className={styles.content}>
-        <p>
-          <strong>Artikelname: </strong>
-          {articleStatus !== undefined ? articleStatus.articlename : ""}
-        </p>
-        <input
-          type="text"
-          placeholder="neuer Artikelname"
-          className={styles.inputArticlename}
-          value={newArticleName}
-          onChange={(e) => setNewArticleName(e.target.value)}
-        />
-      </div>
-      <div className={styles.content}>
-        <p>
-          <strong>Menge: </strong>
-          {articleStatus !== undefined ? articleStatus.count : ""}{" "}
-          {articleStatus !== undefined ? articleStatus.unit : ""}
-        </p>
-        <div className={styles.inputRow}>
+        <div className={styles.contentRow}>
+          <p>Artikelname</p>
           <input
-            type="number"
-            placeholder="Menge"
+            className={styles.inputArticlename}
+            type="text"
+            placeholder={
+              articleStatus !== undefined ? articleStatus.articlename : ""
+            }
+            value={newArticleName}
+            onChange={(e) => setNewArticleName(e.target.value)}
+          />
+        </div>
+        <div className={styles.contentRow}>
+          <p>Menge</p>
+          <input
             className={styles.inputNumber}
+            placeholder={articleStatus !== undefined ? articleStatus.count : ""}
+            type="number"
             value={newCount}
             onChange={(e) => setNewCount(e.target.value)}
           />
+        </div>
+        <div className={styles.contentRow}>
+          <p>Mindestbestand</p>
           <input
             className={styles.inputMinRequirement}
             type="number"
-            placeholder="min"
+            placeholder={
+              articleStatus !== undefined &&
+              articleStatus.minRequirement !== null
+                ? articleStatus.minRequirement
+                : "0"
+            }
             value={newMinRequirement}
             onChange={(e) => setNewMinRequirement(e.target.value)}
           />
+        </div>
+        <div className={styles.contentRow}>
+          <p>Kategorie</p>
           <select
+            className={styles.selection}
+            placeholder={
+              articleStatus !== undefined && articleStatus.category !== null
+                ? articleStatus.category
+                : "Auswählen"
+            }
             value={newCategory}
-            className={styles.unitSelection}
             onChange={(e) => setNewCategory(e.target.value)}
           >
             {category !== undefined
@@ -175,9 +186,17 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
                 ))
               : ""}
           </select>
+        </div>
+        <div className={styles.contentRow}>
+          <p>Einheit</p>{" "}
           <select
-            value={article.unit}
-            className={styles.unitSelection}
+            className={styles.selection}
+            placeholder={
+              articleStatus !== undefined
+                ? articleStatus.unit
+                : "Einheit auswählen"
+            }
+            value={newUnit}
             onChange={(e) => setNewUnit(e.target.value)}
           >
             <option value="Meter">Meter</option>
@@ -185,41 +204,45 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
             <option value="Stück">Stück</option>
           </select>
         </div>
-      </div>
-      <div className={styles.content}>
-        <p>
-          <strong>Regal: </strong>
-          {articleStatus !== undefined ? articleStatus.shelfname : ""} - Fach:{" "}
-          {articleStatus !== undefined ? articleStatus.compartment : ""}
-        </p>
-        <select
-          onChange={(e) => handleShelfSelction(e.target.value)}
-          className={styles.shelfSelection}
-        >
-          {shelf.result != undefined ? (
-            shelf.result.map((s) => (
-              <option key={s.shelfid} value={s.shelfid}>
-                {s.shelfname}
-              </option>
-            ))
-          ) : (
-            <option>Keine Regale gefunden</option>
-          )}
-        </select>
-        <select
-          className={styles.comparmentSelection}
-          onChange={(e) => setNewCompartment(e.target.value)}
-        >
-          {compartment != undefined ? (
-            compartment.map((c) => (
-              <option key={c.compartmentid} value={c.compartmentid}>
-                {c.compartmentname}
-              </option>
-            ))
-          ) : (
-            <option>Keine Fächer gefunden</option>
-          )}
-        </select>
+        <div className={styles.contentRow}>
+          <p>Regal</p>
+          <select
+            className={styles.selection}
+            defaultValue={
+              articleStatus !== undefined ? articleStatus.shelf : ""
+            }
+            value={newShelf}
+            onChange={(e) => handleShelfSelction(e.target.value)}
+          >
+            {shelf.result != undefined ? (
+              shelf.result.map((s) => (
+                <option key={s.shelfid} value={s.shelfid}>
+                  {s.shelfname}
+                </option>
+              ))
+            ) : (
+              <option>Keine Regale gefunden</option>
+            )}
+          </select>
+        </div>
+        <div className={styles.contentRow}>
+          <p>Fach</p>
+          <select
+            className={styles.selection}
+            value={newCompartment}
+            onChange={(e) => setNewCompartment(e.target.value)}
+          >
+            {compartment != undefined ? (
+              compartment.map((c) => (
+                <option key={c.compartmentid} value={c.compartmentid}>
+                  {c.compartmentname}
+                </option>
+              ))
+            ) : (
+              <option>Keine Fächer gefunden</option>
+            )}
+          </select>
+        </div>
       </div>
       <div className={styles.buttonContainer}>
         <button className="secondaryButton" onClick={onClose}>

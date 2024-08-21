@@ -1,10 +1,4 @@
 @media only screen and (max-width: 2000px) {
-  .container {
-    display: flex;
-    flex-direction: column;
-    height: 15rem;
-    width: 20rem;
-  }
   .content {
     display: flex;
     flex-direction: column;
@@ -12,6 +6,12 @@
     width: 20rem;
     overflow-y: scroll;
     justify-content: space-between;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 15rem;
+    width: 20rem;
   }
   .buttonContainer {
     display: flex;
@@ -34,8 +34,8 @@
     flex-direction: column;
     height: 12rem;
     width: 20rem;
-    overflow-y: scroll;
     justify-content: space-between;
+    overflow-y: scroll;
   }
 }
 @media only screen and (max-width: 1700px) {
@@ -44,7 +44,6 @@
     flex-direction: column;
     height: 15rem;
     width: 20rem;
-    overflow-y: scroll;
   }
   .content {
     display: flex;
@@ -52,6 +51,7 @@
     height: 12rem;
     width: 20rem;
     justify-content: space-between;
+    overflow-y: scroll;
   }
   .buttonContainer {
     display: flex;
@@ -63,26 +63,26 @@
   }
 }
 @media only screen and (max-width: 1200px) {
-  .container {
-    display: flex;
-    flex-direction: column;
-    height: 15rem;
-    width: 20rem;
-  }
   .content {
     display: flex;
     flex-direction: column;
     height: 12rem;
-    width: 20rem;
-    overflow-y: scroll;
+    width: 28rem;
     justify-content: space-between;
+    overflow-y: scroll;
   }
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 15rem;
+    width: 25rem;
+  }
+
   .buttonContainer {
     display: flex;
     height: 3rem;
     width: 12rem;
     margin-top: 1rem;
     margin-left: 8rem;
-    justify-content: space-between;
   }
 }
