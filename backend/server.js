@@ -2,7 +2,6 @@ const express = require("express");
 
 const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
-const nodemailer = require("nodemailer");
 const backUp = require("./databaseBackup");
 const DataBaseController = require("./dataBaseController");
 const TrelloController = require("./trelloController");
@@ -32,17 +31,23 @@ app.use(cors());
 
 app.set("etag", false);
 
-// SQLite-Datenbankverbindung herstellen
-const db = new sqlite3.Database("./haseloff3D.db");
-const nodemail = require("./nodeMail");
+const defaultDatabasepath = "./haseloff3D.db";
+let databasepath;
+
+app.post("/setDatabasePath", (req, res) => {
+  const { databasePath } = req.body;
+  console.log(databasePath);
+  databasepath = databasePath;
+  // SQLite-Datenbankverbindung herstellen
+});
+
+const db = new sqlite3.Database(
+  databasepath != undefined ? databasepath : defaultDatabasepath
+);
 
 // SQLite-Datenbank BackUp
 
 backUp.StartBackUp();
-
-app.post("/sendEmail", async (req, res) => {
-  nodemail.SendMail(req, res, nodemailer);
-});
 
 //TrelloController
 app.get("/trelloLabels", (req, res) => {

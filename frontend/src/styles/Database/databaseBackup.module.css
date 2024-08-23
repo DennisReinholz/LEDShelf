@@ -1,0 +1,35 @@
+fieldset {
+  border-radius: 0.5rem;
+  background-color: #121212;
+  height: 12rem;
+  width: 25rem;
+}
+.backupContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 3rem;
+}
+.backupPathContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+}
+.inputDatabasePath {
+  height: 2rem;
+}
+.inputContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.openFolder {
+  font-size: 2em;
+  cursor: pointer;
+}
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 25rem;
+}
