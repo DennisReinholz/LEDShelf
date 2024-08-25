@@ -3,6 +3,8 @@ import Logo from "../components/Logo.jsx";
 import MainNav from "./MainNav.jsx";
 import styles from "../styles/Sidebar/sidebar.module.css";
 
+const Sidebar = () => {
+
 useEffect(() => {
   fetch("/package.json")
   .then((response) => response.json())
@@ -14,7 +16,6 @@ useEffect(() => {
   });
   }, []);
 
-  const Sidebar = () => {
   // Initialize state within the component
   const [devVersion, setDevVersion] = useState("");
   
