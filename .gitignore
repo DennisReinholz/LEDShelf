@@ -26,9 +26,11 @@
 *.a
 *.lib
 
-#database
+# Database
 *.sql
 
+# Environment
+*.env
 # Executables
 *.exe
 *.out
