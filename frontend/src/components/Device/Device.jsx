@@ -15,7 +15,9 @@ const Device = ({ ip, status, shelfName, shelfid, deviceId }) => {
   const [deleteDevice, setDeleteDevice] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
 
-  useEffect(() => {}, [assignedShelf, ip]);
+  useEffect(() => {
+    //ping controller
+  }, [assignedShelf, ip]);
   return (
     <div
       className={

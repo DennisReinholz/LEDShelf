@@ -51,7 +51,7 @@ const UserLayout = () => {
   return (
     <div className={styles.content}>
       <button
-        style={{ marginLeft: "1rem" }}
+        style={{ marginLeft: "1rem", marginTop: "1rem" }}
         className="primaryButton"
         onClick={() => setAddUserIsOpen((o) => !o)}
       >

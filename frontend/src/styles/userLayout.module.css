@@ -80,10 +80,10 @@
   .contentContainer {
     display: flex;
     flex-direction: column;
-    height: 55rem;
-    width: 62rem;
-    color: white;
     justify-content: space-between;
+    color: white;
+    height: 53rem;
+    width: 62rem;
   }
   .userContainer {
     display: flex;

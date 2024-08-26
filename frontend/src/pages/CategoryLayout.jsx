@@ -53,7 +53,7 @@ const CategoryLayout = () => {
       <div className={styles.addCategoryContainer}>
         <button
           className="primaryButton"
-          style={{ width: "13rem" }}
+          style={{ width: "13rem", marginTop: "1rem" }}
           onClick={() => setAddIsCategoryIsOpen(true)}
         >
           Erstellen

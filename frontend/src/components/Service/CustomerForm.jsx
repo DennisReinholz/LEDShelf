@@ -105,27 +105,30 @@ const CustomerForm = () => {
       <div className={styles.content}>
         <div className={styles.contentContainer}>
           <div className={styles.inputColumn}>
-            <MyTextField
+            <input
+              type="text"
               id="outlined-basic-1"
-              label="Name"
+              placeholder="Name"
               variant="outlined"
               size="small"
               className={styles.input}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <MyTextField
+            <input
+              type="text"
               id="outlined-basic-1"
-              label="E-Mail"
+              placeholder="E-Mail"
               variant="outlined"
               size="small"
               className={styles.input}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <MyTextField
+            <input
+              type="text"
               id="outlined-basic-1"
-              label="Betreff"
+              placeholder="Betreff"
               variant="outlined"
               size="small"
               className={styles.input}

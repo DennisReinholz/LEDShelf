@@ -12,3 +12,6 @@ FROM
     article
     LEFT JOIN compartment ON article.compartment = compartment.compartmentId
     LEFT JOIN shelf ON article.shelf = shelf.shelfid
+
+
+    dasdsadsadsad
