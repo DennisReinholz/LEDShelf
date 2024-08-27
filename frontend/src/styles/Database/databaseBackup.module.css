@@ -1,38 +1,200 @@
-fieldset {
-  border-radius: 0.5rem;
-  background-color: #121212;
-  height: 15rem;
-  width: 30rem;
-  font-size: 1.25em;
-  margin-top: 2rem;
+@media only screen and (max-width: 3000px) {
+  fieldset {
+    border-radius: 0.5rem;
+    background-color: #121212;
+    height: 15rem;
+    width: 30rem;
+    font-size: 1.25em;
+    margin-top: 2rem;
+  }
+  .backupContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 3rem;
+  }
+  .backupPathContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 5rem;
+  }
+  .backupPathContainer p {
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+  }
+  .inputContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .folder {
+    font-size: 1.5em;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    width: 30rem;
+  }
 }
-.backupContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 3rem;
+@media only screen and (max-width: 2000px) {
+  fieldset {
+    border-radius: 0.5rem;
+    background-color: #121212;
+    height: 15rem;
+    width: 30rem;
+    font-size: 1.25em;
+    margin-top: 2rem;
+  }
+  .backupContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 3rem;
+  }
+  .backupPathContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 5rem;
+  }
+  .backupPathContainer p {
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+  }
+  .inputContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .folder {
+    font-size: 1.5em;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    width: 30rem;
+  }
 }
-.backupPathContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 5rem;
+@media only screen and (max-width: 1920px) {
+  fieldset {
+    border-radius: 0.5rem;
+    background-color: #121212;
+    height: 15rem;
+    width: 30rem;
+    font-size: 1.25em;
+    margin-top: 2rem;
+  }
+  .backupContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 3rem;
+  }
+  .backupPathContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 5rem;
+  }
+  .backupPathContainer p {
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+  }
+  .inputContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .folder {
+    font-size: 1.5em;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    width: 30rem;
+  }
 }
-.backupPathContainer p {
-  margin-top: 1rem;
-  margin-bottom: 0rem;
+@media only screen and (max-width: 1700px) {
+  fieldset {
+    border-radius: 0.5rem;
+    background-color: #121212;
+    height: 15rem;
+    width: 30rem;
+    font-size: 1.25em;
+    margin-top: 2rem;
+  }
+  .backupContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 3rem;
+  }
+  .backupPathContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 5rem;
+  }
+  .backupPathContainer p {
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+  }
+  .inputContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .folder {
+    font-size: 1.5em;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    width: 30rem;
+  }
 }
-.inputContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.folder {
-  font-size: 1.5em;
-}
-.buttonContainer {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2rem;
-  width: 30rem;
+@media only screen and (max-width: 1200px) {
+  fieldset {
+    border-radius: 0.5rem;
+    background-color: #121212;
+    height: 15rem;
+    width: 30rem;
+    font-size: 1.25em;
+    margin-top: 2rem;
+  }
+  .backupContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 3rem;
+  }
+  .backupPathContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 5rem;
+  }
+  .backupPathContainer p {
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+  }
+  .inputContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .folder {
+    font-size: 1.5em;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    width: 30rem;
+  }
 }

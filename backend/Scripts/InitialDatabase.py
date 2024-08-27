@@ -125,12 +125,11 @@ def create_database_and_insert_data(db_file):
         cursor.execute('''
             INSERT INTO article (articlename, count, compartment, shelf, unit, categoryid, company, commission, minRequirement)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-            ('Article A', 100, 1, 1, 'Meter', 1, 'Company A', 'Commission A', 10))
+            ('Article A', 100, 1, 1, 'Meter', 1, 1, 'Commission A', 10))
         print("Daten in Tabelle 'article' eingefügt.")
 
         #Insert Compartment
         for inserts in range(5):
-            # Formatieren der Variablen korrekt
             compartment_name = f'Compartment {inserts}'
     
             # Ausführen des Inserts

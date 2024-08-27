@@ -45,6 +45,9 @@ app.get("/getDatabasepath", (req, res) => {
 app.get("/startManualBackup", (req, res) => {
   BackUpController.ManualBackup(req, res);
 });
+app.get("/getBackupFiles", (req, res) => {
+  BackUpController.GetBackUpFiles(req, res);
+});
 
 //TrelloController
 app.get("/trelloLabels", (req, res) => {
