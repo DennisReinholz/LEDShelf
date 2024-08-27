@@ -1,10 +1,10 @@
 const cron = require("node-cron");
 const fs = require("fs");
 const path = require("path");
-const config = require("dotenv").config();
+const config = require("./config");
 
-const databasePath = process.env.REACT_APP_DATABASE_PATH; // Pfad zu SQLite-Datenbank
-const backUpPath = process.env.REACT_APP_DATABASE_BACKUP_PATH; // Pfad zu Backup-Verzeichnis
+const databasePath = config.DatabasePath; // Pfad zu SQLite-Datenbank
+const backUpPath = config.BackUpFolder; // Pfad zu Backup-Verzeichnis
 
 if (!fs.existsSync(backUpPath)) {
   fs.mkdirSync(backUpPath, { recursive: true });
