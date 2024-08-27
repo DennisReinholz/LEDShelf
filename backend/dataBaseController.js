@@ -609,10 +609,10 @@ module.exports.PingController = async (req, res) => {
     if (ping.status == 200) {
       res.status(200).json({ serverStatus: 2 });
     } else {
-      res.status(500).json({ serverStatus: -1 });
+      res.status(404).json({ serverStatus: -1 });
     }
   } catch (error) {
-    res.status(500).json({ serverStatus: -1 });
+    res.status(500).json("Controller nicht erreichbar");
   }
 };
 

@@ -14,9 +14,35 @@ const Device = ({ ip, status, shelfName, shelfid, deviceId }) => {
   const [deleteFormIsOpen, setDeleteFormIsOpen] = useState(false);
   const [deleteDevice, setDeleteDevice] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+  const [ControllerStatus, setControllerStatus] = useState();
+
+  const pingController = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/pingController`, {
+        method: "Get",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+      })
+        .then((response) => response.json())
+        .then((controller) => {
+          if (controller.serverStatus !== 2) {
+            setControllerStatus("Nicht verbunden");
+          } else if (controller.serverStatus === 2) {
+            setControllerStatus("Verbunden");
+          } else if (controller.status === 500) {
+          }
+        })
+        .catch(console.log(`Contoller wurde nicht gefunden: ${ip}`));
+    } catch (error) {
+      console.log("Error:", err.message);
+      setResponse(null);
+    }
+  };
 
   useEffect(() => {
-    //ping controller
+    pingController();
   }, [assignedShelf, ip]);
   return (
     <div
@@ -40,7 +66,7 @@ const Device = ({ ip, status, shelfName, shelfid, deviceId }) => {
         <p>{deviceId}</p>
         <p>{shelfName == null ? "Nicht zugewiesen" : shelfName}</p>
         <p>{ip}</p>
-        <p>{status ? "Verbunden" : "Nicht verbunden"}</p>
+        <p>{ControllerStatus != undefined ? ControllerStatus : ""}</p>
       </div>
       <div className={styles.editContainer}>
         <FiEdit2

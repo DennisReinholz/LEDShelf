@@ -157,7 +157,7 @@ app.post("/deleteLedController", (req, res) => {
 app.post("/controllerOff", (req, res) => {
   DataBaseController.ControllerOff(req, res, db);
 });
-app.post("/pingController", (req, res) => {
+app.get("/pingController", (req, res) => {
   DataBaseController.PingController(req, res, db);
 });
 app.get("/getCompany", (req, res) => {
