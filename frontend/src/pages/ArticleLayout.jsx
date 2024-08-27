@@ -51,10 +51,8 @@ const ArticleLayout = () => {
         setOriginArticleList(article);
         setArticleListToShow(article);
         setFilteredArticleList(article);
-
-        //Es wurden nicht alle Artikel angezeigt, welchen den 2 Funktionen, muss gestetet werden
-        // GetCompany(article);
-        // GetCommission(article);
+        GetCompany(article);
+        GetCommission(article);
       });
   };
   const getCompartments = async (shelfid) => {
