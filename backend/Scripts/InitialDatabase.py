@@ -114,6 +114,7 @@ def create_database_and_insert_data(db_file):
 
         #Insert Role
         cursor.execute('INSERT INTO role (name) VALUES (?)', ('Administrator',))
+        cursor.execute('INSERT INTO role (name) VALUES (?)', ('Member',))
         print("Daten in Tabelle 'role' eingefügt.")
 
         #Insert Shelf
