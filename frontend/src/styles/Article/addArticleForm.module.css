@@ -2,27 +2,80 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 15rem;
-    width: 37rem;
+    height: 55rem;
+    width: 31rem;
     color: white;
   }
   .content {
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    width: 30rem;
+  }
+  .content p {
     font-size: 1.5em;
   }
-  .shelfSelection {
-    display: flex;
-    margin-top: 2rem;
+  .fieldsetStyle {
+    margin: 0rem;
+    margin-top: 1rem;
+    background-color: #1a1a1a;
+    border-radius: 0.5rem;
+  }
+  .fieldsetStyle legend {
+    font-size: 1.25em;
+  }
+  .inputArticleName {
+    width: 17rem;
+    height: 2rem;
+    font-size: 1.15em;
+  }
+  .inputAmount {
+    width: 5rem;
+    height: 2rem;
     font-size: 1.5em;
-    height: 10rem;
-    width: 37rem;
-    justify-content: space-between;
+  }
+  .inputMinRequiment {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .unitSelection {
+    height: 2rem;
+    width: 10rem;
+    font-size: 1.15em;
+  }
+  .categorySelect {
+    height: 2em;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .inputCompany {
+    height: 2rem;
+    width: 17rem;
+    font-size: 1.15em;
+  }
+  .inputCommission {
+    height: 4rem;
+    width: 17.5rem;
+    font-size: 1.5em;
+  }
+  .shelfSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .compartmentSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+    margin-left: 1rem;
   }
   .buttonContainer {
     display: flex;
-    width: 37rem;
-    flex-direction: row-reverse;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 32rem;
+    margin-left: 0rem;
     margin-top: 1rem;
   }
 }
@@ -30,230 +83,242 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 20rem;
-    width: 45rem;
+    height: 55rem;
+    width: 31rem;
     color: white;
-    font-size: 1em;
   }
   .content {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    width: 40rem;
+    width: 30rem;
   }
-  .addFormRow {
-    display: flex;
-    flex-direction: row;
+  .content p {
+    font-size: 1.15em;
+  }
+  .fieldsetStyle {
+    margin: 0rem;
     margin-top: 1rem;
-    height: 3rem;
-    width: 40rem;
-    justify-content: space-between;
+    background-color: #1a1a1a;
+    border-radius: 0.5rem;
   }
-  .inputRow {
-    display: flex;
-    width: 20rem;
-    margin-left: 0rem;
-    justify-content: space-between;
+  .fieldsetStyle legend {
+    font-size: 1.15em;
   }
   .inputArticleName {
     width: 17rem;
-    font-size: 0.75em;
+    height: 2rem;
+    font-size: 1.15em;
   }
   .inputAmount {
     width: 5rem;
-    font-size: 0.75em;
-  }
-  .inputCompany {
-    height: 2.5rem;
-    width: 17rem;
-    font-size: 1em;
-  }
-  .inputCommission {
-    height: 2.5rem;
-    width: 14.5rem;
-    font-size: 1em;
-  }
-  .shelfSelection {
-    display: flex;
-    margin-top: 1rem;
-    height: 10rem;
-    width: 45rem;
-    justify-content: space-between;
-  }
-  .shelfSelect {
-    height: 2.5rem;
-    width: 17.5rem;
-  }
-  .compartmentSelect {
-    height: 2.5rem;
-    width: 14.75rem;
-    margin-left: 1rem;
-  }
-  .categorySelect {
-    height: 2.5rem;
-    width: 8.5rem;
-  }
-  .shelfSelection select {
-    font-size: 0.75em;
-  }
-  .unitSelection {
-    height: 3rem;
-    width: 8rem;
-    font-size: 0.75em;
+    height: 2rem;
+    font-size: 1.5em;
   }
   .inputMinRequiment {
     width: 5rem;
-    font-size: 0.75em;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .unitSelection {
+    height: 2rem;
+    width: 10rem;
+    font-size: 1.15em;
+  }
+  .categorySelect {
+    height: 2em;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .inputCompany {
+    height: 2rem;
+    width: 17rem;
+    font-size: 1.15em;
+  }
+  .inputCommission {
+    height: 4rem;
+    width: 17.5rem;
+    font-size: 1.5em;
+  }
+  .shelfSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .compartmentSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+    margin-left: 1rem;
   }
   .buttonContainer {
     display: flex;
-    width: 23rem;
     flex-direction: row;
     justify-content: space-between;
-    margin-left: 22rem;
+    width: 32rem;
+    margin-left: 0rem;
     margin-top: 1rem;
-    font-size: 1em;
   }
 }
 @media only screen and (max-width: 1700px) {
   .container {
     display: flex;
     flex-direction: column;
-    height: 20rem;
-    width: 45rem;
+    height: 55rem;
+    width: 31.5rem;
     color: white;
-    font-size: 1em;
   }
   .content {
     display: flex;
-    justify-content: space-between;
-    font-size: 1em;
-  }
-  .unitSelection {
-    height: 2.25rem;
-    width: 9rem;
-    margin-left: 1rem;
-  }
-  .addFormRow {
-    display: flex;
-    flex-direction: row;
-    margin-top: 1rem;
     align-items: center;
     justify-content: space-between;
-    width: 45rem;
+    width: 30rem;
   }
-  .shelfSelection {
-    display: flex;
-    margin-top: 2rem;
-    font-size: 1.5em;
-    height: 10rem;
-    width: 45rem;
-    justify-content: space-between;
-    font-size: 1em;
+  .content p {
+    font-size: 1.25em;
   }
-  .buttonContainer {
-    display: flex;
-    width: 20rem;
-    flex-direction: row;
+  .fieldsetStyle {
+    margin: 0rem;
     margin-top: 1rem;
-    margin-left: 25rem;
+    background-color: #1a1a1a;
+    border-radius: 0.5rem;
   }
-  .input {
-    height: 2rem;
+  .fieldsetStyle legend {
+    font-size: 1.25em;
+  }
+  .inputArticleName {
     width: 17rem;
+    height: 2rem;
+    font-size: 1.15em;
+  }
+  .inputAmount {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5em;
   }
   .inputMinRequiment {
     width: 5rem;
-    font-size: 1em;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .unitSelection {
+    height: 2rem;
+    width: 10rem;
+    font-size: 1.15em;
+  }
+  .categorySelect {
+    height: 2em;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .inputCompany {
+    height: 2rem;
+    width: 17rem;
+    font-size: 1.15em;
+  }
+  .inputCommission {
+    height: 4rem;
+    width: 17.5rem;
+    font-size: 1.5em;
+  }
+  .shelfSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .compartmentSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+    margin-left: 1rem;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 32rem;
+    margin-left: 0rem;
+    margin-top: 1rem;
   }
 }
 @media only screen and (max-width: 1200px) {
   .container {
     display: flex;
     flex-direction: column;
-    height: 25rem;
-    width: 45rem;
+    height: 55rem;
+    width: 31rem;
     color: white;
-    font-size: 1em;
   }
   .content {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    width: 45rem;
+    width: 30rem;
   }
-  .addFormRow {
-    display: flex;
-    flex-direction: row;
+  .content p {
+    font-size: 1.5em;
+  }
+  .fieldsetStyle {
+    margin: 0rem;
     margin-top: 1rem;
-    height: 5rem;
-    width: 45rem;
-    justify-content: space-between;
+    background-color: #1a1a1a;
+    border-radius: 0.5rem;
   }
-  .inputRow {
-    display: flex;
-    width: 20rem;
-    margin-left: 3rem;
-    justify-content: space-between;
+  .fieldsetStyle legend {
+    font-size: 1.25em;
   }
   .inputArticleName {
     width: 17rem;
-    height: 4rem;
+    height: 2rem;
     font-size: 1.15em;
   }
   .inputAmount {
     width: 5rem;
-    height: 4rem;
+    height: 2rem;
     font-size: 1.5em;
   }
+  .inputMinRequiment {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .unitSelection {
+    height: 2rem;
+    width: 10rem;
+    font-size: 1.15em;
+  }
+  .categorySelect {
+    height: 2em;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
   .inputCompany {
-    height: 4rem;
+    height: 2rem;
     width: 17rem;
     font-size: 1.15em;
   }
   .inputCommission {
     height: 4rem;
-    width: 20rem;
+    width: 17.5rem;
     font-size: 1.5em;
   }
-  .shelfSelection {
-    display: flex;
-    margin-top: 1rem;
-    height: 10rem;
-    width: 45rem;
-    justify-content: space-between;
-  }
   .shelfSelect {
-    height: 4rem;
+    height: 2rem;
     width: 17.5rem;
     font-size: 1.15em;
   }
   .compartmentSelect {
-    height: 4rem;
-    width: 14.75rem;
-    margin-left: 1rem;
-  }
-  .categorySelect {
-    height: 3.5em;
-    width: 8.5rem;
-  }
-  .shelfSelection select {
+    height: 2rem;
+    width: 17.5rem;
     font-size: 1.15em;
-  }
-  .unitSelection {
-    height: 4rem;
-    width: 10rem;
-    font-size: 1.5em;
-  }
-  .inputMinRequiment {
-    width: 5rem;
-    font-size: 1em;
+    margin-left: 1rem;
   }
   .buttonContainer {
     display: flex;
-    width: 23rem;
     flex-direction: row;
     justify-content: space-between;
-    margin-left: 22rem;
+    width: 32rem;
+    margin-left: 0rem;
     margin-top: 1rem;
-    font-size: 1em;
   }
 }

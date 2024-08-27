@@ -29,8 +29,7 @@
 @media only screen and (max-width: 1200px) {
   .container {
     display: flex;
-    width: 15rem;
+    width: 10rem;
     align-items: center;
-    overflow-y: scroll;
   }
 }

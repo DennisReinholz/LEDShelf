@@ -51,7 +51,7 @@ const UserLayout = () => {
   return (
     <div className={styles.content}>
       <button
-        style={{ marginLeft: "1rem" }}
+        style={{ marginLeft: "1rem", marginTop: "1rem" }}
         className="primaryButton"
         onClick={() => setAddUserIsOpen((o) => !o)}
       >
@@ -59,9 +59,6 @@ const UserLayout = () => {
       </button>
       <div className={styles.container}>
         <div className={styles.contentContainer}>
-          <div className={styles.contentHeader}>
-            <h3>Benutzer verwalten</h3>
-          </div>
           <div className={styles.userContainer}>
             {users !== undefined
               ? users.map((u, index) => (

@@ -2,8 +2,7 @@ const express = require("express");
 
 const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
-const nodemailer = require("nodemailer");
-const backUp = require("./databaseBackup");
+const BackUpController = require("./databaseBackup");
 const DataBaseController = require("./dataBaseController");
 const TrelloController = require("./trelloController");
 const cors = require("cors");
@@ -29,19 +28,25 @@ const corsOptions = {
 };
 
 app.use(cors());
-
 app.set("etag", false);
 
-// SQLite-Datenbankverbindung herstellen
-const db = new sqlite3.Database("./haseloff3D.db");
-const nodemail = require("./nodeMail");
+const defaultDatabasepath = process.env.REACT_APP_DATABASE_PATH;
 
-// SQLite-Datenbank BackUp
+DataBaseController.CheckDatabase(defaultDatabasepath);
 
-backUp.StartBackUp();
+const db = new sqlite3.Database(defaultDatabasepath);
 
-app.post("/sendEmail", async (req, res) => {
-  nodemail.SendMail(req, res, nodemailer);
+//BackUpController
+BackUpController.StartBackUp();
+
+app.get("/getDatabasepath", (req, res) => {
+  BackUpController.GetBackUpPath(req, res);
+});
+app.get("/startManualBackup", (req, res) => {
+  BackUpController.ManualBackup(req, res);
+});
+app.get("/getBackupFiles", (req, res) => {
+  BackUpController.GetBackUpFiles(req, res);
 });
 
 //TrelloController
@@ -154,6 +159,9 @@ app.post("/controllerOff", (req, res) => {
 });
 app.post("/pingController", (req, res) => {
   DataBaseController.PingController(req, res, db);
+});
+app.get("/getCompany", (req, res) => {
+  DataBaseController.getCompany(req, res, db);
 });
 // Server starten
 app.listen(PORT, () => {

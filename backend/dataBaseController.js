@@ -1,39 +1,44 @@
 require("dotenv").config();
 const axios = require("axios");
 const bcrypt = require("bcrypt");
+const fs = require("fs");
+const { exec } = require("child_process");
+
+module.exports.CheckDatabase = (dbPath) => {
+  if (!fs.existsSync(dbPath)) {
+    CreateDatabase();
+  }
+};
 
 module.exports.getUser = async (req, res, db) => {
-  const { frontendPassword } = req.body;
-  const { user } = req.query;
+  const { frontendPassword, username } = req.body;
+
   db.all(
     "SELECT user.*, role.name FROM user, role WHERE user.username=? AND user.role = role.roleid",
-    [user],
+    [username],
     async (err, result) => {
       if (err) {
-        res.status(500).json({ serverStatus: -1 });
-        return;
+        return res.status(500).json({ serverStatus: -1, error: err.message });
       }
-      if (result.length > 0) {
-        try {
-          // Compare the provided password with the stored hashed password
-          const match = await bcrypt.compare(
-            frontendPassword,
-            result[0].password
-          );
-          if (match) {
-            const data = {
-              result,
-              serverStatus: 2,
-            };
-            res.status(200).json(data);
-          } else {
-            res.status(200).json({ serverStatus: -1 });
-          }
-        } catch (compareError) {
-          res
-            .status(500)
-            .json({ serverStatus: -1, error: compareError.message });
+
+      if (result.length === 0) {
+        return res.status(404).json({ serverStatus: -1 }); // Benutzer nicht gefunden
+      }
+
+      try {
+        const match = await bcrypt.compare(
+          frontendPassword,
+          result[0].password
+        );
+        if (match) {
+          return res.status(200).json({ result, serverStatus: 2 });
+        } else {
+          return res.status(401).json({ serverStatus: -1 }); // Passwort falsch
         }
+      } catch (compareError) {
+        return res
+          .status(500)
+          .json({ serverStatus: -1, error: compareError.message });
       }
     }
   );
@@ -228,7 +233,7 @@ module.exports.createArticle = async (req, res, db) => {
     selectedShelf,
     selectedCompartment,
     selectedCategory,
-    companyName,
+    selectedCompany,
     commissiongoods,
     minRequirement,
   } = req.body;
@@ -241,7 +246,7 @@ module.exports.createArticle = async (req, res, db) => {
       selectedShelf,
       unit,
       selectedCategory,
-      companyName,
+      selectedCompany,
       commissiongoods,
       minRequirement,
     ],
@@ -322,7 +327,7 @@ module.exports.deleteArticle = async (req, res, db) => {
   );
 };
 module.exports.createUser = async (req, res, db) => {
-  const saltRounds = 10;
+  const saltRounds = 12;
   const { name, password, roleid } = req.body;
 
   try {
@@ -386,6 +391,20 @@ module.exports.createCategory = async (req, res, db) => {
 };
 module.exports.getCategory = async (req, res, db) => {
   db.all(`SELECT * from category `, (err, result) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+      return;
+    } else {
+      data = {
+        result: result,
+        serverStatus: 2,
+      };
+      res.status(200).json({ data });
+    }
+  });
+};
+module.exports.getCompany = async (req, res, db) => {
+  db.all(`SELECT * from company `, (err, result) => {
     if (err) {
       res.status(500).json({ serverStatus: -1 });
       return;
@@ -682,4 +701,17 @@ const insertControllerFunction = async (db, controllerId, compartmentList) => {
   } catch (error) {
     throw error;
   }
+};
+const CreateDatabase = () => {
+  exec(`python3 ./Scripts/InitialDatabase.py`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing Python script: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`Python script error: ${stderr}`);
+      return;
+    }
+    console.log(`Python script output: ${stdout}`);
+  });
 };

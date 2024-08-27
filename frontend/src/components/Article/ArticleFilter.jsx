@@ -132,11 +132,11 @@ const ArticleFilter = ({
         </button>
         {user != undefined
           ? user[0].role == 1 && (
-              <Tooltip text="Erstellt eine csv Datei aus der Artikelliste mit dem angewendeten Filter">
-                <button className="primaryButton" onClick={() => exportToCSV()}>
-                  Exportieren
-                </button>
-              </Tooltip>
+              // <Tooltip text="Erstellt eine csv Datei aus der Artikelliste mit dem angewendeten Filter">
+              <button className="primaryButton" onClick={() => exportToCSV()}>
+                Exportieren
+              </button>
+              // </Tooltip>
             )
           : ""}
       </div>

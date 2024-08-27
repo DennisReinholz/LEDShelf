@@ -2,8 +2,9 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 15rem;
-    width: 20rem;
+    height: 25rem;
+    width: 25rem;
+    font-size: 1em;
   }
   .contentContainer {
     display: flex;
@@ -13,16 +14,18 @@
   .inputField {
     height: 2rem;
     width: 10rem;
+    font-size: 0.75em;
   }
   .roleSelection {
     height: 2rem;
-    width: 7rem;
+    width: 12rem;
+    font-size: 0.75em;
   }
   .buttonContainer {
     display: flex;
     justify-content: space-between;
-    width: 13rem;
-    margin-left: 7rem;
+    width: 20rem;
+    margin-left: 5rem;
     margin-top: 2rem;
   }
 }
@@ -30,11 +33,9 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 22rem;
-    width: 22rem;
-  }
-  .container p {
-    font-size: 1.15em;
+    height: 30rem;
+    width: 30rem;
+    font-size: 1em;
   }
   .contentContainer {
     display: flex;
@@ -44,18 +45,18 @@
   .inputField {
     height: 2rem;
     width: 10rem;
-    font-size: 1em;
+    font-size: 0.75em;
   }
   .roleSelection {
     height: 2rem;
-    width: 10.5rem;
-    font-size: 1em;
+    width: 15rem;
+    font-size: 0.75em;
   }
   .buttonContainer {
     display: flex;
     justify-content: space-between;
-    width: 20rem;
-    margin-left: 2rem;
+    width: 25rem;
+    margin-left: 5rem;
     margin-top: 2rem;
   }
 }
@@ -63,8 +64,9 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 17rem;
-    width: 20rem;
+    height: 30rem;
+    width: 25rem;
+    font-size: 1em;
   }
   .contentContainer {
     display: flex;
@@ -77,13 +79,14 @@
   }
   .roleSelection {
     height: 2rem;
-    width: 7rem;
+    width: 15rem;
   }
   .buttonContainer {
     display: flex;
     justify-content: space-between;
-    width: 15rem;
-    margin-left: 7rem;
+    width: 20rem;
+    height: 5rem;
+    margin-left: 5rem;
     margin-top: 2rem;
   }
 }
@@ -91,7 +94,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 25rem;
+    height: 30rem;
     width: 25rem;
   }
   .container h3 {

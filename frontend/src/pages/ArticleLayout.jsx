@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../helpers/userAuth";
 import styles from "../styles/articleLayout.module.css";
 import Modal from "../components/common/Modal";
-import { FiEdit2 } from "react-icons/fi";
-import { BsTrash } from "react-icons/bs";
 import AddArticleForm from "../components/Article/AddArticleForm";
 import EditArticleForm from "../components/Article/EditArticleForm";
 import DeleteArticleForm from "../components/Article/DeleteArticleForm";
-import toast, { Toaster } from "react-hot-toast";
-import { UserContext } from "../helpers/userAuth";
+import toast from "react-hot-toast";
 import ArticleFilter from "../components/Article/ArticleFilter";
+import { FiEdit2 } from "react-icons/fi";
+import { BsTrash } from "react-icons/bs";
 import { Tooltip } from "react-tooltip";
 import { FiAirplay } from "react-icons/fi";
+import { HiOutlineExclamationTriangle } from "react-icons/hi2";
 
 const ArticleLayout = () => {
   const [user, setUser] = useContext(UserContext);
@@ -50,8 +51,10 @@ const ArticleLayout = () => {
         setOriginArticleList(article);
         setArticleListToShow(article);
         setFilteredArticleList(article);
-        GetCompany(article);
-        GetCommission(article);
+
+        //Es wurden nicht alle Artikel angezeigt, welchen den 2 Funktionen, muss gestetet werden
+        // GetCompany(article);
+        // GetCommission(article);
       });
   };
   const getCompartments = async (shelfid) => {
@@ -229,6 +232,30 @@ const ArticleLayout = () => {
     });
     setCommissionList(filtered);
   };
+
+  //Export function and convertion to an csv format
+  //Properties which are exportet to csv
+  const exportArticleProperties = [
+    "articlename",
+    "count",
+    "unit",
+    "categoryName",
+    "shelfname",
+    "commission",
+    "companyName",
+    "minRequirement",
+  ];
+  const filterArticleProperties = (articleList, propertyList) => {
+    return articleList.map((article) => {
+      let filteredArticle = {};
+      propertyList.forEach((prop) => {
+        if (article.hasOwnProperty(prop)) {
+          filteredArticle[prop] = article[prop];
+        }
+      });
+      return filteredArticle;
+    });
+  };
   const convertToCSV = (array) => {
     if (array.length === 0) return "";
 
@@ -240,7 +267,11 @@ const ArticleLayout = () => {
     return csvContent;
   };
   const ExportToCSV = () => {
-    const csv = convertToCSV(articleListToShow);
+    const filteredArticle = filterArticleProperties(
+      articleListToShow,
+      exportArticleProperties
+    );
+    const csv = convertToCSV(filteredArticle);
     const utf8Bom = "\uFEFF";
     const csvWithBom = utf8Bom + csv;
 
@@ -258,9 +289,9 @@ const ArticleLayout = () => {
     getArticle();
     getShelf();
     getCategory();
-
     getCompartments();
     handleUser();
+
     if (deleteState) {
       deleteArticle(selectedArticle);
     }
@@ -290,6 +321,9 @@ const ArticleLayout = () => {
       </Tooltip>
       <Tooltip anchorSelect=".navigateShelf" place="left">
         Zum Regal
+      </Tooltip>
+      <Tooltip anchorSelect=".minRequirement" place="left">
+        Mindestbestand erreicht
       </Tooltip>
 
       <div className={styles.buttonContainer}>
@@ -341,13 +375,11 @@ const ArticleLayout = () => {
               articleListToShow.map((c) => (
                 <tbody key={c.articleid}>
                   <tr
+                    key={c.id}
                     style={{
-                      borderColor:
-                        c.count < c.minRequirement && c.minRequirement !== null
-                          ? "yellow"
-                          : "white",
-                      borderWidth: "2px",
-                      borderStyle: "solid",
+                      backgroundColor:
+                        c.count < c.minRequirement ? "#ebcf34" : "",
+                      color: c.count < c.minRequirement ? "black" : "",
                     }}
                   >
                     <td>{c.articlename}</td>
@@ -376,6 +408,19 @@ const ArticleLayout = () => {
                                 style={{ cursor: "pointer" }}
                                 onClick={() => navigate(`/regale/${c.shelf}`)}
                               />
+                              <div
+                                className={
+                                  !(c.count < c.minRequirement) &&
+                                  styles.cautionOff
+                                }
+                              >
+                                <HiOutlineExclamationTriangle
+                                  className="minRequirement"
+                                  onClick={() =>
+                                    toast.error("Mindestbestand erreicht")
+                                  }
+                                />
+                              </div>
                             </div>
                           </td>
                         )

@@ -14,12 +14,16 @@ const DeleteArticleForm = ({ artikelname, setDelete, onClose }) => {
       <h3>Artikel löschen</h3>
       <div className={styles.content}>
         <p>
-          {artikelname === undefined
-            ? "Artikel wurde nicht gefunden"
-            : "Wollen Sie den Artikel: " +
-              artikelname.articlename +
-              " wirklich löschen?"}
+          {artikelname === undefined ? (
+            "Artikel wurde nicht gefunden"
+          ) : (
+            <>
+              Wollen Sie den Artikel: <strong>{artikelname.articlename}</strong>{" "}
+              wirklich löschen?
+            </>
+          )}
         </p>
+
         <div className={styles.buttonContainer}>
           <button className="secondaryButton" onClick={handleAbort}>
             Nein

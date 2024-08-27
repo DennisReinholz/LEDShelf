@@ -38,7 +38,7 @@ const AddDeviceForm = ({ onClose }) => {
         setShelfList(shelf.result);
       });
   };
-  const createShelf = async () => {
+  const createController = async () => {
     setLoading(true);
     try {
       const isAvaiable = await pingController();
@@ -105,12 +105,11 @@ const AddDeviceForm = ({ onClose }) => {
         ) : (
           <React.Fragment>
             <div className={styles.content}>
-              <MyTextField
-                id="outlined-basic-1"
-                label="Ip Adresse"
+              <input
+                placeholder="Ip Adresse"
                 variant="outlined"
                 size="small"
-                style={{ width: "16rem" }}
+                style={{ width: "15.5rem", height: "2rem" }}
                 className={styles.input}
                 onChange={(e) => setIpAdress(e.target.value)}
               />
@@ -136,7 +135,10 @@ const AddDeviceForm = ({ onClose }) => {
               <button className="secondaryButton" onClick={onClose}>
                 Abbrechen
               </button>
-              <button className="primaryButton" onClick={() => createShelf()}>
+              <button
+                className="primaryButton"
+                onClick={() => createController()}
+              >
                 Hinzufügen
               </button>
             </div>

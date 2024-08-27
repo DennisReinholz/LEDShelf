@@ -1,0 +1,6 @@
+.container {
+  display: flex;
+  width: 80rem;
+  height: 32rem;
+  margin-left: 1rem;
+}

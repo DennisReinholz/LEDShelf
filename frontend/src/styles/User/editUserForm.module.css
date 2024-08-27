@@ -2,8 +2,8 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 15rem;
-    width: 20rem;
+    height: 22.5;
+    width: 25rem;
   }
   .contentContainer {
     display: flex;
@@ -21,8 +21,8 @@
   .buttonContainer {
     display: flex;
     justify-content: space-between;
-    width: 14rem;
-    margin-left: 6rem;
+    width: 20rem;
+    margin-left: 3.5em;
     margin-top: 2rem;
   }
 }
@@ -30,7 +30,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 22rem;
+    height: 27rem;
     width: 25rem;
   }
   .contentContainer {
@@ -50,7 +50,7 @@
     display: flex;
     justify-content: space-between;
     width: 25rem;
-    margin-left: 1rem;
+    margin-left: 0rem;
     margin-top: 2rem;
   }
 }
@@ -58,8 +58,8 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 15rem;
-    width: 20rem;
+    height: 25rem;
+    width: 25rem;
   }
   .contentContainer {
     display: flex;
@@ -77,8 +77,8 @@
   .buttonContainer {
     display: flex;
     justify-content: space-between;
-    width: 18rem;
-    margin-left: 2rem;
+    width: 20rem;
+    margin-left: 5rem;
     margin-top: 2rem;
   }
 }
@@ -102,14 +102,14 @@
   }
   .roleSelection {
     height: 3rem;
-    width: 10rem;
+    width: 15rem;
     font-size: 0.75em;
   }
   .buttonContainer {
     display: flex;
     justify-content: space-between;
     width: 25rem;
-    margin-left: 2rem;
+    margin-left: 5rem;
     margin-top: 2rem;
     font-size: 0.5em;
   }
