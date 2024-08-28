@@ -1,27 +1,56 @@
 const cron = require("node-cron");
 const fs = require("fs");
 const path = require("path");
-const config = require("./config");
+const configPath = path.join(__dirname, "config.json");
 
-const databasePath = config.DatabasePath; // Pfad zu SQLite-Datenbank
-const backUpPath = config.BackUpFolder; // Pfad zu Backup-Verzeichnis
+function loadConfig() {
+  try {
+    const rawData = fs.readFileSync(configPath, "utf8");
+    const config = JSON.parse(rawData);
+    return config;
+  } catch (error) {
+    console.error("Error reading or parsing config.json:", error);
+    return null;
+  }
+}
 
-if (!fs.existsSync(backUpPath)) {
-  fs.mkdirSync(backUpPath, { recursive: true });
+// Lade die Konfiguration
+const config = loadConfig();
+
+if (config) {
+  // Sicherstellen, dass das Backup-Verzeichnis existiert
+  const backupPath = config.backupFolder;
+
+  if (!backupPath) {
+    console.error("BackupFolder path is undefined in the configuration.");
+  }
+
+  if (!fs.existsSync(backupPath)) {
+    fs.mkdirSync(backupPath, { recursive: true });
+    console.log(`Backup directory created at: ${backupPath}`);
+  } else {
+    console.log(`Backup directory already exists: ${backupPath}`);
+  }
+} else {
+  console.error(
+    "Failed to load configuration. Backup directory creation skipped."
+  );
 }
 
 // Backup-Funktion
 function createBackup() {
   const now = new Date();
   const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0"); // Monate sind nullbasiert
+  const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
   const timestamp = `${year}${month}${day}`;
-  const backupFile = path.join(backUpPath, `database_backup_${timestamp}.db`);
-  fs.copyFileSync(databasePath, backupFile);
+  const backupFile = path.join(
+    config.backupFolder,
+    `database_backup_${timestamp}.db`
+  );
 
   try {
-    fs.copyFileSync(databasePath, backupFile);
+    fs.copyFileSync(config.databasePath, backupFile);
     if (fs.existsSync(backupFile)) {
       console.log(`Backup erfolgreich erstellt: ${backupFile}`);
     } else {
@@ -45,13 +74,15 @@ module.exports.StartBackUp = () => {
   console.log("Cron-Job gestartet: Täglich um 4 Uhr morgens");
 };
 module.exports.GetBackUpPath = (req, res) => {
-  if (backUpPath != undefined) {
-    res.status(200).json({ backUpPath });
+  if (config.backupFolder) {
+    res.status(200).json({ backUpPath: config.backupFolder });
   } else {
     res.status(500).json({ serverStatus: -2 });
   }
 };
 module.exports.ManualBackup = (req, res) => {
+  const config = loadConfig();
+
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0"); // Monate sind nullbasiert
@@ -59,10 +90,13 @@ module.exports.ManualBackup = (req, res) => {
   const hour = String(now.getHours()).padStart(2, "0"); // Stunde
   const minute = String(now.getMinutes()).padStart(2, "0"); // Minute
   const timestamp = `${year}${month}${day}_${hour}${minute}`; // Format: YYYYMMDD_HHMM
-  const backupFile = path.join(backUpPath, `database_backup_${timestamp}.db`);
+  const backupFile = path.join(
+    config.backupFolder,
+    `database_backup_${timestamp}.db`
+  );
 
   try {
-    fs.copyFileSync(databasePath, backupFile);
+    fs.copyFileSync(config.databasePath, backupFile);
 
     if (fs.existsSync(backupFile)) {
       res.status(200).json({
@@ -81,7 +115,9 @@ module.exports.ManualBackup = (req, res) => {
   }
 };
 module.exports.GetBackUpFiles = (req, res) => {
-  fs.readdir(backUpPath, (err, files) => {
+  const config = loadConfig();
+
+  fs.readdir(config.backupFolder, (err, files) => {
     if (err) {
       console.error("Fehler beim Lesen des Ordners:", err);
       return res.status(500).json({ error: "Fehler beim Lesen des Ordners" });
@@ -97,7 +133,7 @@ module.exports.GetBackUpFiles = (req, res) => {
     let latestFile = { name: null, birthtime: 0 };
 
     files.forEach((file) => {
-      const filePath = path.join(backUpPath, file);
+      const filePath = path.join(config.backupFolder, file);
       const stats = fs.statSync(filePath);
 
       if (stats.birthtime > latestFile.birthtime) {
