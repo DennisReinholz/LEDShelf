@@ -2,11 +2,29 @@ const cron = require("node-cron");
 const fs = require("fs");
 const path = require("path");
 const configPath = path.join(__dirname, "config.json");
+require("dotenv").config();
 
+let backupPath, databasePath;
+
+function replaceEnvVariables(config) {
+  const keys = Object.keys(config);
+  keys.forEach((key) => {
+    if (
+      typeof config[key] === "string" &&
+      config[key].startsWith("${") &&
+      config[key].endsWith("}")
+    ) {
+      const envVar = config[key].slice(2, -1);
+      config[key] = process.env[envVar] || config[key];
+    }
+  });
+  return config;
+}
 function loadConfig() {
   try {
     const rawData = fs.readFileSync(configPath, "utf8");
-    const config = JSON.parse(rawData);
+    let config = JSON.parse(rawData);
+    config = replaceEnvVariables(config);
     return config;
   } catch (error) {
     console.error("Error reading or parsing config.json:", error);
@@ -14,43 +32,67 @@ function loadConfig() {
   }
 }
 
-// Lade die Konfiguration
-const config = loadConfig();
+const isDocker = process.env.DOCKER_ENV === "true";
 
-if (config) {
-  // Sicherstellen, dass das Backup-Verzeichnis existiert
-  const backupPath = config.backupFolder;
+if (!isDocker) {
+  // Webapp is running locally
+  console.log("Running in local environment");
+
+  backupPath = process.env.REACT_APP_DATABASE_BACKUP_PATH;
+  databasePath = process.env.REACT_APP_DATABASE_PATH;
 
   if (!backupPath) {
     console.error("BackupFolder path is undefined in the configuration.");
-  }
-
-  if (!fs.existsSync(backupPath)) {
-    fs.mkdirSync(backupPath, { recursive: true });
-    console.log(`Backup directory created at: ${backupPath}`);
   } else {
-    console.log(`Backup directory already exists: ${backupPath}`);
+    if (!fs.existsSync(backupPath)) {
+      fs.mkdirSync(backupPath, { recursive: true });
+      console.log(`Backup directory created at: ${backupPath}`);
+    } else {
+      console.log(`Backup directory already exists: ${backupPath}`);
+    }
   }
 } else {
-  console.error(
-    "Failed to load configuration. Backup directory creation skipped."
-  );
+  // Webapp is running in Docker
+  console.log("Running in Docker environment");
+  const config = loadConfig();
+
+  if (config) {
+    backupPath = config.backupFolder;
+    databasePath = config.databasePath;
+
+    if (!backupPath) {
+      console.error("BackupFolder path is undefined in the configuration.");
+    } else {
+      if (!fs.existsSync(backupPath)) {
+        fs.mkdirSync(backupPath, { recursive: true });
+        console.log(`Backup directory created at: ${backupPath}`);
+      } else {
+        console.log(`Backup directory already exists: ${backupPath}`);
+      }
+    }
+  } else {
+    console.error(
+      "Failed to load configuration. Backup directory creation skipped."
+    );
+  }
 }
 
 // Backup-Funktion
 function createBackup() {
+  if (!backupPath || !databasePath) {
+    console.error("Backup path or database path is not set.");
+    return;
+  }
+
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
   const timestamp = `${year}${month}${day}`;
-  const backupFile = path.join(
-    config.backupFolder,
-    `database_backup_${timestamp}.db`
-  );
+  const backupFile = path.join(backupPath, `database_backup_${timestamp}.db`);
 
   try {
-    fs.copyFileSync(config.databasePath, backupFile);
+    fs.copyFileSync(databasePath, backupFile);
     if (fs.existsSync(backupFile)) {
       console.log(`Backup erfolgreich erstellt: ${backupFile}`);
     } else {
@@ -74,29 +116,32 @@ module.exports.StartBackUp = () => {
   console.log("Cron-Job gestartet: Täglich um 4 Uhr morgens");
 };
 module.exports.GetBackUpPath = (req, res) => {
-  if (config.backupFolder) {
-    res.status(200).json({ backUpPath: config.backupFolder });
+  if (backupPath) {
+    res.status(200).json({ backUpPath: backupPath });
   } else {
     res.status(500).json({ serverStatus: -2 });
   }
 };
 module.exports.ManualBackup = (req, res) => {
-  const config = loadConfig();
+  if (!backupPath || !databasePath) {
+    res.status(500).json({
+      error: "Backup path or database path is not set",
+      serverStatus: -1,
+    });
+    return;
+  }
 
   const now = new Date();
   const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0"); // Monate sind nullbasiert
+  const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
-  const hour = String(now.getHours()).padStart(2, "0"); // Stunde
-  const minute = String(now.getMinutes()).padStart(2, "0"); // Minute
-  const timestamp = `${year}${month}${day}_${hour}${minute}`; // Format: YYYYMMDD_HHMM
-  const backupFile = path.join(
-    config.backupFolder,
-    `database_backup_${timestamp}.db`
-  );
+  const hour = String(now.getHours()).padStart(2, "0");
+  const minute = String(now.getMinutes()).padStart(2, "0");
+  const timestamp = `${year}${month}${day}_${hour}${minute}`;
+  const backupFile = path.join(backupPath, `database_backup_${timestamp}.db`);
 
   try {
-    fs.copyFileSync(config.databasePath, backupFile);
+    fs.copyFileSync(databasePath, backupFile);
 
     if (fs.existsSync(backupFile)) {
       res.status(200).json({
@@ -115,9 +160,11 @@ module.exports.ManualBackup = (req, res) => {
   }
 };
 module.exports.GetBackUpFiles = (req, res) => {
-  const config = loadConfig();
+  if (!backupPath) {
+    return res.status(500).json({ error: "Backup path is not set" });
+  }
 
-  fs.readdir(config.backupFolder, (err, files) => {
+  fs.readdir(backupPath, (err, files) => {
     if (err) {
       console.error("Fehler beim Lesen des Ordners:", err);
       return res.status(500).json({ error: "Fehler beim Lesen des Ordners" });
@@ -129,11 +176,10 @@ module.exports.GetBackUpFiles = (req, res) => {
         .json({ error: "Keine Dateien im Ordner gefunden" });
     }
 
-    // Stat-Daten für alle Dateien abrufen und die neueste Datei finden
     let latestFile = { name: null, birthtime: 0 };
 
     files.forEach((file) => {
-      const filePath = path.join(config.backupFolder, file);
+      const filePath = path.join(backupPath, file);
       const stats = fs.statSync(filePath);
 
       if (stats.birthtime > latestFile.birthtime) {
