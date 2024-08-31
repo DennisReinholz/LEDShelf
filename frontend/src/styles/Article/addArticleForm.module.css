@@ -2,7 +2,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 55rem;
+    height: 70rem;
     width: 31rem;
     color: white;
   }
@@ -16,6 +16,7 @@
     font-size: 1.5em;
   }
   .fieldsetStyle {
+    height: 30rem;
     margin: 0rem;
     margin-top: 1rem;
     background-color: #1a1a1a;
@@ -83,7 +84,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 55rem;
+    height: 70rem;
     width: 31rem;
     color: white;
   }
@@ -97,6 +98,7 @@
     font-size: 1.15em;
   }
   .fieldsetStyle {
+    height: 30rem;
     margin: 0rem;
     margin-top: 1rem;
     background-color: #1a1a1a;
@@ -126,7 +128,7 @@
     font-size: 1.15em;
   }
   .categorySelect {
-    height: 2em;
+    height: 1.5em;
     width: 17.5rem;
     font-size: 1.15em;
   }
@@ -164,7 +166,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 55rem;
+    height: 70rem;
     width: 31.5rem;
     color: white;
   }
@@ -179,6 +181,7 @@
   }
   .fieldsetStyle {
     margin: 0rem;
+    height: 70rem;
     margin-top: 1rem;
     background-color: #1a1a1a;
     border-radius: 0.5rem;
@@ -245,7 +248,7 @@
   .container {
     display: flex;
     flex-direction: column;
-    height: 55rem;
+    height: 70rem;
     width: 31rem;
     color: white;
   }
@@ -261,6 +264,7 @@
   .fieldsetStyle {
     margin: 0rem;
     margin-top: 1rem;
+    height: 30rem;
     background-color: #1a1a1a;
     border-radius: 0.5rem;
   }

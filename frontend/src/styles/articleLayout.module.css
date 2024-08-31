@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 20rem;
+    width: 28rem;
     height: 5rem;
     margin-left: 1rem;
   }
@@ -93,7 +93,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 25.5rem;
+    width: 25rem;
     height: 5rem;
     margin-left: 1rem;
   }
@@ -170,7 +170,7 @@
   .buttonContainer {
     display: flex;
     align-items: center;
-    width: 30.125rem;
+    width: 25rem;
     justify-content: space-between;
     height: 5rem;
     margin-left: 1rem;
