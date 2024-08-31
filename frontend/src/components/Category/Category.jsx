@@ -10,7 +10,6 @@ const Category = ({ category, setDeleteCategory }) => {
   const [editCategoryOpen, setEditCategoryOpen] = useState(false);
   const [deleteCategoryOpen, setDeleteCategoryOpen] = useState(false);
   const [editCategory, setEditCategory] = useState();
-
   const [selectedCategory, setSelectedCategory] = useState();
 
   const deleteCategoryById = async () => {
@@ -35,7 +34,6 @@ const Category = ({ category, setDeleteCategory }) => {
         }
       });
   };
-
   const handleEditCategory = () => {
     setEditCategoryOpen(true);
     setEditCategory(category);
@@ -44,9 +42,12 @@ const Category = ({ category, setDeleteCategory }) => {
     setDeleteCategoryOpen(true);
     setSelectedCategory(category);
   };
+
   return (
     <div className={styles.container}>
-      <p>{category.categoryname}</p>
+      <div className={styles.nameContainer}>
+        <p>{category.categoryname}</p>
+      </div>
       <div className={styles.editContainer}>
         <FiEdit2
           className="edit"

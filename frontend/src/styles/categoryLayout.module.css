@@ -5,24 +5,19 @@
     color: white;
     height: 60rem;
     width: 102rem;
-    margin-left: 2rem;
   }
   .addCategoryContainer {
     display: flex;
     height: 5rem;
     width: 10rem;
+    margin-left: 2rem;
   }
   .content {
     display: flex;
-    width: 103rem;
-    height: 55rem;
-  }
-  .tableContainer {
+    margin: 0 auto;
     overflow-y: scroll;
-    display: flex;
-    flex-direction: column;
-    width: 103rem;
-    height: 53rem;
+    width: 50rem;
+    height: 50rem;
   }
   .input::-webkit-inner-spin-button {
     height: 3rem;
@@ -42,23 +37,19 @@
     color: white;
     height: 58rem;
     width: 86rem;
-    margin-left: 2rem;
     font-size: 1.25rem;
   }
   .addCategoryContainer {
     display: flex;
+    margin-left: 2rem;
     width: 10rem;
   }
   .content {
     display: flex;
-    width: 86rem;
-    height: 64rem;
-  }
-  .tableContainer {
-    display: flex;
-    flex-direction: column;
+    margin: 0 auto;
     overflow-y: scroll;
-    width: 86rem;
+    width: 50rem;
+    height: 64rem;
   }
   .input::-webkit-inner-spin-button {
     height: 3rem;
@@ -78,7 +69,6 @@
     color: white;
     height: 60rem;
     width: 87rem;
-    margin-left: 2rem;
     font-size: 1em;
   }
   .addCategoryContainer {
@@ -88,38 +78,10 @@
   }
   .content {
     display: flex;
-    flex-wrap: wrap;
-    width: 87rem;
-    height: 55rem;
-  }
-  .tableContainer {
     overflow-y: scroll;
-    display: flex;
-    height: 54rem;
-    width: 90rem;
-  }
-  table {
-    width: 20rem;
-    height: 10rem;
-    border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
-    background-color: #171717;
-  }
-  table th {
-    font-weight: bold;
-    height: 5rem;
-  }
-  thead {
-    position: sticky;
-    top: 0;
-    color: black;
-    background-color: white; /* Hintergrundfarbe des fixierten Headers */
-    z-index: 1; /* Stellt sicher, dass der Header über den Tabelleneinträgen liegt */
-  }
-  th,
-  td {
-    height: 3rem;
-    border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
-    text-align: center;
+    margin: 0 auto;
+    width: 40rem;
+    height: 50rem;
   }
   .input::-webkit-inner-spin-button {
     height: 3rem;
@@ -140,51 +102,22 @@
     flex-direction: column;
     color: white;
     flex-wrap: wrap;
-    height: 60rem;
     width: 58rem;
-    margin-left: 2rem;
+    height: 60rem;
     font-size: 1.15em;
   }
   .addCategoryContainer {
     display: flex;
+    margin-left: 2rem;
     height: 5rem;
     width: 10rem;
   }
   .content {
+    margin: 0 auto;
     display: flex;
-    flex-wrap: wrap;
-    width: 56rem;
-    height: 30rem;
-  }
-  .tableContainer {
     overflow-y: scroll;
-    display: flex;
-    width: 56rem;
-    height: 53rem;
-  }
-  table {
-    width: 20rem;
-    height: 10rem;
-    border-collapse: collapse; /* Verhindert das Verdoppeln der Zellengrenzen */
-    background-color: #171717;
-  }
-  table th {
-    font-weight: bold;
-    height: 5rem;
-    text-align: center;
-  }
-  thead {
-    position: sticky;
-    top: 0;
-    color: black;
-    background-color: white; /* Hintergrundfarbe des fixierten Headers */
-    z-index: 1; /* Stellt sicher, dass der Header über den Tabelleneinträgen liegt */
-  }
-  th,
-  td {
-    height: 3rem;
-    border: 0.0625rem solid white; /* Einfache 1-Pixel-Grenze */
-    text-align: center;
+    width: 45rem;
+    height: 50rem;
   }
   .input::-webkit-inner-spin-button {
     height: 3rem;
