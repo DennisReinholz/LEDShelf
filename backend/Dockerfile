@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN apt-get update && apt-get install -y python3 g++ make \
     && npm install \
     && npm rebuild sqlite3 --build-from-source \
-    && apt-get remove -y python3 g++ make \
+    && apt-get remove -y g++ make \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
