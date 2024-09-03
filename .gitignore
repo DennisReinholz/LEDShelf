@@ -29,6 +29,7 @@
 # Database
 *.sql
 *.db
+Datenbank/
 
 # Environment
 *.env
