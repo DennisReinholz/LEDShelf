@@ -1,5 +1,0 @@
-{
-  "databaseFolder": "${DATABASE_FOLDER}",
-  "databasePath": "${DATABASE_PATH}",
-  "backupFolder": "${BACKUP_FOLDER}"
-}

@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/userAuth.jsx";
 import styles from "../styles/databaseLayout.module.css";
 import DatabaseBackup from "../components/Database/DatabaseBackup";
+import RecoryDatabase from "../components/Database/RecoryDatabase.jsx";
 
 const DatabaseLayout = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const DatabaseLayout = () => {
   return (
     <div className={styles.container}>
       <DatabaseBackup />
+      <RecoryDatabase />
     </div>
   );
 };

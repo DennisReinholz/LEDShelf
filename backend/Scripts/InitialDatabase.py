@@ -1,5 +1,6 @@
-import sqlite3
 import os
+import sqlite3
+import platform
 
 def create_database_and_insert_data(db_file):
     # Verbindung zur SQLite-Datenbank herstellen (wird erstellt, falls nicht vorhanden)
@@ -167,15 +168,66 @@ def create_database_and_insert_data(db_file):
         conn.close()
         print("Datenbankverbindung geschlossen.")
 
-if __name__ == '__main__':   
+def create_sysDatabase_and_insert_data(sysDB_file):
+    # Verbindung zur SQLite-Datenbank herstellen (wird erstellt, falls nicht vorhanden)
+    conn = sqlite3.connect(sysDB_file)
+    cursor = conn.cursor()
 
-    # Pfad aus Umgebungsvariable holen
-    database_folder = os.getenv('REACT_APP_DATABASE_Folder')
-
-    if not database_folder:
-        print("Fehler: REACT_APP_DATABASE_Folder ist nicht in der .env-Datei definiert.")
-    else:
-        # Datenbankpfad erstellen
-        db_file = os.path.join(database_folder, 'Ledshelf.db')
+    try:
+        # Erstellen der Tabelle 'system'
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS system (
+                systemID INTEGER PRIMARY KEY,
+                backUpPath TEXT NOT NULL,
+                dataBasepath TEXT NOT NULL
+            );
+        ''')
         
+        print("Tabelle 'system' erstellt.")
+
+        # Daten einfügen
+        cursor.execute('INSERT INTO system (backUpPath, dataBasepath) VALUES (?, ?)', ('./Datenbank/BackUp', './Datenbank/Ledshelf.db'))
+        
+        # Änderungen an der Datenbank speichern
+        conn.commit()
+        print("Daten in die Tabelle 'system' eingefügt.")
+
+    except sqlite3.Error as e:
+        print(f"Fehler beim Erstellen der Tabelle oder beim Einfügen von Daten: {e}")
+
+    finally:
+        # Verbindung schließen
+        conn.close()
+        print("Datenbankverbindung geschlossen.")
+
+if __name__ == "__main__":
+      # Aktuelles Verzeichnis ermitteln, in dem das Skript ausgeführt wird
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Betriebssystem ermitteln
+    system = platform.system()
+
+    # Pfad je nach Betriebssystem setzen
+    if system == 'Linux':
+        # Für Linux, spezifischer Pfad unter /home/ledshelf/
+        database_dir = '/home/ledshelf'
+        db_file = os.path.join(database_dir, 'ledshelf.db')
+        sysDb_file = os.path.join(database_dir, 'System.db')
+
+    elif system == 'Windows':
+        # Für Windows, Ordner 'Datenbank' einen Ordner höher erstellen, falls dieser nicht existiert
+        database_dir = os.path.join(os.path.dirname(current_dir), 'Datenbank')
+        if not os.path.exists(database_dir):
+            os.makedirs(database_dir)
+            print(f"Ordner 'Datenbank' wurde erstellt: {database_dir}")
+        else:
+            print(f"Ordner 'Datenbank' existiert bereits: {database_dir}")
+        
+        db_file = os.path.join(database_dir, 'Ledshelf.db')
+        sysDb_file = os.path.join(database_dir, 'System.db')
+
+    # Funktionen zur Erstellung der Datenbanken aufrufen
+    if not os.path.exists(db_file):
         create_database_and_insert_data(db_file)
+    
+    create_sysDatabase_and_insert_data(sysDb_file)

@@ -1,11 +1,14 @@
 const express = require("express");
-
+const os = require("os");
+const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
 const BackUpController = require("./databaseBackup");
 const DataBaseController = require("./dataBaseController");
 const TrelloController = require("./trelloController");
+const SysDatabaseController = require("./sysDatabaseController");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 const PORT = 3000;
@@ -30,13 +33,75 @@ const corsOptions = {
 app.use(cors());
 app.set("etag", false);
 
-const defaultDatabasepath = process.env.REACT_APP_DATABASE_PATH;
+// Betriebssystem prüfen
 
-DataBaseController.CheckDatabase(defaultDatabasepath);
+const platform = os.platform();
+let SysDatabasePath;
 
-const db = new sqlite3.Database(defaultDatabasepath);
+if (platform === "win32") {
+  SysDatabasePath = "./Datenbank/System.db";
+} else if (platform === "linux") {
+  SysDatabasePath = "/home/ledshelf/System.db";
+} else {
+  throw new Error(`Unbekanntes Betriebssystem: ${platform}`);
+}
 
-//BackUpController
+DataBaseController.CheckDatabase(SysDatabasePath);
+let sysDatabase = new sqlite3.Database(SysDatabasePath);
+let db;
+let ledshelfDatabase;
+
+async function ensureDatabaseExists(dbPath) {
+  return new Promise((resolve, reject) => {
+    if (!fs.existsSync(dbPath)) {
+      DataBaseController.CreateDatabase();
+    }
+    resolve();
+  });
+}
+
+async function getDatabasePath(sysDatabase) {
+  try {
+    let path = await SysDatabaseController.GetDatabasePath(sysDatabase);
+    if (path && path.length > 0) {
+      return path[0].dataBasepath;
+    } else {
+      console.error("Keine Ergebnisse von der Datenbankabfrage erhalten.");
+      return null;
+    }
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Daten:", error);
+    return null;
+  }
+}
+
+(async () => {
+  try {
+    await ensureDatabaseExists(SysDatabasePath);
+
+    let sysDatabase = new sqlite3.Database(SysDatabasePath);
+    ledshelfDatabase = await getDatabasePath(sysDatabase);
+
+    if (ledshelfDatabase) {
+      db = new sqlite3.Database(ledshelfDatabase);
+    } else {
+      console.error("Pfad zur Datenbank konnte nicht abgerufen werden.");
+    }
+  } catch (error) {
+    console.error("Fehler:", error);
+  }
+})();
+
+// SysController
+app.get("/getCurrentDatabase", (req, res) => {
+  if (ledshelfDatabase != undefined) {
+    const fileNameWithExtension = path.basename(ledshelfDatabase);
+    res.status(200).json(fileNameWithExtension);
+  } else {
+    res.status(200).json({ serverStatus: -2 });
+  }
+});
+// BackUpController
 BackUpController.StartBackUp();
 
 app.get("/getDatabasepath", (req, res) => {
@@ -45,11 +110,14 @@ app.get("/getDatabasepath", (req, res) => {
 app.get("/startManualBackup", (req, res) => {
   BackUpController.ManualBackup(req, res);
 });
-app.get("/getBackupFiles", (req, res) => {
+app.get("/getRecentBackUpFile", (req, res) => {
+  BackUpController.GetRecentBackUpFile(req, res);
+});
+app.get("/getBackUpFiles", (req, res) => {
   BackUpController.GetBackUpFiles(req, res);
 });
 
-//TrelloController
+// TrelloController
 app.get("/trelloLabels", (req, res) => {
   TrelloController.getLabels(req, res);
 });
@@ -57,7 +125,7 @@ app.post("/createTrelloCard", (req, res) => {
   TrelloController.createCard(req, res);
 });
 
-//DatabaseController
+// DatabaseController
 app.post("/users", (req, res) => {
   DataBaseController.getUser(req, res, db);
 });
@@ -163,6 +231,7 @@ app.get("/pingController", (req, res) => {
 app.get("/getCompany", (req, res) => {
   DataBaseController.getCompany(req, res, db);
 });
+
 // Server starten
 app.listen(PORT, () => {
   console.log(`Server läuft auf Port ${PORT}`);

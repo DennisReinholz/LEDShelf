@@ -6,6 +6,7 @@ import styles from "../../styles/Database/databaseBackup.module.css";
 const DatabaseBackup = () => {
   const [databaseBackUpPath, setDatabasePath] = useState();
   const [files, setFiles] = useState();
+  const [upDated, setUpdated] = useState();
 
   const getDatabasePath = async () => {
     const response = await fetch(`http://localhost:3000/getDatabasepath`, {
@@ -35,13 +36,15 @@ const DatabaseBackup = () => {
       .then((res) => {
         if (res.serverStatus === 2) {
           toast.success("Backup wurde erstellt");
+          setUpdated(true);
         } else if (res.serverStatus === -1) {
           toast.error("Backup konnte nicht erstellt werden");
+          setUpdated(false);
         }
       });
   };
   const GetBackUpFiles = async () => {
-    const response = await fetch(`http://localhost:3000/getBackupFiles`, {
+    const response = await fetch(`http://localhost:3000/getRecentBackUpFile`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -50,8 +53,12 @@ const DatabaseBackup = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data != undefined) {
-          setFiles(data);
+        if (data !== undefined) {
+          if (data.serverStatus != -2) {
+            setFiles(data);
+          } else {
+            setFiles(undefined);
+          }
         }
       });
   };
@@ -71,7 +78,7 @@ const DatabaseBackup = () => {
   useEffect(() => {
     getDatabasePath();
     GetBackUpFiles();
-  }, [files]);
+  }, [files, upDated]);
 
   return (
     <React.Fragment>
@@ -79,7 +86,7 @@ const DatabaseBackup = () => {
         Starte ein manuelles Backup der Datenbank
       </Tooltip>
       <fieldset>
-        <legend>Datenbank Backup</legend>
+        <legend>Datenbank Sicherung</legend>
         <div className={styles.backupContainer}>
           <p>Letztes Sicherung</p>
           <p>
@@ -91,12 +98,16 @@ const DatabaseBackup = () => {
         <div className={styles.backupPathContainer}>
           <p>BackUp Pfad:</p>
           <div className={styles.inputContainer}>
-            <p>{databaseBackUpPath}</p>
+            <p>
+              {databaseBackUpPath != undefined
+                ? databaseBackUpPath.replace(".", "")
+                : ""}
+            </p>
           </div>
         </div>
         <div className={styles.buttonContainer}>
           <button className="primaryButton" onClick={() => StartBackUp()}>
-            Backup
+            Sichern
           </button>
         </div>
       </fieldset>

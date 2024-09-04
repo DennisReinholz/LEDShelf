@@ -1,0 +1,38 @@
+@media only screen and (max-width: 1200px) {
+  fieldset {
+    border-radius: 0.5rem;
+    background-color: #121212;
+    height: 15rem;
+    width: 55rem;
+    font-size: 1.25em;
+    margin-top: 2rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: row;
+    width: 55rem;
+    height: 3rem;
+  }
+  .currentDatabaseName {
+    margin-left: 3rem;
+  }
+  .databaseSelectionContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 55rem;
+    height: 5rem;
+    margin-top: 1rem;
+  }
+  .backUpSelection {
+    margin-left: 3rem;
+    height: 2.5rem;
+    width: 20rem;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    height: 5rem;
+    width: 55rem;
+  }
+}

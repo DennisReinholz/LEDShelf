@@ -702,7 +702,7 @@ const insertControllerFunction = async (db, controllerId, compartmentList) => {
     throw error;
   }
 };
-const CreateDatabase = () => {
+module.exports.CreateDatabase = () => {
   exec(`python3 ./Scripts/InitialDatabase.py`, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error executing Python script: ${error.message}`);

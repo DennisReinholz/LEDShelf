@@ -15,8 +15,8 @@
   }
   .backupPathContainer {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
     height: 5rem;
   }
   .backupPathContainer p {
@@ -27,6 +27,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: 1rem;
   }
   .folder {
     font-size: 1.5em;
@@ -55,8 +56,8 @@
   }
   .backupPathContainer {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
     height: 5rem;
   }
   .backupPathContainer p {
@@ -67,6 +68,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: 1rem;
   }
   .folder {
     font-size: 1.5em;
@@ -95,8 +97,8 @@
   }
   .backupPathContainer {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
     height: 5rem;
   }
   .backupPathContainer p {
@@ -107,6 +109,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: 1rem;
   }
   .folder {
     font-size: 1.5em;
@@ -135,8 +138,8 @@
   }
   .backupPathContainer {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
     height: 5rem;
   }
   .backupPathContainer p {
@@ -147,6 +150,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: 1rem;
   }
   .folder {
     font-size: 1.5em;
@@ -163,7 +167,7 @@
     border-radius: 0.5rem;
     background-color: #121212;
     height: 15rem;
-    width: 30rem;
+    width: 55rem;
     font-size: 1.25em;
     margin-top: 2rem;
   }
@@ -175,8 +179,8 @@
   }
   .backupPathContainer {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
     height: 5rem;
   }
   .backupPathContainer p {
@@ -187,6 +191,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: 1rem;
   }
   .folder {
     font-size: 1.5em;
