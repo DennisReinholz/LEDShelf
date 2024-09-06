@@ -1,11 +1,8 @@
 require("dotenv").config();
-<<<<<<< Updated upstream
 const axios = require("axios");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 const { exec } = require("child_process");
-=======
->>>>>>> Stashed changes
 
 module.exports.CheckDatabase = (dbPath) => {
   if (!fs.existsSync(dbPath)) {
@@ -16,7 +13,6 @@ module.exports.getUser = async (req, res, db) => {
   const { frontendPassword, username } = req.body;
 
   db.all(
-<<<<<<< Updated upstream
     "SELECT user.*, role.name FROM user, role WHERE user.username=? AND user.role = role.roleid",
     [username],
     async (err, result) => {
@@ -37,23 +33,6 @@ module.exports.getUser = async (req, res, db) => {
           return res.status(200).json({ result, serverStatus: 2 });
         } else {
           return res.status(401).json({ serverStatus: -1 }); // Passwort falsch
-=======
-    "SELECT user.*, role.name FROM user, role WHERE username=? AND user.role = role.roleid",
-    [user],
-    (err, result) => {
-      if (err) {
-        res.status(500).json({ serverStatus: -1 });
-        return;
-      } else {
-        if (result === undefined || result === null || result.length === 0) {
-          res.send({ serverStatus: -2 });
-        } else if (frontendPassword === result[0].password) {
-          const data = {
-            result,
-            serverStatus: 2,
-          };
-          res.status(200).json(data);
->>>>>>> Stashed changes
         }
       } catch (compareError) {
         return res
@@ -96,7 +75,6 @@ module.exports.getCompartments = async (req, res, db) => {
     }
   );
 };
-<<<<<<< Updated upstream
 module.exports.getAllUser = async (req, res, db) => {
   db.all(
     `SELECT user.userid,user.username, role.name FROM user,role WHERE user.role = role.roleid`,
@@ -671,5 +649,3 @@ module.exports.CreateDatabase = () => {
     console.log(`Python script output: ${stdout}`);
   });
 };
-=======
->>>>>>> Stashed changes
