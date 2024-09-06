@@ -1,11 +1,8 @@
 require("dotenv").config();
-<<<<<<< Updated upstream
 const axios = require("axios");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 const { exec } = require("child_process");
-=======
->>>>>>> Stashed changes
 
 module.exports.CheckDatabase = (dbPath) => {
   if (!fs.existsSync(dbPath)) {
@@ -16,7 +13,6 @@ module.exports.getUser = async (req, res, db) => {
   const { frontendPassword, username } = req.body;
 
   db.all(
-<<<<<<< Updated upstream
     "SELECT user.*, role.name FROM user, role WHERE user.username=? AND user.role = role.roleid",
     [username],
     async (err, result) => {
@@ -37,23 +33,6 @@ module.exports.getUser = async (req, res, db) => {
           return res.status(200).json({ result, serverStatus: 2 });
         } else {
           return res.status(401).json({ serverStatus: -1 }); // Passwort falsch
-=======
-    "SELECT user.*, role.name FROM user, role WHERE username=? AND user.role = role.roleid",
-    [user],
-    (err, result) => {
-      if (err) {
-        res.status(500).json({ serverStatus: -1 });
-        return;
-      } else {
-        if (result === undefined || result === null || result.length === 0) {
-          res.send({ serverStatus: -2 });
-        } else if (frontendPassword === result[0].password) {
-          const data = {
-            result,
-            serverStatus: 2,
-          };
-          res.status(200).json(data);
->>>>>>> Stashed changes
         }
       } catch (compareError) {
         return res
@@ -62,6 +41,44 @@ module.exports.getUser = async (req, res, db) => {
       }
     }
   );
+};
+module.exports.updateUser = async (req, res, db) => {
+  const { userid, username, password, role } = req.body;
+  db.all(
+    `UPDATE user SET username=?, password=?, role=? where userid=?`,
+    [username, password, role, userid],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json({ serverStatus: 2 });
+      }
+    }
+  );
+};
+module.exports.getUserData = async (req, res, db) => {
+  const { userid } = req.body;
+  db.all(`SELECT * from user WHERE userid=?`, [userid], (err, result) => {
+    if (err) {
+      console.log(`Unable to get UserData from ${userid}`);
+      res.sendStatus(500);
+    } else {
+      res.status(200).json(result);
+    }
+  });
+};
+module.exports.deleteUser = async (req, res, db) => {
+  const { userid } = req.body;
+  db.all(`DELETE FROM user WHERE userid=?`, [userid], (err, result) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+      return;
+    } else {
+      res.status(200).json({ serverStatus: 2 });
+    }
+  });
 };
 module.exports.getShelf = async (req, res, db) => {
   db.all(`SELECt * FROM shelf`, (err, result) => {
@@ -77,10 +94,14 @@ module.exports.getShelf = async (req, res, db) => {
     }
   });
 };
-module.exports.getCompartments = async (req, res, db) => {
+module.exports.getCompartArticleForm = async (req, res, db) => {
   const { shelfid } = req.body;
   db.all(
-    `SELECt article.*, shelf.shelfname FROM article, shelf WHERE shelf=? AND article.shelf = shelf.shelfid`,
+    `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
+    FROM shelf
+    JOIN compartment ON shelf.shelfid = compartment.shelfId 
+    LEFT JOIN article ON compartment.compartmentId = article.compartment
+    WHERE (article.compartment IS NULL OR article.compartment = '') AND shelf.shelfid =? `,
     [shelfid],
     (err, result) => {
       if (err) {
@@ -96,7 +117,29 @@ module.exports.getCompartments = async (req, res, db) => {
     }
   );
 };
-<<<<<<< Updated upstream
+module.exports.getCompartments = async (req, res, db) => {
+  const { shelfid } = req.body;
+  db.all(
+    `SELECT DISTINCT(compartment.compartmentId), shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number
+    FROM shelf
+    JOIN compartment ON shelf.shelfid = compartment.shelfId 
+    LEFT JOIN article ON compartment.compartmentId = article.compartment
+    WHERE shelf.shelfid =? `,
+    [shelfid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        const data = {
+          result,
+          serverStatus: 2,
+        };
+        res.status(200).json(data);
+      }
+    }
+  );
+};
 module.exports.getAllUser = async (req, res, db) => {
   db.all(
     `SELECT user.userid,user.username, role.name FROM user,role WHERE user.role = role.roleid`,
@@ -671,5 +714,3 @@ module.exports.CreateDatabase = () => {
     console.log(`Python script output: ${stdout}`);
   });
 };
-=======
->>>>>>> Stashed changes
