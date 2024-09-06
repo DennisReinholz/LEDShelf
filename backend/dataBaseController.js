@@ -9,7 +9,6 @@ module.exports.CheckDatabase = (dbPath) => {
     CreateDatabase();
   }
 };
-
 module.exports.getUser = async (req, res, db) => {
   const { frontendPassword, username } = req.body;
 

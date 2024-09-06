@@ -7,8 +7,8 @@ const BackUpController = require("./databaseBackup");
 const DataBaseController = require("./dataBaseController");
 const TrelloController = require("./trelloController");
 const SysDatabaseController = require("./sysDatabaseController");
-const cors = require("cors");
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
 const PORT = 3000;
@@ -34,7 +34,6 @@ app.use(cors());
 app.set("etag", false);
 
 // Betriebssystem prüfen
-
 const platform = os.platform();
 let SysDatabasePath;
 
@@ -47,9 +46,9 @@ if (platform === "win32") {
 }
 
 DataBaseController.CheckDatabase(SysDatabasePath);
-let sysDatabase = new sqlite3.Database(SysDatabasePath);
+const sysDatabase = new sqlite3.Database(SysDatabasePath);
 let db;
-let ledshelfDatabase;
+let ledshelfDatabasePath;
 
 async function ensureDatabaseExists(dbPath) {
   return new Promise((resolve, reject) => {
@@ -78,12 +77,10 @@ async function getDatabasePath(sysDatabase) {
 (async () => {
   try {
     await ensureDatabaseExists(SysDatabasePath);
+    ledshelfDatabasePath = await getDatabasePath(sysDatabase);
 
-    let sysDatabase = new sqlite3.Database(SysDatabasePath);
-    ledshelfDatabase = await getDatabasePath(sysDatabase);
-
-    if (ledshelfDatabase) {
-      db = new sqlite3.Database(ledshelfDatabase);
+    if (ledshelfDatabasePath) {
+      db = new sqlite3.Database(ledshelfDatabasePath);
     } else {
       console.error("Pfad zur Datenbank konnte nicht abgerufen werden.");
     }
@@ -93,14 +90,21 @@ async function getDatabasePath(sysDatabase) {
 })();
 
 // SysController
+app.post("/setNewDatabasePath", (req, res) => {
+  SysDatabaseController.SetNewDatabasePath(req, res, sysDatabase);
+});
+app.post("/overrideProdDatabase", (req, res) => {
+  SysDatabaseController.OverrideProdDatabase(req, res, sysDatabase);
+});
 app.get("/getCurrentDatabase", (req, res) => {
-  if (ledshelfDatabase != undefined) {
-    const fileNameWithExtension = path.basename(ledshelfDatabase);
+  if (ledshelfDatabasePath != undefined) {
+    const fileNameWithExtension = path.basename(ledshelfDatabasePath);
     res.status(200).json(fileNameWithExtension);
   } else {
     res.status(200).json({ serverStatus: -2 });
   }
 });
+
 // BackUpController
 BackUpController.StartBackUp();
 

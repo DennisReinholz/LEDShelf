@@ -1,4 +1,4 @@
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 3000px) {
   fieldset {
     border-radius: 0.5rem;
     background-color: #121212;
@@ -10,24 +10,182 @@
   .contentContainer {
     display: flex;
     flex-direction: row;
-    width: 55rem;
+    justify-content: space-between;
+    width: 35rem;
     height: 3rem;
-  }
-  .currentDatabaseName {
-    margin-left: 3rem;
   }
   .databaseSelectionContainer {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    width: 55rem;
+    width: 36rem;
     height: 5rem;
     margin-top: 1rem;
   }
   .backUpSelection {
-    margin-left: 3rem;
+    margin-left: 4rem;
     height: 2.5rem;
     width: 20rem;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    height: 5rem;
+    width: 55rem;
+  }
+}
+@media only screen and (max-width: 2000px) {
+  fieldset {
+    border-radius: 0.5rem;
+    background-color: #121212;
+    height: 15rem;
+    width: 55rem;
+    font-size: 1.25em;
+    margin-top: 2rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 35rem;
+    height: 3rem;
+  }
+  .databaseSelectionContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 36rem;
+    height: 5rem;
+    margin-top: 1rem;
+  }
+  .backUpSelection {
+    margin-left: 4rem;
+    height: 2.5rem;
+    width: 20rem;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    height: 5rem;
+    width: 55rem;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  fieldset {
+    border-radius: 0.5rem;
+    background-color: #121212;
+    height: 15rem;
+    width: 55rem;
+    font-size: 1.25em;
+    margin-top: 2rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 35rem;
+    height: 3rem;
+  }
+  .databaseSelectionContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 36rem;
+    height: 5rem;
+    margin-top: 1rem;
+  }
+  .backUpSelection {
+    margin-left: 4rem;
+    height: 2.5rem;
+    width: 20rem;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    height: 5rem;
+    width: 55rem;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  fieldset {
+    border-radius: 0.5rem;
+    background-color: #121212;
+    height: 15rem;
+    width: 55rem;
+    font-size: 1.25em;
+    margin-top: 2rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 35rem;
+    height: 3rem;
+  }
+  .databaseSelectionContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 36rem;
+    height: 5rem;
+    margin-top: 1rem;
+  }
+  .backUpSelection {
+    margin-left: 4rem;
+    height: 2.5rem;
+    width: 20rem;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    height: 5rem;
+    width: 55rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .fieldsetRecoveryBackup {
+    border-radius: 0.5rem;
+    background-color: #121212;
+    height: 30rem;
+    width: 55rem;
+    font-size: 1.25em;
+    margin-top: 2rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 35rem;
+    height: 3rem;
+  }
+  .databaseSelectionContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 36rem;
+    height: 5rem;
+    margin-top: 1rem;
+  }
+  .backUpSelection {
+    margin-left: 4rem;
+    height: 2.5rem;
+    width: 20rem;
+  }
+  .overrideContainer {
+    display: flex;
+    flex-direction: column;
+    height: 5rem;
+  }
+  .overrideContent {
+    display: flex;
+    width: 30rem;
+    justify-content: space-between;
+    align-items: center;
   }
   .buttonContainer {
     display: flex;

@@ -38,6 +38,6 @@ def export_db_structure(db_file, output_file):
     print(f"Die Datenbankstruktur wurde in {output_file} exportiert.")
 
 if __name__ == '__main__':
-    db_file = 'haseloff3D.db'
+    db_file = 'Ledshelf.db'
     output_file = 'db_structure.sql'
     export_db_structure(db_file, output_file)

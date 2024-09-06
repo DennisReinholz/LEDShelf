@@ -11,6 +11,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 20rem;
     height: 3rem;
   }
   .backupPathContainer {
@@ -52,6 +53,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 20rem;
     height: 3rem;
   }
   .backupPathContainer {
@@ -92,7 +94,6 @@
   .backupContainer {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     height: 3rem;
   }
   .backupPathContainer {
@@ -133,7 +134,6 @@
   .backupContainer {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     height: 3rem;
   }
   .backupPathContainer {
@@ -175,12 +175,15 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 20rem;
     height: 3rem;
   }
   .backupPathContainer {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    width: 20rem;
     height: 5rem;
   }
   .backupPathContainer p {
