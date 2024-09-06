@@ -27,7 +27,7 @@
 *.lib
 
 # Database
-*.sql
+/backend/*.sql
 *.db
 Datenbank/
 
