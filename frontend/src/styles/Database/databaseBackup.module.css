@@ -1,9 +1,9 @@
 @media only screen and (max-width: 3000px) {
-  fieldset {
+  .backupFieldset {
     border-radius: 0.5rem;
     background-color: #121212;
     height: 15rem;
-    width: 30rem;
+    width: 55rem;
     font-size: 1.25em;
     margin-top: 2rem;
   }
@@ -83,11 +83,11 @@
   }
 }
 @media only screen and (max-width: 1920px) {
-  fieldset {
+  .backupFieldset {
     border-radius: 0.5rem;
     background-color: #121212;
     height: 15rem;
-    width: 30rem;
+    width: 55rem;
     font-size: 1.25em;
     margin-top: 2rem;
   }
@@ -123,11 +123,11 @@
   }
 }
 @media only screen and (max-width: 1700px) {
-  fieldset {
+  .backupFieldset {
     border-radius: 0.5rem;
     background-color: #121212;
     height: 15rem;
-    width: 30rem;
+    width: 55rem;
     font-size: 1.25em;
     margin-top: 2rem;
   }
@@ -163,7 +163,7 @@
   }
 }
 @media only screen and (max-width: 1200px) {
-  fieldset {
+  .backupFieldset {
     border-radius: 0.5rem;
     background-color: #121212;
     height: 15rem;

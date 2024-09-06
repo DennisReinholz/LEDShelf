@@ -85,7 +85,7 @@ const DatabaseBackup = () => {
       <Tooltip anchorSelect=".primaryButton" place="right">
         Starte ein manuelles Backup der Datenbank
       </Tooltip>
-      <fieldset>
+      <fieldset className={styles.backupFieldset}>
         <legend>Datenbank Sicherung</legend>
         <div className={styles.backupContainer}>
           <p>Letztes Sicherung</p>
