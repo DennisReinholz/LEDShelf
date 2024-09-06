@@ -1,67 +1,79 @@
 require("dotenv").config();
-<<<<<<< Updated upstream
-const axios = require("axios");
 const bcrypt = require("bcrypt");
-const fs = require("fs");
-const { exec } = require("child_process");
-=======
->>>>>>> Stashed changes
 
-module.exports.CheckDatabase = (dbPath) => {
-  if (!fs.existsSync(dbPath)) {
-    CreateDatabase();
-  }
-};
 module.exports.getUser = async (req, res, db) => {
-  const { frontendPassword, username } = req.body;
-
+  const { frontendPassword } = req.body;
+  const { user } = req.query;
   db.all(
-<<<<<<< Updated upstream
-    "SELECT user.*, role.name FROM user, role WHERE user.username=? AND user.role = role.roleid",
-    [username],
-    async (err, result) => {
-      if (err) {
-        return res.status(500).json({ serverStatus: -1, error: err.message });
-      }
-
-      if (result.length === 0) {
-        return res.status(404).json({ serverStatus: -1 }); // Benutzer nicht gefunden
-      }
-
-      try {
-        const match = await bcrypt.compare(
-          frontendPassword,
-          result[0].password
-        );
-        if (match) {
-          return res.status(200).json({ result, serverStatus: 2 });
-        } else {
-          return res.status(401).json({ serverStatus: -1 }); // Passwort falsch
-=======
-    "SELECT user.*, role.name FROM user, role WHERE username=? AND user.role = role.roleid",
+    "SELECT user.*, role.name FROM user, role WHERE userid=? AND user.role = role.roleid",
     [user],
-    (err, result) => {
+    async (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
         return;
-      } else {
-        if (result === undefined || result === null || result.length === 0) {
-          res.send({ serverStatus: -2 });
-        } else if (frontendPassword === result[0].password) {
-          const data = {
-            result,
-            serverStatus: 2,
-          };
-          res.status(200).json(data);
->>>>>>> Stashed changes
+      }
+      if (result.length > 0) {
+        try {
+          // Compare the provided password with the stored hashed password
+          const match = await bcrypt.compare(
+            frontendPassword,
+            result[0].password
+          );
+          if (match) {
+            const data = {
+              result,
+              serverStatus: 2,
+            };
+            res.status(200).json(data);
+          } else {
+            res.status(200).json({ serverStatus: -1 });
+          }
+        } catch (compareError) {
+          res
+            .status(500)
+            .json({ serverStatus: -1, error: compareError.message });
         }
-      } catch (compareError) {
-        return res
-          .status(500)
-          .json({ serverStatus: -1, error: compareError.message });
       }
     }
   );
+};
+module.exports.updateUser = async (req, res, db) => {
+  const { userid, username, password, role } = req.body;
+  db.all(
+    `UPDATE user SET username=?, password=?, role=? where userid=?`,
+    [username, password, role, userid],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        res.status(200).json({ serverStatus: 2 });
+      }
+    }
+  );
+};
+module.exports.getUserData = async (req, res, db) => {
+  const { userid } = req.body;
+  db.all(`SELECT * from user WHERE userid=?`, [userid], (err, result) => {
+    if (err) {
+      console.log(`Unable to get UserData from ${userid}`);
+      res.sendStatus(500);
+    } else {
+      res.status(200).json(result);
+    }
+  });
+};
+module.exports.deleteUser = async (req, res, db) => {
+  const { userid } = req.body;
+  db.all(`DELETE FROM user WHERE userid=?`, [userid], (err, result) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+      return;
+    } else {
+      res.status(200).json({ serverStatus: 2 });
+    }
+  });
 };
 module.exports.getShelf = async (req, res, db) => {
   db.all(`SELECt * FROM shelf`, (err, result) => {
@@ -77,10 +89,14 @@ module.exports.getShelf = async (req, res, db) => {
     }
   });
 };
-module.exports.getCompartments = async (req, res, db) => {
+module.exports.getCompartArticleForm = async (req, res, db) => {
   const { shelfid } = req.body;
   db.all(
-    `SELECt article.*, shelf.shelfname FROM article, shelf WHERE shelf=? AND article.shelf = shelf.shelfid`,
+    `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
+    FROM shelf
+    JOIN compartment ON shelf.shelfid = compartment.shelfId 
+    LEFT JOIN article ON compartment.compartmentId = article.compartment
+    WHERE (article.compartment IS NULL OR article.compartment = '') AND shelf.shelfid =? `,
     [shelfid],
     (err, result) => {
       if (err) {
@@ -96,7 +112,29 @@ module.exports.getCompartments = async (req, res, db) => {
     }
   );
 };
-<<<<<<< Updated upstream
+module.exports.getCompartments = async (req, res, db) => {
+  const { shelfid } = req.body;
+  db.all(
+    `SELECT DISTINCT(compartment.compartmentId), shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number
+    FROM shelf
+    JOIN compartment ON shelf.shelfid = compartment.shelfId 
+    LEFT JOIN article ON compartment.compartmentId = article.compartment
+    WHERE shelf.shelfid =? `,
+    [shelfid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -1 });
+        return;
+      } else {
+        const data = {
+          result,
+          serverStatus: 2,
+        };
+        res.status(200).json(data);
+      }
+    }
+  );
+};
 module.exports.getAllUser = async (req, res, db) => {
   db.all(
     `SELECT user.userid,user.username, role.name FROM user,role WHERE user.role = role.roleid`,
@@ -131,6 +169,7 @@ module.exports.postCreateShelf = async (req, res, db) => {
   );
 };
 module.exports.getArticle = async (req, res, db) => {
+  //Regal name herausfinden
   db.all(
     `SELECT 
    * 
@@ -189,12 +228,11 @@ module.exports.createArticle = async (req, res, db) => {
     selectedShelf,
     selectedCompartment,
     selectedCategory,
-    selectedCompany,
+    companyName,
     commissiongoods,
-    minRequirement,
   } = req.body;
   db.all(
-    `INSERT INTO article (articlename,count,compartment,shelf,unit,categoryid,company,commission,minRequirement) VALUES (?,?,?,?,?,?,?,?,?)`,
+    `INSERT INTO article (articlename,count,compartment,shelf,unit,categoryid,company, commission) VALUES (?,?,?,?,?,?,?,?)`,
     [
       articlename,
       amount,
@@ -202,14 +240,13 @@ module.exports.createArticle = async (req, res, db) => {
       selectedShelf,
       unit,
       selectedCategory,
-      selectedCompany,
+      companyName,
       commissiongoods,
-      minRequirement,
     ],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        console.log(res);
+        return;
       } else {
         res.status(200).json(result);
       }
@@ -235,28 +272,11 @@ module.exports.getSelectedArticle = async (req, res, db) => {
   );
 };
 module.exports.updateArticle = async (req, res, db) => {
-  const {
-    articleid,
-    articlename,
-    unit,
-    amount,
-    shelf,
-    compartment,
-    category,
-    minRequirement,
-  } = req.body;
+  const { articleid, articlename, unit, amount, shelf, compartment, category } =
+    req.body;
   db.all(
-    `UPDATE article SET articlename=?,count=?,compartment=?,shelf=?,unit=?,categoryid=?, minRequirement=? WHERE articleid=?`,
-    [
-      articlename,
-      amount,
-      compartment,
-      shelf,
-      unit,
-      category,
-      minRequirement,
-      articleid,
-    ],
+    `UPDATE article SET articlename=?,count=?,unit=?,compartment=?,shelf=?,categoryid=? WHERE articleid=?`,
+    [articlename, amount, unit, compartment, shelf, articleid, category],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
@@ -283,7 +303,7 @@ module.exports.deleteArticle = async (req, res, db) => {
   );
 };
 module.exports.createUser = async (req, res, db) => {
-  const saltRounds = 12;
+  const saltRounds = 10;
   const { name, password, roleid } = req.body;
 
   try {
@@ -347,20 +367,6 @@ module.exports.createCategory = async (req, res, db) => {
 };
 module.exports.getCategory = async (req, res, db) => {
   db.all(`SELECT * from category `, (err, result) => {
-    if (err) {
-      res.status(500).json({ serverStatus: -1 });
-      return;
-    } else {
-      data = {
-        result: result,
-        serverStatus: 2,
-      };
-      res.status(200).json({ data });
-    }
-  });
-};
-module.exports.getCompany = async (req, res, db) => {
-  db.all(`SELECT * from company `, (err, result) => {
     if (err) {
       res.status(500).json({ serverStatus: -1 });
       return;
@@ -461,120 +467,6 @@ module.exports.UpdateArticleCategory = async (req, res, db) => {
     }
   );
 };
-module.exports.getController = async (req, res, db) => {
-  db.all(
-    `SELECT ledController.*, shelf.*
-FROM ledController
-LEFT JOIN shelf ON ledController.shelfid = shelf.shelfid
-WHERE ledController.shelfid IS NOT NULL
-   OR ledController.shelfid IS NULL;`,
-    (err, result) => {
-      if (err) {
-        res.status(500).json({ serverStatus: -1 });
-        return;
-      } else {
-        res.status(200).json(result);
-      }
-    }
-  );
-};
-module.exports.UpdateLedController = async (req, res, db) => {
-  const { ip, shelfid, status, controllerid } = req.body;
-  db.all(
-    `UPDATE ledController SET ipAdresse =?, shelfid=?, status=? WHERE ledControllerid=?`,
-    [ip, shelfid, status, controllerid],
-    (err, result) => {
-      if (err) {
-        res.status(500).json({ serverStatus: -1 });
-        return;
-      } else {
-        res.status(200).json({ serverStatus: 2 });
-      }
-    }
-  );
-};
-module.exports.CreateLedController = async (req, res, db) => {
-  const { ipAdress, shelf } = req.body;
-  //Ping LEDController for status
-  let tempStatus;
-  try {
-    const response = await axios.get("http://192.168.188.48");
-    if (response.status == 200) {
-      tempStatus = "Connected";
-    } else {
-      tempStatus = "Disconnected";
-    }
-  } catch (error) {
-    console.log("Error pinging ESP32:", error);
-    tempStatus = "undefinded";
-  }
-  const status = tempStatus;
-
-  //Create n Controllerfunction with ledControllerid
-  db.all(
-    `INSERT INTO ledController (ipAdresse, shelfid, status) VALUES (?,?,?)`,
-    [ipAdress, shelf, status],
-    (error, result) => {
-      if (error) {
-        res.status(500).json({ serverStatus: -1 });
-        return;
-      } else {
-        res.status(200).json({ result: result, serverStatus: 2 });
-      }
-    }
-  );
-  CreateControllerFunction(db, res, shelf);
-};
-module.exports.DeleteLedController = async (req, res, db) => {
-  const { deviceId } = req.body;
-  db.all(
-    `DELETE FROM ledController WHERE ledControllerid=?`,
-    [deviceId],
-    (error, result) => {
-      if (error) {
-        res.status(500).json({ serverStatus: -1 });
-        return;
-      } else {
-        res.status(200).json({ serverStatus: 2 });
-      }
-    }
-  );
-  await DeleteControllerFunction(db, deviceId);
-};
-module.exports.ControllerOff = async (req, res, db) => {
-  const { shelfid } = req.body;
-  return new Promise((resolve, reject) => {
-    db.get(
-      `SELECT * FROM ledController WHERE shelfid=?`,
-      [shelfid],
-      (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          const ledoff = LedOff(result.ipAdresse);
-          res.status(200).json({ serverStatus: 2 });
-        }
-      }
-    );
-  });
-};
-module.exports.PingController = async (req, res) => {
-  const { ip } = req.body;
-  try {
-    const ping = await fetch(`http://${ip}`);
-    if (ping.status == 200) {
-      res.status(200).json({ serverStatus: 2 });
-    } else {
-      res.status(404).json({ serverStatus: -1 });
-    }
-  } catch (error) {
-    res.status(500).json("Controller nicht erreichbar");
-  }
-};
-
-const LedOff = async (ipAdresse) => {
-  const response = await fetch(`http:/${ipAdresse}/led/off`);
-};
 const CreateCompartments = (db, countCompartment) => {
   db.get("SELECT last_insert_rowid() as shelfId", (err, row) => {
     const shelfId = row.shelfId;
@@ -587,89 +479,3 @@ const CreateCompartments = (db, countCompartment) => {
     }
   });
 };
-const CreateControllerFunction = async (db, res, shelf) => {
-  try {
-    //get list of compartments from shelfs
-    const compartmentList = await getCompartments(db, shelf);
-
-    //last created Controller
-    const controllerId = await getLastInsertRowId(db);
-
-    //insert controllerfunction
-    await insertControllerFunction(db, controllerId, compartmentList);
-  } catch (error) {
-    console.error(error);
-  }
-};
-const getLastInsertRowId = (db) => {
-  return new Promise((resolve, reject) => {
-    db.get("SELECT last_insert_rowid() as ledControllerid", (err, row) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(row.ledControllerid);
-      }
-    });
-  });
-};
-const getCompartments = (db, shelf) => {
-  return new Promise((resolve, reject) => {
-    db.all(
-      `SELECT compartmentId from compartment WHERE shelfId = ?`,
-      [shelf],
-      (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      }
-    );
-  });
-};
-const DeleteControllerFunction = async (db, deviceId) => {
-  try {
-    await db.all(`DELETE FROM ControllerFunctions WHERE controllerId =?`, [
-      deviceId,
-    ]);
-  } catch (error) {
-    console.log(error);
-  }
-};
-const insertControllerFunction = async (db, controllerId, compartmentList) => {
-  try {
-    for (let i = 0; i < compartmentList.length; i++) {
-      await db.run(
-        `INSERT INTO ControllerFunctions (controllerId, functionName, compartmentid) VALUES (?,?,?)`,
-        [
-          controllerId,
-          "led" + (i + 1) + "/on",
-          compartmentList[i].compartmentId,
-        ]
-      );
-    }
-
-    // Led off controllerFunction
-    await db.run(
-      `INSERT INTO ControllerFunctions (controllerId, functionName) VALUES (?,?)`,
-      [controllerId, "led/off"]
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-module.exports.CreateDatabase = () => {
-  exec(`python3 ./Scripts/InitialDatabase.py`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing Python script: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.error(`Python script error: ${stderr}`);
-      return;
-    }
-    console.log(`Python script output: ${stdout}`);
-  });
-};
-=======
->>>>>>> Stashed changes

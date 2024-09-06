@@ -1,0 +1,108 @@
+@media only screen and (max-width: 2000px) {
+  .content {
+    display: flex;
+    margin-top: 1rem;
+  }
+  .container {
+    display: flex;
+    flex-direction: row;
+    width: 25rem;
+    color: white;
+    justify-content: space-between;
+  }
+  .userContent {
+    display: flex;
+    width: 10rem;
+    margin-left: 1rem;
+    justify-content: space-between;
+  }
+  .editContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 5rem;
+    margin-right: 1rem;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .content {
+    display: flex;
+    margin-top: 1rem;
+  }
+  .container {
+    display: flex;
+    flex-direction: row;
+    width: 40rem;
+    color: white;
+    justify-content: space-between;
+  }
+  .userContent {
+    display: flex;
+    width: 15rem;
+    margin-left: 1rem;
+    justify-content: space-between;
+  }
+  .editContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 8rem;
+    margin-right: 1rem;
+    font-size: 1.25em;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .content {
+    display: flex;
+    margin-top: 1rem;
+  }
+  .container {
+    display: flex;
+    flex-direction: row;
+    width: 40rem;
+    color: white;
+    justify-content: space-between;
+  }
+  .userContent {
+    display: flex;
+    width: 15rem;
+    justify-content: space-between;
+  }
+  .editContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 8rem;
+    margin-right: 1rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .content {
+    display: flex;
+    margin-top: 1rem;
+  }
+  .container {
+    display: flex;
+    flex-direction: row;
+    width: 35rem;
+    color: white;
+    justify-content: space-between;
+  }
+  .userContent {
+    display: flex;
+    width: 15rem;
+    margin-left: 1rem;
+    justify-content: space-between;
+  }
+  .editContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 7rem;
+    margin-right: 1rem;
+  }
+}

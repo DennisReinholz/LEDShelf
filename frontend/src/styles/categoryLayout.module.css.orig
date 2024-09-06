@@ -1,0 +1,132 @@
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: 60rem;
+    width: 102rem;
+  }
+  .addCategoryContainer {
+    display: flex;
+    height: 5rem;
+    width: 10rem;
+    margin-left: 2rem;
+  }
+  .content {
+    display: flex;
+    margin: 0 auto;
+    overflow-y: scroll;
+    width: 50rem;
+    height: 50rem;
+  }
+  .input::-webkit-inner-spin-button {
+    height: 3rem;
+  }
+  .editContainer {
+    display: flex;
+    justify-content: space-around;
+  }
+  .inputSearch {
+    height: 1.5rem;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: 58rem;
+    width: 86rem;
+    font-size: 1.25rem;
+  }
+  .addCategoryContainer {
+    display: flex;
+    margin-left: 2rem;
+    width: 10rem;
+  }
+  .content {
+    display: flex;
+    margin: 0 auto;
+    overflow-y: scroll;
+    width: 50rem;
+    height: 64rem;
+  }
+  .input::-webkit-inner-spin-button {
+    height: 3rem;
+  }
+  .editContainer {
+    display: flex;
+    justify-content: space-around;
+  }
+  .inputSearch {
+    height: 1.5rem;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: 60rem;
+    width: 87rem;
+    font-size: 1em;
+  }
+  .addCategoryContainer {
+    display: flex;
+    height: 5rem;
+    width: 10rem;
+  }
+  .content {
+    display: flex;
+    overflow-y: scroll;
+    margin: 0 auto;
+    width: 40rem;
+    height: 50rem;
+  }
+  .input::-webkit-inner-spin-button {
+    height: 3rem;
+  }
+  .editContainer {
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+    width: 5rem;
+  }
+  .inputSearch {
+    height: 1.5rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    flex-wrap: wrap;
+    width: 58rem;
+    height: 60rem;
+    font-size: 1.15em;
+  }
+  .addCategoryContainer {
+    display: flex;
+    margin-left: 2rem;
+    height: 5rem;
+    width: 10rem;
+  }
+  .content {
+    margin: 0 auto;
+    display: flex;
+    overflow-y: scroll;
+    width: 45rem;
+    height: 50rem;
+  }
+  .input::-webkit-inner-spin-button {
+    height: 3rem;
+  }
+  .editContainer {
+    display: flex;
+    justify-content: space-around;
+  }
+  .inputSearch {
+    height: 1.5rem;
+  }
+}

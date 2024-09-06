@@ -1,0 +1,35 @@
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    width: 15rem;
+    align-items: center;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    width: 20rem;
+    align-items: center;
+    font-size: 1.15em;
+  }
+  .articleName {
+    margin: 0;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    width: 15rem;
+    align-items: center;
+    height: 5rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    width: 10rem;
+    align-items: center;
+  }
+}

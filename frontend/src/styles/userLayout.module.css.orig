@@ -1,0 +1,122 @@
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: 58rem;
+    font-size: 1.5em;
+  }
+  .button {
+    cursor: pointer;
+    width: 5rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    background-color: #171717;
+    margin: 1rem;
+    border-radius: 0.5rem;
+    height: 55rem;
+    width: 100rem;
+  }
+  .userContainer {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    margin-top: 2rem;
+    height: 50rem;
+    width: 98rem;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    font-size: 1.25rem;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: 56rem;
+  }
+  .button {
+    cursor: pointer;
+    width: 5rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: column;
+    height: 56rem;
+    width: 52rem;
+    color: white;
+    justify-content: space-between;
+  }
+  .userContainer {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    height: 53rem;
+    width: 50rem;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.15rem;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    width: 85rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    height: 53rem;
+    width: 62rem;
+  }
+  .userContainer {
+    display: flex;
+    flex-direction: column;
+    height: 55rem;
+    width: 60rem;
+    overflow-y: scroll;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: 100rem;
+    width: 53rem;
+    margin-top: 1rem;
+    font-size: 1.15em;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: column;
+    height: 50rem;
+    width: 53rem;
+    color: white;
+    justify-content: flex-start;
+  }
+  .userContainer {
+    display: flex;
+    flex-direction: column;
+    height: 56rem;
+    width: 52rem;
+    font-size: 1.5em;
+    overflow-y: scroll;
+  }
+}

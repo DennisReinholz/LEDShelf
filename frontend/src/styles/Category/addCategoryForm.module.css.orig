@@ -1,0 +1,107 @@
+@media only screen and (max-width: 2000px) {
+  .container {
+    color: white;
+    display: flex;
+    height: 10rem;
+    width: 22rem;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 1.25em;
+  }
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .inputCategory {
+    width: 10rem;
+    height: 1.5rem;
+    font-size: 1em;
+  }
+  .buttonContainer {
+    display: flex;
+    width: 22rem;
+    justify-content: space-around;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .container {
+    color: white;
+    display: flex;
+    height: 10rem;
+    width: 30rem;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 1.15em;
+  }
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .inputCategory {
+    width: 15rem;
+    height: 2rem;
+    font-size: 1em;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-left: 8rem;
+    width: 23rem;
+    justify-content: space-around;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .container {
+    color: white;
+    display: flex;
+    height: 10rem;
+    width: 25rem;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 1.25em;
+  }
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  .inputCategory {
+    width: 15rem;
+    height: 2rem;
+    font-size: 0.75em;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-left: 4rem;
+    width: 23rem;
+    justify-content: space-around;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    color: white;
+    display: flex;
+    height: 10rem;
+    width: 30rem;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 1.15em;
+  }
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .inputCategory {
+    width: 15rem;
+    height: 2rem;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-left: 8rem;
+    width: 23rem;
+    justify-content: space-around;
+  }
+}

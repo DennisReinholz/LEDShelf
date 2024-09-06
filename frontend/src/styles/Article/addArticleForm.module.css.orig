@@ -1,0 +1,328 @@
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 70rem;
+    width: 31rem;
+    color: white;
+  }
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 30rem;
+  }
+  .content p {
+    font-size: 1.5em;
+  }
+  .fieldsetStyle {
+    height: 30rem;
+    margin: 0rem;
+    margin-top: 1rem;
+    background-color: #1a1a1a;
+    border-radius: 0.5rem;
+  }
+  .fieldsetStyle legend {
+    font-size: 1.25em;
+  }
+  .inputArticleName {
+    width: 17rem;
+    height: 2rem;
+    font-size: 1.15em;
+  }
+  .inputAmount {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .inputMinRequiment {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .unitSelection {
+    height: 2rem;
+    width: 10rem;
+    font-size: 1.15em;
+  }
+  .categorySelect {
+    height: 2em;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .inputCompany {
+    height: 2rem;
+    width: 17rem;
+    font-size: 1.15em;
+  }
+  .inputCommission {
+    height: 4rem;
+    width: 17.5rem;
+    font-size: 1.5em;
+  }
+  .shelfSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .compartmentSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+    margin-left: 1rem;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 32rem;
+    margin-left: 0rem;
+    margin-top: 1rem;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 70rem;
+    width: 31rem;
+    color: white;
+  }
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 30rem;
+  }
+  .content p {
+    font-size: 1.15em;
+  }
+  .fieldsetStyle {
+    height: 30rem;
+    margin: 0rem;
+    margin-top: 1rem;
+    background-color: #1a1a1a;
+    border-radius: 0.5rem;
+  }
+  .fieldsetStyle legend {
+    font-size: 1.15em;
+  }
+  .inputArticleName {
+    width: 17rem;
+    height: 2rem;
+    font-size: 1.15em;
+  }
+  .inputAmount {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .inputMinRequiment {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .unitSelection {
+    height: 2rem;
+    width: 10rem;
+    font-size: 1.15em;
+  }
+  .categorySelect {
+    height: 1.5em;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .inputCompany {
+    height: 2rem;
+    width: 17rem;
+    font-size: 1.15em;
+  }
+  .inputCommission {
+    height: 4rem;
+    width: 17.5rem;
+    font-size: 1.5em;
+  }
+  .shelfSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .compartmentSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+    margin-left: 1rem;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 32rem;
+    margin-left: 0rem;
+    margin-top: 1rem;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 70rem;
+    width: 31.5rem;
+    color: white;
+  }
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 30rem;
+  }
+  .content p {
+    font-size: 1.25em;
+  }
+  .fieldsetStyle {
+    margin: 0rem;
+    height: 70rem;
+    margin-top: 1rem;
+    background-color: #1a1a1a;
+    border-radius: 0.5rem;
+  }
+  .fieldsetStyle legend {
+    font-size: 1.25em;
+  }
+  .inputArticleName {
+    width: 17rem;
+    height: 2rem;
+    font-size: 1.15em;
+  }
+  .inputAmount {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .inputMinRequiment {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .unitSelection {
+    height: 2rem;
+    width: 10rem;
+    font-size: 1.15em;
+  }
+  .categorySelect {
+    height: 2em;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .inputCompany {
+    height: 2rem;
+    width: 17rem;
+    font-size: 1.15em;
+  }
+  .inputCommission {
+    height: 4rem;
+    width: 17.5rem;
+    font-size: 1.5em;
+  }
+  .shelfSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .compartmentSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+    margin-left: 1rem;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 32rem;
+    margin-left: 0rem;
+    margin-top: 1rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 70rem;
+    width: 31rem;
+    color: white;
+  }
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 30rem;
+  }
+  .content p {
+    font-size: 1.5em;
+  }
+  .fieldsetStyle {
+    margin: 0rem;
+    margin-top: 1rem;
+    height: 30rem;
+    background-color: #1a1a1a;
+    border-radius: 0.5rem;
+  }
+  .fieldsetStyle legend {
+    font-size: 1.25em;
+  }
+  .inputArticleName {
+    width: 17rem;
+    height: 2rem;
+    font-size: 1.15em;
+  }
+  .inputAmount {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .inputMinRequiment {
+    width: 5rem;
+    height: 2rem;
+    font-size: 1.5em;
+  }
+  .unitSelection {
+    height: 2rem;
+    width: 10rem;
+    font-size: 1.15em;
+  }
+  .categorySelect {
+    height: 2em;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .inputCompany {
+    height: 2rem;
+    width: 17rem;
+    font-size: 1.15em;
+  }
+  .inputCommission {
+    height: 4rem;
+    width: 17.5rem;
+    font-size: 1.5em;
+  }
+  .shelfSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+  }
+  .compartmentSelect {
+    height: 2rem;
+    width: 17.5rem;
+    font-size: 1.15em;
+    margin-left: 1rem;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 32rem;
+    margin-left: 0rem;
+    margin-top: 1rem;
+  }
+}
