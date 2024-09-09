@@ -691,7 +691,6 @@ const insertControllerFunction = async (db, controllerId, compartmentList) => {
         ]
       );
     }
-
     // Led off controllerFunction
     await db.run(
       `INSERT INTO ControllerFunctions (controllerId, functionName) VALUES (?,?)`,
@@ -702,6 +701,19 @@ const insertControllerFunction = async (db, controllerId, compartmentList) => {
   }
 };
 module.exports.CreateDatabase = () => {
+  exec(`python3 ./Scripts/InitialDatabase.py`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing Python script: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`Python script error: ${stderr}`);
+      return;
+    }
+    console.log(`Python script output: ${stdout}`);
+  });
+};
+const CreateDatabase = () => {
   exec(`python3 ./Scripts/InitialDatabase.py`, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error executing Python script: ${error.message}`);
