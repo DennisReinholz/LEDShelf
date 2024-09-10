@@ -3,12 +3,11 @@ import sqlite3
 import platform
 
 def create_database_and_insert_data(db_file):
-    # Verbindung zur SQLite-Datenbank herstellen (wird erstellt, falls nicht vorhanden)
+
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
 
     try:
-        # Erstellen der Tabellen (einzeln)
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS user (
                 userid INTEGER PRIMARY KEY,
@@ -105,7 +104,6 @@ def create_database_and_insert_data(db_file):
         ''')
         print("Tabelle 'company' erstellt.")
 
-        # Einfügen von Daten (ebenfalls einzeln)
         password = "admin"
         saltRounds = 12
 
@@ -115,7 +113,7 @@ def create_database_and_insert_data(db_file):
 
         #Insert Role
         cursor.execute('INSERT INTO role (name) VALUES (?)', ('Administrator',))
-        cursor.execute('INSERT INTO role (name) VALUES (?)', ('Member',))
+        cursor.execute('INSERT INTO role (name) VALUES (?)', ('Benutzer',))
         print("Daten in Tabelle 'role' eingefügt.")
 
         #Insert Shelf
@@ -132,9 +130,8 @@ def create_database_and_insert_data(db_file):
 
         #Insert Compartment
         for inserts in range(5):
-            compartment_name = f'Compartment {inserts}'
-    
-            # Ausführen des Inserts
+            compartment_name = f'Compartment {inserts}'    
+         
             cursor.execute('INSERT INTO compartment (compartmentname, articleId, shelfId, number) VALUES (?, ?, ?, ?)',
                        (compartment_name, None, 1, 0))        
         print("Daten in Tabelle 'compartment' eingefügt.")
@@ -158,23 +155,23 @@ def create_database_and_insert_data(db_file):
                        ('Company A', 'Street A', '12345'))
         print("Daten in Tabelle 'company' eingefügt.")
 
-        # Änderungen speichern
+        # Saving changes
         conn.commit()
 
     except sqlite3.Error as e:
         print(f"Fehler beim Erstellen der Tabellen oder beim Einfügen von Daten: {e}")
     finally:
-        # Verbindung schließen
+       
         conn.close()
         print("Datenbankverbindung geschlossen.")
 
-def create_sysDatabase_and_insert_data(sysDB_file):
-    # Verbindung zur SQLite-Datenbank herstellen (wird erstellt, falls nicht vorhanden)
+def create_sysDatabase_and_insert_data(sysDB_file, system):
+
     conn = sqlite3.connect(sysDB_file)
     cursor = conn.cursor()
 
     try:
-        # Erstellen der Tabelle 'system'
+        # Create table system
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS system (
                 systemID INTEGER PRIMARY KEY,
@@ -183,51 +180,45 @@ def create_sysDatabase_and_insert_data(sysDB_file):
             );
         ''')
         
-        print("Tabelle 'system' erstellt.")
+        print("Table system was created.")
 
-        # Daten einfügen
-        cursor.execute('INSERT INTO system (backUpPath, dataBasepath) VALUES (?, ?)', ('./Datenbank/BackUp', './Datenbank/Ledshelf.db'))
-        
-        # Änderungen an der Datenbank speichern
-        conn.commit()
-        print("Daten in die Tabelle 'system' eingefügt.")
+        if system == 'Linux':
+            cursor.execute('INSERT INTO system (backUpPath, dataBasepath) VALUES (?, ?)', ('./home/ledshelf/database/backup', './home/ledshelf/database/system.db'))
+        elif system == 'Windows':
+            cursor.execute('INSERT INTO system (backUpPath, dataBasepath) VALUES (?, ?)', ('./Database/BackUp', './Database/System.db'))
+    
+        conn.commit()       
 
     except sqlite3.Error as e:
         print(f"Fehler beim Erstellen der Tabelle oder beim Einfügen von Daten: {e}")
 
     finally:
-        # Verbindung schließen
         conn.close()
-        print("Datenbankverbindung geschlossen.")
 
 if __name__ == "__main__":
-      # Aktuelles Verzeichnis ermitteln, in dem das Skript ausgeführt wird
     current_dir = os.path.dirname(os.path.abspath(__file__))
 
-    # Betriebssystem ermitteln
+    # Check Operating system
     system = platform.system()
 
-    # Pfad je nach Betriebssystem setzen
     if system == 'Linux':
-        # Für Linux, spezifischer Pfad unter /home/ledshelf/
+        # Production path /home/ledshelf/       
         database_dir = '/home/ledshelf'
-        db_file = os.path.join(database_dir, 'ledshelf.db')
-        sysDb_file = os.path.join(database_dir, 'System.db')
-
-    elif system == 'Windows':
-        # Für Windows, Ordner 'Datenbank' einen Ordner höher erstellen, falls dieser nicht existiert
-        database_dir = os.path.join(os.path.dirname(current_dir), 'Datenbank')
         if not os.path.exists(database_dir):
             os.makedirs(database_dir)
-            print(f"Ordner 'Datenbank' wurde erstellt: {database_dir}")
-        else:
-            print(f"Ordner 'Datenbank' existiert bereits: {database_dir}")
+            db_file = os.path.join(database_dir, 'ledshelf.db')
+            sysDb_file = os.path.join(database_dir, 'system.db')
+
+    elif system == 'Windows':
+        database_dir = os.path.join(os.path.dirname(current_dir), 'Database')     
+        if not os.path.exists(database_dir):
+            os.makedirs(database_dir)
+            print(f"Database directory was created: {database_dir}")       
         
         db_file = os.path.join(database_dir, 'Ledshelf.db')
         sysDb_file = os.path.join(database_dir, 'System.db')
-
-    # Funktionen zur Erstellung der Datenbanken aufrufen
+    
     if not os.path.exists(db_file):
         create_database_and_insert_data(db_file)
     
-    create_sysDatabase_and_insert_data(sysDb_file)
+    create_sysDatabase_and_insert_data(sysDb_file, system)

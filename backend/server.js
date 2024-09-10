@@ -38,7 +38,7 @@ const platform = os.platform();
 let SysDatabasePath;
 
 if (platform === "win32") {
-  SysDatabasePath = "./Datenbank/System.db";
+  SysDatabasePath = "./Database/System.db";
 } else if (platform === "linux") {
   SysDatabasePath = "/home/ledshelf/System.db";
 } else {
@@ -47,16 +47,18 @@ if (platform === "win32") {
 
 DataBaseController.CheckDatabase(SysDatabasePath);
 const sysDatabase = new sqlite3.Database(SysDatabasePath);
+
 let db;
 let ledshelfDatabasePath;
 
 async function ensureDatabaseExists(dbPath) {
-  return new Promise((resolve, reject) => {
+  try {
     if (!fs.existsSync(dbPath)) {
-      DataBaseController.CreateDatabase();
+      await DataBaseController.CreateDatabase();
     }
-    resolve();
-  });
+  } catch {
+    console.error("Fehler beim erstellen der Datenbank");
+  }
 }
 
 async function getDatabasePath(sysDatabase) {
@@ -76,7 +78,10 @@ async function getDatabasePath(sysDatabase) {
 
 (async () => {
   try {
+    // Öffnen der SysDatabase
     await ensureDatabaseExists(SysDatabasePath);
+    const sysDatabase = new sqlite3.Database(SysDatabasePath);
+
     ledshelfDatabasePath = await getDatabasePath(sysDatabase);
 
     if (ledshelfDatabasePath) {

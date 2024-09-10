@@ -5,8 +5,8 @@ const configPath = path.join(__dirname, "config.json");
 require("dotenv").config();
 
 // Windows
-let backupPathDev = "./Datenbank/BackUp";
-let databasePathDev = "./Datenbank/Ledshelf.db";
+let backupPathDev = "./Database/BackUp";
+let databasePathDev = "./Database/Ledshelf.db";
 
 // Docker container
 let backupPathProd = "/home/ledshelf/backup";
@@ -24,9 +24,6 @@ if (!isDocker) {
 
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
-    console.log(`Backup directory created at: ${dataDir}`);
-  } else {
-    console.log(`Backup directory already exists: ${dataDir}`);
   }
 } else {
   // Webapp läuft in Docker

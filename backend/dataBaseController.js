@@ -3,6 +3,8 @@ const axios = require("axios");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 const { exec } = require("child_process");
+const util = require("util");
+const execAsync = util.promisify(exec);
 
 module.exports.CheckDatabase = (dbPath) => {
   if (!fs.existsSync(dbPath)) {
@@ -614,7 +616,20 @@ module.exports.PingController = async (req, res) => {
     res.status(500).json("Controller nicht erreichbar");
   }
 };
+module.exports.CreateDatabase = async () => {
+  try {
+    const { stdout, stderr } = await execAsync(
+      `python3 ./Scripts/InitialDatabase.py`
+    );
 
+    if (stderr) {
+      console.error(`Python script error: ${stderr}`);
+      return;
+    }
+  } catch (error) {
+    console.error(`Error executing Python script: ${error.message}`);
+  }
+};
 const LedOff = async (ipAdresse) => {
   const response = await fetch(`http:/${ipAdresse}/led/off`);
 };
@@ -700,19 +715,6 @@ const insertControllerFunction = async (db, controllerId, compartmentList) => {
     throw error;
   }
 };
-module.exports.CreateDatabase = () => {
-  exec(`python3 ./Scripts/InitialDatabase.py`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing Python script: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.error(`Python script error: ${stderr}`);
-      return;
-    }
-    console.log(`Python script output: ${stdout}`);
-  });
-};
 const CreateDatabase = () => {
   exec(`python3 ./Scripts/InitialDatabase.py`, (error, stdout, stderr) => {
     if (error) {
@@ -723,6 +725,5 @@ const CreateDatabase = () => {
       console.error(`Python script error: ${stderr}`);
       return;
     }
-    console.log(`Python script output: ${stdout}`);
   });
 };
