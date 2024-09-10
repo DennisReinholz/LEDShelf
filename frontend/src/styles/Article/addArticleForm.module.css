@@ -244,11 +244,11 @@
     margin-top: 1rem;
   }
 }
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1200px) and (max-height: 1920px) {
   .container {
     display: flex;
     flex-direction: column;
-    height: 70rem;
+    height: 50rem;
     width: 31rem;
     color: white;
   }
@@ -259,12 +259,12 @@
     width: 30rem;
   }
   .content p {
-    font-size: 1.5em;
+    font-size: 1em;
   }
   .fieldsetStyle {
     margin: 0rem;
     margin-top: 1rem;
-    height: 30rem;
+    height: 22rem;
     background-color: #1a1a1a;
     border-radius: 0.5rem;
   }
