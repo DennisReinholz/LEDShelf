@@ -78,9 +78,8 @@ async function getDatabasePath(sysDatabase) {
 
 (async () => {
   try {
-    // Öffnen der SysDatabase
-    await ensureDatabaseExists(SysDatabasePath);
     const sysDatabase = new sqlite3.Database(SysDatabasePath);
+    await ensureDatabaseExists(SysDatabasePath);
 
     ledshelfDatabasePath = await getDatabasePath(sysDatabase);
 
