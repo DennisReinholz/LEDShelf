@@ -36,6 +36,7 @@ const ArticleLayout = () => {
   const [companyList, setCompanyList] = useState([]);
   const [commissionList, setCommissionList] = useState([]);
   const [filterList, setFilterList] = useState([]);
+
   const navigate = useNavigate();
 
   const getArticle = async () => {
@@ -111,10 +112,12 @@ const ArticleLayout = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.serverStatus == 2) {
-          toast.success("Arikel wurde gelöscht.");
-          getArticle();
-          getShelf();
-          getCompartments();
+          console.log("gelöscht");
+          toast.success("Artikel wurde gelöscht.");
+          setDeleteState(false);
+          // getArticle();
+          // getShelf();
+          // getCompartments();
         } else {
           toast.error("Artikel konnte nicht gelöscht werden.");
         }
@@ -297,6 +300,9 @@ const ArticleLayout = () => {
       getArticle();
       getShelf();
       getCompartments();
+    }
+    if (articleCreated) {
+      setArticleCreated(false);
     }
     const userStorage = localStorage.getItem("user");
     if (

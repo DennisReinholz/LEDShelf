@@ -171,13 +171,16 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
           <select
             className={styles.selection}
             placeholder={
-              articleStatus !== undefined && articleStatus.category !== null
-                ? articleStatus.category
-                : "Auswählen"
+              article !== undefined && article.category !== null
+                ? article.category
+                : ""
             }
             value={newCategory}
             onChange={(e) => setNewCategory(e.target.value)}
           >
+            {article?.category == null && (
+              <option value="">Kategorie auswählen</option>
+            )}
             {category !== undefined
               ? category.map((c) => (
                   <option key={c.categoryid} value={parseInt(c.categoryid)}>
@@ -198,7 +201,13 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
             }
             value={newUnit}
             onChange={(e) => setNewUnit(e.target.value)}
+            defaultValue={
+              article !== undefined && article.unit !== null ? article.unit : ""
+            }
           >
+            {article?.unit === null && (
+              <option value="">Einheit auswählen</option>
+            )}
             <option value="Meter">Meter</option>
             <option value="Kilo">Kilo</option>
             <option value="Stück">Stück</option>
@@ -209,19 +218,24 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
           <select
             className={styles.selection}
             defaultValue={
-              articleStatus !== undefined ? articleStatus.shelf : ""
+              article !== undefined && article.shelf !== null
+                ? article.shelf
+                : ""
             }
             value={newShelf}
             onChange={(e) => handleShelfSelction(e.target.value)}
           >
-            {shelf.result != undefined ? (
+            {article?.shelf === null && (
+              <option value="">Regal auswählen</option>
+            )}
+            {shelf.result !== undefined ? (
               shelf.result.map((s) => (
                 <option key={s.shelfid} value={s.shelfid}>
                   {s.shelfname}
                 </option>
               ))
             ) : (
-              <option>Keine Regale gefunden</option>
+              <option value="1">Keine Regale gefunden</option>
             )}
           </select>
         </div>
