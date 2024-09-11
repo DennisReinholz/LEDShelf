@@ -1,0 +1,116 @@
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    height: 20rem;
+    width: 20rem;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 20rem;
+    width: 25rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .controllerProps {
+    display: flex;
+    flex-direction: row;
+    width: 22rem;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.15em;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 20rem;
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+  .editInput {
+    height: 2.5rem;
+    width: 12rem;
+    font-size: 0.75em;
+  }
+  .shelfSelection {
+    height: 2.5rem;
+    width: 15rem;
+    font-size: 0.75em;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    height: 15rem;
+    width: 20rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .controllerProps {
+    display: flex;
+    flex-direction: row;
+    width: 18rem;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1em;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 18rem;
+    margin-left: 0rem;
+  }
+  .editInput {
+    height: 1.75rem;
+    width: 7.75rem;
+    font-size: 0.75em;
+  }
+  .shelfSelection {
+    height: 1.75rem;
+    width: 10rem;
+    font-size: 0.75em;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 20rem;
+    width: 25rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .controllerProps {
+    display: flex;
+    flex-direction: row;
+    width: 22rem;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.15em;
+  }
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 25rem;
+    margin-top: 1rem;
+    margin-left: 0rem;
+  }
+  .editInput {
+    height: 2.5rem;
+    width: 12rem;
+    font-size: 0.75em;
+  }
+  .shelfSelection {
+    height: 2.5rem;
+    width: 15rem;
+    font-size: 0.75em;
+  }
+}

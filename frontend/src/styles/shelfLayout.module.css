@@ -1,18 +1,97 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    background-color: #212121;
+    margin: 2rem;
+    border-radius: 0.5rem;
+    width: 100rem;
+    height: 100rem;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    margin-top: 1rem;
+    height: 60rem;
+    width: 99rem;
+  }
 }
-.buttonContainer {
-  display: flex;
-  margin-top: 1rem;
-  margin-left: 1rem;
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    background-color: #212121;
+    border-radius: 0.5rem;
+    width: 100rem;
+    margin: 2rem;
+    height: 70rem;
+    font-size: 1.25em;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    border-radius: 0.5rem;
+    height: 60rem;
+    width: 90rem;
+    overflow-y: scroll;
+  }
 }
-.content {
-  display: flex;
-  flex-direction: row;
-  height: 20rem;
-  width: 100rem;
-  margin-top: 5rem;
-  margin-left: 5rem;
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    background-color: #212121;
+    width: 90rem;
+    height: 60rem;
+    font-size: 1em;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    margin-top: 1rem;
+    height: 55rem;
+    width: 85rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    background-color: #212121;
+    width: 60rem;
+    height: 100vh;
+    font-size: 1em;
+  }
+  .buttonContainer {
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 2rem;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    margin-top: 1rem;
+    height: 60rem;
+    width: 59rem;
+  }
 }

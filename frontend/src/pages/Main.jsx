@@ -37,6 +37,39 @@ const Main = () => {
       console.error("There was a problem with the fetch operation:", error);
     }
   };
+  const handlefourColumnLedOn = async () => {
+    try {
+      const response = await axios.get("http://192.168.188.48/led4/on");
+      if (response.status !== 200) {
+        throw new Error("Network response was not ok");
+      }
+      // Optional: Handle response if needed
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
+  const handlefithColumnLedOn = async () => {
+    try {
+      const response = await axios.get("http://192.168.188.48/led5/on");
+      if (response.status !== 200) {
+        throw new Error("Network response was not ok");
+      }
+      // Optional: Handle response if needed
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
+  const handlesixColumnLedOn = async () => {
+    try {
+      const response = await axios.get("http://192.168.188.48/led6/on");
+      if (response.status !== 200) {
+        throw new Error("Network response was not ok");
+      }
+      // Optional: Handle response if needed
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
   const handleLedOff = async () => {
     try {
       const response = await axios.get("http://192.168.188.48/led/off");
@@ -54,6 +87,9 @@ const Main = () => {
       <Button handleLed={handleFirstColumnLedOn}>Led 1</Button>
       <Button handleLed={handleSecondColumnLedOn}>Led 2</Button>
       <Button handleLed={handleThirdColumnLedOn}>Led 3</Button>
+      <Button handleLed={handlefourColumnLedOn}>Led 4</Button>
+      <Button handleLed={handlefithColumnLedOn}>Led 5</Button>
+      <Button handleLed={handlesixColumnLedOn}>Led 6</Button>
       <Button handleLed={handleLedOff}>Led Off</Button>
     </div>
   );

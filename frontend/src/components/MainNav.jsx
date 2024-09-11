@@ -6,6 +6,9 @@ import { HiOutlineSignal } from "react-icons/hi2";
 import { BsBookshelf } from "react-icons/bs";
 import { HiOutlineScale } from "react-icons/hi2";
 import { UserContext } from "../helpers/userAuth.jsx";
+import { HiOutlineQrCode } from "react-icons/hi2";
+import { MdOutlineContactSupport } from "react-icons/md";
+import { VscSettingsGear } from "react-icons/vsc";
 import styles from "../styles/Sidebar/mainNav.module.css";
 
 const MainNav = () => {
@@ -13,87 +16,50 @@ const MainNav = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem("user");
     navigate("/login");
   };
   return (
-    <nav className={styles.container}>
+    <div className={styles.container}>
       <ul>
-        <li>
-          <div className={styles.nav}>
-            <BsBookshelf />
-            <NavLink
-              to="/home"
-              style={{
-                textDecoration: "none",
-                color: "white",
-                marginLeft: "1rem",
-              }}
-            >
-              Regale
-            </NavLink>
+        <div className={styles.nav} onClick={() => navigate("/regale")}>
+          <BsBookshelf />
+          <div className={styles.textContainer}>
+            <p>Regale</p>
           </div>
-        </li>
-        <li>
-          <div className={styles.nav}>
-            <HiOutlineScale />
-            <NavLink
-              to="/home"
-              style={{
-                textDecoration: "none",
-                color: "white",
-                marginLeft: "1rem",
-              }}
-            >
-              Artikel
-            </NavLink>
+        </div>
+
+        <div className={styles.nav} onClick={() => navigate("/artikel")}>
+          <HiOutlineScale />
+          <div className={styles.textContainer}>
+            <p>Artikel</p>
           </div>
-        </li>
-        <li>
-          <div className={styles.nav}>
-            <HiOutlineUsers />
-            <NavLink
-              to="/home"
-              style={{
-                textDecoration: "none",
-                color: "white",
-                marginLeft: "1rem",
-              }}
-            >
-              Benutzer
-            </NavLink>
+        </div>
+
+        {user !== null
+          ? user[0].role == 1 && (
+              <>
+                <div
+                  className={styles.nav}
+                  onClick={() => navigate("/einstellung")}
+                >
+                  <VscSettingsGear />
+                  <div className={styles.textContainer}>
+                    <p>Einstellung</p>
+                  </div>
+                </div>
+              </>
+            )
+          : ""}
+
+        <div className={styles.nav} onClick={handleLogout}>
+          <HiOutlineArrowRightOnRectangle />
+          <div className={styles.textContainer}>
+            <p>Logout</p>
           </div>
-        </li>
-        <li>
-          <div className={styles.nav}>
-            <HiOutlineSignal />
-            <NavLink
-              to="/home"
-              style={{
-                textDecoration: "none",
-                color: "white",
-                marginLeft: "1rem",
-              }}
-            >
-              Geräte
-            </NavLink>
-          </div>
-        </li>
-        <li>
-          <div className={styles.nav} onClick={handleLogout}>
-            <HiOutlineArrowRightOnRectangle />
-            <NavLink
-              style={{
-                textDecoration: "none",
-                color: "white",
-                marginLeft: "1rem",
-              }}
-            >
-              Logout
-            </NavLink>
-          </div>
-        </li>
+        </div>
       </ul>
-    </nav>
+    </div>
   );
 };
 

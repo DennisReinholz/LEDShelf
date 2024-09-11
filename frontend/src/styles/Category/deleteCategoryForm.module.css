@@ -1,0 +1,80 @@
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: 12rem;
+    width: 22rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .buttonContainer {
+    margin-top: 1rem;
+    display: flex;
+    margin-left: 2rem;
+    width: 22rem;
+    justify-content: space-between;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: 15rem;
+    width: 20rem;
+    font-size: 1em;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .buttonContainer {
+    margin-top: 1rem;
+    display: flex;
+    width: 20rem;
+    justify-content: space-between;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: 18rem;
+    width: 25rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .buttonContainer {
+    margin-top: 5rem;
+    display: flex;
+    margin-left: 7rem;
+    width: 18rem;
+    justify-content: space-between;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: 15rem;
+    width: 25rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .buttonContainer {
+    margin-top: 1rem;
+    display: flex;
+    margin-left: 1rem;
+    width: 25rem;
+    justify-content: space-between;
+  }
+}

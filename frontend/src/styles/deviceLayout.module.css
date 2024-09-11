@@ -1,0 +1,68 @@
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 60rem;
+    width: 85rem;
+    color: white;
+  }
+  .content {
+    display: flex;
+    width: 100rem;
+    height: 60rem;
+    margin-top: 2rem;
+    margin-left: 1rem;
+    overflow-y: scroll;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 60rem;
+    width: 102rem;
+    color: white;
+    font-size: 1.25rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    margin-top: 2rem;
+    width: 100rem;
+    height: 60rem;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 60rem;
+    width: 85rem;
+    color: white;
+    margin-left: 1rem;
+    font-size: 1.15rem;
+  }
+  .content {
+    display: flex;
+    overflow-y: scroll;
+    margin-top: 2rem;
+    width: 88rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 60rem;
+    width: 65rem;
+    color: white;
+    margin-left: 1rem;
+  }
+  .content {
+    display: flex;
+    margin-top: 2rem;
+    width: 58rem;
+    overflow-y: scroll;
+  }
+}

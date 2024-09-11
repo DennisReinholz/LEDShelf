@@ -1,0 +1,305 @@
+@media only screen and (max-width: 3000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 45rem;
+    height: 30rem;
+    margin-top: 1rem;
+    background-color: #171717;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    justify-content: space-between;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    height: 40rem;
+    width: 40rem;
+    margin: 2rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .containerTextBox {
+    display: flex;
+    margin-top: 1rem;
+  }
+  .textbox {
+    background-color: none;
+    height: 10rem;
+    width: 40rem;
+    resize: none;
+    font-size: 1.3em;
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 17rem;
+    margin-left: 25rem;
+    margin-bottom: 1rem;
+  }
+  .input {
+    border-color: white;
+    color: white;
+    width: 25rem;
+    margin-top: 1rem;
+  }
+  .inputColumn {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    justify-content: space-between;
+  }
+  .selection {
+    height: 2.5rem;
+    width: 10rem;
+  }
+}
+@media only screen and (max-width: 2000px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 45rem;
+    height: 30rem;
+    margin-top: 1rem;
+    background-color: #171717;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    justify-content: space-between;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    height: 40rem;
+    width: 40rem;
+    margin: 2rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .containerTextBox {
+    display: flex;
+    margin-top: 1rem;
+  }
+  .textbox {
+    background-color: none;
+    height: 10rem;
+    width: 40rem;
+    resize: none;
+    font-size: 1.3em;
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 17rem;
+    margin-left: 25rem;
+    margin-bottom: 1rem;
+  }
+  .input {
+    border-color: white;
+    color: white;
+    width: 25rem;
+    margin-top: 1rem;
+  }
+  .inputColumn {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    justify-content: space-between;
+  }
+  .selection {
+    height: 2.5rem;
+    width: 10rem;
+  }
+}
+@media only screen and (max-width: 1920px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 45rem;
+    height: 30rem;
+    margin-top: 1rem;
+    background-color: #171717;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    justify-content: space-between;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    height: 40rem;
+    width: 40rem;
+    margin: 2rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .containerTextBox {
+    display: flex;
+    margin-top: 1rem;
+  }
+  .textbox {
+    background-color: none;
+    height: 10rem;
+    width: 40rem;
+    resize: none;
+    font-size: 1.5em;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 20rem;
+    margin-left: 22rem;
+    margin-bottom: 1rem;
+  }
+  .input {
+    border-color: white;
+    color: white;
+    width: 25rem;
+    margin-top: 1rem;
+    font-size: 1.15em;
+  }
+  .inputColumn {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    justify-content: space-between;
+  }
+  .selection {
+    height: 2.5rem;
+    width: 10rem;
+    font-size: 1.15em;
+  }
+}
+@media only screen and (max-width: 1700px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 45rem;
+    height: 30rem;
+    margin-top: 1rem;
+    background-color: #171717;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    justify-content: space-between;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    height: 40rem;
+    width: 40rem;
+    margin: 2rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .containerTextBox {
+    display: flex;
+    margin-top: 1rem;
+  }
+  .textbox {
+    background-color: none;
+    height: 10rem;
+    width: 40rem;
+    resize: none;
+    font-size: 1.3em;
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 17rem;
+    margin-left: 25rem;
+    margin-bottom: 1rem;
+  }
+  .input {
+    border-color: white;
+    color: white;
+    width: 25rem;
+    margin-top: 1rem;
+  }
+  .inputColumn {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    justify-content: space-between;
+  }
+  .selection {
+    height: 2.5rem;
+    width: 10rem;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 45rem;
+    height: 30rem;
+    margin-top: 1rem;
+    background-color: #171717;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;
+    justify-content: space-between;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    height: 40rem;
+    width: 40rem;
+    margin: 2rem;
+  }
+  .contentContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .containerTextBox {
+    display: flex;
+    margin-top: 1rem;
+  }
+  .textbox {
+    background-color: none;
+    height: 10rem;
+    width: 40rem;
+    resize: none;
+    font-size: 1.3em;
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 20rem;
+    margin-left: 22rem;
+    margin-bottom: 1rem;
+  }
+  .input {
+    border-color: white;
+    color: white;
+    width: 25rem;
+    margin-top: 1rem;
+  }
+  .inputColumn {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    justify-content: space-between;
+  }
+  .selection {
+    height: 2.5rem;
+    width: 10rem;
+  }
+}
