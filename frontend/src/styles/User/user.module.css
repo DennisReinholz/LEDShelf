@@ -6,7 +6,7 @@
   .container {
     display: flex;
     flex-direction: row;
-    width: 25rem;
+    width: 50rem;
     color: white;
     justify-content: space-between;
   }
@@ -33,7 +33,7 @@
   .container {
     display: flex;
     flex-direction: row;
-    width: 40rem;
+    width: 50rem;
     color: white;
     justify-content: space-between;
   }
@@ -61,7 +61,7 @@
   .container {
     display: flex;
     flex-direction: row;
-    width: 40rem;
+    width: 60rem;
     color: white;
     justify-content: space-between;
   }
@@ -87,7 +87,7 @@
   .container {
     display: flex;
     flex-direction: row;
-    width: 35rem;
+    width: 50rem;
     color: white;
     justify-content: space-between;
   }
