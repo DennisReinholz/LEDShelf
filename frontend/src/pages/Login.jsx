@@ -8,9 +8,8 @@ import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState();
-  const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
   const [user, setUser] = useContext(UserContext);
 
   const clearLogin = () => {
@@ -22,6 +21,12 @@ const Login = () => {
     if (event.key === "Enter") {
       getUser();
     }
+  };
+  const handlePassword = (event) => {
+    setPassword(event.target.value);
+  };
+  const handleUsername = (event) => {
+    setUserName(event.target.value);
   };
   const getUser = async () => {
     try {
@@ -62,6 +67,7 @@ const Login = () => {
       clearLogin();
     }
   };
+
   useEffect(() => {
     const listener = (event) => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
@@ -73,7 +79,7 @@ const Login = () => {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, []);
+  }, [password, username]);
 
   return (
     <div className={styles.container}>
@@ -88,25 +94,19 @@ const Login = () => {
             placeholder="Name"
             value={username}
             style={{ width: "16rem", height: "2rem", color: "Black" }}
-            onChange={(e) => setUserName(e.target.value)}
+            onChange={handleUsername}
           />
           <input
             placeholder="Password"
-            variant="outlined"
             size="small"
             type="password"
             style={{ width: "16rem", height: "2rem", color: "black" }}
             value={password}
             className={styles.input}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={handleLogin}
+            onChange={handlePassword}
           />
           <div className={styles.buttonContainer}>
-            <button
-              className={styles.loginButton}
-              onKeyDown={handleLogin}
-              onClick={getUser}
-            >
+            <button className={styles.loginButton} onClick={getUser}>
               Login
             </button>
           </div>

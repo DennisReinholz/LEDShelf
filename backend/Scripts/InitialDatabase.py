@@ -183,9 +183,9 @@ def create_sysDatabase_and_insert_data(sysDB_file, system):
         print("Table system was created.")
 
         if system == 'Linux':
-            cursor.execute('INSERT INTO system (backUpPath, dataBasepath) VALUES (?, ?)', ('./home/ledshelf/database/backup', './home/ledshelf/database/system.db'))
+            cursor.execute('INSERT INTO system (backUpPath, dataBasepath) VALUES (?, ?)', ('./home/ledshelf/database/backup', './home/ledshelf/database/ledshelf.db'))
         elif system == 'Windows':
-            cursor.execute('INSERT INTO system (backUpPath, dataBasepath) VALUES (?, ?)', ('./Database/BackUp', './Database/System.db'))
+            cursor.execute('INSERT INTO system (backUpPath, dataBasepath) VALUES (?, ?)', ('./Database/BackUp', './Database/Ledshelf.db'))
     
         conn.commit()       
 
