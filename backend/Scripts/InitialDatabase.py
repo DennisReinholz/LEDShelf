@@ -206,19 +206,20 @@ if __name__ == "__main__":
         database_dir = '/home/ledshelf'
         if not os.path.exists(database_dir):
             os.makedirs(database_dir)
-            db_file = os.path.join(database_dir, 'ledshelf.db')
-            sysDb_file = os.path.join(database_dir, 'system.db')
+
+        db_file = os.path.join(database_dir, 'ledshelf.db')
+        sysDb_file = os.path.join(database_dir, 'system.db')
+
+        create_database_and_insert_data(db_file)
+        create_sysDatabase_and_insert_data(sysDb_file, system)
 
     elif system == 'Windows':
         database_dir = os.path.join(os.path.dirname(current_dir), 'Database')     
         if not os.path.exists(database_dir):
-            os.makedirs(database_dir)
-            print(f"Database directory was created: {database_dir}")       
+            os.makedirs(database_dir)       
         
         db_file = os.path.join(database_dir, 'Ledshelf.db')
         sysDb_file = os.path.join(database_dir, 'System.db')
-    
-    if not os.path.exists(db_file):
+
         create_database_and_insert_data(db_file)
-    
-    create_sysDatabase_and_insert_data(sysDb_file, system)
+        create_sysDatabase_and_insert_data(sysDb_file, system)
