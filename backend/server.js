@@ -40,7 +40,7 @@ let SysDatabasePath;
 if (platform === "win32") {
   SysDatabasePath = "./Database/System.db";
 } else if (platform === "linux") {
-  SysDatabasePath = "/home/ledshelf/System.db";
+  SysDatabasePath = "/home/ledshelf/system.db";
 } else {
   throw new Error(`Unbekanntes Betriebssystem: ${platform}`);
 }
