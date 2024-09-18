@@ -1,19 +1,17 @@
-import React, { useContext, useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React from "react";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
-import { HiOutlineUsers } from "react-icons/hi2";
-import { HiOutlineSignal } from "react-icons/hi2";
 import { BsBookshelf } from "react-icons/bs";
 import { HiOutlineScale } from "react-icons/hi2";
 import { UserContext } from "../helpers/userAuth.jsx";
-import { HiOutlineQrCode } from "react-icons/hi2";
-import { MdOutlineContactSupport } from "react-icons/md";
 import { VscSettingsGear } from "react-icons/vsc";
 import styles from "../styles/Sidebar/mainNav.module.css";
 
 const MainNav = () => {
   const [user, setUser] = useContext(UserContext);
   const navigate = useNavigate();
+
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem("user");

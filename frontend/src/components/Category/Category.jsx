@@ -5,6 +5,7 @@ import EditCategoryForm from "./EditCategoryForm.jsx";
 import DeleteCategory from "./DeleteCategoryForm.jsx";
 import Modal from "../common/Modal.jsx";
 import styles from "../../styles/Category/category.module.css";
+import PropTypes from "prop-types";
 
 const Category = ({ category, setDeleteCategory }) => {
   const [editCategoryOpen, setEditCategoryOpen] = useState(false);
@@ -13,7 +14,7 @@ const Category = ({ category, setDeleteCategory }) => {
   const [selectedCategory, setSelectedCategory] = useState();
 
   const deleteCategoryById = async () => {
-    const response = await fetch(`http://localhost:3000/deleteCategory`, {
+    await fetch(`http://localhost:3000/deleteCategory`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -81,5 +82,8 @@ const Category = ({ category, setDeleteCategory }) => {
     </div>
   );
 };
-
+Category.propTypes = {
+  category: PropTypes.node.isRequired,
+  setDeleteCategory: PropTypes.node.isRequired,
+};
 export default Category;

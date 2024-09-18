@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Compartment from "../components/Shelf/Compartment";
 import styles from "../styles/compartmentLayout.module.css";
@@ -26,7 +26,7 @@ const CompartmentLayout = () => {
   };
   const handleLedOff = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/controllerOff`, {
+      await fetch(`http://localhost:3000/controllerOff`, {
         method: "Post",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const CompartmentLayout = () => {
     }
   };
   const getCompartments = async () => {
-    const response = await fetch(`http://localhost:3000/getCompartment`, {
+    await fetch(`http://localhost:3000/getCompartment`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",

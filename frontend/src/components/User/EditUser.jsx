@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/User/editUserForm.module.css";
 import toast from "react-hot-toast";
+import PropTypes from "prop-types";
 
-const EditUser = ({ userid, onClose, name, role, setEditUser }) => {
+const EditUser = ({ userid, onClose, name, setEditUser }) => {
   const [newName, setNewName] = useState();
   const [newPassword, setNewPassword] = useState();
   const [roles, setRoles] = useState();
@@ -26,7 +27,7 @@ const EditUser = ({ userid, onClose, name, role, setEditUser }) => {
   };
   const getUserData = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/getUserData`, {
+      await fetch(`http://localhost:3000/getUserData`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +56,7 @@ const EditUser = ({ userid, onClose, name, role, setEditUser }) => {
   };
   const updateUser = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/updateUser`, {
+      await fetch(`http://localhost:3000/updateUser`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -156,4 +157,11 @@ const EditUser = ({ userid, onClose, name, role, setEditUser }) => {
   );
 };
 
+EditUser.propTypes = {
+  userid: PropTypes.node.isRequired,
+  onClose: PropTypes.node.isRequired,
+  name: PropTypes.node.isRequired,
+  setEditUser: PropTypes.node.isRequired,
+  role: PropTypes.node.isRequired,
+};
 export default EditUser;

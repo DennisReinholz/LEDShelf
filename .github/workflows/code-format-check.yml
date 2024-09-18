@@ -1,0 +1,97 @@
+name: Node code format check
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  cache-modules:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            backend/node_modules
+            frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+  lint-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js for backend
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18.12.0"
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
+          npm install eslint@8.0.1
+
+      - name: Run ESLint for backend
+        run: |
+          cd backend
+          npm run lint | tee backend-eslint-report.txt || true
+
+      - name: Upload backend ESLint report
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-eslint-report
+          path: backend/backend-eslint-report.txt
+
+      - name: Check for lint errors
+        run: |
+          if grep -q "error" backend/backend-eslint-report.txt; then
+            echo "ESLint found errors."
+            exit 1
+          else
+            echo "No ESLint errors found."
+          fi
+
+  lint-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js for frontend
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18.12.0"
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run ESLint for frontend
+        run: npm run lint | tee frontend-eslint-report.txt
+
+      - name: Upload frontend ESLint report
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-eslint-report
+          path: frontend/frontend-eslint-report.txt
+
+      - name: Checking frontend for lint errors
+        run: |
+          if grep -q "error" frontend/frontend-eslint-report.txt; then
+            echo "ESLint found errors."
+            exit 1
+          else
+            echo "No ESLint errors found."
+          fi

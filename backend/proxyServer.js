@@ -6,7 +6,7 @@ const proxy = httpProxy.createProxyServer({
 });
 const app = express();
 
-var cors = require("cors");
+const cors = require("cors");
 app.use(cors());
 
 proxy.on("proxyReq", function (proxyReq, req, res, options) {

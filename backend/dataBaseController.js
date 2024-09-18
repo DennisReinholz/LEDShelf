@@ -2,8 +2,8 @@ require("dotenv").config();
 const axios = require("axios");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
-const { exec } = require("child_process");
 const util = require("util");
+const { exec } = require("child_process");
 const execAsync = util.promisify(exec);
 
 module.exports.CheckDatabase = (dbPath) => {
@@ -49,11 +49,9 @@ module.exports.updateUser = async (req, res, db) => {
   db.all(
     `UPDATE user SET username=?, password=?, role=? where userid=?`,
     [username, password, role, userid],
-    (err, result) => {
+    (err) => {
       if (err) {
-        console.log(err);
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json({ serverStatus: 2 });
       }
@@ -73,10 +71,9 @@ module.exports.getUserData = async (req, res, db) => {
 };
 module.exports.deleteUser = async (req, res, db) => {
   const { userid } = req.body;
-  db.all(`DELETE FROM user WHERE userid=?`, [userid], (err, result) => {
+  db.all(`DELETE FROM user WHERE userid=?`, [userid], (err) => {
     if (err) {
       res.status(500).json({ serverStatus: -1 });
-      return;
     } else {
       res.status(200).json({ serverStatus: 2 });
     }
@@ -86,7 +83,6 @@ module.exports.getShelf = async (req, res, db) => {
   db.all(`SELECt * FROM shelf`, (err, result) => {
     if (err) {
       res.status(500).json({ serverStatus: -1 });
-      return;
     } else {
       const data = {
         result,
@@ -108,7 +104,6 @@ module.exports.getCompartArticleForm = async (req, res, db) => {
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         const data = {
           result,
@@ -131,7 +126,6 @@ module.exports.getCompartments = async (req, res, db) => {
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         const data = {
           result,
@@ -148,7 +142,6 @@ module.exports.getAllUser = async (req, res, db) => {
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         const data = {
           result,
@@ -167,7 +160,6 @@ module.exports.postCreateShelf = async (req, res, db) => {
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         CreateCompartments(db, CountCompartment);
         res.status(200).json(result);
@@ -186,7 +178,6 @@ FROM
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json(result);
       }
@@ -204,7 +195,6 @@ LEFT JOIN compartment on article.compartment = compartment.compartmentId;`,
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json(result);
       }
@@ -219,7 +209,6 @@ module.exports.getArticleInCompartment = async (req, res, db) => {
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json(result);
       }
@@ -254,7 +243,6 @@ module.exports.createArticle = async (req, res, db) => {
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        console.log(res);
       } else {
         res.status(200).json(result);
       }
@@ -272,7 +260,6 @@ module.exports.getSelectedArticle = async (req, res, db) => {
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json(result);
       }
@@ -302,10 +289,9 @@ module.exports.updateArticle = async (req, res, db) => {
       minRequirement,
       articleid,
     ],
-    (err, result) => {
+    (err) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json({ serverStatus: 2 });
       }
@@ -314,18 +300,13 @@ module.exports.updateArticle = async (req, res, db) => {
 };
 module.exports.deleteArticle = async (req, res, db) => {
   const { articleid } = req.body;
-  db.all(
-    `DELETE FROM article WHERE articleid=?`,
-    [articleid],
-    (err, result) => {
-      if (err) {
-        res.status(500).json({ serverStatus: -1 });
-        return;
-      } else {
-        res.status(200).json({ serverStatus: 2 });
-      }
+  db.all(`DELETE FROM article WHERE articleid=?`, [articleid], (err) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+    } else {
+      res.status(200).json({ serverStatus: 2 });
     }
-  );
+  });
 };
 module.exports.createUser = async (req, res, db) => {
   const saltRounds = 12;
@@ -340,7 +321,6 @@ module.exports.createUser = async (req, res, db) => {
       (err, result) => {
         if (err) {
           res.status(500).json({ serverStatus: -1 });
-          return;
         } else {
           res.status(200).json(result);
         }
@@ -354,7 +334,6 @@ module.exports.getRoles = async (req, res, db) => {
   db.all(`SELECT * from role`, (err, result) => {
     if (err) {
       res.status(500).json({ serverStatus: -1 });
-      return;
     } else {
       res.status(200).json(result);
     }
@@ -368,7 +347,6 @@ module.exports.updateArticleCount = async (req, res, db) => {
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json(result);
       }
@@ -380,10 +358,9 @@ module.exports.createCategory = async (req, res, db) => {
   db.all(
     `INSERT INTO category (categoryname) VALUES(?)`,
     [categoryName],
-    (err, result) => {
+    (err) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json({ serverStatus: 2 });
       }
@@ -394,9 +371,8 @@ module.exports.getCategory = async (req, res, db) => {
   db.all(`SELECT * from category `, (err, result) => {
     if (err) {
       res.status(500).json({ serverStatus: -1 });
-      return;
     } else {
-      data = {
+      const data = {
         result: result,
         serverStatus: 2,
       };
@@ -408,9 +384,8 @@ module.exports.getCompany = async (req, res, db) => {
   db.all(`SELECT * from company `, (err, result) => {
     if (err) {
       res.status(500).json({ serverStatus: -1 });
-      return;
     } else {
-      data = {
+      const data = {
         result: result,
         serverStatus: 2,
       };
@@ -420,18 +395,13 @@ module.exports.getCompany = async (req, res, db) => {
 };
 module.exports.deleteCategory = async (req, res, db) => {
   const { categoryid } = req.body;
-  db.all(
-    `DELETE FROM category WHERE categoryid=?`,
-    [categoryid],
-    (err, result) => {
-      if (err) {
-        res.status(500).json({ serverStatus: -1 });
-        return;
-      } else {
-        res.status(200).json({ serverStatus: 2 });
-      }
+  db.all(`DELETE FROM category WHERE categoryid=?`, [categoryid], (err) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+    } else {
+      res.status(200).json({ serverStatus: 2 });
     }
-  );
+  });
 };
 module.exports.getControllerFunction = async (req, res, db) => {
   const { compId } = req.body;
@@ -443,7 +413,6 @@ module.exports.getControllerFunction = async (req, res, db) => {
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json(result);
       }
@@ -465,7 +434,6 @@ module.exports.getLedOff = async (req, res, db) => {
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json(result);
       }
@@ -480,9 +448,8 @@ module.exports.getArticleWithCategory = async (req, res, db) => {
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
-        data = {
+        const data = {
           serverStatus: 2,
           result: result,
         };
@@ -496,10 +463,9 @@ module.exports.UpdateArticleCategory = async (req, res, db) => {
   db.all(
     `UPDATE article SET categoryid=? WHERE articleid=?`,
     [value, selectedArticle],
-    (err, result) => {
+    (err) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json({ serverStatus: 2 });
       }
@@ -516,7 +482,6 @@ WHERE ledController.shelfid IS NOT NULL
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json(result);
       }
@@ -528,10 +493,9 @@ module.exports.UpdateLedController = async (req, res, db) => {
   db.all(
     `UPDATE ledController SET ipAdresse =?, shelfid=?, status=? WHERE ledControllerid=?`,
     [ip, shelfid, status, controllerid],
-    (err, result) => {
+    (err) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json({ serverStatus: 2 });
       }
@@ -540,11 +504,11 @@ module.exports.UpdateLedController = async (req, res, db) => {
 };
 module.exports.CreateLedController = async (req, res, db) => {
   const { ipAdress, shelf } = req.body;
-  //Ping LEDController for status
+  // Ping LEDController for status
   let tempStatus;
   try {
     const response = await axios.get("http://192.168.188.48");
-    if (response.status == 200) {
+    if (response.status === 200) {
       tempStatus = "Connected";
     } else {
       tempStatus = "Disconnected";
@@ -555,14 +519,13 @@ module.exports.CreateLedController = async (req, res, db) => {
   }
   const status = tempStatus;
 
-  //Create n Controllerfunction with ledControllerid
+  // Create n Controllerfunction with ledControllerid
   db.all(
     `INSERT INTO ledController (ipAdresse, shelfid, status) VALUES (?,?,?)`,
     [ipAdress, shelf, status],
     (error, result) => {
       if (error) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json({ result: result, serverStatus: 2 });
       }
@@ -575,10 +538,9 @@ module.exports.DeleteLedController = async (req, res, db) => {
   db.all(
     `DELETE FROM ledController WHERE ledControllerid=?`,
     [deviceId],
-    (error, result) => {
+    (error) => {
       if (error) {
         res.status(500).json({ serverStatus: -1 });
-        return;
       } else {
         res.status(200).json({ serverStatus: 2 });
       }
@@ -596,7 +558,7 @@ module.exports.ControllerOff = async (req, res, db) => {
         if (err) {
           reject(err);
         } else {
-          const ledoff = LedOff(result.ipAdresse);
+          LedOff(result.ipAdresse);
           res.status(200).json({ serverStatus: 2 });
         }
       }
@@ -607,7 +569,7 @@ module.exports.PingController = async (req, res) => {
   const { ip } = req.body;
   try {
     const ping = await fetch(`http://${ip}`);
-    if (ping.status == 200) {
+    if (ping.status === 200) {
       res.status(200).json({ serverStatus: 2 });
     } else {
       res.status(404).json({ serverStatus: -1 });
@@ -618,9 +580,7 @@ module.exports.PingController = async (req, res) => {
 };
 module.exports.CreateDatabase = async () => {
   try {
-    const { stdout, stderr } = await execAsync(
-      `python3 ./Scripts/InitialDatabase.py`
-    );
+    const { stderr } = await execAsync(`python3 ./Scripts/InitialDatabase.py`);
 
     if (stderr) {
       console.error(`Python script error: ${stderr}`);
@@ -631,10 +591,10 @@ module.exports.CreateDatabase = async () => {
   }
 };
 const LedOff = async (ipAdresse) => {
-  const response = await fetch(`http:/${ipAdresse}/led/off`);
+  await fetch(`http:/${ipAdresse}/led/off`);
 };
 const CreateCompartments = (db, countCompartment) => {
-  db.get("SELECT last_insert_rowid() as shelfId", (err, row) => {
+  db.get("SELECT last_insert_rowid() as shelfId", (row) => {
     const shelfId = row.shelfId;
 
     for (let i = 0; i < countCompartment; i++) {
@@ -647,13 +607,13 @@ const CreateCompartments = (db, countCompartment) => {
 };
 const CreateControllerFunction = async (db, res, shelf) => {
   try {
-    //get list of compartments from shelfs
+    // get list of compartments from shelfs
     const compartmentList = await getCompartments(db, shelf);
 
-    //last created Controller
+    // last created Controller
     const controllerId = await getLastInsertRowId(db);
 
-    //insert controllerfunction
+    // insert controllerfunction
     await insertControllerFunction(db, controllerId, compartmentList);
   } catch (error) {
     console.error(error);
@@ -695,35 +655,25 @@ const DeleteControllerFunction = async (db, deviceId) => {
   }
 };
 const insertControllerFunction = async (db, controllerId, compartmentList) => {
-  try {
-    for (let i = 0; i < compartmentList.length; i++) {
-      await db.run(
-        `INSERT INTO ControllerFunctions (controllerId, functionName, compartmentid) VALUES (?,?,?)`,
-        [
-          controllerId,
-          "led" + (i + 1) + "/on",
-          compartmentList[i].compartmentId,
-        ]
-      );
-    }
-    // Led off controllerFunction
+  for (let i = 0; i < compartmentList.length; i++) {
     await db.run(
-      `INSERT INTO ControllerFunctions (controllerId, functionName) VALUES (?,?)`,
-      [controllerId, "led/off"]
+      `INSERT INTO ControllerFunctions (controllerId, functionName, compartmentid) VALUES (?,?,?)`,
+      [controllerId, "led" + (i + 1) + "/on", compartmentList[i].compartmentId]
     );
-  } catch (error) {
-    throw error;
   }
+  // Led off controllerFunction
+  await db.run(
+    `INSERT INTO ControllerFunctions (controllerId, functionName) VALUES (?,?)`,
+    [controllerId, "led/off"]
+  );
 };
 const CreateDatabase = () => {
-  exec(`python3 ./Scripts/InitialDatabase.py`, (error, stdout, stderr) => {
+  exec(`python3 ./Scripts/InitialDatabase.py`, (error, stderr) => {
     if (error) {
       console.error(`Error executing Python script: ${error.message}`);
-      return;
     }
     if (stderr) {
       console.error(`Python script error: ${stderr}`);
-      return;
     }
   });
 };

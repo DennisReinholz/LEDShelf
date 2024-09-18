@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FiEdit2 } from "react-icons/fi";
-import { BsTrash } from "react-icons/bs";
 import styles from "../../styles/User/user.module.css";
 import Modal from "../common/Modal";
 import DeleteUserForm from "./DeleteUserForm";
 import EditUser from "./EditUser";
 import { Tooltip } from "react-tooltip";
+import { FiEdit2 } from "react-icons/fi";
+import { BsTrash } from "react-icons/bs";
+import PropTypes from "prop-types";
 
 const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -61,6 +62,14 @@ const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
       )}
     </div>
   );
+};
+
+User.propTypes = {
+  name: PropTypes.node.isRequired,
+  role: PropTypes.node.isRequired,
+  setDeleteUser: PropTypes.node.isRequired,
+  setEditUser: PropTypes.node.isRequired,
+  userid: PropTypes.node.isRequired,
 };
 
 export default User;

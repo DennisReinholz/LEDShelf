@@ -1,34 +1,30 @@
 const cron = require("node-cron");
 const fs = require("fs");
 const path = require("path");
-const configPath = path.join(__dirname, "config.json");
 require("dotenv").config();
 
 // Windows
-let backupPathDev = "./Database/BackUp";
-let databasePathDev = "./Database/Ledshelf.db";
+const backupPathDev = "./Database/BackUp";
+const databasePathDev = "./Database/Ledshelf.db";
 
 // Docker container
-let backupPathProd = "/home/ledshelf/backup";
-let databasePathPro = "/home/ledshelf";
+const backupPathProd = "/home/ledshelf/backup";
+const databasePathPro = "/home/ledshelf";
 
 // Bestimmen, ob wir uns in einer Docker-Umgebung befinden oder lokal ausführen
 const isDocker = process.env.DOCKER_ENV === "true";
 
 if (!isDocker) {
-  // Webapp läuft lokal
   console.log("Running in local environment");
 
-  // Erstelle den /Datenbank/BackUp-Ordner
   const dataDir = path.join(backupPathDev);
 
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }
 } else {
-  // Webapp läuft in Docker
   console.log("Running in Docker environment");
-  // Erstelle den /Datenbank/BackUp-Ordner
+
   const dataDir = path.join(backupPathProd);
 
   if (!fs.existsSync(dataDir)) {
@@ -118,7 +114,7 @@ module.exports.GetBackUpPath = (req, res) => {
   }
 };
 module.exports.ManualBackup = (req, res) => {
-  //Dev
+  // Dev
   if (!isDocker) {
     const now = new Date();
     const year = now.getFullYear();
@@ -151,7 +147,7 @@ module.exports.ManualBackup = (req, res) => {
       res.status(500).json({ error: error.message, serverStatus: -1 });
     }
   } else {
-    //Prod
+    // Prod
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -213,7 +209,7 @@ module.exports.GetRecentBackUpFile = (req, res) => {
 
       res.status(200).json(latestFile);
     });
-    //Prod
+    // Prod
   } else {
     fs.readdir(backupPathProd, (err, files) => {
       if (err) {
@@ -253,7 +249,7 @@ module.exports.GetBackUpFiles = (req, res) => {
     }
 
     if (files.length === 0) {
-      return res.status(200).json([]); // Leeres Array zurückgeben
+      return res.status(200).json([]);
     }
 
     const fileInfos = files.map((file, index) => {

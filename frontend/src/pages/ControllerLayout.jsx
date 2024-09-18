@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import Modal from "../components/common/Modal.jsx";
-import axios from "axios";
+import React, { useState } from "react";
 
 const ControllerLayout = () => {
   const [ssid, setSsid] = useState("");

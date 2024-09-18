@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Tooltip } from "react-tooltip";
 import toast from "react-hot-toast";
 import styles from "./../../styles/Database/recoveryDatabase.module.css";
 
@@ -10,7 +9,7 @@ const RecoryDatabase = () => {
   const [files, setFiles] = useState();
 
   const GetBackUpFiles = async () => {
-    const response = await fetch(`http://localhost:3000/getBackUpFiles`, {
+    await fetch(`http://localhost:3000/getBackUpFiles`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +28,7 @@ const RecoryDatabase = () => {
       });
   };
   const GetCurrentDatabasePath = async () => {
-    const response = await fetch(`http://localhost:3000/getCurrentDatabase`, {
+    await fetch(`http://localhost:3000/getCurrentDatabase`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +45,7 @@ const RecoryDatabase = () => {
       });
   };
   const SetNewDatabasePath = async () => {
-    const response = await fetch(`http://localhost:3000/setNewDatabasePath`, {
+    await fetch(`http://localhost:3000/setNewDatabasePath`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +71,7 @@ const RecoryDatabase = () => {
       });
   };
   const OverrideProdDatabase = async () => {
-    const response = await fetch(`http://localhost:3000/overrideProdDatabase`, {
+    await fetch(`http://localhost:3000/overrideProdDatabase`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +97,6 @@ const RecoryDatabase = () => {
         }
       });
   };
-
   const CheckOverride = () => {
     if (String(currentDatabase).includes("Ledshelf")) {
       setEnableOverride(false);

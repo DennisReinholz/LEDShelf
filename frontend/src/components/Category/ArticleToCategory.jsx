@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/Category/articleToCategory.module.css";
 import toast from "react-hot-toast";
+import PropTypes from "prop-types";
 
 const ArticleToCategory = ({
   articleid,
@@ -30,20 +31,17 @@ const ArticleToCategory = ({
     UpdateArticleCategory(tempValue, editState);
   };
   const UpdateArticleCategory = async (value, editState) => {
-    const response = await fetch(
-      `http://localhost:3000/UpdateArticleCategory`,
-      {
-        method: "Post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-cache",
-        body: JSON.stringify({
-          value,
-          selectedArticle,
-        }),
-      }
-    )
+    await fetch(`http://localhost:3000/UpdateArticleCategory`, {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+      body: JSON.stringify({
+        value,
+        selectedArticle,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data.serverStatus == 2) {
@@ -73,4 +71,10 @@ const ArticleToCategory = ({
   );
 };
 
+ArticleToCategory.propTypes = {
+  articleid: PropTypes.node.isRequired,
+  articlename: PropTypes.node.isRequired,
+  hasCategory: PropTypes.node.isRequired,
+  categoryID: PropTypes.node.isRequired,
+};
 export default ArticleToCategory;

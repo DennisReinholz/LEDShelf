@@ -1,9 +1,11 @@
 import React from "react";
 import styles from "../../styles/Device/deleteDeviceForm.module.css";
+import toast from "react-hot-toast";
+import PropTypes from "prop-types";
 
 const DeleteDeviceForm = ({ onClose, ip, setDeleteDevice, deviceId }) => {
   const deleteDevice = async () => {
-    const response = await fetch(`http://localhost:3000/deleteLedController`, {
+    await fetch(`http://localhost:3000/deleteLedController`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -46,6 +48,12 @@ const DeleteDeviceForm = ({ onClose, ip, setDeleteDevice, deviceId }) => {
       </div>
     </div>
   );
+};
+DeleteDeviceForm.propTypes = {
+  onClose: PropTypes.node.isRequired,
+  ip: PropTypes.node.isRequired,
+  setDeleteDevice: PropTypes.node.isRequired,
+  deviceId: PropTypes.node.isRequired,
 };
 
 export default DeleteDeviceForm;

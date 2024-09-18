@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/userAuth.jsx";
 import styles from "../styles/serviceLayout.module.css";
 import CustomerForm from "../components/Service/CustomerForm.jsx";

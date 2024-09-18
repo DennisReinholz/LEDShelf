@@ -9,7 +9,7 @@ const DatabaseBackup = () => {
   const [upDated, setUpdated] = useState();
 
   const getDatabasePath = async () => {
-    const response = await fetch(`http://localhost:3000/getDatabasepath`, {
+    await fetch(`http://localhost:3000/getDatabasepath`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -25,7 +25,7 @@ const DatabaseBackup = () => {
       });
   };
   const StartBackUp = async () => {
-    const response = await fetch(`http://localhost:3000/startManualBackup`, {
+    await fetch(`http://localhost:3000/startManualBackup`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ const DatabaseBackup = () => {
       });
   };
   const GetBackUpFiles = async () => {
-    const response = await fetch(`http://localhost:3000/getRecentBackUpFile`, {
+    await fetch(`http://localhost:3000/getRecentBackUpFile`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",

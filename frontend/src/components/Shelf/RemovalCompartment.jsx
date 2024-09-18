@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "../../styles/Shelf/removalCompartment.module.css";
+import PropTypes from "prop-types";
+
 const RemovalCompartment = ({
   UpdateArticleCount,
   article,
@@ -35,5 +37,10 @@ const RemovalCompartment = ({
     </div>
   );
 };
-
+RemovalCompartment.propTypes = {
+  UpdateArticleCount: PropTypes.node.isRequired,
+  article: PropTypes.node.isRequired,
+  counter: PropTypes.node.isRequired,
+  setCounter: PropTypes.node.isRequired,
+};
 export default RemovalCompartment;

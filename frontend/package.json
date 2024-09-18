@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "concurrently \"vite\" \"npm run start:backend\"",
     "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:js": "eslint **/*.js",
+    "lint:jsx": "eslint **/*.jsx",
     "preview": "vite preview",
     "start:backend": "cd ../backend && node server.js"
   },
@@ -31,14 +34,21 @@
     "styled-components": "6.1.8"
   },
   "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/eslint-parser": "^7.25.1",
     "@types/react": "18.2.66",
     "@types/react-dom": "18.2.22",
     "@vitejs/plugin-react": "4.2.1",
     "concurrently": "8.2.2",
-    "eslint": "8.57.0",
-    "eslint-plugin-react": "7.34.1",
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.36.1",
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-react-refresh": "0.4.6",
+    "globals": "^15.9.0",
     "vite": "5.2.0"
   }
 }

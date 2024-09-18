@@ -25,11 +25,6 @@ app.use(function (req, res, next) {
 app.use(express.json());
 app.use(bodyParser.json());
 
-const corsOptions = {
-  origin: "http://localhost:3000/login",
-  optionsSuccessStatus: 200,
-};
-
 app.use(cors());
 app.set("etag", false);
 
@@ -63,7 +58,7 @@ async function ensureDatabaseExists(dbPath) {
 
 async function getDatabasePath(sysDatabase) {
   try {
-    let path = await SysDatabaseController.GetDatabasePath(sysDatabase);
+    const path = await SysDatabaseController.GetDatabasePath(sysDatabase);
     if (path && path.length > 0) {
       return path[0].dataBasepath;
     } else {
@@ -101,7 +96,7 @@ app.post("/overrideProdDatabase", (req, res) => {
   SysDatabaseController.OverrideProdDatabase(req, res, sysDatabase);
 });
 app.get("/getCurrentDatabase", (req, res) => {
-  if (ledshelfDatabasePath != undefined) {
+  if (ledshelfDatabasePath !== undefined) {
     const fileNameWithExtension = path.basename(ledshelfDatabasePath);
     res.status(200).json(fileNameWithExtension);
   } else {

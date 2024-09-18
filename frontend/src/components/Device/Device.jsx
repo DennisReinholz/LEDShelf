@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from "react";
-import styles from "../../styles/Device/device.module.css";
 import { FiEdit2 } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import { Tooltip } from "react-tooltip";
-import toast from "react-hot-toast";
+import styles from "../../styles/Device/device.module.css";
 import EditDeviceForm from "../../components/Device/EditDeviceForm";
 import Modal from "../../components/common/Modal";
 import DeleteDeviceForm from "../../components/Device/DeleteDeviceForm";
+import PropTypes from "prop-types";
 
-const Device = ({ ip, status, shelfName, shelfid, deviceId }) => {
-  const [assignedShelf, setAssignedShelf] = useState();
-  const [assignedIsOpen, setAssignedIsOpen] = useState(false);
+const Device = ({ ip, shelfName, shelfid, deviceId }) => {
   const [deleteFormIsOpen, setDeleteFormIsOpen] = useState(false);
-  const [deleteDevice, setDeleteDevice] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [ControllerStatus, setControllerStatus] = useState();
 
+  // eslint-disable-next-line no-unused-vars
+  const [assignedShelf, setAssignedShelf] = useState();
+  // eslint-disable-next-line no-unused-vars
+  const [assignedIsOpen, setAssignedIsOpen] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [deleteDevice, setDeleteDevice] = useState(false);
+
   const pingController = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/pingController`, {
+      await fetch(`http://localhost:3000/pingController`, {
         method: "Get",
         headers: {
           "Content-Type": "application/json",
@@ -104,5 +108,10 @@ const Device = ({ ip, status, shelfName, shelfid, deviceId }) => {
     </div>
   );
 };
-
+Device.propTypes = {
+  ip: PropTypes.node.isRequired,
+  shelfName: PropTypes.node.isRequired,
+  shelfid: PropTypes.node.isRequired,
+  deviceId: PropTypes.node.isRequired,
+};
 export default Device;

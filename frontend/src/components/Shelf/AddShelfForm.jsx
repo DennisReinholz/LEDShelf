@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import styles from "../../styles/Shelf/addShelfForm.module.css";
+import PropTypes from "prop-types";
 
-const AddShelfForm = ({
-  onClose,
-  shelflist,
-  setShelflist,
-  setCreatedShelf,
-}) => {
+const AddShelfForm = ({ onClose, setCreatedShelf }) => {
   const [CountCompartment, setCountCompartment] = useState();
   const [shelfname, setShelfname] = useState();
   const [shelfPlace, setShelfPlace] = useState();
@@ -94,5 +90,8 @@ const AddShelfForm = ({
     </div>
   );
 };
-
+AddShelfForm.propTypes = {
+  onClose: PropTypes.node.isRequired,
+  setCreatedShelf: PropTypes.node.isRequired,
+};
 export default AddShelfForm;

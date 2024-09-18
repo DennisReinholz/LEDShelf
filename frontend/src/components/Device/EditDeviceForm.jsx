@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/Device/editDeviceForm.module.css";
 import toast from "react-hot-toast";
+import PropTypes from "prop-types";
 
 const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
   const [shelfList, setShelfList] = useState([]);
@@ -9,7 +10,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
   const [updateEnabled, setUpdateEnabled] = useState();
 
   const getShelf = async () => {
-    const response = await fetch(`http://localhost:3000/getShelf`, {
+    await fetch(`http://localhost:3000/getShelf`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -41,23 +42,19 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
   const UpdateLedController = async () => {
     const isHeartbeat = await pingController();
     if (isHeartbeat) {
-      const response = await fetch(
-        `http://localhost:3000/updateLedController`,
-        {
-          method: "Post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ip: newIp != undefined && newIp.length != 0 ? newIp : ip,
-            shelfid:
-              newShelf != undefined && newShelf != 0 ? newShelf : shelfid,
-            controllerid: deviceId,
-            status: "Verbunden",
-          }),
-          cache: "no-cache",
-        }
-      )
+      await fetch(`http://localhost:3000/updateLedController`, {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ip: newIp != undefined && newIp.length != 0 ? newIp : ip,
+          shelfid: newShelf != undefined && newShelf != 0 ? newShelf : shelfid,
+          controllerid: deviceId,
+          status: "Verbunden",
+        }),
+        cache: "no-cache",
+      })
         .then((response) => response.json())
         .then((data) => {
           if (data.serverStatus === 2) {
@@ -141,5 +138,10 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
     </div>
   );
 };
-
+EditDeviceForm.propTypes = {
+  onClose: PropTypes.node.isRequired,
+  ip: PropTypes.node.isRequired,
+  shelfid: PropTypes.node.isRequired,
+  deviceId: PropTypes.node.isRequired,
+};
 export default EditDeviceForm;

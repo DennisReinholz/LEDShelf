@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import React,{ useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/deviceLayout.module.css";
 import Device from "../components/Device/Device";
 import Modal from "../components/common/Modal";
@@ -7,6 +7,7 @@ import AddDeviceForm from "../components/Device/AddDeviceForm";
 import { UserContext } from "../helpers/userAuth";
 
 const DeviceLayout = () => {
+  // eslint-disable-next-line no-unused-vars
   const [shelfList, setShelfList] = useState([]);
   const [controllerList, setControllerList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,7 +16,7 @@ const DeviceLayout = () => {
   const navigate = useNavigate();
 
   const getShelf = async () => {
-    const response = await fetch(`http://localhost:3000/getShelf`, {
+    await fetch(`http://localhost:3000/getShelf`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +29,7 @@ const DeviceLayout = () => {
       });
   };
   const getController = async () => {
-    const response = await fetch(`http://localhost:3000/getController`, {
+    await fetch(`http://localhost:3000/getController`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",

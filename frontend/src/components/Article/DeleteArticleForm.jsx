@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../../styles/Article/deleteArticleForm.module.css";
+import PropTypes from "prop-types";
 
 const DeleteArticleForm = ({ artikelname, setDelete, onClose }) => {
   const handleDelete = () => {
@@ -36,5 +37,9 @@ const DeleteArticleForm = ({ artikelname, setDelete, onClose }) => {
     </div>
   );
 };
-
+DeleteArticleForm.propTypes = {
+  artikelname: PropTypes.node.isRequired,
+  setDelete: PropTypes.node.isRequired,
+  onClose: PropTypes.node.isRequired,
+};
 export default DeleteArticleForm;

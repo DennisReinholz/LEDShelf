@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styles from "../../styles/Article/editArticleForm.module.css";
+import PropTypes from "prop-types";
 
 const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
   const [compartment, setCompartment] = useState();
@@ -15,7 +16,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
   const [newMinRequirement, setNewMinRequirement] = useState();
 
   const getCompartments = async (shelfid) => {
-    const response = await fetch(`http://localhost:3000/getCompartment`, {
+    await fetch(`http://localhost:3000/getCompartment`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +32,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
       });
   };
   const getArticle = async () => {
-    const response = await fetch(`http://localhost:3000/getSelectedArticle`, {
+    await fetch(`http://localhost:3000/getSelectedArticle`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +52,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
       });
   };
   const updateArticle = async () => {
-    const response = await fetch(`http://localhost:3000/upateArticle`, {
+    await fetch(`http://localhost:3000/upateArticle`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -101,7 +102,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
       });
   };
   const getCategory = async () => {
-    const response = await fetch(`http://localhost:3000/getCategory`, {
+    await fetch(`http://localhost:3000/getCategory`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -268,6 +269,12 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
       </div>
     </div>
   );
+};
+EditArticleForm.propTypes = {
+  article: PropTypes.node.isRequired,
+  onClose: PropTypes.node.isRequired,
+  shelf: PropTypes.node.isRequired,
+  setUpdateArticle: PropTypes.node.isRequired,
 };
 
 export default EditArticleForm;
