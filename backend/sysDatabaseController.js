@@ -7,6 +7,7 @@ module.exports.GetDatabasePath = (sysDatabase) => {
         console.error("Fehler beim Abrufen der Daten:", err.message);
         return reject(new Error("Datenbank konnte nicht gefunden werden."));
       } else {
+        console.log("Aus SysDatabase: ",rows)
         resolve(rows);
       }
     });

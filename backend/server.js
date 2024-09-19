@@ -35,13 +35,13 @@ let SysDatabasePath;
 if (platform === "win32") {
   SysDatabasePath = "./Database/System.db";
 } else if (platform === "linux") {
-  SysDatabasePath = "/home/ledshelf/system.db";
+  SysDatabasePath = "/home/ledshelf/database/system.db";
 } else {
   throw new Error(`Unbekanntes Betriebssystem: ${platform}`);
 }
 
-DataBaseController.CheckDatabase(SysDatabasePath);
-const sysDatabase = new sqlite3.Database(SysDatabasePath);
+//DataBaseController.CheckDatabase(SysDatabasePath);
+//const sysDatabase = new sqlite3.Database(SysDatabasePath);
 
 let db;
 let ledshelfDatabasePath;
