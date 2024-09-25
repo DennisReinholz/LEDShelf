@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import styles from "../../styles/Article/addArticleForm.module.css";
+import PropTypes from "prop-types";
 
 const AddArticleForm = ({ onClose, setArticleCreated }) => {
   const [articlename, setArticlename] = useState("");
@@ -13,14 +14,13 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
   const [enableCreateButton, setEnableCreateButton] = useState(true);
   const [categoryList, setCategoryList] = useState();
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [companyName, setCompanyName] = useState(null);
   const [commissiongoods, setCommissiongoods] = useState(null);
   const [minRequirement, setMinRequirement] = useState();
   const [companyList, setCompanyList] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState();
 
   const getShelf = async () => {
-    const response = await fetch(`http://localhost:3000/getShelf`, {
+    await fetch(`http://localhost:3000/getShelf`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -35,19 +35,16 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       });
   };
   const getCompartments = async (shelfid) => {
-    const response = await fetch(
-      `http://localhost:3000/getArticleCompartments`,
-      {
-        method: "Post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-cache",
-        body: JSON.stringify({
-          shelfid,
-        }),
-      }
-    )
+    await fetch(`http://localhost:3000/getArticleCompartments`, {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+      body: JSON.stringify({
+        shelfid,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data.result != undefined) {
@@ -65,7 +62,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       });
   };
   const getCategory = async () => {
-    const response = await fetch(`http://localhost:3000/getCategory`, {
+    await fetch(`http://localhost:3000/getCategory`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +75,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       });
   };
   const getCompany = async () => {
-    const response = await fetch(`http://localhost:3000/getCompany`, {
+    await fetch(`http://localhost:3000/getCompany`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -323,5 +320,8 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
     </div>
   );
 };
-
+AddArticleForm.propTypes = {
+  onClose: PropTypes.node.isRequired,
+  setArticleCreated: PropTypes.node.isRequired,
+};
 export default AddArticleForm;

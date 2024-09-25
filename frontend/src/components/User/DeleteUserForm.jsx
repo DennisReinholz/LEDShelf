@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../../styles/User/deleteUserForm.module.css";
 import toast from "react-hot-toast";
+import PropTypes from "prop-types";
 
 const DeleteUserForm = ({ onClose, setDeleteUser, name, userid }) => {
   const handleDelete = () => {
@@ -11,7 +12,7 @@ const DeleteUserForm = ({ onClose, setDeleteUser, name, userid }) => {
     onClose();
   };
   const deleteUser = async () => {
-    const response = await fetch(`http://localhost:3000/deleteUser`, {
+    await fetch(`http://localhost:3000/deleteUser`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -53,6 +54,13 @@ const DeleteUserForm = ({ onClose, setDeleteUser, name, userid }) => {
       </div>
     </div>
   );
+};
+
+DeleteUserForm.propTypes = {
+  onClose: PropTypes.node.isRequired,
+  userid: PropTypes.node.isRequired,
+  name: PropTypes.node.isRequired,
+  setDeleteUser: PropTypes.node.isRequired,
 };
 
 export default DeleteUserForm;

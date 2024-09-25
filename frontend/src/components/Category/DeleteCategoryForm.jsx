@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../../styles/Category/deleteCategoryForm.module.css";
+import PropTypes from "prop-types";
 
 const DeleteCategoryForm = ({
   category,
@@ -38,5 +39,10 @@ const DeleteCategoryForm = ({
     </div>
   );
 };
-
+DeleteCategoryForm.propTypes = {
+  category: PropTypes.node.isRequired,
+  onClose: PropTypes.node.isRequired,
+  setDelete: PropTypes.node.isRequired,
+  deleteCategory: PropTypes.node.isRequired,
+};
 export default DeleteCategoryForm;

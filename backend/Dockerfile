@@ -18,6 +18,9 @@ RUN apt-get update && apt-get install -y python3 g++ make \
 # Copy the rest of the application code
 COPY . .
 
+# Ensure the database directory exists
+RUN mkdir -p /home/ledshelf/database
+
 # Expose the port that the app runs on
 EXPOSE 3000
 

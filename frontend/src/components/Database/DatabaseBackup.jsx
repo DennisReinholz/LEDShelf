@@ -9,7 +9,7 @@ const DatabaseBackup = () => {
   const [upDated, setUpdated] = useState();
 
   const getDatabasePath = async () => {
-    const response = await fetch(`http://localhost:3000/getDatabasepath`, {
+    await fetch(`http://localhost:3000/getDatabasepath`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -25,7 +25,7 @@ const DatabaseBackup = () => {
       });
   };
   const StartBackUp = async () => {
-    const response = await fetch(`http://localhost:3000/startManualBackup`, {
+    await fetch(`http://localhost:3000/startManualBackup`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ const DatabaseBackup = () => {
       });
   };
   const GetBackUpFiles = async () => {
-    const response = await fetch(`http://localhost:3000/getRecentBackUpFile`, {
+    await fetch(`http://localhost:3000/getRecentBackUpFile`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -85,7 +85,7 @@ const DatabaseBackup = () => {
       <Tooltip anchorSelect=".primaryButton" place="right">
         Starte ein manuelles Backup der Datenbank
       </Tooltip>
-      <fieldset className={styles.backupFieldset}>
+      <fieldset className={styles.backupFieldset.backupFieldset}>
         <legend>Datenbank Sicherung</legend>
         <div className={styles.backupContainer}>
           <p>Letztes Sicherung</p>
@@ -94,16 +94,6 @@ const DatabaseBackup = () => {
               ? `${formatDate(files.birthtime)}`
               : "Kein BackUp vorhanden"}
           </p>
-        </div>
-        <div className={styles.backupPathContainer}>
-          <p>BackUp Pfad:</p>
-          <div className={styles.inputContainer}>
-            <p>
-              {databaseBackUpPath != undefined
-                ? databaseBackUpPath.replace(".", "")
-                : ""}
-            </p>
-          </div>
         </div>
         <div className={styles.buttonContainer}>
           <button className="primaryButton" onClick={() => StartBackUp()}>

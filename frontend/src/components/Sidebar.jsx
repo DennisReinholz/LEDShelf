@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "../components/Logo.jsx";
 import MainNav from "./MainNav.jsx";
 import styles from "../styles/Sidebar/sidebar.module.css";
@@ -19,7 +19,7 @@ const Sidebar = () => {
   const [devVersion, setDevVersion] = useState("");
 
   // Use the injected version from the environment variable
-  const version = process.env.REACT_APP_VERSION || devVersion;
+  const version = devVersion || "";
 
   return (
     <aside className={styles.container}>

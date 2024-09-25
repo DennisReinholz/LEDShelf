@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { HiXMark } from "react-icons/hi2";
+import PropTypes from "prop-types";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -60,6 +61,11 @@ const Modal = ({ children, onClose }) => {
       </StyledModal>
     </OverLay>
   );
+};
+
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClose: PropTypes.node.isRequired,
 };
 
 export default Modal;

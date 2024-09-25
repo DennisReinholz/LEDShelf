@@ -1,34 +1,34 @@
 const cron = require("node-cron");
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
-const configPath = path.join(__dirname, "config.json");
 require("dotenv").config();
 
 // Windows
-let backupPathDev = "./Database/BackUp";
-let databasePathDev = "./Database/Ledshelf.db";
+const backupPathDev = "./Database/BackUp";
+const databasePathDev = "./Database/Ledshelf.db";
 
 // Docker container
-let backupPathProd = "/home/ledshelf/backup";
-let databasePathPro = "/home/ledshelf";
+const backupPathProd = "/home/ledshelf/backup";
+const databasePathProd = "/home/ledshelf";
 
-// Bestimmen, ob wir uns in einer Docker-Umgebung befinden oder lokal ausführen
-const isDocker = process.env.DOCKER_ENV === "true";
+const platform = os.platform();
 
-if (!isDocker) {
+// True if windows system and false for production (linux)
+const isDocker = platform === "win32";
+
+if (isDocker) {
   // Webapp läuft lokal
   console.log("Running in local environment");
 
-  // Erstelle den /Datenbank/BackUp-Ordner
   const dataDir = path.join(backupPathDev);
 
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }
 } else {
-  // Webapp läuft in Docker
   console.log("Running in Docker environment");
-  // Erstelle den /Datenbank/BackUp-Ordner
+
   const dataDir = path.join(backupPathProd);
 
   if (!fs.existsSync(dataDir)) {
@@ -38,55 +38,32 @@ if (!isDocker) {
     console.log(`Backup directory already exists: ${dataDir}`);
   }
 }
+function formatBackup(path) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const timestamp = `${year}${month}${day}`;
+  const backupFile = path.join(path, `database_backup_${timestamp}.db`);
+  console.log(path);
 
+  try {
+    fs.copyFileSync(path, backupFile);
+    if (fs.existsSync(backupFile)) {
+      console.log(`Backup erfolgreich erstellt: ${backupFile}`);
+    } else {
+      console.error(`Fehler: Backup-Datei wurde nicht erstellt: ${backupFile}`);
+    }
+  } catch (error) {
+    console.error(`Fehler beim Erstellen des Backups: ${error.message}`);
+  }
+}
 // Backup-Funktion
 function createBackup() {
   if (isDocker) {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    const timestamp = `${year}${month}${day}`;
-    const backupFile = path.join(
-      databasePathPro,
-      `database_backup_${timestamp}.db`
-    );
-
-    try {
-      fs.copyFileSync(databasePathPro, backupFile);
-      if (fs.existsSync(backupFile)) {
-        console.log(`Backup erfolgreich erstellt: ${backupFile}`);
-      } else {
-        console.error(
-          `Fehler: Backup-Datei wurde nicht erstellt: ${backupFile}`
-        );
-      }
-    } catch (error) {
-      console.error(`Fehler beim Erstellen des Backups: ${error.message}`);
-    }
+    formatBackup(backupPathDev);
   } else {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    const timestamp = `${year}${month}${day}`;
-    const backupFile = path.join(
-      backupPathDev,
-      `database_backup_${timestamp}.db`
-    );
-
-    try {
-      fs.copyFileSync(backupPathDev, backupFile);
-      if (fs.existsSync(backupFile)) {
-        console.log(`Backup erfolgreich erstellt: ${backupFile}`);
-      } else {
-        console.error(
-          `Fehler: Backup-Datei wurde nicht erstellt: ${backupFile}`
-        );
-      }
-    } catch (error) {
-      console.error(`Fehler beim Erstellen des Backups: ${error.message}`);
-    }
+    formatBackup(backupPathProd);
   }
 }
 module.exports.StartBackUp = () => {
@@ -104,13 +81,13 @@ module.exports.StartBackUp = () => {
 };
 module.exports.GetBackUpPath = (req, res) => {
   if (isDocker) {
-    if (backupPathProd) {
+    if (backupPathDev) {
       res.status(200).json({ backUpPath: backupPathDev });
     } else {
       res.status(500).json({ serverStatus: -2 });
     }
   } else {
-    if (backupPathDev) {
+    if (backupPathProd) {
       res.status(200).json({ backUpPath: backupPathDev });
     } else {
       res.status(500).json({ serverStatus: -2 });
@@ -118,8 +95,8 @@ module.exports.GetBackUpPath = (req, res) => {
   }
 };
 module.exports.ManualBackup = (req, res) => {
-  //Dev
-  if (!isDocker) {
+  // Dev
+  if (isDocker) {
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -151,7 +128,7 @@ module.exports.ManualBackup = (req, res) => {
       res.status(500).json({ error: error.message, serverStatus: -1 });
     }
   } else {
-    //Prod
+    // Prod
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -160,12 +137,12 @@ module.exports.ManualBackup = (req, res) => {
     const minute = String(now.getMinutes()).padStart(2, "0");
     const timestamp = `${year}${month}${day}_${hour}${minute}`;
     const backupFile = path.join(
-      backupPathDev,
+      backupPathProd,
       `database_backup_${timestamp}.db`
     );
 
     try {
-      fs.copyFileSync(databasePathDev, backupFile);
+      fs.copyFileSync(databasePathProd, backupFile);
 
       if (fs.existsSync(backupFile)) {
         res.status(200).json({
@@ -186,7 +163,7 @@ module.exports.ManualBackup = (req, res) => {
 };
 module.exports.GetRecentBackUpFile = (req, res) => {
   // Dev
-  if (!isDocker) {
+  if (isDocker) {
     fs.readdir(backupPathDev, (err, files) => {
       if (err) {
         console.error("Fehler beim Lesen des Ordners:", err);
@@ -213,18 +190,15 @@ module.exports.GetRecentBackUpFile = (req, res) => {
 
       res.status(200).json(latestFile);
     });
-    //Prod
+    // Prod
   } else {
     fs.readdir(backupPathProd, (err, files) => {
       if (err) {
         console.error("Fehler beim Lesen des Ordners:", err);
         return res.status(500).json({ error: "Fehler beim Lesen des Ordners" });
       }
-
       if (files.length === 0) {
-        return res
-          .status(404)
-          .json({ error: "Keine Dateien im Ordner gefunden" });
+        return res.status(200).json({ serverStatus: -2 });
       }
 
       let latestFile = { name: null, birthtime: 0 };
@@ -253,7 +227,7 @@ module.exports.GetBackUpFiles = (req, res) => {
     }
 
     if (files.length === 0) {
-      return res.status(200).json([]); // Leeres Array zurückgeben
+      return res.status(200).json([]);
     }
 
     const fileInfos = files.map((file, index) => {
@@ -271,7 +245,7 @@ module.exports.GetBackUpFiles = (req, res) => {
   };
 
   // Dev
-  if (!isDocker) {
+  if (isDocker) {
     fs.readdir(backupPathDev, (err, files) =>
       handleResponse(err, files, backupPathDev)
     );

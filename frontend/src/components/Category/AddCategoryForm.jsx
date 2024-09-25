@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/Category/addCategoryForm.module.css";
 import toast from "react-hot-toast";
+import PropTypes from "prop-types";
 
 const AddCategoryFrom = ({ onClose }) => {
   const [categoryName, setCategoryName] = useState();
@@ -9,7 +10,7 @@ const AddCategoryFrom = ({ onClose }) => {
     setCategoryName(event);
   };
   const UpdateCategory = async () => {
-    const response = await fetch(`http://localhost:3000/createCategory`, {
+    await fetch(`http://localhost:3000/createCategory`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -55,5 +56,7 @@ const AddCategoryFrom = ({ onClose }) => {
     </div>
   );
 };
-
+AddCategoryFrom.propTypes = {
+  onClose: PropTypes.node.isRequired,
+};
 export default AddCategoryFrom;

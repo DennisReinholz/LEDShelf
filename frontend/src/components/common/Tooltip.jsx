@@ -1,5 +1,6 @@
 import React from "react";
 import "../../styles/Common/tooltip.css";
+import PropTypes from "prop-types";
 
 export default function Tooltip({ children, text, ...rest }) {
   const [show, setShow] = React.useState(false);
@@ -20,3 +21,7 @@ export default function Tooltip({ children, text, ...rest }) {
     </div>
   );
 }
+Tooltip.propTypes = {
+  children: PropTypes.node.isRequired,
+  text: PropTypes.node.isRequired,
+};

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/User/addUserForm.module.css";
 import toast from "react-hot-toast";
+import PropTypes from "prop-types";
 
 const AddUserForm = ({ onClose, setCreateUser }) => {
   const [name, setName] = useState("");
@@ -117,5 +118,8 @@ const AddUserForm = ({ onClose, setCreateUser }) => {
     </div>
   );
 };
-
+AddUserForm.propTypes = {
+  onClose: PropTypes.node.isRequired,
+  setCreateUser: PropTypes.node.isRequired,
+};
 export default AddUserForm;

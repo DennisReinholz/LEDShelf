@@ -28,19 +28,21 @@ const ArticleLayout = () => {
   const [articleCreated, setArticleCreated] = useState(false);
   const [searchArticle, setSearchArticle] = useState("");
   const [categoryList, setCategoryList] = useState([]);
-  const [activeUser, setActiveUser] = useState();
-  const [isAdmin, setIsAdmin] = useState();
   const [originArticleList, setOriginArticleList] = useState([]);
   const [articleListToShow, setArticleListToShow] = useState([]);
   const [filteredArticleList, setFilteredArticleList] = useState([]);
   const [companyList, setCompanyList] = useState([]);
   const [commissionList, setCommissionList] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [activeUser, setActiveUser] = useState();
+  // eslint-disable-next-line no-unused-vars
+  const [isAdmin, setIsAdmin] = useState();
+  // eslint-disable-next-line no-unused-vars
   const [filterList, setFilterList] = useState([]);
-
   const navigate = useNavigate();
 
   const getArticle = async () => {
-    const response = await fetch(`http://localhost:3000/getAllArticle`, {
+    await fetch(`http://localhost:3000/getAllArticle`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +59,7 @@ const ArticleLayout = () => {
       });
   };
   const getCompartments = async (shelfid) => {
-    const response = await fetch(`http://localhost:3000/getCompartment`, {
+    await fetch(`http://localhost:3000/getCompartment`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +75,7 @@ const ArticleLayout = () => {
       });
   };
   const getShelf = async () => {
-    const response = await fetch(`http://localhost:3000/getShelf`, {
+    await fetch(`http://localhost:3000/getShelf`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +88,7 @@ const ArticleLayout = () => {
       });
   };
   const getCategory = async () => {
-    const response = await fetch(`http://localhost:3000/getCategory`, {
+    await fetch(`http://localhost:3000/getCategory`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -99,7 +101,7 @@ const ArticleLayout = () => {
       });
   };
   const deleteArticle = async (article) => {
-    const response = await fetch(`http://localhost:3000/deleteArticle`, {
+    await fetch(`http://localhost:3000/deleteArticle`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -115,9 +117,6 @@ const ArticleLayout = () => {
           console.log("gelöscht");
           toast.success("Artikel wurde gelöscht.");
           setDeleteState(false);
-          // getArticle();
-          // getShelf();
-          // getCompartments();
         } else {
           toast.error("Artikel konnte nicht gelöscht werden.");
         }
@@ -246,11 +245,12 @@ const ArticleLayout = () => {
     "companyName",
     "minRequirement",
   ];
+
   const filterArticleProperties = (articleList, propertyList) => {
     return articleList.map((article) => {
       let filteredArticle = {};
       propertyList.forEach((prop) => {
-        if (article.hasOwnProperty(prop)) {
+        if (Object.prototype.hasOwnProperty.call(article, prop)) {
           filteredArticle[prop] = article[prop];
         }
       });

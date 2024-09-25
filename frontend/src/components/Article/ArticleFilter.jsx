@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Tooltip from "../common/Tooltip";
 import styles from "../../styles/Article/articleFilter.module.css";
+import PropTypes from "prop-types";
 
 const ArticleFilter = ({
   categoryList,
@@ -142,6 +142,15 @@ const ArticleFilter = ({
       </div>
     </div>
   );
+};
+ArticleFilter.propTypes = {
+  categoryList: PropTypes.node.isRequired,
+  companyList: PropTypes.node.isRequired,
+  commissionList: PropTypes.node.isRequired,
+  setFilterList: PropTypes.node.isRequired,
+  ApplyFilter: PropTypes.node.isRequired,
+  exportToCSV: PropTypes.node.isRequired,
+  user: PropTypes.node.isRequired,
 };
 
 export default ArticleFilter;

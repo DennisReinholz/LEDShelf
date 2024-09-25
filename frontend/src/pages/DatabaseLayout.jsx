@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/userAuth.jsx";
 import styles from "../styles/databaseLayout.module.css";
 import DatabaseBackup from "../components/Database/DatabaseBackup";

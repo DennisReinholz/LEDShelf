@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import styles from "../../styles/Shelf/compartment.module.css";
 import RemovalCompartment from "./RemovalCompartment";
+import PropTypes from "prop-types";
 
-const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
+const Compartment = ({ isActive, comp, compId, handleIsActive }) => {
   const [article, setArticle] = useState();
   const [counter, setCounter] = useState(0);
   const [ip, setIp] = useState();
   const [controllerFunction, setControllerFunction] = useState();
   const [controllerAvaiable, setControllerAvaiable] = useState();
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
 
   const getCompartmentArticle = async () => {
-    const response = await fetch(
-      `http://localhost:3000/getArticleInCompartment`,
-      {
-        method: "Post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-cache",
-        body: JSON.stringify({
-          compId,
-        }),
-      }
-    )
+    await fetch(`http://localhost:3000/getArticleInCompartment`, {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+      body: JSON.stringify({
+        compId,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
@@ -38,20 +37,17 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
       if (newArticleCount < 0) {
         toast.error("Es ist kein Artikel vorhanden.");
       } else {
-        const response = await fetch(
-          `http://localhost:3000/updateArticleCount`,
-          {
-            method: "Post",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            cache: "no-cache",
-            body: JSON.stringify({
-              newArticleCount,
-              articleid,
-            }),
-          }
-        ).then((response) => {
+        await fetch(`http://localhost:3000/updateArticleCount`, {
+          method: "Post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          cache: "no-cache",
+          body: JSON.stringify({
+            newArticleCount,
+            articleid,
+          }),
+        }).then((response) => {
           if (response.status === 200) {
             toast.success("Artikel wurde aktualisiert.");
             handleIsActive(compId);
@@ -68,19 +64,16 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
     }
   };
   const getControllerFunction = async () => {
-    const response = await fetch(
-      `http://localhost:3000/getControllerFunction`,
-      {
-        method: "Post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-cache",
-        body: JSON.stringify({
-          compId,
-        }),
-      }
-    )
+    await fetch(`http://localhost:3000/getControllerFunction`, {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+      body: JSON.stringify({
+        compId,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data.length === 0) {
@@ -105,6 +98,7 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
       }
     }
   };
+
   useEffect(() => {
     getCompartmentArticle();
     getControllerFunction();
@@ -150,5 +144,10 @@ const Compartment = ({ isActive, comp, count, compId, handleIsActive }) => {
     </div>
   );
 };
-
+Compartment.propTypes = {
+  handleIsActive: PropTypes.node.isRequired,
+  compId: PropTypes.node.isRequired,
+  comp: PropTypes.node.isRequired,
+  isActive: PropTypes.node.isRequired,
+};
 export default Compartment;

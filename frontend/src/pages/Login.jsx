@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/login.module.css";
-import TextField from "@mui/material/TextField";
-import { styled } from "@mui/material/styles";
-import { Navigate, useNavigate } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/userAuth.jsx";
 import toast from "react-hot-toast";
 
@@ -10,17 +9,12 @@ const Login = () => {
   const navigate = useNavigate();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [user, setUser] = useContext(UserContext);
 
   const clearLogin = () => {
     setUserName("");
     setPassword("");
-  };
-
-  const handleLogin = (event) => {
-    if (event.key === "Enter") {
-      getUser();
-    }
   };
   const handlePassword = (event) => {
     setPassword(event.target.value);

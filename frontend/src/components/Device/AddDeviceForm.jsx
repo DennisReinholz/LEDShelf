@@ -1,23 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/Device/addDeviceForm.module.css";
-import TextField from "@mui/material/TextField";
-import { styled } from "@mui/material/styles";
 import toast from "react-hot-toast";
 import Spinner from "../common/Spinner.jsx";
-
-const MyTextField = styled(TextField)({
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "white", // Weiße Border
-    },
-    "& input": {
-      color: "white", // Weißer Text
-    },
-  },
-  "& .MuiInputLabel-root": {
-    color: "white", // Weiße Label-Farbe
-  },
-});
+import PropTypes from "prop-types";
 
 const AddDeviceForm = ({ onClose }) => {
   const [ipAdress, setIpAdress] = useState();
@@ -26,7 +11,7 @@ const AddDeviceForm = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
 
   const getShelf = async () => {
-    const response = await fetch(`http://localhost:3000/getShelf`, {
+    await fetch(`http://localhost:3000/getShelf`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -43,20 +28,17 @@ const AddDeviceForm = ({ onClose }) => {
     try {
       const isAvaiable = await pingController();
       if (isAvaiable) {
-        const response = await fetch(
-          `http://localhost:3000/createLedController`,
-          {
-            method: "Post",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            cache: "no-cache",
-            body: JSON.stringify({
-              ipAdress: ipAdress,
-              shelf: shelfid !== undefined ? shelfid : "NULL",
-            }),
-          }
-        )
+        await fetch(`http://localhost:3000/createLedController`, {
+          method: "Post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          cache: "no-cache",
+          body: JSON.stringify({
+            ipAdress: ipAdress,
+            shelf: shelfid !== undefined ? shelfid : "NULL",
+          }),
+        })
           .then((response) => response.json())
           .then((data) => {
             if (data.serverStatus === 2) {
@@ -107,7 +89,6 @@ const AddDeviceForm = ({ onClose }) => {
             <div className={styles.content}>
               <input
                 placeholder="Ip Adresse"
-                variant="outlined"
                 size="small"
                 style={{ width: "15.5rem", height: "2rem" }}
                 className={styles.input}
@@ -148,5 +129,7 @@ const AddDeviceForm = ({ onClose }) => {
     </React.Fragment>
   );
 };
-
+AddDeviceForm.propTypes = {
+  onClose: PropTypes.node.isRequired,
+};
 export default AddDeviceForm;

@@ -4,7 +4,6 @@ import { UserContext } from "../helpers/userAuth";
 import { Tooltip } from "react-tooltip";
 import AddCategoryFrom from "../components/Category/AddCategoryForm.jsx";
 import Modal from "../components/common/Modal.jsx";
-import toast from "react-hot-toast";
 import Category from "../components/Category/Category.jsx";
 import styles from "../styles/categoryLayout.module.css";
 
@@ -16,7 +15,7 @@ const CategoryLayout = () => {
 
   const navigate = useNavigate();
   const getCategory = async () => {
-    const response = await fetch(`http://localhost:3000/getCategory`, {
+    await fetch(`http://localhost:3000/getCategory`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",

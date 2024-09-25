@@ -1,8 +1,9 @@
 import React from "react";
 import styles from "../../styles/Shelf/shelf.module.css";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const Shelf = ({ shelfname, place, compantments, article, shelfId }) => {
+const Shelf = ({ shelfname, place, shelfId }) => {
   const navigate = useNavigate();
   return (
     <div
@@ -15,6 +16,11 @@ const Shelf = ({ shelfname, place, compantments, article, shelfId }) => {
       </div>
     </div>
   );
+};
+Shelf.propTypes = {
+  shelfname: PropTypes.node.isRequired,
+  place: PropTypes.node.isRequired,
+  shelfId: PropTypes.node.isRequired,
 };
 
 export default Shelf;

@@ -2,24 +2,22 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/Category/editCategoryForm.module.css";
 import toast from "react-hot-toast";
 import ArticleToCategory from "./ArticleToCategory";
+import PropTypes from "prop-types";
 
-const EditCategoryForm = ({ category, onClose }) => {
+const EditCategoryForm = ({ category }) => {
   const [articleList, setArticleList] = useState([]);
 
   const getArticleWithCategory = async () => {
-    const response = await fetch(
-      `http://localhost:3000/getArticleWithCategory`,
-      {
-        method: "Post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-cache",
-        body: JSON.stringify({
-          categoryid: category.categoryid,
-        }),
-      }
-    )
+    await fetch(`http://localhost:3000/getArticleWithCategory`, {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-cache",
+      body: JSON.stringify({
+        categoryid: category.categoryid,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data.serverStatus == 2) {
@@ -52,5 +50,7 @@ const EditCategoryForm = ({ category, onClose }) => {
     </div>
   );
 };
-
+EditCategoryForm.propTypes = {
+  category: PropTypes.node.isRequired,
+};
 export default EditCategoryForm;

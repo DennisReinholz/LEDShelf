@@ -1,22 +1,6 @@
 import React, { useEffect, useState } from "react";
-import TextField from "@mui/material/TextField";
-import { styled } from "@mui/material/styles";
 import styles from "../../styles/Service/customerForm.module.css";
 import toast from "react-hot-toast";
-
-const MyTextField = styled(TextField)({
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "white", // Weiße Border
-    },
-    "& input": {
-      color: "white", // Weißer Text
-    },
-  },
-  "& .MuiInputLabel-root": {
-    color: "white", // Weiße Label-Farbe
-  },
-});
 
 const CustomerForm = () => {
   const [name, setName] = useState("");
@@ -96,6 +80,7 @@ const CustomerForm = () => {
       }
     });
   };
+
   useEffect(() => {
     getLabels();
     handleCreateButton();
@@ -109,7 +94,6 @@ const CustomerForm = () => {
               type="text"
               id="outlined-basic-1"
               placeholder="Name"
-              variant="outlined"
               size="small"
               className={styles.input}
               value={name}
@@ -119,7 +103,6 @@ const CustomerForm = () => {
               type="text"
               id="outlined-basic-1"
               placeholder="E-Mail"
-              variant="outlined"
               size="small"
               className={styles.input}
               value={email}
@@ -129,7 +112,6 @@ const CustomerForm = () => {
               type="text"
               id="outlined-basic-1"
               placeholder="Betreff"
-              variant="outlined"
               size="small"
               className={styles.input}
               value={reference}

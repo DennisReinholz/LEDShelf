@@ -3,6 +3,7 @@ import styles from "../styles/header.module.css";
 import { UserContext } from "../helpers/userAuth.jsx";
 
 const Header = () => {
+  // eslint-disable-next-line no-unused-vars
   const [user, setUser] = useContext(UserContext);
   return (
     <div className={styles.container}>

@@ -46,7 +46,7 @@ module.exports.createCard = async (req, res) => {
     if (!response.ok) {
       throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
-    const data = await response.json();
+    await response.json();
     res.status(200).json({ serverStatus: 2 });
   } catch (error) {
     res.status(500).json({ serverStatus: -1 });

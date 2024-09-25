@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState, useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/userLayout.module.css";
 import { Toaster } from "react-hot-toast";
 import User from "../components/User/User";
@@ -17,7 +17,7 @@ const UserLayout = () => {
   const navigate = useNavigate();
 
   const getUser = async () => {
-    const response = await fetch(`http://localhost:3000/getAllUser`, {
+    await fetch(`http://localhost:3000/getAllUser`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
