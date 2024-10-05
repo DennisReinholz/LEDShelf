@@ -21,6 +21,7 @@
     "@tanstack/react-query": "5.29.2",
     "axios": "1.6.8",
     "bcrypt": "5.1.1",
+    "bootstrap": "^5.3.3",
     "list-react-files": "^0.2.0",
     "rc-tabs": "15.1.1",
     "react": "18.2.0",
