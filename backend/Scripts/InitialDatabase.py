@@ -2,7 +2,7 @@ import os
 import sqlite3
 import platform
 
-def create_database_and_insert_data(db_file):
+def createLedshelfDb(db_file):
 
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
@@ -165,7 +165,7 @@ def create_database_and_insert_data(db_file):
         conn.close()
         print("Datenbankverbindung geschlossen.")
 
-def create_sysDatabase_and_insert_data(sysDB_file, system):
+def createSystemDb(sysDB_file, system):
 
     conn = sqlite3.connect(sysDB_file)
     cursor = conn.cursor()
@@ -187,6 +187,15 @@ def create_sysDatabase_and_insert_data(sysDB_file, system):
         elif system == 'Windows':
             cursor.execute('INSERT INTO system (backUpPath, dataBasepath) VALUES (?, ?)', ('./Database/BackUp', './Database/Ledshelf.db'))
     
+       # Create table trello
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS trello (
+                trelloID INTEGER PRIMARY KEY,              
+                customerBoard TEXT NOT NULL,
+                customerRequestList TEXT NOT NULL
+            );
+        ''')
+        cursor.execute('INSERT INTO trello (customerBoard, customerRequestList ) VALUES (?, ?)', ('66b8ed3e4477bbb0ce31abf1','66b8ed6239d0edab8f6118c3'))    
         conn.commit()       
 
     except sqlite3.Error as e:
@@ -202,6 +211,7 @@ if __name__ == "__main__":
     sysDB_file = ""
     # Check Operating system
     system = platform.system()
+    print("System: " + system)
 
     if system == 'Linux':
         # Production path /home/ledshelf/       
@@ -212,9 +222,6 @@ if __name__ == "__main__":
         db_file = os.path.join(database_dir, 'ledshelf.db')
         sysDb_file = os.path.join(database_dir, 'system.db')
 
-        #create_database_and_insert_data(db_file)
-        #create_sysDatabase_and_insert_data(sysDb_file, system)
-
     elif system == 'Windows':
         database_dir = os.path.join(os.path.dirname(current_dir), 'Database')     
         if not os.path.exists(database_dir):
@@ -223,5 +230,5 @@ if __name__ == "__main__":
         db_file = os.path.join(database_dir, 'Ledshelf.db')
         sysDb_file = os.path.join(database_dir, 'System.db')
 
-    create_database_and_insert_data(db_file)
-    create_sysDatabase_and_insert_data(sysDb_file, system)
+    createSystemDb(sysDb_file, system)
+    createLedshelfDb(db_file)

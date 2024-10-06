@@ -4,22 +4,20 @@ import MainNav from "./MainNav.jsx";
 import styles from "../styles/Sidebar/sidebar.module.css";
 
 const Sidebar = () => {
+  // Initialize state within the component
+  const [version, setVersion] = useState("");
+
   useEffect(() => {
     fetch("/package.json")
       .then((response) => response.json())
       .then((data) => {
-        setDevVersion(data.version);
+        setVersion(data.version);
+        console.log(data);
       })
       .catch((error) => {
         console.error("Error fetching version:", error);
       });
   }, []);
-
-  // Initialize state within the component
-  const [devVersion, setDevVersion] = useState("");
-
-  // Use the injected version from the environment variable
-  const version = devVersion || "";
 
   return (
     <aside className={styles.container}>

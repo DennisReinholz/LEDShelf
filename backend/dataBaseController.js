@@ -2,9 +2,7 @@ require("dotenv").config();
 const axios = require("axios");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
-const util = require("util");
 const { exec } = require("child_process");
-const execAsync = util.promisify(exec);
 
 module.exports.CheckDatabase = (dbPath) => {
   if (!fs.existsSync(dbPath)) {
@@ -23,7 +21,7 @@ module.exports.getUser = async (req, res, db) => {
       }
 
       if (result.length === 0) {
-        return res.status(404).json({ serverStatus: -1 }); // Benutzer nicht gefunden
+        return res.status(404).json({ serverStatus: -1 });
       }
 
       try {
@@ -34,7 +32,7 @@ module.exports.getUser = async (req, res, db) => {
         if (match) {
           return res.status(200).json({ result, serverStatus: 2 });
         } else {
-          return res.status(401).json({ serverStatus: -1 }); // Passwort falsch
+          return res.status(401).json({ serverStatus: -1 });
         }
       } catch (compareError) {
         return res
@@ -576,18 +574,6 @@ module.exports.PingController = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json("Controller nicht erreichbar");
-  }
-};
-module.exports.CreateDatabase = async () => {
-  try {
-    const { stderr } = await execAsync(`python3 ./Scripts/InitialDatabase.py`);
-
-    if (stderr) {
-      console.error(`Python script error: ${stderr}`);
-      return;
-    }
-  } catch (error) {
-    console.error(`Error executing Python script: ${error.message}`);
   }
 };
 const LedOff = async (ipAdresse) => {

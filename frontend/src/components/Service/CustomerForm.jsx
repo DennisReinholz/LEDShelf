@@ -3,6 +3,7 @@ import styles from "../../styles/Service/customerForm.module.css";
 import toast from "react-hot-toast";
 
 const CustomerForm = () => {
+  const [connection, setConnection] = useState();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [reference, setReference] = useState("");
@@ -81,10 +82,13 @@ const CustomerForm = () => {
     });
   };
 
-  useEffect(() => {
-    getLabels();
+  useEffect(() => {   
+    if (labels.length >= 0) {      
+      getLabels();        
+    }    
     handleCreateButton();
-  }, [createIsEnabled, name, email, reason, reference, description]);
+  }, [createIsEnabled, name, email, reason, reference, description, connection]);
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -93,8 +97,10 @@ const CustomerForm = () => {
             <input
               type="text"
               id="outlined-basic-1"
+              color="black"
               placeholder="Name"
               size="small"
+              style={{color:"black"}}
               className={styles.input}
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -103,7 +109,9 @@ const CustomerForm = () => {
               type="text"
               id="outlined-basic-1"
               placeholder="E-Mail"
+              color="black"
               size="small"
+              style={{color:"black"}}
               className={styles.input}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -112,6 +120,7 @@ const CustomerForm = () => {
               type="text"
               id="outlined-basic-1"
               placeholder="Betreff"
+              style={{color:"black"}}
               size="small"
               className={styles.input}
               value={reference}

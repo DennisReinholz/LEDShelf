@@ -1,6 +1,7 @@
 const express = require("express");
 const os = require("os");
 const fs = require("fs");
+const util = require("util");
 const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
 const BackUpController = require("./databaseBackup");
@@ -9,9 +10,17 @@ const TrelloController = require("./trelloController");
 const SysDatabaseController = require("./sysDatabaseController");
 const path = require("path");
 const cors = require("cors");
+const { exec } = require("child_process");
+const execAsync = util.promisify(exec);
 
 const app = express();
 const PORT = 3000;
+const platform = os.platform();
+
+let db;
+let ledshelfDatabasePath;
+let SysDatabasePath;
+let sysDatabase;
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -29,9 +38,6 @@ app.use(cors());
 app.set("etag", false);
 
 // Betriebssystem prüfen
-const platform = os.platform();
-let SysDatabasePath;
-
 if (platform === "win32") {
   SysDatabasePath = "./Database/System.db";
 } else if (platform === "linux") {
@@ -40,19 +46,15 @@ if (platform === "win32") {
   throw new Error(`Unbekanntes Betriebssystem: ${platform}`);
 }
 
-//DataBaseController.CheckDatabase(SysDatabasePath);
-//const sysDatabase = new sqlite3.Database(SysDatabasePath);
-
-let db;
-let ledshelfDatabasePath;
-
-async function ensureDatabaseExists(dbPath) {
+async function createDatabase() {
   try {
-    if (!fs.existsSync(dbPath)) {
-      await DataBaseController.CreateDatabase();
+    const { stderr } = await execAsync(`python3 ./Scripts/InitialDatabase.py`);
+
+    if (stderr) {
+      console.error(`Python script error: ${stderr}`);   
     }
-  } catch {
-    console.error("Fehler beim erstellen der Datenbank");
+  } catch (error) {
+    console.error(`Error executing Python script: ${error.message}`);
   }
 }
 
@@ -73,10 +75,13 @@ async function getDatabasePath(sysDatabase) {
 
 (async () => {
   try {
-    const sysDatabase = new sqlite3.Database(SysDatabasePath);
-    await ensureDatabaseExists(SysDatabasePath);
+    if (!fs.existsSync(SysDatabasePath)) {      
+      await createDatabase();
+    }
+    sysDatabase = new sqlite3.Database(SysDatabasePath);
 
     ledshelfDatabasePath = await getDatabasePath(sysDatabase);
+    console.log(ledshelfDatabasePath);
 
     if (ledshelfDatabasePath) {
       db = new sqlite3.Database(ledshelfDatabasePath);
@@ -121,11 +126,14 @@ app.get("/getBackUpFiles", (req, res) => {
 });
 
 // TrelloController
+app.get("/connectToAzure", (req, res) => {
+  TrelloController.getAzureSecrets(req, res);
+});
 app.get("/trelloLabels", (req, res) => {
-  TrelloController.getLabels(req, res);
+  TrelloController.getLabels(req, res, sysDatabase);
 });
 app.post("/createTrelloCard", (req, res) => {
-  TrelloController.createCard(req, res);
+  TrelloController.createCard(req, res, sysDatabase);
 });
 
 // DatabaseController

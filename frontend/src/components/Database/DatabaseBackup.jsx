@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import styles from "../../styles/Database/databaseBackup.module.css";
 
 const DatabaseBackup = () => {
+
+  // eslint-disable-next-line no-unused-vars
   const [databaseBackUpPath, setDatabasePath] = useState();
   const [files, setFiles] = useState();
   const [upDated, setUpdated] = useState();

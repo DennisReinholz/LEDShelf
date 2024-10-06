@@ -52,7 +52,7 @@ const RecoryDatabase = () => {
       },
       cache: "no-cache",
       body: JSON.stringify({
-        selectedBackup: "./Datenbank/BackUp/" + selectedBackup,
+        selectedBackup: selectedBackup,
       }),
     })
       .then((response) => response.json())
@@ -78,7 +78,7 @@ const RecoryDatabase = () => {
       },
       cache: "no-cache",
       body: JSON.stringify({
-        currentDatabase: "./Datenbank/BackUp/" + currentDatabase,
+        currentDatabase: currentDatabase,
       }),
     })
       .then((response) => response.json())
@@ -90,7 +90,7 @@ const RecoryDatabase = () => {
             );
           } else {
             toast.error(
-              "Datenbank konnte nicht überschrieber werden",
+              "Datenbank konnte nicht überschrieben werden",
               data.error
             );
           }

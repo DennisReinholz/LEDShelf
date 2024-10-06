@@ -9,13 +9,13 @@ const backupPathDev = "./Database/BackUp";
 const databasePathDev = "./Database/Ledshelf.db";
 
 // Docker container
-const backupPathProd = "/home/ledshelf/backup";
-const databasePathPro = "/home/ledshelf";
+const backupPathProd = "/home/ledshelf/database/backup";
+const databasePathProd = "/home/ledshelf/database/ledshelf.db";
 
 const platform = os.platform();
 
-//true if windows system and false for production (linux)
-const isDocker = platform === "win32" ? true : false;
+// true if windows system and false for production (linux)
+const isDocker = platform === "win32";
 
 if (isDocker) {
   // Webapp läuft lokal
@@ -141,7 +141,7 @@ module.exports.ManualBackup = (req, res) => {
     );
 
     try {
-      fs.copyFileSync(databasePathDev, backupFile);
+      fs.copyFileSync(databasePathProd, backupFile);
 
       if (fs.existsSync(backupFile)) {
         res.status(200).json({

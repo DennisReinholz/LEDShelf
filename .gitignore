@@ -37,6 +37,7 @@ Datenbank/
 *.exe
 *.out
 *.app
+*.sh
 
 # Node modules
 *node_modules/
