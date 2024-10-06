@@ -5,8 +5,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
-    # starts first the backend
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf   
     depends_on:
       - backend
 
@@ -21,6 +20,6 @@ services:
       - NODE_ENV=production
       - AZURE_CLIENT_ID=${AZURE_CLIENT_ID}
       - AZURE_TENANT_ID=${AZURE_TENANT_ID}
-      - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}      
+      - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
 volumes:
   db-data:

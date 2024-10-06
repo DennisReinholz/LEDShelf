@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 const CompartmentLayout = () => {
   let { shelfid } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useContext(UserContext);
+  const {user, setUser, token} = useContext(UserContext);
   const [compartments, setCompartments] = useState();
   const [activeCompartments, setActiveCompartments] = useState([]);
 
@@ -129,7 +129,7 @@ const CompartmentLayout = () => {
                   >
                     <Compartment
                       compId={c.compartmentId}
-                      isActive={activeCompartments[c.compartmentId]}
+                      isActive={activeCompartments[c.compartmentId] ? activeCompartments[c.compartmentId] : false}
                       comp={c.compartmentname}
                       article={c.articlename}
                       count={c.count}

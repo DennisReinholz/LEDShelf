@@ -6,7 +6,7 @@ import CustomerForm from "../components/Service/CustomerForm.jsx";
 
 const ServiceLayout = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useContext(UserContext);
+  const {user, setUser, token} = useContext(UserContext);
 
   useEffect(() => {
     const userStorage = localStorage.getItem("user");

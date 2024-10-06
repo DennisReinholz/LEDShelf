@@ -50,9 +50,9 @@ const DeleteDeviceForm = ({ onClose, ip, setDeleteDevice, deviceId }) => {
   );
 };
 DeleteDeviceForm.propTypes = {
-  onClose: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
   ip: PropTypes.node.isRequired,
-  setDeleteDevice: PropTypes.node.isRequired,
+  setDeleteDevice: PropTypes.func.isRequired,
   deviceId: PropTypes.node.isRequired,
 };
 

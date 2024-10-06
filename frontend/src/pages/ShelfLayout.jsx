@@ -7,7 +7,7 @@ import styles from "../styles/shelfLayout.module.css";
 import { UserContext } from "../helpers/userAuth.jsx";
 
 const ShelfLayout = () => {
-  const [user, setUser] = useContext(UserContext);
+  const {user, setUser, token} = useContext(UserContext);
   const [shelfList, setShelfList] = useState();
   const [isShelfOpen, setIsShelfOpen] = useState(false);
   const [createdShelf, setCreatedShelf] = useState(false);
@@ -18,6 +18,7 @@ const ShelfLayout = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
       cache: "no-cache",
     });
@@ -46,7 +47,7 @@ const ShelfLayout = () => {
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
         {user != undefined
-          ? user[0].role == 1 && (
+          ? user.roleid == 1 && (
               <button
                 className="primaryButton"
                 onClick={() => setIsShelfOpen((o) => !o)}

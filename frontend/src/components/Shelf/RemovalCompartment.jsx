@@ -38,9 +38,9 @@ const RemovalCompartment = ({
   );
 };
 RemovalCompartment.propTypes = {
-  UpdateArticleCount: PropTypes.node.isRequired,
-  article: PropTypes.node.isRequired,
+  UpdateArticleCount: PropTypes.func.isRequired,
+  article: PropTypes.object.isRequired,
   counter: PropTypes.node.isRequired,
-  setCounter: PropTypes.node.isRequired,
+  setCounter: PropTypes.func.isRequired,
 };
 export default RemovalCompartment;

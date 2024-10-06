@@ -8,7 +8,7 @@ import AddUserForm from "../components/User/AddUserForm.jsx";
 import { UserContext } from "../helpers/userAuth.jsx";
 
 const UserLayout = () => {
-  const [user, setUser] = useContext(UserContext);
+  const {user, setUser, token} = useContext(UserContext);
   const [users, setUsers] = useState();
   const [addUserIsOpen, setAddUserIsOpen] = useState();
   const [createUser, setCreateUser] = useState();
@@ -47,7 +47,7 @@ const UserLayout = () => {
     if (userStorage === null) {
       navigate("/login");
     }
-  }, [createUser, deleteUser, editUser]);
+  }, [createUser, deleteUser, editUser, users]);
   return (
     <div className={styles.content}>
       <button
@@ -61,20 +61,17 @@ const UserLayout = () => {
         <div className={styles.contentContainer}>
           <div className={styles.userContainer}>
             {users !== undefined
-              ? users.map((u, index) => (
-                  <Fragment key={index}>
-                    <User
+              ? users.map((u, index) => (                 
+                    <User key={index}
                       userid={u.userid}
                       name={u.username}
                       role={u.name}
                       setDeleteUser={setDeleteUser}
                       setEditUser={setEditUser}
-                    />
-                  </Fragment>
+                    />                 
                 ))
               : "kein user angemeldet"}
           </div>
-          {/* <Main /> */}
         </div>
         {addUserIsOpen && (
           <Modal onClose={() => setAddUserIsOpen(false)}>

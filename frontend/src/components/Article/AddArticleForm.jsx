@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import styles from "../../styles/Article/addArticleForm.module.css";
 import PropTypes from "prop-types";
 
-const AddArticleForm = ({ onClose, setArticleCreated }) => {
+const AddArticleForm = ({ onClose, setArticleCreated, token }) => {
   const [articlename, setArticlename] = useState("");
   const [amount, setAmount] = useState(0);
   const [unit, setUnit] = useState();
@@ -13,8 +13,8 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
   const [selectedCompartment, setSelectedCompartment] = useState();
   const [enableCreateButton, setEnableCreateButton] = useState(true);
   const [categoryList, setCategoryList] = useState();
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [commissiongoods, setCommissiongoods] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [commissiongoods, setCommissiongoods] = useState("");
   const [minRequirement, setMinRequirement] = useState();
   const [companyList, setCompanyList] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState();
@@ -24,6 +24,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
       cache: "no-cache",
     })
@@ -186,9 +187,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           <input
             className={styles.inputMinRequiment}
             type="number"
-            placeholder="0"
-            value={minRequirement}
-            defaultValue={0}
+            value={minRequirement || 0}           
             onChange={(e) => setMinRequirement(e.target.value)}
           />
         </div>
@@ -196,7 +195,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           <p>Einheit</p>
           <select
             className={styles.unitSelection}
-            value={unit}
+            value={unit || ""}
             onChange={(e) => setUnit(e.target.value)}
           >
             <option value="undefined">Einheit</option>
@@ -210,11 +209,10 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           <p>Kategorie</p>
           <select
             className={styles.categorySelect}
-            value={selectedCategory}
-            defaultValue={null}
+            value={selectedCategory || ""}          
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
-            <option value="null">Keine Kategorie</option>
+            <option>Keine Kategorie</option>
             {categoryList !== undefined ? (
               categoryList.map((c) => (
                 <option key={c.categoryid} value={c.categoryid}>
@@ -233,11 +231,10 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           <p>Firma</p>
           <select
             className={styles.shelfSelect}
-            value={selectedCompany}
-            defaultValue={null}
+            value={selectedCompany || ""}           
             onChange={(e) => setSelectedCompany(e.target.value)}
           >
-            <option value={null}>Auswählen</option>
+            <option>Auswählen</option>
             {companyList !== undefined ? (
               companyList.map((s) => (
                 <option key={s.companyId} value={s.companyId}>
@@ -264,11 +261,10 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           <p>Regal</p>
           <select
             className={styles.shelfSelect}
-            value={selectedShelf}
-            defaultValue={null}
+            value={selectedShelf || ""}         
             onChange={(e) => handleShelfSelection(e.target.value)}
           >
-            <option value={null}>Kein Regal</option>
+            <option>Kein Regal</option>
             {shelf !== undefined ? (
               shelf.result.map((s) => (
                 <option key={s.shelfid} value={s.shelfid}>
@@ -284,7 +280,7 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
           <p>Fach</p>
           <select
             className={styles.compartmentSelect}
-            value={selectedCompartment}
+            value={selectedCompartment || ""}
             onChange={(e) => setSelectedCompartment(e.target.value)}
           >
             {compartment !== undefined && compartment.length === 0 ? (
@@ -321,7 +317,8 @@ const AddArticleForm = ({ onClose, setArticleCreated }) => {
   );
 };
 AddArticleForm.propTypes = {
-  onClose: PropTypes.node.isRequired,
-  setArticleCreated: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
+  setArticleCreated: PropTypes.func.isRequired,
+  token: PropTypes.node.isRequired,
 };
 export default AddArticleForm;

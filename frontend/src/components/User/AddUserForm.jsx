@@ -119,7 +119,7 @@ const AddUserForm = ({ onClose, setCreateUser }) => {
   );
 };
 AddUserForm.propTypes = {
-  onClose: PropTypes.node.isRequired,
-  setCreateUser: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
+  setCreateUser: PropTypes.func.isRequired,
 };
 export default AddUserForm;

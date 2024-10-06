@@ -40,9 +40,9 @@ const DeleteCategoryForm = ({
   );
 };
 DeleteCategoryForm.propTypes = {
-  category: PropTypes.node.isRequired,
-  onClose: PropTypes.node.isRequired,
-  setDelete: PropTypes.node.isRequired,
-  deleteCategory: PropTypes.node.isRequired,
+  category: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired,
+  setDelete: PropTypes.func.isRequired,
+  deleteCategory: PropTypes.func.isRequired,
 };
 export default DeleteCategoryForm;

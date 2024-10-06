@@ -57,10 +57,10 @@ const DeleteUserForm = ({ onClose, setDeleteUser, name, userid }) => {
 };
 
 DeleteUserForm.propTypes = {
-  onClose: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
   userid: PropTypes.node.isRequired,
   name: PropTypes.node.isRequired,
-  setDeleteUser: PropTypes.node.isRequired,
+  setDeleteUser: PropTypes.func.isRequired,
 };
 
 export default DeleteUserForm;

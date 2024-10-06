@@ -4,6 +4,29 @@ const bcrypt = require("bcrypt");
 const fs = require("fs");
 const { exec } = require("child_process");
 
+const execAsync = util.promisify(exec);
+const jwt = require('jsonwebtoken');
+
+const SECRET_KEY = process.env.AZURE_JSONWEB_TOKEN;
+
+module.exports.authenticateJWT = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+      if (err) {
+        return res.status(403).json({ serverStatus: -1, error: "Token ist ungültig" });
+      }
+
+      req.user = user;
+      next();
+    });
+  } else {
+    return res.status(401).json({ serverStatus: -1, error: "Token fehlt" });
+  }
+}
 module.exports.CheckDatabase = (dbPath) => {
   if (!fs.existsSync(dbPath)) {
     CreateDatabase();
@@ -13,7 +36,7 @@ module.exports.getUser = async (req, res, db) => {
   const { frontendPassword, username } = req.body;
 
   db.all(
-    "SELECT user.*, role.name FROM user, role WHERE user.username=? AND user.role = role.roleid",
+    "SELECT user.*, role.* FROM user, role WHERE user.username=? AND user.role = role.roleid",
     [username],
     async (err, result) => {
       if (err) {
@@ -30,7 +53,22 @@ module.exports.getUser = async (req, res, db) => {
           result[0].password
         );
         if (match) {
-          return res.status(200).json({ result, serverStatus: 2 });
+          // JWT-Token erstellen
+          const token = jwt.sign(
+            { id: result[0].userid, username: result[0].username, roleid: result[0].roleid, role: result[0].name },
+            SECRET_KEY,
+            { expiresIn: '8h' }
+          );
+          return res.status(200).json({
+            result: {
+              id: result[0].userid,
+              username: result[0].username,
+              roleid: result[0].roleid,
+              role: result[0].name,
+            },
+            token, 
+            serverStatus: 2,
+          });
         } else {
           return res.status(401).json({ serverStatus: -1 });
         }

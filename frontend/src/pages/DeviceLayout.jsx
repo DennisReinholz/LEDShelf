@@ -12,7 +12,7 @@ const DeviceLayout = () => {
   const [controllerList, setControllerList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-  const [user, setUser] = useContext(UserContext);
+  const {user, setUser, token} = useContext(UserContext);
   const navigate = useNavigate();
 
   const getShelf = async () => {

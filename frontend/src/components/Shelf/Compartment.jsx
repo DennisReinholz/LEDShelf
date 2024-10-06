@@ -4,7 +4,7 @@ import styles from "../../styles/Shelf/compartment.module.css";
 import RemovalCompartment from "./RemovalCompartment";
 import PropTypes from "prop-types";
 
-const Compartment = ({ isActive, comp, compId, handleIsActive }) => {
+const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
   const [article, setArticle] = useState();
   const [counter, setCounter] = useState(0);
   const [ip, setIp] = useState();
@@ -127,16 +127,15 @@ const Compartment = ({ isActive, comp, compId, handleIsActive }) => {
                 : styles.articleRequirement
             }
           >
-            {" "}
             {article != undefined ? article.count : ""}{" "}
             {article != undefined ? article.unit : ""}
           </p>
         </div>
       </div>
-      {isActive && (
+      { isActive && (
         <RemovalCompartment
           UpdateArticleCount={UpdateArticleCount}
-          article={article}
+          article={article ? article : {}}
           counter={counter}
           setCounter={setCounter}
         />
@@ -145,9 +144,9 @@ const Compartment = ({ isActive, comp, compId, handleIsActive }) => {
   );
 };
 Compartment.propTypes = {
-  handleIsActive: PropTypes.node.isRequired,
+  handleIsActive: PropTypes.func.isRequired,
   compId: PropTypes.node.isRequired,
   comp: PropTypes.node.isRequired,
-  isActive: PropTypes.node.isRequired,
+  isActive: PropTypes.bool.isRequired,
 };
 export default Compartment;

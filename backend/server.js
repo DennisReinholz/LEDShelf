@@ -10,8 +10,8 @@ const TrelloController = require("./trelloController");
 const SysDatabaseController = require("./sysDatabaseController");
 const path = require("path");
 const cors = require("cors");
-const { exec } = require("child_process");
-const execAsync = util.promisify(exec);
+const jwt = require('jsonwebtoken');
+
 
 const app = express();
 const PORT = 3000;
@@ -34,7 +34,7 @@ app.use(function (req, res, next) {
 app.use(express.json());
 app.use(bodyParser.json());
 
-app.use(cors());
+app.use(cors({ origin:"*" }));
 app.set("etag", false);
 
 // Betriebssystem prüfen
@@ -45,6 +45,10 @@ if (platform === "win32") {
 } else {
   throw new Error(`Unbekanntes Betriebssystem: ${platform}`);
 }
+
+let db;
+let ledshelfDatabasePath;
+
 
 async function createDatabase() {
   try {
@@ -146,9 +150,9 @@ app.get("/getShelf", (req, res) => {
 app.post("/getCompartment", (req, res) => {
   DataBaseController.getCompartments(req, res, db);
 });
-app.get("/getUser", (req, res) => {
-  DataBaseController.getUsers(req, res, db);
-});
+// app.get("/getUser", (req, res) => {
+//   DataBaseController.getUsers(req, res, db);
+// });
 app.post("/createUser", (req, res) => {
   DataBaseController.createUser(req, res, db);
 });

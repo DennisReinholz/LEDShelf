@@ -97,8 +97,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
           <p>IP</p>
           <input
             type="text"
-            value={newIp}
-            defaultValue={ip}
+            value={newIp || ""}
             className={styles.editInput}
             onChange={(e) => setNewIp(e.target.value)}
           />
@@ -106,11 +105,11 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
         <div className={styles.controllerProps}>
           <p>Regal</p>
           <select
-            defaultValue={shelfid}
+            value={newShelf || ""}
             className={styles.shelfSelection}
             onChange={(e) => setNewShelf(e.target.value)}
           >
-            <option value="undefined">Regal auswählen</option>
+            <option value=""> Regal auswählen</option>
             {shelfList.result != undefined
               ? shelfList.result.map((s) => (
                   <option value={s.shelfid} key={s.shelfid}>
@@ -139,7 +138,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
   );
 };
 EditDeviceForm.propTypes = {
-  onClose: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
   ip: PropTypes.node.isRequired,
   shelfid: PropTypes.node.isRequired,
   deviceId: PropTypes.node.isRequired,

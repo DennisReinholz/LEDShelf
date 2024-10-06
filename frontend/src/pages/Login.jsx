@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/login.module.css";
-
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/userAuth.jsx";
 import toast from "react-hot-toast";
@@ -10,7 +9,7 @@ const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   // eslint-disable-next-line no-unused-vars
-  const [user, setUser] = useContext(UserContext);
+  const {setUser, setToken} = useContext(UserContext);
 
   const clearLogin = () => {
     setUserName("");
@@ -24,7 +23,7 @@ const Login = () => {
   };
   const getUser = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/users`, {
+      const response = await fetch(`http://192.168.188.52:3000/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,10 +36,11 @@ const Login = () => {
       });
 
       const data = await response.json();
-
       if (data.serverStatus === 2) {
         setUser(data.result);
+        setToken(data.token);
         localStorage.setItem("user", JSON.stringify(data.result));
+        localStorage.setItem("token", data.token);
         navigate("/regale");
       } else if (data.serverStatus === -1) {
         toast.error(

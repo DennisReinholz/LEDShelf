@@ -67,8 +67,8 @@ const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
 User.propTypes = {
   name: PropTypes.node.isRequired,
   role: PropTypes.node.isRequired,
-  setDeleteUser: PropTypes.node.isRequired,
-  setEditUser: PropTypes.node.isRequired,
+  setDeleteUser: PropTypes.func.isRequired,
+  setEditUser: PropTypes.func.isRequired,
   userid: PropTypes.node.isRequired,
 };
 

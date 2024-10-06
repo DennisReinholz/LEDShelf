@@ -41,7 +41,7 @@ const EditCategoryForm = ({ category }) => {
                 articleid={article.articleid}
                 articlename={article.articlename}
                 categoryid={article.categoryid}
-                hasCategory={article.categoryid !== null ? true : false}
+                hasCategory={article.categoryid !== null}
                 categoryID={category.categoryid}
               />
             ))
@@ -51,6 +51,6 @@ const EditCategoryForm = ({ category }) => {
   );
 };
 EditCategoryForm.propTypes = {
-  category: PropTypes.node.isRequired,
+  category: PropTypes.object.isRequired,
 };
 export default EditCategoryForm;

@@ -122,8 +122,7 @@ const EditUser = ({ userid, onClose, name, setEditUser }) => {
         <input
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
-          type="Text"
-          placeholder="passwort"
+          type="password"
           className={styles.inputField}
         />
       </div>
@@ -159,9 +158,9 @@ const EditUser = ({ userid, onClose, name, setEditUser }) => {
 
 EditUser.propTypes = {
   userid: PropTypes.node.isRequired,
-  onClose: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
   name: PropTypes.node.isRequired,
-  setEditUser: PropTypes.node.isRequired,
+  setEditUser: PropTypes.func.isRequired,
   role: PropTypes.node.isRequired,
 };
 export default EditUser;

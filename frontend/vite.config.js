@@ -7,4 +7,8 @@ export default defineConfig({
   define: {
     "process.env.VERSION": JSON.stringify(version),
   },
+  server: {
+    host: "0.0.0.0",
+    port: 5137
+  }
 });

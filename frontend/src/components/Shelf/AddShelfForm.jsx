@@ -70,8 +70,7 @@ const AddShelfForm = ({ onClose, setCreatedShelf }) => {
         <input
           className={styles.inputNumber}
           type="number"
-          defaultValue={1}
-          value={CountCompartment}
+          value={CountCompartment || ""}        
           onChange={(e) => setCountCompartment(e.target.value)}
         />
       </div>
@@ -91,7 +90,7 @@ const AddShelfForm = ({ onClose, setCreatedShelf }) => {
   );
 };
 AddShelfForm.propTypes = {
-  onClose: PropTypes.node.isRequired,
-  setCreatedShelf: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
+  setCreatedShelf: PropTypes.func.isRequired,
 };
 export default AddShelfForm;

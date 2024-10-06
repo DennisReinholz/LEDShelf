@@ -83,7 +83,7 @@ const Category = ({ category, setDeleteCategory }) => {
   );
 };
 Category.propTypes = {
-  category: PropTypes.node.isRequired,
-  setDeleteCategory: PropTypes.node.isRequired,
+  category: PropTypes.object.isRequired,
+  setDeleteCategory: PropTypes.func.isRequired,
 };
 export default Category;

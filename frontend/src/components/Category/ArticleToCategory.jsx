@@ -74,7 +74,7 @@ const ArticleToCategory = ({
 ArticleToCategory.propTypes = {
   articleid: PropTypes.node.isRequired,
   articlename: PropTypes.node.isRequired,
-  hasCategory: PropTypes.node.isRequired,
+  hasCategory: PropTypes.bool.isRequired,
   categoryID: PropTypes.node.isRequired,
 };
 export default ArticleToCategory;

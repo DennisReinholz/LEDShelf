@@ -40,7 +40,6 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
         })
         .catch(console.log(`Contoller wurde nicht gefunden: ${ip}`));
     } catch (error) {
-      console.log("Error:", err.message);
       setResponse(null);
     }
   };

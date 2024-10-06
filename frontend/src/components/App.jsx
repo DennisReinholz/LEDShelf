@@ -13,6 +13,7 @@ import DeviceLayout from "../pages/DeviceLayout.jsx";
 import CategoryLayout from "../pages/CategoryLayout.jsx";
 import ServiceLayout from "../pages/ServiceLayout.jsx";
 import Administration from "../pages/Administration.jsx";
+import PrivateRoute from "../helpers/PrivateRoute.jsx";
 
 function App() {
   return (
@@ -20,25 +21,87 @@ function App() {
       <UserProvider>
         <BrowserRouter>
           <Routes>
+            {/* Standardroute leitet zu /login weiter */}
             <Route index element={<Navigate replace to="/login" />} />
+            
+            {/* Öffentliche Route: Login */}
             <Route path="login" element={<Login />} />
+            
+            {/* Geschützte Routen */}
             <Route element={<Applayout />}>
-              <Route path="regale" element={<ShelfLayout />} />
-              <Route path="regale/:shelfid" element={<CompartmentLayout />} />
-              <Route path="benutzer" element={<UserLayout />} />
-              <Route path="artikel" element={<ArticleLayout />} />
-              <Route path="geraete" element={<DeviceLayout />} />
-              <Route path="kategorie" element={<CategoryLayout />} />
-              <Route path="service" element={<ServiceLayout />} />
-              <Route path="einstellung" element={<Administration />} />
+              <Route
+                path="regale"
+                element={
+                  <PrivateRoute>
+                    <ShelfLayout />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="regale/:shelfid"
+                element={
+                  <PrivateRoute>
+                    <CompartmentLayout />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="benutzer"
+                element={
+                  <PrivateRoute>
+                    <UserLayout />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="artikel"
+                element={
+                  <PrivateRoute>
+                    <ArticleLayout />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="geraete"
+                element={
+                  <PrivateRoute>
+                    <DeviceLayout />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="kategorie"
+                element={
+                  <PrivateRoute>
+                    <CategoryLayout />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="service"
+                element={
+                  <PrivateRoute>
+                    <ServiceLayout />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="einstellung"
+                element={
+                  <PrivateRoute>
+                    <Administration />
+                  </PrivateRoute>
+                }
+              />
             </Route>
           </Routes>
         </BrowserRouter>
+        {/* Toast-Benachrichtigungen */}
         <Toaster
           position="top-center"
           gutter={12}
           containerStyle={{ margin: "8px" }}
-          toastOptiotion={{
+          toastOptions={{
             success: {
               duration: 3000,
             },
@@ -49,7 +112,7 @@ function App() {
               fontSize: "16px",
               maxWidth: "500px",
               padding: "16px 24px",
-              backgroundColor: "var(--color-grey-0)",
+              backgroundColor: "white",
               color: "var(--color-grey-700)",
             },
           }}

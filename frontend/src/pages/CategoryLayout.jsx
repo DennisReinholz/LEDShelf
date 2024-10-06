@@ -11,7 +11,7 @@ const CategoryLayout = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [addCategoryIsOpen, setAddIsCategoryIsOpen] = useState(false);
   const [deleteCategory, setDeleteCategory] = useState(false);
-  const [user, setUser] = useContext(UserContext);
+  const {user, setUser, token} = useContext(UserContext);
 
   const navigate = useNavigate();
   const getCategory = async () => {
@@ -24,7 +24,9 @@ const CategoryLayout = () => {
     })
       .then((response) => response.json())
       .then((category) => {
-        setCategoryList(category.data.result);
+        if (category != undefined) {
+          setCategoryList(category.data.result);
+        }
       });
   };
 
@@ -41,6 +43,7 @@ const CategoryLayout = () => {
     }
     getCategory();
   }, [categoryList, deleteCategory]);
+  
   return (
     <div className={styles.container}>
       <Tooltip anchorSelect=".edit" place="left">
