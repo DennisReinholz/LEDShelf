@@ -59,8 +59,6 @@ module.exports.OverrideProdDatabase = (req, res, sysDatabase) => {
     backupfilePath = `/home/ledshelf/database/backup/${currentDatabase}`; 
   }
 
-  console.log("Backupfile: ", backupfilePath);
-
   const pythonScript = `python3 ./Scripts/OverrideProdDatabase.py ${backupfilePath} ${target}`;
 
   exec(pythonScript, (error, stdout, stderr) => {

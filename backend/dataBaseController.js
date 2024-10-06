@@ -3,11 +3,12 @@ const axios = require("axios");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 const { exec } = require("child_process");
-
+const util = require("util");
 const execAsync = util.promisify(exec);
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const SECRET_KEY = process.env.AZURE_JSONWEB_TOKEN;
+
 
 module.exports.authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -42,16 +43,18 @@ module.exports.getUser = async (req, res, db) => {
       if (err) {
         return res.status(500).json({ serverStatus: -1, error: err.message });
       }
-
+      
       if (result.length === 0) {
         return res.status(404).json({ serverStatus: -1 });
       }
+      console.log("Password: ", result[0]);
 
       try {
         const match = await bcrypt.compare(
           frontendPassword,
           result[0].password
         );
+
         if (match) {
           // JWT-Token erstellen
           const token = jwt.sign(
@@ -59,7 +62,7 @@ module.exports.getUser = async (req, res, db) => {
             SECRET_KEY,
             { expiresIn: '8h' }
           );
-          return res.status(200).json({
+          res.status(200).json({
             result: {
               id: result[0].userid,
               username: result[0].username,
@@ -70,10 +73,10 @@ module.exports.getUser = async (req, res, db) => {
             serverStatus: 2,
           });
         } else {
-          return res.status(401).json({ serverStatus: -1 });
+          res.status(401).json({ serverStatus: -1 });
         }
       } catch (compareError) {
-        return res
+        res
           .status(500)
           .json({ serverStatus: -1, error: compareError.message });
       }
@@ -641,7 +644,8 @@ module.exports.RemoveArticleFromShelf = async (req, res, db) => {
     } else {
       res.status(200).json({ serverStatus: 2 });
     }
-  });
+  });}
+
 const LedOff = async (ipAdresse) => {
   await fetch(`http:/${ipAdresse}/led/off`);
 };
@@ -674,9 +678,6 @@ module.exports.ReplaceShelf = async (req, res, db) => {
       res.status(200).json({ serverStatus: 1 });
     }
   });
-};
-const LedOff = async (ipAdresse) => {
-  await fetch(`http:/${ipAdresse}/led/off`);
 };
 const CreateCompartments = (db, countCompartment, shelfId) => {
   for (let i = 0; i < countCompartment; i++) {

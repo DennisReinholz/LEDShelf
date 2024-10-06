@@ -10,8 +10,9 @@ const TrelloController = require("./trelloController");
 const SysDatabaseController = require("./sysDatabaseController");
 const path = require("path");
 const cors = require("cors");
+const { exec } = require("child_process");
 const jwt = require('jsonwebtoken');
-
+const execAsync = util.promisify(exec);
 
 const app = express();
 const PORT = 3000;
@@ -46,11 +47,6 @@ if (platform === "win32") {
   throw new Error(`Unbekanntes Betriebssystem: ${platform}`);
 }
 
-let db;
-let ledshelfDatabasePath;
-let sysDatabase;
-
-
 async function createDatabase() {
   try {
     const { stderr } = await execAsync(`python3 ./Scripts/InitialDatabase.py`);
@@ -84,10 +80,9 @@ async function getDatabasePath(sysDatabase) {
     if (!fs.existsSync(SysDatabasePath)) {      
       await createDatabase();
     }
-    sysDatabase = new sqlite3.Database(SysDatabasePath);
 
+    sysDatabase = new sqlite3.Database(SysDatabasePath);
     ledshelfDatabasePath = await getDatabasePath(sysDatabase);
-    console.log(ledshelfDatabasePath);
 
     if (ledshelfDatabasePath) {
       db = new sqlite3.Database(ledshelfDatabasePath);

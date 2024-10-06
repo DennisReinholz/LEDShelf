@@ -118,19 +118,19 @@ def createLedshelfDb(db_file):
 
         #Insert Shelf
         cursor.execute('INSERT INTO shelf (shelfname, place, countCompartment, controllerId) VALUES (?, ?, ?, ?)',
-                       ('Shelf A', 'Place A', 3, 1))
+                       ('Regal A', 'Ort A', 3, 1))
         print("Daten in Tabelle 'shelf' eingefügt.")
 
         #Insert Article
         cursor.execute('''
             INSERT INTO article (articlename, count, compartment, shelf, unit, categoryid, company, commission, minRequirement)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-            ('Article A', 100, 1, 1, 'Meter', 1, 1, 'Commission A', 10))
+            ('Artikel A', 100, 1, 1, 'Meter', 1, 1, 'Kommission A', 10))
         print("Daten in Tabelle 'article' eingefügt.")
 
         #Insert Compartment
         for inserts in range(5):
-            compartment_name = f'Compartment {inserts}'    
+            compartment_name = f'Fach {inserts}'    
          
             cursor.execute('INSERT INTO compartment (compartmentname, articleId, shelfId, number) VALUES (?, ?, ?, ?)',
                        (compartment_name, None, 1, 0))        
@@ -142,7 +142,7 @@ def createLedshelfDb(db_file):
         print("Daten in Tabelle 'ledController' eingefügt.")
 
         #Insert Category
-        cursor.execute('INSERT INTO category (categoryname) VALUES (?)', ('Category A',))
+        cursor.execute('INSERT INTO category (categoryname) VALUES (?)', ('Kategorie A',))
         print("Daten in Tabelle 'category' eingefügt.")
 
         #Insert Controllerfunctions
@@ -152,7 +152,7 @@ def createLedshelfDb(db_file):
 
         #Insert Company
         cursor.execute('INSERT INTO company (companyName, street, plz) VALUES (?, ?, ?)',
-                       ('Company A', 'Street A', '12345'))
+                       ('Firma A', 'Straße A', '12345'))
         print("Daten in Tabelle 'company' eingefügt.")
 
         # Saving changes

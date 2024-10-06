@@ -36,6 +36,7 @@ const Login = () => {
       });
 
       const data = await response.json();
+      
       if (data.serverStatus === 2) {
         setUser(data.result);
         setToken(data.token);

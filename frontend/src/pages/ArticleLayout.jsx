@@ -262,7 +262,7 @@ const ArticleLayout = () => {
     setOriginArticleList(updatedArticles);
     setArticleListToShow(updatedArticles);
     setUpdateArticle(true);  // optional für API-Refetch, falls notwendig
-
+  };
   const GetCategory = (category) => {
     const {result} = category.data;
     const uniqueCategories = new Map();
@@ -285,7 +285,6 @@ const ArticleLayout = () => {
       categoryname: category.categoryname
     }));  
      setCategoryList(temp); // Update the state with the unique categories
-
   };
 
   //Export function and convertion to an csv format
@@ -378,6 +377,7 @@ const ArticleLayout = () => {
       navigate("/login");
     }
   }, [deleteState, updateArticle, articleCreated, articleRemoved, editArticle]);
+
   return (
     <div className={styles.container}>
       <Tooltip anchorSelect=".edit" place="left">
