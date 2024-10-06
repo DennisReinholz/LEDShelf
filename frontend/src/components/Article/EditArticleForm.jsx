@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import styles from "../../styles/Article/editArticleForm.module.css";
 import PropTypes from "prop-types";
 
-const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
+const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle, setArticleRemoved }) => {
   const [compartment, setCompartment] = useState();
   const [articleStatus, setArticleStatus] = useState();
   const [newArticleName, setNewArticleName] = useState();
@@ -14,6 +14,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
   const [category, setCategory] = useState();
   const [newCategory, setNewCategory] = useState();
   const [newMinRequirement, setNewMinRequirement] = useState();
+  const [hasShelf, setHasShelf] = useState(false);
 
   const getCompartments = async (shelfid) => {
     await fetch(`http://localhost:3000/getCompartment`, {
@@ -29,6 +30,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
       .then((response) => response.json())
       .then((data) => {
         setCompartment(data.result);
+        setNewCompartment(data.result[0].compartmentId);
       });
   };
   const getArticle = async () => {
@@ -45,7 +47,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.length > 0) {
-          setArticleStatus(data[0]);
+          setArticleStatus(data[0]);         
         } else {
           toast.error("Artikel konnte nicht geladen werden.");
         }
@@ -78,7 +80,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
         compartment:
           newCompartment != undefined && newCompartment.length != 0
             ? newCompartment
-            : articleStatus.compartment,
+            : articleStatus.compartmentId,
         category:
           newCategory != undefined && newCategory.length != 0
             ? parseInt(newCategory)
@@ -120,10 +122,44 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
     setNewShelf(shelfid);
     getCompartments(shelfid);
   };
+  const removeArticleFromShelf = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/removeArticleFromShelf`, {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        body: JSON.stringify({
+          articleid: articleStatus.articleid,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (data.serverStatus === 2) {
+        toast.success("Artikel wurde aus dem Regal entfernt");
+        setArticleRemoved(true);   
+        onClose(); 
+      } else {
+        toast.error("Artikel konnte nicht entfernt werden.");
+        setArticleRemoved(false);
+      }
+    } catch (error) {
+      console.error("Fehler beim Entfernen des Artikels:", error);
+      toast.error("Ein Fehler ist aufgetreten.");
+    }
+  };
 
   useEffect(() => {
     getArticle();
     getCategory();
+    if (article.shelf !== null) {
+      setHasShelf(true);
+    }
+    else{
+      setHasShelf(false);
+    }
   }, []);
 
   return (
@@ -192,7 +228,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
           </select>
         </div>
         <div className={styles.contentRow}>
-          <p>Einheit</p>{" "}
+          <p>Einheit</p>
           <select
             className={styles.selection}
             placeholder={
@@ -217,18 +253,12 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
         <div className={styles.contentRow}>
           <p>Regal</p>
           <select
-            className={styles.selection}
-            defaultValue={
-              article !== undefined && article.shelf !== null
-                ? article.shelf
-                : ""
-            }
+            className={styles.selection}            
             value={newShelf}
             onChange={(e) => handleShelfSelction(e.target.value)}
           >
-            {article?.shelf === null && (
-              <option value="">Regal auswählen</option>
-            )}
+           
+              <option value="">Regal auswählen</option>           
             {shelf.result !== undefined ? (
               shelf.result.map((s) => (
                 <option key={s.shelfid} value={s.shelfid}>
@@ -236,20 +266,20 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
                 </option>
               ))
             ) : (
-              <option value="1">Keine Regale gefunden</option>
+              <option value="">Keine Regale gefunden</option>
             )}
           </select>
         </div>
         <div className={styles.contentRow}>
           <p>Fach</p>
           <select
-            className={styles.selection}
+            className={styles.selection}            
             value={newCompartment}
             onChange={(e) => setNewCompartment(e.target.value)}
           >
             {compartment != undefined ? (
-              compartment.map((c) => (
-                <option key={c.compartmentid} value={c.compartmentid}>
+              compartment.map((c, index) => (
+                <option key={index} value={c.compartmentId}>
                   {c.compartmentname}
                 </option>
               ))
@@ -257,6 +287,11 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
               <option>Keine Fächer gefunden</option>
             )}
           </select>
+        </div>
+        <div className={styles.contentRow}>
+          <p>Aus dem Regal entfernen</p>
+          <button disabled={!hasShelf} className={hasShelf? "primaryButton": "disabledButton"} onClick={removeArticleFromShelf}>Entfernen</button>
+         
         </div>
       </div>
       <div className={styles.buttonContainer}>
@@ -271,10 +306,11 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle }) => {
   );
 };
 EditArticleForm.propTypes = {
-  article: PropTypes.node.isRequired,
-  onClose: PropTypes.node.isRequired,
-  shelf: PropTypes.node.isRequired,
-  setUpdateArticle: PropTypes.node.isRequired,
+  article: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired,
+  shelf: PropTypes.object.isRequired,
+  setUpdateArticle: PropTypes.func.isRequired,
+  setArticleRemoved: PropTypes.func.isRequired
 };
 
 export default EditArticleForm;

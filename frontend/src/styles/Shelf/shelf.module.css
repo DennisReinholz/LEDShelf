@@ -1,4 +1,13 @@
 @media only screen and (max-width: 2000px) {
+  .contentContainer{
+    display: flex;
+    flex-direction: column;
+    height:15rem ;
+    width: 15rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 2rem;
+  }
   .container {
     display: flex;
     flex-direction: column;
@@ -6,15 +15,34 @@
     width: 15rem;
     border: 0.125rem solid white;
     border-radius: 0.5rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-    margin-top: 2rem;
     color: white;
     justify-content: space-around;
     will-change: transform;
     transition: transform 0.3s ease-in-out;
     cursor: pointer;
     background-color: #171717;
+  }
+  .isEditActive {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;    
+    color: white;
+    justify-content: space-around;
+    cursor: pointer;
+    background-color: #171717;
+  }
+  .buttonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 15rem;
+    height: 3rem;
+    font-size: 2em;
+    color: white;
+    margin-top: 1rem;
   }
   .content {
     margin-left: 2rem;
@@ -25,6 +53,15 @@
   }
 }
 @media only screen and (max-width: 1920px) {
+  .contentContainer{
+    display: flex;
+    flex-direction: column;
+    height:15rem ;
+    width: 15rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 2rem;
+  }
   .container {
     display: flex;
     flex-direction: column;
@@ -32,13 +69,32 @@
     width: 15rem;
     border: 0.125rem solid white;
     border-radius: 0.5rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-    margin-top: 2rem;
     color: white;
     justify-content: space-around;
     will-change: transform;
     transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    background-color: #171717;
+  }
+  .buttonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 15rem;
+    height: 3rem;
+    font-size: 2em;
+    color: white;
+    margin-top: 1rem;
+  }
+  .isEditActive {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;    
+    color: white;
+    justify-content: space-around;
     cursor: pointer;
     background-color: #171717;
   }
@@ -51,6 +107,15 @@
   }
 }
 @media only screen and (max-width: 1700px) {
+  .contentContainer{
+    display: flex;
+    flex-direction: column;
+    height:15rem ;
+    width: 15rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 2rem;
+  }
   .container {
     display: flex;
     flex-direction: column;
@@ -58,9 +123,6 @@
     width: 15rem;
     border: 0.125rem solid white;
     border-radius: 0.5rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-    margin-top: 2rem;
     color: white;
     justify-content: space-around;
     will-change: transform;
@@ -68,10 +130,91 @@
     cursor: pointer;
     background-color: #171717;
   }
+  .isEditActive {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;    
+    color: white;
+    justify-content: space-around;
+    cursor: pointer;
+    background-color: #171717;
+  }
+  .buttonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 15rem;
+    height: 3rem;
+    font-size: 2em;
+    color: white;
+    margin-top: 1rem;
+  }
   .content {
     margin-left: 2rem;
   }
   .container:hover {
     transform: scale(1.05);
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .contentContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height:15rem ;
+    width: 15rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 2rem;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;    
+    color: white;
+    justify-content: space-around;
+    will-change: transform;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    background-color: #171717;
+  }
+  .isEditActive {
+    display: flex;
+    flex-direction: column;
+    height: 10rem;
+    width: 15rem;
+    border: 0.125rem solid white;
+    border-radius: 0.5rem;    
+    color: white;
+    justify-content: space-around;
+    cursor: pointer;
+    background-color: #171717;
+  }
+  .buttonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 10rem;
+    height: 3rem;
+    font-size: 2em;
+    color: white;
+    margin-top: 1rem;
+  }
+  .content {
+    margin-left: 2rem;
+  }
+  .container:hover {
+    transform: scale(1.05);
+  }
+  .replaceButton, .renameButton, .deleteButton {
+    cursor: pointer;
   }
 }

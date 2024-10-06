@@ -9,6 +9,7 @@ const backupPathDev = "./Database/BackUp";
 const databasePathDev = "./Database/Ledshelf.db";
 
 // Docker container
+
 const backupPathProd = "/home/ledshelf/database/backup";
 const databasePathProd = "/home/ledshelf/database/ledshelf.db";
 
@@ -87,7 +88,7 @@ module.exports.GetBackUpPath = (req, res) => {
     }
   } else {
     if (backupPathProd) {
-      res.status(200).json({ backUpPath: backupPathDev });
+      res.status(200).json({ backUpPath: backupPathProd });
     } else {
       res.status(500).json({ serverStatus: -2 });
     }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styles from "../../styles/Shelf/compartment.module.css";
 import RemovalCompartment from "./RemovalCompartment";
+import { HiMiniXMark } from "react-icons/hi2";
 import PropTypes from "prop-types";
 
 const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
@@ -114,7 +115,7 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
         onClick={() => handleIsActive(compId)}
       >
         <div className={styles.content}>
-          <p>{comp}</p>
+          <p>{comp}</p>        
           <p>
             {article != undefined
               ? article.articlename

@@ -33,6 +33,7 @@ const ArticleLayout = () => {
   const [filteredArticleList, setFilteredArticleList] = useState([]);
   const [companyList, setCompanyList] = useState([]);
   const [commissionList, setCommissionList] = useState([]);
+  const [articleRemoved, setArticleRemoved] = useState();
   // eslint-disable-next-line no-unused-vars
   const [activeUser, setActiveUser] = useState();
   // eslint-disable-next-line no-unused-vars
@@ -252,6 +253,16 @@ const ArticleLayout = () => {
     });
     setCommissionList(filtered);
   };
+  const handleRemoveShelf = (articleId) => {
+    // Filtere das Artikel-Array, um den Artikel ohne Regal zu aktualisieren
+    const updatedArticles = originArticleList.map((article) =>
+      article.articleid === articleId ? { ...article, shelf: null } : article
+    );  
+    // Lokalen Zustand aktualisieren
+    setOriginArticleList(updatedArticles);
+    setArticleListToShow(updatedArticles);
+    setUpdateArticle(true);  // optional für API-Refetch, falls notwendig
+
   const GetCategory = (category) => {
     const {result} = category.data;
     const uniqueCategories = new Map();
@@ -274,6 +285,7 @@ const ArticleLayout = () => {
       categoryname: category.categoryname
     }));  
      setCategoryList(temp); // Update the state with the unique categories
+
   };
 
   //Export function and convertion to an csv format
@@ -356,6 +368,7 @@ const ArticleLayout = () => {
       getArticle();
       getShelf();
       getCompartments();
+      setUpdateArticle(false);
     }
     if (articleCreated) {
       setArticleCreated(false);
@@ -364,7 +377,7 @@ const ArticleLayout = () => {
     if (userStorage === null) {
       navigate("/login");
     }
-  }, [deleteState, updateArticle, articleCreated]);
+  }, [deleteState, updateArticle, articleCreated, articleRemoved, editArticle]);
   return (
     <div className={styles.container}>
       <Tooltip anchorSelect=".edit" place="left">
@@ -409,7 +422,7 @@ const ArticleLayout = () => {
             setFilterList={setFilterList}
             ApplyFilter={ApplyFilter}
             exportToCSV={ExportToCSV}
-            user={user} 
+            user={user}           
           />
         
         </div>
@@ -459,13 +472,18 @@ const ArticleLayout = () => {
                                 className="delete"
                                 style={{ cursor: "pointer" }}
                                 onClick={() => handleDeleteArticle(c)}
-                              />
+                              />{c.shelf != null &&
                               <FiAirplay
                                 className="navigateShelf"
                                 style={{ cursor: "pointer" }}
                                 onClick={() => navigate(`/regale/${c.shelf}`)}
-                              />
-                            <div className={c.count < c.minRequirement ? styles.cautionOff : undefined}>
+                              />}
+                              <div
+                                className={
+                                  !(c.count < c.minRequirement) &&
+                                  styles.cautionOff
+                                }
+                              >
                                 <HiOutlineExclamationTriangle
                                   className="minRequirement"
                                   onClick={() =>
@@ -507,6 +525,7 @@ const ArticleLayout = () => {
             compartment={compartment}
             shelf={shelf}
             setUpdateArticle={setUpdateArticle}
+            setArticleRemoved={setArticleRemoved}
           />
         </Modal>
       )}

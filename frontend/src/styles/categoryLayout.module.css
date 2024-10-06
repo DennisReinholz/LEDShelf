@@ -14,10 +14,14 @@
   }
   .content {
     display: flex;
-    margin: 0 auto;
+    margin-left: 2rem;
     overflow-y: scroll;
     width: 50rem;
     height: 50rem;
+    background-color: #171717;
+    border: 0.125rem solid white;
+    border-radius: 1rem;  
+    overflow: hidden; 
   }
   .input::-webkit-inner-spin-button {
     height: 3rem;
@@ -46,10 +50,14 @@
   }
   .content {
     display: flex;
-    margin: 0 auto;
     overflow-y: scroll;
     width: 50rem;
     height: 64rem;
+    margin-left: 2rem;
+    background-color: #171717;
+    border: 0.125rem solid white;
+    border-radius: 1rem;  
+    overflow: hidden;  
   }
   .input::-webkit-inner-spin-button {
     height: 3rem;
@@ -79,9 +87,13 @@
   .content {
     display: flex;
     overflow-y: scroll;
-    margin: 0 auto;
     width: 40rem;
-    height: 50rem;
+    height: 50rem;    
+    margin-left: 2rem;
+    border: 0.125rem solid white;
+    border-radius: 1rem;    
+    background-color: #171717;
+    overflow: hidden;
   }
   .input::-webkit-inner-spin-button {
     height: 3rem;
@@ -102,8 +114,8 @@
     flex-direction: column;
     color: white;
     flex-wrap: wrap;
-    width: 58rem;
-    height: 60rem;
+    width: 55rem;
+    height: 55rem;
     font-size: 1.15em;
   }
   .addCategoryContainer {
@@ -113,11 +125,14 @@
     width: 10rem;
   }
   .content {
-    margin: 0 auto;
     display: flex;
-    overflow-y: scroll;
-    width: 45rem;
-    height: 50rem;
+    overflow-y: scroll;    
+    margin-left: 2rem;
+    background-color: #171717;
+    border: 0.125rem solid white;
+    border-radius: 1rem;    
+    width: 40rem;
+    height: 45rem;
   }
   .input::-webkit-inner-spin-button {
     height: 3rem;

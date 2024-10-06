@@ -10,7 +10,9 @@ const ShelfLayout = () => {
   const {user, setUser, token} = useContext(UserContext);
   const [shelfList, setShelfList] = useState();
   const [isShelfOpen, setIsShelfOpen] = useState(false);
-  const [createdShelf, setCreatedShelf] = useState(false);
+  const [createdShelf, setCreatedShelf] = useState(false);  
+  const [shelfUpdated, setShelfUpdated] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
 
   const getShelfs = async () => {
@@ -24,6 +26,11 @@ const ShelfLayout = () => {
     });
     const data = await response.json();
     setShelfList(data.result);
+  };
+  const activateEdit = () => {
+    setIsEdit((prevEdit) => {
+      return !prevEdit;     
+    });
   };
   useEffect(() => {
     getShelfs();
@@ -41,22 +48,24 @@ const ShelfLayout = () => {
     if (createdShelf) {
       getShelfs();
     }
-  }, [createdShelf]);
+  }, [createdShelf, isEdit, shelfUpdated]);
 
   return (
     <div className={styles.container}>
-      <div className={styles.buttonContainer}>
         {user != undefined
           ? user.roleid == 1 && (
               <button
-                className="primaryButton"
+              disabled={isEdit}
+                className={!isEdit ? "primaryButton": "disabledButton"}
                 onClick={() => setIsShelfOpen((o) => !o)}
               >
                 Erstellen
               </button>
+                <button className="primaryButton" onClick={activateEdit}>Bearbeiten</button>
+              </div>
             )
           : ""}
-      </div>
+    
       <div className={styles.content}>
         {shelfList != undefined
           ? shelfList.map((c) => (
@@ -66,6 +75,8 @@ const ShelfLayout = () => {
                 place={c.place}
                 compantments={c.countCompartment}
                 shelfId={c.shelfid}
+                isEdit={isEdit}
+                setShelfUpdated={setShelfUpdated}
               />
             ))
           : "Keine Regale vorhanden"}
@@ -79,7 +90,7 @@ const ShelfLayout = () => {
             setCreatedShelf={setCreatedShelf}
           />
         </Modal>
-      )}
+      )}    
     </div>
   );
 };

@@ -48,6 +48,7 @@ if (platform === "win32") {
 
 let db;
 let ledshelfDatabasePath;
+let sysDatabase;
 
 
 async function createDatabase() {
@@ -79,6 +80,7 @@ async function getDatabasePath(sysDatabase) {
 
 (async () => {
   try {
+
     if (!fs.existsSync(SysDatabasePath)) {      
       await createDatabase();
     }
@@ -245,6 +247,18 @@ app.get("/pingController", (req, res) => {
 });
 app.get("/getCompany", (req, res) => {
   DataBaseController.getCompany(req, res, db);
+});
+app.post("/removeArticleFromShelf", (req, res) => {
+  DataBaseController.RemoveArticleFromShelf(req, res, db);
+});
+app.post("/replaceShelf", (req, res) => {
+  DataBaseController.ReplaceShelf(req, res, db);
+});
+app.post("/renameShelf", (req, res) => {
+  DataBaseController.RenameShelf(req, res, db);
+});
+app.post("/deleteShelf", (req, res) => {
+  DataBaseController.DeleteShelf(req, res, db);
 });
 
 // Server starten

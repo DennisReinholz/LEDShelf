@@ -157,7 +157,7 @@ module.exports.getCompartments = async (req, res, db) => {
     FROM shelf
     JOIN compartment ON shelf.shelfid = compartment.shelfId 
     LEFT JOIN article ON compartment.compartmentId = article.compartment
-    WHERE shelf.shelfid =? `,
+    WHERE shelf.shelfid =? AND article.compartment ISNULL`,
     [shelfid],
     (err, result) => {
       if (err) {
@@ -190,15 +190,21 @@ module.exports.getAllUser = async (req, res, db) => {
 };
 module.exports.postCreateShelf = async (req, res, db) => {
   const { shelfname, shelfPlace, CountCompartment } = req.body;
-  db.all(
-    `INSERT INTO shelf (shelfname,place,countCompartment) VALUES (?,?,?)`,
+
+  // Verwende db.run statt db.all für INSERT
+  db.run(
+    `INSERT INTO shelf (shelfname, place, countCompartment) VALUES (?, ?, ?)`,
     [shelfname, shelfPlace, CountCompartment],
-    (err, result) => {
+    function (err) {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
       } else {
-        CreateCompartments(db, CountCompartment);
-        res.status(200).json(result);
+        const shelfId = this.lastID; // Die zuletzt eingefügte ID wird hier gespeichert
+
+        // Rufe die CreateCompartments-Funktion auf und übergebe die shelfId
+        CreateCompartments(db, CountCompartment, shelfId);
+
+        res.status(200).json({ serverStatus: 2, shelfId });
       }
     }
   );
@@ -288,10 +294,11 @@ module.exports.createArticle = async (req, res, db) => {
 module.exports.getSelectedArticle = async (req, res, db) => {
   const { articleid } = req.body;
   db.all(
-    `SELECT article.*, shelf.shelfname 
-    FROM article 
-    LEFT JOIN shelf ON article.shelf = shelf.shelfid
-    WHERE articleid=?`,
+    `SELECT article.*, shelf.shelfname, compartment.* 
+   FROM article 
+   LEFT JOIN shelf ON article.shelf = shelf.shelfid
+   LEFT JOIN compartment ON article.compartment = compartment.compartmentId
+   WHERE article.articleid = ?`,
     [articleid],
     (err, result) => {
       if (err) {
@@ -614,20 +621,75 @@ module.exports.PingController = async (req, res) => {
     res.status(500).json("Controller nicht erreichbar");
   }
 };
+module.exports.CreateDatabase = async () => {
+  try {
+    const { stderr } = await execAsync(`python3 ./Scripts/InitialDatabase.py`);
+
+    if (stderr) {
+      console.error(`Python script error: ${stderr}`);
+      return;
+    }
+  } catch (error) {
+    console.error(`Error executing Python script: ${error.message}`);
+  }
+};
+module.exports.RemoveArticleFromShelf = async (req, res, db) => {
+  const { articleid } = req.body;
+  db.run(`UPDATE article SET compartment = null, shelf = null WHERE articleid =?`, [articleid], (err) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+    } else {
+      res.status(200).json({ serverStatus: 2 });
+    }
+  });
 const LedOff = async (ipAdresse) => {
   await fetch(`http:/${ipAdresse}/led/off`);
 };
-const CreateCompartments = (db, countCompartment) => {
-  db.get("SELECT last_insert_rowid() as shelfId", (row) => {
-    const shelfId = row.shelfId;
-
-    for (let i = 0; i < countCompartment; i++) {
-      db.all(
-        `INSERT INTO compartment (compartmentname,shelfid,number) VALUES(?,?,?)`,
-        [i + 1 + "-Fach", shelfId, i + 1]
-      );
+module.exports.RenameShelf = async (req, res, db) => {
+  const { shelfId, shelfname } = req.body;
+  db.run(`UPDATE shelf SET shelfname=? WHERE shelfid = ?`, [shelfname, shelfId], (err) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -2 });
+    } else {
+      res.status(200).json({ serverStatus: 1 });
     }
   });
+};
+module.exports.DeleteShelf = async (req, res, db) => {
+  const { shelfId } = req.body;
+  db.run(`DELETE FROM shelf WHERE shelfid = ?`, [shelfId], (err) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -2 });
+    } else {
+      res.status(200).json({ serverStatus: 1 });
+    }
+  });
+};
+module.exports.ReplaceShelf = async (req, res, db) => {
+  const { shelfId, place } = req.body;
+  db.run(`UPDATE shelf SET place=? WHERE shelfid = ?`, [place, shelfId], (err) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -2 });
+    } else {
+      res.status(200).json({ serverStatus: 1 });
+    }
+  });
+};
+const LedOff = async (ipAdresse) => {
+  await fetch(`http:/${ipAdresse}/led/off`);
+};
+const CreateCompartments = (db, countCompartment, shelfId) => {
+  for (let i = 0; i < countCompartment; i++) {
+    db.run(
+      `INSERT INTO compartment (compartmentname, shelfid, number) VALUES (?, ?, ?)`,
+      [`${i + 1}-Fach`, shelfId, i + 1],
+      (err) => {
+        if (err) {
+          console.error("Fehler beim Einfügen in compartment:", err);
+        }
+      }
+    );
+  }
 };
 const CreateControllerFunction = async (db, res, shelf) => {
   try {
@@ -657,7 +719,10 @@ const getLastInsertRowId = (db) => {
 const getCompartments = (db, shelf) => {
   return new Promise((resolve, reject) => {
     db.all(
-      `SELECT compartmentId from compartment WHERE shelfId = ?`,
+      `SELECT compartment.compartmentId
+      FROM compartment
+      LEFT JOIN article ON article.compartment = compartment.compartmentId
+      WHERE compartment.shelfId = ? AND article.compartment IS NULL`,
       [shelf],
       (err, result) => {
         if (err) {

@@ -13,12 +13,8 @@
     font-size: 1.3em;
   }
   .nameContainer {
-    flex-grow: 1;
+    width: 30rem;
     margin-left: 1rem;
-    margin-right: 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   .editContainer {
     display: flex;
@@ -44,12 +40,8 @@
     font-size: 1.3em;
   }
   .nameContainer {
-    flex-grow: 1;
+    width: 30rem;
     margin-left: 1rem;
-    margin-right: 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   .editContainer {
     display: flex;
@@ -75,13 +67,9 @@
     font-size: 1.3em;
   }
   .nameContainer {
-    flex-grow: 1;
-    margin-left: 1rem;
-    margin-right: 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+      width: 30rem;
+      margin-left: 1rem;
+  }  
   .editContainer {
     display: flex;
     flex-direction: row;
@@ -106,12 +94,8 @@
     font-size: 1.3em;
   }
   .nameContainer {
-    flex-grow: 1;
+    width: 30rem;
     margin-left: 1rem;
-    margin-right: 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   .editContainer {
     display: flex;

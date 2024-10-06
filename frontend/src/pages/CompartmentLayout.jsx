@@ -72,6 +72,7 @@ const CompartmentLayout = () => {
         }
       });
   };
+
   useEffect(() => {
     getCompartments();
     const userStorage = localStorage.getItem("user");
@@ -85,6 +86,7 @@ const CompartmentLayout = () => {
       navigate("/login");
     }
   }, []);
+  
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
@@ -98,7 +100,7 @@ const CompartmentLayout = () => {
           style={{ marginLeft: "2rem" }}
           onClick={hanleAllOff}
         >
-          All off
+         Alle aus
         </button>
       </div>
       <div className={styles.content}>

@@ -34,7 +34,7 @@ const EditCategoryForm = ({ category }) => {
     <div className={styles.container}>
       <h3>{category.categoryname}</h3>
       <div className={styles.content}>
-        {articleList != undefined
+        {articleList != undefined && articleList.length > 0
           ? articleList.map((article) => (
               <ArticleToCategory
                 key={article.articleid}
@@ -45,7 +45,7 @@ const EditCategoryForm = ({ category }) => {
                 categoryID={category.categoryid}
               />
             ))
-          : "Es wurden keine Artikel gefunden"}
+          : <p>Keine Artikel zum zuordnen gefunden</p>}
       </div>
     </div>
   );
