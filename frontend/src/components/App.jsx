@@ -14,10 +14,12 @@ import CategoryLayout from "../pages/CategoryLayout.jsx";
 import ServiceLayout from "../pages/ServiceLayout.jsx";
 import Administration from "../pages/Administration.jsx";
 import PrivateRoute from "../helpers/PrivateRoute.jsx";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 function App() {
   return (
-    <div className="container">
+    <div className="container-fluid">
       <UserProvider>
         <BrowserRouter>
           <Routes>

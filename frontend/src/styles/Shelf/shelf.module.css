@@ -51,6 +51,9 @@
     transform: scale(1.05);
     background-color: rgb(23, 23, 23);
   }
+  .replaceButton, .renameButton, .deleteButton {
+    cursor: pointer;
+  }
 }
 @media only screen and (max-width: 1920px) {
   .contentContainer{
@@ -105,6 +108,9 @@
     transform: scale(1.05);
     background-color: rgb(23, 23, 23);
   }
+  .replaceButton, .renameButton, .deleteButton {
+    cursor: pointer;
+  }
 }
 @media only screen and (max-width: 1700px) {
   .contentContainer{
@@ -157,6 +163,9 @@
   }
   .container:hover {
     transform: scale(1.05);
+  }
+  .replaceButton, .renameButton, .deleteButton {
+    cursor: pointer;
   }
 }
 @media only screen and (max-width: 1200px) {

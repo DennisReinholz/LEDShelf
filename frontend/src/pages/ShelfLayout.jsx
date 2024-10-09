@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Shelf from "../components/Shelf/Shelf";
 import Modal from "../components/common/Modal";
 import AddShelfForm from "../components/Shelf/AddShelfForm";
-import styles from "../styles/shelfLayout.module.css";
 import { UserContext } from "../helpers/userAuth.jsx";
+import "bootstrap/dist/css/bootstrap.min.css"; // Bootstrap CSS importieren
 
 const ShelfLayout = () => {
-  const {user, setUser, token} = useContext(UserContext);
+  const { user, setUser, token } = useContext(UserContext);
   const [shelfList, setShelfList] = useState();
   const [isShelfOpen, setIsShelfOpen] = useState(false);
-  const [createdShelf, setCreatedShelf] = useState(false);  
+  const [createdShelf, setCreatedShelf] = useState(false);
   const [shelfUpdated, setShelfUpdated] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate();
@@ -27,22 +27,19 @@ const ShelfLayout = () => {
     const data = await response.json();
     setShelfList(data.result);
   };
+
   const activateEdit = () => {
-    setIsEdit((prevEdit) => {
-      return !prevEdit;     
-    });
+    setIsEdit((prevEdit) => !prevEdit);
   };
+
   useEffect(() => {
     getShelfs();
 
     const userStorage = localStorage.getItem("user");
-    if (
-      userStorage !== undefined ||
-      (userStorage !== null && user === undefined)
-    ) {
+    if (userStorage) {
       setUser(JSON.parse(userStorage));
     }
-    if (userStorage === null) {
+    if (!userStorage) {
       navigate("/login");
     }
     if (createdShelf) {
@@ -51,37 +48,41 @@ const ShelfLayout = () => {
   }, [createdShelf, isEdit, shelfUpdated]);
 
   return (
-    <div className={styles.container}>
-        {user != undefined
-          ? user.roleid == 1 && (
-            <div>
-              <button
-              disabled={isEdit}
-                className={!isEdit ? "primaryButton": "disabledButton"}
-                onClick={() => setIsShelfOpen((o) => !o)}
-              >
-                Erstellen
-              </button>
-                <button className="primaryButton" onClick={activateEdit}>Bearbeiten</button>
-              </div>
-            )
-          : ""}
-    
-      <div className={styles.content}>
-        {shelfList != undefined
-          ? shelfList.map((c) => (
+    <div className="container mt-4">
+      {user && user.roleid === 1 && (
+        <div className="d-flex justify-content-between mb-3">
+          <button
+            disabled={isEdit}
+            className={`btn ${!isEdit ? "btn-primary" : "btn-secondary"}`}
+            onClick={() => setIsShelfOpen((o) => !o)}
+          >
+            Erstellen
+          </button>
+          <button className="btn btn-warning" onClick={activateEdit}>
+            Bearbeiten
+          </button>
+        </div>
+      )}
+
+      <div className="row">
+        {shelfList ? (
+          shelfList.map((c) => (
+            <div key={c.shelfid} className="col-lg-4 col-md-6 mb-4">
               <Shelf
-                key={c.shelfid}
                 shelfname={c.shelfname}
                 place={c.place}
-                compantments={c.countCompartment}
+                compartments={c.countCompartment}
                 shelfId={c.shelfid}
                 isEdit={isEdit}
                 setShelfUpdated={setShelfUpdated}
               />
-            ))
-          : "Keine Regale vorhanden"}
+            </div>
+          ))
+        ) : (
+          <p>Keine Regale vorhanden</p>
+        )}
       </div>
+
       {isShelfOpen && (
         <Modal onClose={() => setIsShelfOpen(false)}>
           <AddShelfForm
@@ -91,7 +92,7 @@ const ShelfLayout = () => {
             setCreatedShelf={setCreatedShelf}
           />
         </Modal>
-      )}    
+      )}
     </div>
   );
 };

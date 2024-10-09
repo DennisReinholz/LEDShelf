@@ -47,7 +47,6 @@ module.exports.getUser = async (req, res, db) => {
       if (result.length === 0) {
         return res.status(404).json({ serverStatus: -1 });
       }
-      console.log("Password: ", result[0]);
 
       try {
         const match = await bcrypt.compare(
@@ -612,9 +611,10 @@ module.exports.ControllerOff = async (req, res, db) => {
   });
 };
 module.exports.PingController = async (req, res) => {
-  const { ip } = req.body;
+  const { newIp } = req.body;
+  console.log(newIp);
   try {
-    const ping = await fetch(`http://${ip}`);
+    const ping = await fetch(`http://${newIp}`);
     if (ping.status === 200) {
       res.status(200).json({ serverStatus: 2 });
     } else {

@@ -24,6 +24,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
   };
   const pingController = async () => {
     try {
+      console.log("IP: ",newIp);
       const response = await fetch(`http://localhost:3000/pingController`, {
         method: "POST",
         headers: {
@@ -41,6 +42,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
   };
   const UpdateLedController = async () => {
     const isHeartbeat = await pingController();
+    console.log("Controller: ",isHeartbeat);
     if (isHeartbeat) {
       await fetch(`http://localhost:3000/updateLedController`, {
         method: "Post",
@@ -130,7 +132,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
             className={updateEnabled ? "primaryButton" : "disabledButton"}
             onClick={UpdateLedController}
           >
-            Bearbeiten
+            Speichern
           </button>
         </div>
       </div>

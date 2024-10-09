@@ -1,105 +1,22 @@
-@media only screen and (max-width: 2000px) {
-  .container {
-    display: flex;
-    flex-direction: column;
-    background-color: #212121;
-    margin: 2rem;
-    border-radius: 0.5rem;
-    width: 100rem;
-    height: 100rem;
-  }
-  .buttonContainer {
-    display: flex;
-    justify-content: space-between;
-    width: 22rem;
-    margin-top: 1rem;
-    margin-left: 2rem;
-  }
-  .content {
-    display: flex;
-    flex-wrap: wrap;
-    overflow-y: scroll;
-    margin-top: 1rem;
-    height: 60rem;
-    width: 99rem;
-  }
+/* Entferne das container Styling, da Bootstrap dies übernimmt */
+.container {
+  background-color: #212121;
+  border-radius: 0.5rem;
+  padding: 2rem;
 }
-@media only screen and (max-width: 1920px) {
-  .container {
-    display: flex;
-    flex-direction: column;
-    background-color: #212121;
-    border-radius: 0.5rem;
-    width: 100rem;
-    margin: 2rem;
-    height: 70rem;
-    font-size: 1.25em;
-  }
-  .buttonContainer {
-    display: flex;
-    justify-content: space-between;
-    width: 22rem;
-    margin-top: 1rem;
-    margin-left: 2rem;
-  }
-  .content {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 1rem;
-    margin-left: 1rem;
-    border-radius: 0.5rem;
-    height: 60rem;
-    width: 90rem;
-    overflow-y: scroll;
-  }
+
+/* Button Container für Abstände und Ausrichtung */
+.buttonContainer {
+  margin-top: 1rem;
 }
-@media only screen and (max-width: 1700px) {
-  .container {
-    display: flex;
-    flex-direction: column;
-    background-color: #212121;
-    width: 90rem;
-    height: 60rem;
-    font-size: 1em;
-  }
-  .buttonContainer {
-    display: flex;
-    justify-content: space-between;
-    width: 22rem;
-    margin-top: 1rem;
-    margin-left: 2rem;
-  }
-  .content {
-    display: flex;
-    flex-wrap: wrap;
-    overflow-y: scroll;
-    margin-top: 1rem;
-    height: 55rem;
-    width: 85rem;
-  }
+
+/* Optional: Du kannst diese Klasse behalten, wenn du eine bestimmte Scroll-Eigenschaft brauchst */
+.content {
+  overflow-y: auto; /* Optional: falls du eine Scroll-Leiste brauchst */
 }
-@media only screen and (max-width: 1200px) {
-  .container {
-    display: flex;
-    flex-direction: column;
-    background-color: #212121;
-    width: 60rem;
-    height: 100vh;
-    font-size: 1em;
-  }
-  .buttonContainer {
-    display: flex;
-    justify-content: space-between;
-    width: 22rem;
-    margin-top: 1rem;
-    margin-left: 2rem;
-  }
-  .content {
-    display: flex;
-    flex-wrap: wrap;
-    overflow-y: scroll;
-    margin-top: 1rem;
-    height: 60rem;
-    width: 59rem;
-  }
+
+/* Spezifische Anpassungen für Editieren-Button */
+.disabledButton {
+  opacity: 0.5;
+  pointer-events: none;
 }
