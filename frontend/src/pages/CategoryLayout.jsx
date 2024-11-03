@@ -6,16 +6,19 @@ import AddCategoryFrom from "../components/Category/AddCategoryForm.jsx";
 import Modal from "../components/common/Modal.jsx";
 import Category from "../components/Category/Category.jsx";
 import styles from "../styles/categoryLayout.module.css";
+import { useConfig } from "../ConfigProvider";
 
 const CategoryLayout = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [addCategoryIsOpen, setAddIsCategoryIsOpen] = useState(false);
   const [deleteCategory, setDeleteCategory] = useState(false);
   const {user, setUser, token} = useContext(UserContext);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const navigate = useNavigate();
   const getCategory = async () => {
-    await fetch(`http://localhost:3000/getCategory`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCategory`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",

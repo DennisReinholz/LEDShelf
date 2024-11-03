@@ -11,8 +11,7 @@ const Sidebar = () => {
     fetch("/package.json")
       .then((response) => response.json())
       .then((data) => {
-        setVersion(data.version);
-        console.log(data);
+        setVersion(data.version);    
       })
       .catch((error) => {
         console.error("Error fetching version:", error);

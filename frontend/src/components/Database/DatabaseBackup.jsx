@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import toast from "react-hot-toast";
 import styles from "../../styles/Database/databaseBackup.module.css";
+import { useConfig } from "../../ConfigProvider";
 
 const DatabaseBackup = () => {
-
   // eslint-disable-next-line no-unused-vars
   const [databaseBackUpPath, setDatabasePath] = useState();
   const [files, setFiles] = useState();
   const [upDated, setUpdated] = useState();
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const getDatabasePath = async () => {
-    await fetch(`http://localhost:3000/getDatabasepath`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getDatabasepath`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +29,7 @@ const DatabaseBackup = () => {
       });
   };
   const StartBackUp = async () => {
-    await fetch(`http://localhost:3000/startManualBackup`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/startManualBackup`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +48,7 @@ const DatabaseBackup = () => {
       });
   };
   const GetBackUpFiles = async () => {
-    await fetch(`http://localhost:3000/getRecentBackUpFile`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getRecentBackUpFile`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",

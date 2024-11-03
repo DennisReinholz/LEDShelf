@@ -5,6 +5,7 @@ import Modal from "../components/common/Modal";
 import AddShelfForm from "../components/Shelf/AddShelfForm";
 import styles from "../styles/shelfLayout.module.css";
 import { UserContext } from "../helpers/userAuth.jsx";
+import { useConfig } from "../ConfigProvider";
 
 const ShelfLayout = () => {
   const {user, setUser, token} = useContext(UserContext);
@@ -13,10 +14,12 @@ const ShelfLayout = () => {
   const [createdShelf, setCreatedShelf] = useState(false);  
   const [shelfUpdated, setShelfUpdated] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const config = useConfig();
+  const { backendUrl } = config || {};
   const navigate = useNavigate();
 
   const getShelfs = async () => {
-    const response = await fetch(`http://localhost:3000/getShelf`, {
+    const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getShelf`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

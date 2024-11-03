@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styles from "../../styles/Article/editArticleForm.module.css";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle, setArticleRemoved }) => {
   const [compartment, setCompartment] = useState();
@@ -15,9 +16,11 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle, setArticle
   const [newCategory, setNewCategory] = useState();
   const [newMinRequirement, setNewMinRequirement] = useState();
   const [hasShelf, setHasShelf] = useState(false);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const getCompartments = async (shelfid) => {
-    await fetch(`http://localhost:3000/getCompartment`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCompartment`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +37,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle, setArticle
       });
   };
   const getArticle = async () => {
-    await fetch(`http://localhost:3000/getSelectedArticle`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getSelectedArticle`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +57,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle, setArticle
       });
   };
   const updateArticle = async () => {
-    await fetch(`http://localhost:3000/upateArticle`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/upateArticle`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -104,7 +107,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle, setArticle
       });
   };
   const getCategory = async () => {
-    await fetch(`http://localhost:3000/getCategory`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCategory`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -124,7 +127,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle, setArticle
   };
   const removeArticleFromShelf = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/removeArticleFromShelf`, {
+      const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/removeArticleFromShelf`, {
         method: "Post",
         headers: {
           "Content-Type": "application/json",

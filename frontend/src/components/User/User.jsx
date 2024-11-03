@@ -13,6 +13,7 @@ const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   useEffect(() => {}, [deleteModalOpen]);
+  
   return (
     <div className={styles.container}>
       <Tooltip anchorSelect=".edit" place="left">

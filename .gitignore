@@ -31,13 +31,17 @@
 *.db
 Datenbank/
 
+# Files
+config.json
+StartDockerProdContainer.sh
+
 # Environment
 *.env
+
 # Executables
 *.exe
 *.out
 *.app
-*.sh
 
 # Node modules
 *node_modules/

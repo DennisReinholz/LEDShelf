@@ -5,6 +5,7 @@ import Compartment from "../components/Shelf/Compartment";
 import styles from "../styles/compartmentLayout.module.css";
 import { UserContext } from "../helpers/userAuth.jsx";
 import toast from "react-hot-toast";
+import { useConfig } from "../ConfigProvider";
 
 const CompartmentLayout = () => {
   let { shelfid } = useParams();
@@ -12,6 +13,8 @@ const CompartmentLayout = () => {
   const {user, setUser, token} = useContext(UserContext);
   const [compartments, setCompartments] = useState();
   const [activeCompartments, setActiveCompartments] = useState([]);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const handleIsActive = (index) => {
     setActiveCompartments((prevState) => {
@@ -26,7 +29,7 @@ const CompartmentLayout = () => {
   };
   const handleLedOff = async () => {
     try {
-      await fetch(`http://localhost:3000/controllerOff`, {
+      await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/controllerOff`, {
         method: "Post",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +52,7 @@ const CompartmentLayout = () => {
     }
   };
   const getCompartments = async () => {
-    await fetch(`http://localhost:3000/getCompartment`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCompartment`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",

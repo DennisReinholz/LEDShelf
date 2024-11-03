@@ -22,8 +22,10 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
 
   const pingController = async () => {
     try {
-      await fetch(`http://localhost:3000/pingController`, {
-        method: "Get",
+      const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3000";
+  
+      await fetch(`${apiUrl}/pingController`, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
@@ -36,11 +38,15 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
           } else if (controller.serverStatus === 2) {
             setControllerStatus("Verbunden");
           } else if (controller.status === 500) {
+            console.log("Serverfehler");
           }
         })
-        .catch(console.log(`Contoller wurde nicht gefunden: ${ip}`));
+        .catch((error) => {
+          console.log(`Controller wurde nicht gefunden: ${error}`);
+        });
     } catch (error) {
       setResponse(null);
+      console.log("Fehler beim Abrufen des Controllers:", error);
     }
   };
 

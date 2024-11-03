@@ -3,12 +3,15 @@ import styles from "../../styles/Category/editCategoryForm.module.css";
 import toast from "react-hot-toast";
 import ArticleToCategory from "./ArticleToCategory";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const EditCategoryForm = ({ category }) => {
   const [articleList, setArticleList] = useState([]);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const getArticleWithCategory = async () => {
-    await fetch(`http://localhost:3000/getArticleWithCategory`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getArticleWithCategory`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -27,9 +30,11 @@ const EditCategoryForm = ({ category }) => {
         }
       });
   };
+
   useEffect(() => {
     getArticleWithCategory();
   }, []);
+  
   return (
     <div className={styles.container}>
       <h3>{category.categoryname}</h3>

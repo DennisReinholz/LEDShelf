@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styles from "./../../styles/Database/recoveryDatabase.module.css";
+import { useConfig } from "../../ConfigProvider";
 
 const RecoryDatabase = () => {
   const [currentDatabase, setCurrentDatabase] = useState();
   const [selectedBackup, setSelectedBackup] = useState();
   const [enableOverride, setEnableOverride] = useState();
   const [files, setFiles] = useState();
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const GetBackUpFiles = async () => {
-    await fetch(`http://localhost:3000/getBackUpFiles`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getBackUpFiles`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +31,7 @@ const RecoryDatabase = () => {
       });
   };
   const GetCurrentDatabasePath = async () => {
-    await fetch(`http://localhost:3000/getCurrentDatabase`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCurrentDatabase`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +48,7 @@ const RecoryDatabase = () => {
       });
   };
   const SetNewDatabasePath = async () => {
-    await fetch(`http://localhost:3000/setNewDatabasePath`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/setNewDatabasePath`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +74,7 @@ const RecoryDatabase = () => {
       });
   };
   const OverrideProdDatabase = async () => {
-    await fetch(`http://localhost:3000/overrideProdDatabase`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/overrideProdDatabase`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -113,9 +116,6 @@ const RecoryDatabase = () => {
 
   return (
     <React.Fragment>
-      {/* <Tooltip anchorSelect=".primaryButton" place="right">
-        Lädt die ausgewählte Sicherung
-      </Tooltip> */}
       <fieldset className={styles.fieldsetRecoveryBackup}>
         <legend>Datenbank Wiederherstellung</legend>
         <div className={styles.contentContainer}>

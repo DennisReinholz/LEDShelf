@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/User/addUserForm.module.css";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const AddUserForm = ({ onClose, setCreateUser }) => {
   const [name, setName] = useState("");
@@ -9,6 +10,8 @@ const AddUserForm = ({ onClose, setCreateUser }) => {
   const [createEnabled, setCreateEnabled] = useState(false);
   const [roles, setRoles] = useState();
   const [selectedRole, setSelectedRole] = useState(1);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const handleCreateUser = () => {
     if (
@@ -25,7 +28,7 @@ const AddUserForm = ({ onClose, setCreateUser }) => {
     }
   };
   const createUser = async () => {
-    return await fetch(`http://localhost:3000/createUser`, {
+    return await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/createUser`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",
@@ -42,7 +45,7 @@ const AddUserForm = ({ onClose, setCreateUser }) => {
     });
   };
   const getRoles = async () => {
-    return await fetch(`http://localhost:3000/getRoles`, {
+    return await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getRoles`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",
@@ -56,6 +59,7 @@ const AddUserForm = ({ onClose, setCreateUser }) => {
         }
       });
   };
+  
   useEffect(() => {
     getRoles();
     handleCreateUser();
