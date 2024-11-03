@@ -9,18 +9,21 @@ import toast from "react-hot-toast";
 import Modal from "../common/Modal";
 import EditShelfForm from "./EditShelfForm";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const Shelf = ({ shelfname, place, shelfId, isEdit, setShelfUpdated }) => {
   const [replaceIsOpen, setReplaceIsOpen] = useState(false);
   const [renameIsOpen, setRenameIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
+  const config = useConfig();
+  const { backendUrl } = config || {};
   const navigate = useNavigate();
   
   const handleNavigate = () => {
     navigate(`/regale/${shelfId}`);
   };
   const handleReplace = async (place) => {
-    await fetch(`http://localhost:3000/replaceShelf`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/replaceShelf`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",
@@ -36,7 +39,7 @@ const Shelf = ({ shelfname, place, shelfId, isEdit, setShelfUpdated }) => {
     });
   };
   const handleRename = async (shelfname) => {
-    await fetch(`http://localhost:3000/renameShelf`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/renameShelf`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",
@@ -52,7 +55,7 @@ const Shelf = ({ shelfname, place, shelfId, isEdit, setShelfUpdated }) => {
     });
   };
   const handleDelete = async () => {
-    await fetch(`http://localhost:3000/deleteShelf`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/deleteShelf`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",

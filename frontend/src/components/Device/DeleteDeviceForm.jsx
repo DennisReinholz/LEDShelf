@@ -2,10 +2,14 @@ import React from "react";
 import styles from "../../styles/Device/deleteDeviceForm.module.css";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const DeleteDeviceForm = ({ onClose, ip, setDeleteDevice, deviceId }) => {
+  const config = useConfig();
+  const { backendUrl } = config || {};
+
   const deleteDevice = async () => {
-    await fetch(`http://localhost:3000/deleteLedController`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/deleteLedController`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",

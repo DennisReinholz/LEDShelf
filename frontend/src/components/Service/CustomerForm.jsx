@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/Service/customerForm.module.css";
 import toast from "react-hot-toast";
+import { useConfig } from "../../ConfigProvider";
 
 const CustomerForm = () => {
   const [connection, setConnection] = useState();
@@ -11,6 +12,8 @@ const CustomerForm = () => {
   const [labels, setLables] = useState([]);
   const [description, setDescription] = useState("");
   const [createIsEnabled, setCreateIsEnabled] = useState(false);
+  const config = useConfig();
+  const { backendUrl } = config || {};
   const isEmpty = (str) => !str?.length;
 
   const handleCreateButton = () => {
@@ -43,7 +46,7 @@ const CustomerForm = () => {
   };
   const getLabels = async () => {
     try {
-      const response = await fetch("http://localhost:3000/trelloLabels", {
+      const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/trelloLabels`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +64,7 @@ const CustomerForm = () => {
     }
   };
   const createTrelloTicket = async () => {
-    return await fetch(`http://localhost:3000/createTrelloCard`, {
+    return await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/createTrelloCard`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",

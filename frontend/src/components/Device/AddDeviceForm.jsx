@@ -3,15 +3,18 @@ import styles from "../../styles/Device/addDeviceForm.module.css";
 import toast from "react-hot-toast";
 import Spinner from "../common/Spinner.jsx";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const AddDeviceForm = ({ onClose }) => {
   const [ipAdress, setIpAdress] = useState();
   const [shelfid, setShelfid] = useState();
   const [shelfList, setShelfList] = useState();
   const [loading, setLoading] = useState(false);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const getShelf = async () => {
-    await fetch(`http://localhost:3000/getShelf`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getShelf`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +31,7 @@ const AddDeviceForm = ({ onClose }) => {
     try {
       const isAvaiable = await pingController();
       if (isAvaiable) {
-        await fetch(`http://localhost:3000/createLedController`, {
+        await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/createLedController`, {
           method: "Post",
           headers: {
             "Content-Type": "application/json",
@@ -59,7 +62,7 @@ const AddDeviceForm = ({ onClose }) => {
   };
   const pingController = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/pingController`, {
+      const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/pingController`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,6 +71,7 @@ const AddDeviceForm = ({ onClose }) => {
         cache: "no-cache",
       });
       const data = await response.json();
+      console.log("Ping controller: ",data);
       return data.serverStatus === 2;
     } catch (error) {
       console.error("Error pinging the controller:", error);
@@ -78,6 +82,7 @@ const AddDeviceForm = ({ onClose }) => {
   useEffect(() => {
     getShelf();
   }, []);
+  
   return (
     <React.Fragment>
       <div className={styles.container}>

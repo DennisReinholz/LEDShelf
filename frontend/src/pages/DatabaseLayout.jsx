@@ -21,6 +21,7 @@ const DatabaseLayout = () => {
       navigate("/login");
     }
   }, []);
+  
   return (
     <div className={styles.container}>
       <DatabaseBackup />

@@ -47,7 +47,6 @@ module.exports.getUser = async (req, res, db) => {
       if (result.length === 0) {
         return res.status(404).json({ serverStatus: -1 });
       }
-      console.log("Password: ", result[0]);
 
       try {
         const match = await bcrypt.compare(
@@ -553,7 +552,7 @@ module.exports.CreateLedController = async (req, res, db) => {
   // Ping LEDController for status
   let tempStatus;
   try {
-    const response = await axios.get("http://192.168.188.48");
+    const response = await axios.get(`http://{ipAdress}`);
     if (response.status === 200) {
       tempStatus = "Connected";
     } else {

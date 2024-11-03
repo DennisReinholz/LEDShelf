@@ -13,6 +13,7 @@ import { BsTrash } from "react-icons/bs";
 import { Tooltip } from "react-tooltip";
 import { FiAirplay } from "react-icons/fi";
 import { HiOutlineExclamationTriangle } from "react-icons/hi2";
+import { useConfig } from "../ConfigProvider";
 
 const ArticleLayout = () => {
   const {user, setUser, token, setToken} = useContext(UserContext);
@@ -34,6 +35,8 @@ const ArticleLayout = () => {
   const [companyList, setCompanyList] = useState([]);
   const [commissionList, setCommissionList] = useState([]);
   const [articleRemoved, setArticleRemoved] = useState();
+  const config = useConfig();
+  const { backendUrl } = config || {};
   // eslint-disable-next-line no-unused-vars
   const [activeUser, setActiveUser] = useState();
   // eslint-disable-next-line no-unused-vars
@@ -43,7 +46,7 @@ const ArticleLayout = () => {
   const navigate = useNavigate();
 
   const getArticle = async () => {
-    await fetch(`http://localhost:3000/getAllArticle`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getAllArticle`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +63,7 @@ const ArticleLayout = () => {
       });
   };
   const getCompartments = async (shelfid) => {
-    await fetch(`http://localhost:3000/getCompartment`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCompartment`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +81,7 @@ const ArticleLayout = () => {
   };
   const getShelf = async () => {
     try {
-        const response = await fetch(`http://localhost:3000/getShelf`, {
+        const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getShelf`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -98,7 +101,7 @@ const ArticleLayout = () => {
 };
   const getCategory = async () => {
     try {
-        const response = await fetch(`http://localhost:3000/getCategory`, {
+        const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCategory`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -122,7 +125,7 @@ const ArticleLayout = () => {
     }
 };
   const deleteArticle = async (article) => {
-    await fetch(`http://localhost:3000/deleteArticle`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/deleteArticle`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",

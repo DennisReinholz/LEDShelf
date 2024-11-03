@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styles from "../../styles/Article/addArticleForm.module.css";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const AddArticleForm = ({ onClose, setArticleCreated, token }) => {
   const [articlename, setArticlename] = useState("");
@@ -18,9 +19,11 @@ const AddArticleForm = ({ onClose, setArticleCreated, token }) => {
   const [minRequirement, setMinRequirement] = useState();
   const [companyList, setCompanyList] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState();
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const getShelf = async () => {
-    await fetch(`http://localhost:3000/getShelf`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getShelf`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +39,7 @@ const AddArticleForm = ({ onClose, setArticleCreated, token }) => {
       });
   };
   const getCompartments = async (shelfid) => {
-    await fetch(`http://localhost:3000/getArticleCompartments`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getArticleCompartments`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +66,7 @@ const AddArticleForm = ({ onClose, setArticleCreated, token }) => {
       });
   };
   const getCategory = async () => {
-    await fetch(`http://localhost:3000/getCategory`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCategory`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -76,7 +79,7 @@ const AddArticleForm = ({ onClose, setArticleCreated, token }) => {
       });
   };
   const getCompany = async () => {
-    await fetch(`http://localhost:3000/getCompany`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCompany`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -89,7 +92,7 @@ const AddArticleForm = ({ onClose, setArticleCreated, token }) => {
       });
   };
   const createArticle = async () => {
-    return await fetch(`http://localhost:3000/createArticle`, {
+    return await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/createArticle`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/User/editUserForm.module.css";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const EditUser = ({ userid, onClose, name, setEditUser }) => {
   const [newName, setNewName] = useState();
@@ -9,9 +10,11 @@ const EditUser = ({ userid, onClose, name, setEditUser }) => {
   const [roles, setRoles] = useState();
   const [selectedRole, setSelectedRole] = useState();
   const [userData, setUserData] = useState();
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const getRoles = async () => {
-    return await fetch(`http://localhost:3000/getRoles`, {
+    return await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getRoles`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",
@@ -27,7 +30,7 @@ const EditUser = ({ userid, onClose, name, setEditUser }) => {
   };
   const getUserData = async () => {
     try {
-      await fetch(`http://localhost:3000/getUserData`, {
+      await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getUserData`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +59,7 @@ const EditUser = ({ userid, onClose, name, setEditUser }) => {
   };
   const updateUser = async () => {
     try {
-      await fetch(`http://localhost:3000/updateUser`, {
+      await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/updateUser`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,6 +106,7 @@ const EditUser = ({ userid, onClose, name, setEditUser }) => {
     getUserData();
     getRoles();
   }, [newPassword, newName, selectedRole]);
+
   return (
     <div className={styles.container}>
       <h3>Benutzer bearbeiten</h3>

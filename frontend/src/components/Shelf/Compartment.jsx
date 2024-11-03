@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styles from "../../styles/Shelf/compartment.module.css";
 import RemovalCompartment from "./RemovalCompartment";
-import { HiMiniXMark } from "react-icons/hi2";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
   const [article, setArticle] = useState();
@@ -13,9 +13,11 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
   const [controllerAvaiable, setControllerAvaiable] = useState();
   // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const getCompartmentArticle = async () => {
-    await fetch(`http://localhost:3000/getArticleInCompartment`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getArticleInCompartment`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +40,7 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
       if (newArticleCount < 0) {
         toast.error("Es ist kein Artikel vorhanden.");
       } else {
-        await fetch(`http://localhost:3000/updateArticleCount`, {
+        await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/updateArticleCount`, {
           method: "Post",
           headers: {
             "Content-Type": "application/json",
@@ -65,7 +67,7 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
     }
   };
   const getControllerFunction = async () => {
-    await fetch(`http://localhost:3000/getControllerFunction`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getControllerFunction`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",

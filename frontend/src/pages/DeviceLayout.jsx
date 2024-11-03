@@ -5,6 +5,7 @@ import Device from "../components/Device/Device";
 import Modal from "../components/common/Modal";
 import AddDeviceForm from "../components/Device/AddDeviceForm";
 import { UserContext } from "../helpers/userAuth";
+import { useConfig } from "../ConfigProvider";
 
 const DeviceLayout = () => {
   // eslint-disable-next-line no-unused-vars
@@ -13,10 +14,12 @@ const DeviceLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const {user, setUser, token} = useContext(UserContext);
+  const config = useConfig();
+  const { backendUrl } = config || {};
   const navigate = useNavigate();
 
   const getShelf = async () => {
-    await fetch(`http://localhost:3000/getShelf`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getShelf`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +32,7 @@ const DeviceLayout = () => {
       });
   };
   const getController = async () => {
-    await fetch(`http://localhost:3000/getController`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getController`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",

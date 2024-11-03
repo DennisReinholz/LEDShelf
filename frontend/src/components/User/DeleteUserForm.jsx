@@ -2,8 +2,12 @@ import React from "react";
 import styles from "../../styles/User/deleteUserForm.module.css";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const DeleteUserForm = ({ onClose, setDeleteUser, name, userid }) => {
+  const config = useConfig();
+  const { backendUrl } = config || {};
+
   const handleDelete = () => {
     deleteUser();
   };
@@ -12,7 +16,7 @@ const DeleteUserForm = ({ onClose, setDeleteUser, name, userid }) => {
     onClose();
   };
   const deleteUser = async () => {
-    await fetch(`http://localhost:3000/deleteUser`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/deleteUser`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -34,6 +38,7 @@ const DeleteUserForm = ({ onClose, setDeleteUser, name, userid }) => {
         }
       });
   };
+  
   return (
     <div className={styles.container}>
       <h3>Benutzer entfernen</h3>

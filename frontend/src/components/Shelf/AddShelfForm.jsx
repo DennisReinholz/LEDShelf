@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import styles from "../../styles/Shelf/addShelfForm.module.css";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const AddShelfForm = ({ onClose, setCreatedShelf }) => {
   const [CountCompartment, setCountCompartment] = useState();
   const [shelfname, setShelfname] = useState();
   const [shelfPlace, setShelfPlace] = useState();
   const [createButtonEnabled, setCreateButtonEnabled] = useState(true);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const createShelf = async () => {
-    return await fetch(`http://localhost:3000/createShelf`, {
+    return await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/createShelf`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       cache: "no-cache",
