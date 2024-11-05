@@ -8,14 +8,17 @@ import { UserContext } from "../helpers/userAuth";
 import { useConfig } from "../ConfigProvider";
 
 const DeviceLayout = () => {
-  // eslint-disable-next-line no-unused-vars
+   // eslint-disable-next-line no-unused-vars
   const [shelfList, setShelfList] = useState([]);
+   // eslint-disable-next-line no-unused-vars
+  const {user, setUser, token} = useContext(UserContext);
   const [controllerList, setControllerList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const {user, setUser, token} = useContext(UserContext);
   const config = useConfig();
   const { backendUrl } = config || {};
+
   const navigate = useNavigate();
 
   const getShelf = async () => {

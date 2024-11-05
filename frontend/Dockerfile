@@ -25,6 +25,5 @@ COPY --from=build /app/src/config.json /usr/share/nginx/html/src/config.json
 
 # Öffne Port 80 für den Container
 EXPOSE 80
-
 # Starten von NGINX
 CMD ["nginx", "-g", "daemon off;"]

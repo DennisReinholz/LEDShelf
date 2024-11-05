@@ -5,8 +5,9 @@ import styles from "../styles/serviceLayout.module.css";
 import CustomerForm from "../components/Service/CustomerForm.jsx";
 
 const ServiceLayout = () => {
-  const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const {user, setUser, token} = useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userStorage = localStorage.getItem("user");

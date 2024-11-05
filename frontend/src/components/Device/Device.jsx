@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import { Tooltip } from "react-tooltip";
+import { TfiReload } from "react-icons/tfi";
 import styles from "../../styles/Device/device.module.css";
 import EditDeviceForm from "../../components/Device/EditDeviceForm";
 import Modal from "../../components/common/Modal";
@@ -21,6 +22,7 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
   const [deleteDevice, setDeleteDevice] = useState(false);
 
   const pingController = async () => {
+    setControllerStatus("Suche Controller...");
     try {
       const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3000";
   
@@ -29,6 +31,7 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ ip }),
         cache: "no-cache",
       })
         .then((response) => response.json())
@@ -52,13 +55,16 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
 
   useEffect(() => {
     pingController();
-  }, [assignedShelf, ip]);
+  }, [assignedShelf]);
   return (
     <div
       className={
         assignedIsOpen ? styles.container : styles.assignedIsOpenContainer
       }
     >
+      <Tooltip anchorSelect=".reconnect" place="left">
+        Mit Controller verbinden
+      </Tooltip>
       <Tooltip anchorSelect=".edit" place="left">
         Bearbeiten des Controllers
       </Tooltip>
@@ -75,9 +81,13 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
         <p>{deviceId}</p>
         <p>{shelfName == null ? "Nicht zugewiesen" : shelfName}</p>
         <p>{ip}</p>
-        <p>{ControllerStatus != undefined ? ControllerStatus : ""}</p>
-      </div>
+        {!ControllerStatus ? <p>Ping Controller..</p> :
+        <p>{ControllerStatus != undefined ? ControllerStatus : ""}</p>}
+      </div> 
       <div className={styles.editContainer}>
+        <TfiReload  className="reconnect"
+          style={{ cursor: "pointer" }}
+          onClick={() => pingController()}/>
         <FiEdit2
           className="edit"
           style={{ cursor: "pointer" }}
@@ -89,6 +99,7 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
           onClick={() => setDeleteFormIsOpen(true)}
         />
       </div>
+     
       {editModalIsOpen && (
         <Modal onClose={() => setEditModalIsOpen(false)}>
           <EditDeviceForm

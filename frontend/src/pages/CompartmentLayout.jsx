@@ -23,7 +23,7 @@ const CompartmentLayout = () => {
       return newState;
     });
   };
-  const hanleAllOff = () => {
+  const handleAllOff = () => {
     setActiveCompartments(Array(compartments.length).fill(false));
     handleLedOff();
   };
@@ -101,7 +101,7 @@ const CompartmentLayout = () => {
         <button
           className="primaryButton"
           style={{ marginLeft: "2rem" }}
-          onClick={hanleAllOff}
+          onClick={handleAllOff}
         >
          Alle aus
         </button>

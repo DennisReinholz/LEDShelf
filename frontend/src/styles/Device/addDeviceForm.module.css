@@ -19,8 +19,14 @@
   .shelfContainer {
     display: flex;
     flex-direction: row;
+    align-items: center;
     width: 16rem;
+    height: 4rem;
     justify-content: space-between;
+  }
+  .compartmentNumberInput{
+    height: 1.5rem;
+    width: 3rem;
   }
   .buttonContainer {
     display: flex;
@@ -52,8 +58,14 @@
   .shelfContainer {
     display: flex;
     flex-direction: row;
+    align-items: center;
     width: 16rem;
+    height: 4rem;
     justify-content: space-between;
+  }
+  .compartmentNumberInput{
+    height: 1.5rem;
+    width: 3rem;
   }
   .buttonContainer {
     display: flex;
@@ -83,8 +95,14 @@
   .shelfContainer {
     display: flex;
     flex-direction: row;
+    align-items: center;
     width: 16rem;
+    height: 4rem;
     justify-content: space-between;
+  }
+  .compartmentNumberInput{
+    height: 1.5rem;
+    width: 3rem;
   }
   .buttonContainer {
     display: flex;
@@ -114,8 +132,14 @@
   .shelfContainer {
     display: flex;
     flex-direction: row;
+    align-items: center;
     width: 16rem;
+    height: 4rem;
     justify-content: space-between;
+  }
+  .compartmentNumberInput{
+    height: 1.5rem;
+    width: 3rem;
   }
   .buttonContainer {
     display: flex;

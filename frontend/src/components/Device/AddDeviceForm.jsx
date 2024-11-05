@@ -7,8 +7,7 @@ import { useConfig } from "../../ConfigProvider";
 
 const AddDeviceForm = ({ onClose }) => {
   const [ipAdress, setIpAdress] = useState();
-  const [shelfid, setShelfid] = useState();
-  const [shelfList, setShelfList] = useState();
+  const [countCompartment, setCountCompartment] = useState(0);
   const [loading, setLoading] = useState(false);
   const config = useConfig();
   const { backendUrl } = config || {};
@@ -39,7 +38,7 @@ const AddDeviceForm = ({ onClose }) => {
           cache: "no-cache",
           body: JSON.stringify({
             ipAdress: ipAdress,
-            shelf: shelfid !== undefined ? shelfid : "NULL",
+            countCompartment: countCompartment,
           }),
         })
           .then((response) => response.json())
@@ -51,15 +50,14 @@ const AddDeviceForm = ({ onClose }) => {
               toast.error("Controller wurde nicht hinzugefügt");
             }
           });
-      } else {
-        toast.error("Controller nicht erreichbar");
-      }
+      
     } catch (error) {
-      toast.error("Controller nicht erreichbar");
+      toast.error("Controller nicht erreichbar", error);
     } finally {
       setLoading(false);
     }
   };
+
   const pingController = async () => {
     try {
       const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/pingController`, {
@@ -80,7 +78,6 @@ const AddDeviceForm = ({ onClose }) => {
   };
 
   useEffect(() => {
-    getShelf();
   }, []);
   
   return (
@@ -88,7 +85,7 @@ const AddDeviceForm = ({ onClose }) => {
       <div className={styles.container}>
         <h3>Gerät hinzufügen</h3>
         {loading ? (
-          <Spinner />
+          <Spinner spinnerText="Ping Controller..."/>
         ) : (
           <React.Fragment>
             <div className={styles.content}>
@@ -100,21 +97,9 @@ const AddDeviceForm = ({ onClose }) => {
                 onChange={(e) => setIpAdress(e.target.value)}
               />
               <div className={styles.shelfContainer}>
-                <select
-                  className={styles.regalSelection}
-                  onChange={(e) => setShelfid(e.target.value)}
-                >
-                  <option>Regal auswählen</option>
-                  {shelfList != undefined ? (
-                    shelfList.map((s) => (
-                      <option value={s.shelfid} key={s.shelfid}>
-                        {s.shelfname}
-                      </option>
-                    ))
-                  ) : (
-                    <option>Kein Regal</option>
-                  )}
-                </select>
+                <p>Anzahl Fächer:</p>
+                <input type="number" className={styles.compartmentNumberInput} value={countCompartment}
+                onChange={(e)=>setCountCompartment(e.target.value)} />                
               </div>
             </div>
             <div className={styles.buttonContainer}>
@@ -135,6 +120,6 @@ const AddDeviceForm = ({ onClose }) => {
   );
 };
 AddDeviceForm.propTypes = {
-  onClose: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 export default AddDeviceForm;

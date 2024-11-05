@@ -6,6 +6,7 @@ const { exec } = require("child_process");
 const util = require("util");
 const execAsync = util.promisify(exec);
 const jwt = require("jsonwebtoken");
+const ping = require('ping');
 
 const SECRET_KEY = process.env.AZURE_JSONWEB_TOKEN;
 
@@ -100,7 +101,6 @@ module.exports.getUserData = async (req, res, db) => {
   const { userid } = req.body;
   db.all(`SELECT * from user WHERE userid=?`, [userid], (err, result) => {
     if (err) {
-      console.log(`Unable to get UserData from ${userid}`);
       res.sendStatus(500);
     } else {
       res.status(200).json(result);
@@ -192,8 +192,6 @@ module.exports.getAllUser = async (req, res, db) => {
 };
 module.exports.postCreateShelf = async (req, res, db) => {
   const { shelfname, shelfPlace, CountCompartment } = req.body;
-
-  // Verwende db.run statt db.all für INSERT
   db.run(
     `INSERT INTO shelf (shelfname, place, countCompartment) VALUES (?, ?, ?)`,
     [shelfname, shelfPlace, CountCompartment],
@@ -201,7 +199,7 @@ module.exports.postCreateShelf = async (req, res, db) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
       } else {
-        const shelfId = this.lastID; // Die zuletzt eingefügte ID wird hier gespeichert
+        const shelfId = this.lastID;
 
         // Rufe die CreateCompartments-Funktion auf und übergebe die shelfId
         CreateCompartments(db, CountCompartment, shelfId);
@@ -546,28 +544,34 @@ module.exports.UpdateLedController = async (req, res, db) => {
       }
     }
   );
+
+  let controllerFunctions = await GetControllerFunctions(db, controllerid);
+  let compartments = await GetCompartments(db, shelfid); 
+
+  if (controllerFunctions.length > 0 && compartments.length > 0) {
+    await MapControllerOnCompartment(db,controllerFunctions, compartments);
+  }
 };
 module.exports.CreateLedController = async (req, res, db) => {
-  const { ipAdress, shelf } = req.body;
-  // Ping LEDController for status
+  const { ipAdress, countCompartment } = req.body;
   let tempStatus;
   try {
-    const response = await axios.get(`http://{ipAdress}`);
-    if (response.status === 200) {
+    const result = await ping.promise.probe(ipAdress);
+    if (result.alive) {
+
       tempStatus = "Connected";
     } else {
       tempStatus = "Disconnected";
     }
   } catch (error) {
-    console.log("Error pinging ESP32:", error);
     tempStatus = "undefinded";
   }
   const status = tempStatus;
 
   // Create n Controllerfunction with ledControllerid
   db.all(
-    `INSERT INTO ledController (ipAdresse, shelfid, status) VALUES (?,?,?)`,
-    [ipAdress, shelf, status],
+    `INSERT INTO ledController (ipAdresse, numberCompartment ,status) VALUES (?,?,?)`,
+    [ipAdress, countCompartment, status],
     (error, result) => {
       if (error) {
         res.status(500).json({ serverStatus: -1 });
@@ -576,7 +580,7 @@ module.exports.CreateLedController = async (req, res, db) => {
       }
     }
   );
-  CreateControllerFunction(db, res, shelf);
+  CreateControllerFunction(db, res, countCompartment);
 };
 module.exports.DeleteLedController = async (req, res, db) => {
   const { deviceId } = req.body;
@@ -595,7 +599,8 @@ module.exports.DeleteLedController = async (req, res, db) => {
 };
 module.exports.ControllerOff = async (req, res, db) => {
   const { shelfid } = req.body;
-  return new Promise((resolve, reject) => {
+  try {
+    return new Promise((resolve, reject) => {
     db.get(
       `SELECT * FROM ledController WHERE shelfid=?`,
       [shelfid],
@@ -603,20 +608,26 @@ module.exports.ControllerOff = async (req, res, db) => {
         if (err) {
           reject(err);
         } else {
-          LedOff(result.ipAdresse);
+          LedOff(result?.ipAdresse);
           res.status(200).json({ serverStatus: 2 });
         }
       }
     );
   });
+  } catch (error) {
+   res.status(500).json({serverStatus: -1}) 
+  }
+  
 };
 module.exports.PingController = async (req, res) => {
   const { ip } = req.body;
+
   try {
-    const ping = await fetch(`http://${ip}`);
-    if (ping.status === 200) {
+    const result = await ping.promise.probe(ip);
+    if (result.alive) {
       res.status(200).json({ serverStatus: 2 });
-    } else {
+    }
+    else{
       res.status(404).json({ serverStatus: -1 });
     }
   } catch (error) {
@@ -646,7 +657,12 @@ module.exports.RemoveArticleFromShelf = async (req, res, db) => {
   });}
 
 const LedOff = async (ipAdresse) => {
-  await fetch(`http:/${ipAdresse}/led/off`);
+  try {
+    await fetch(`http:/${ipAdresse}/led/off`);
+  } catch (error) {
+    console.error("Unable to call LED OFF.", error)
+  }
+  
 };
 module.exports.RenameShelf = async (req, res, db) => {
   const { shelfId, shelfname } = req.body;
@@ -679,33 +695,86 @@ module.exports.ReplaceShelf = async (req, res, db) => {
   });
 };
 const CreateCompartments = (db, countCompartment, shelfId) => {
-  for (let i = 0; i < countCompartment; i++) {
-    db.run(
-      `INSERT INTO compartment (compartmentname, shelfid, number) VALUES (?, ?, ?)`,
-      [`${i + 1}-Fach`, shelfId, i + 1],
-      (err) => {
-        if (err) {
-          console.error("Fehler beim Einfügen in compartment:", err);
-        }
-      }
-    );
-  }
-};
-const CreateControllerFunction = async (db, res, shelf) => {
-  try {
-    // get list of compartments from shelfs
-    const compartmentList = await getCompartments(db, shelf);
 
+  db.serialize(() => {
+    // Beginne die Transaktion
+    db.run("BEGIN TRANSACTION", (err) => {
+      if (err) {
+        console.error("Fehler beim Starten der Transaktion:", err);
+        return;
+      }
+    });
+
+    const promises = []; // Array für Promises
+
+    for (let i = 0; i < countCompartment; i++) {
+      const compartmentName = `${i + 1}-Fach`;
+
+      // Erstelle ein Promise für jeden Einfügungsversuch
+      const promise = new Promise((resolve, reject) => {
+        db.get(
+          `SELECT COUNT(*) AS count FROM compartment WHERE compartmentname = ? AND shelfid = ?`,
+          [compartmentName, shelfId],
+          (err, row) => {
+            if (err) {
+              console.error("Fehler beim Prüfen auf vorhandenes Fach:", err);
+              return reject(err);
+            }
+
+            if (row.count === 0) { // Nur einfügen, wenn das Fach nicht existiert
+              db.run(
+                `INSERT INTO compartment (compartmentname, shelfid, number) VALUES (?, ?, ?)`,
+                [compartmentName, shelfId, i + 1],
+                (err) => {
+                  if (err) {
+                    console.error("Fehler beim Einfügen in compartment:", err);
+                    return reject(err);
+                  }
+                  resolve(); // Promise auflösen, wenn die Einfügung erfolgreich war
+                }
+              );
+            } else {
+              resolve(); // Promise auflösen, auch wenn das Fach existiert
+            }
+          }
+        );
+      });
+
+      promises.push(promise); // Füge die Promise zum Array hinzu
+    }
+
+    // Warte auf alle Einfügungen, bevor du commitest
+    Promise.all(promises)
+      .then(() => {
+        db.run("COMMIT", (err) => {
+          if (err) {
+            console.error("Fehler beim Commit der Transaktion:", err);
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Fehler beim Erstellen der Fächer:", error);
+        db.run("ROLLBACK", (err) => {
+          if (err) {
+            console.error("Fehler beim Rollback der Transaktion:", err);
+          }
+        });
+      });
+  });
+};
+const CreateControllerFunction = async (db, res, countCompartment) => {
+  try {
     // last created Controller
-    const controllerId = await getLastInsertRowId(db);
+    const controllerId = await GetLastInsertRowId(db);
 
     // insert controllerfunction
-    await insertControllerFunction(db, controllerId, compartmentList);
+    await InsertControllerFunction(db, controllerId, countCompartment);
+
   } catch (error) {
     console.error(error);
   }
 };
-const getLastInsertRowId = (db) => {
+const GetLastInsertRowId = (db) => {
   return new Promise((resolve, reject) => {
     db.get("SELECT last_insert_rowid() as ledControllerid", (err, row) => {
       if (err) {
@@ -716,10 +785,10 @@ const getLastInsertRowId = (db) => {
     });
   });
 };
-const getCompartments = (db, shelf) => {
+const GetCompartments = (db, shelf) => {
   return new Promise((resolve, reject) => {
     db.all(
-      `SELECT compartment.compartmentId
+      `SELECT compartment.*
       FROM compartment
       LEFT JOIN article ON article.compartment = compartment.compartmentId
       WHERE compartment.shelfId = ? AND article.compartment IS NULL`,
@@ -743,18 +812,23 @@ const DeleteControllerFunction = async (db, deviceId) => {
     console.log(error);
   }
 };
-const insertControllerFunction = async (db, controllerId, compartmentList) => {
-  for (let i = 0; i < compartmentList.length; i++) {
+const InsertControllerFunction = async (db, controllerId, countCompartment) => {
+  try {
+    for (let i = 0; i < countCompartment; i++) {
     await db.run(
-      `INSERT INTO ControllerFunctions (controllerId, functionName, compartmentid) VALUES (?,?,?)`,
-      [controllerId, "led" + (i + 1) + "/on", compartmentList[i].compartmentId]
+      `INSERT INTO ControllerFunctions (controllerId, functionName ) VALUES (?,?)`,
+      [controllerId, "led" + (i + 1) + "/on"]
     );
   }
-  // Led off controllerFunction
-  await db.run(
-    `INSERT INTO ControllerFunctions (controllerId, functionName) VALUES (?,?)`,
-    [controllerId, "led/off"]
+    // Led off controllerFunction
+    await db.run(
+      `INSERT INTO ControllerFunctions (controllerId, functionName) VALUES (?,?)`,
+      [controllerId, "led/off"]
   );
+  } catch (error) {
+    console.log("Fehler beim einfügen von Controllerfunktion: ", error);
+  }
+  
 };
 const CreateDatabase = () => {
   exec(`python3 ./Scripts/InitialDatabase.py`, (error, stderr) => {
@@ -766,3 +840,49 @@ const CreateDatabase = () => {
     }
   });
 };
+
+const GetControllerFunctions = (database, controllerId) => {
+  return new Promise((resolve, reject) => {
+    database.all(`SELECT * FROM ControllerFunctions WHERE controllerId = ?`, [controllerId], (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+const MapControllerOnCompartment = async (db, functions, compartments) => {
+  // Schleife durch das controllerFunctions Array
+  for (const controllerFunction of functions) {
+    // Extrahiere die Nummer aus dem functionName, z.B. 'led1/on' wird zu '1'
+    const functionNumberMatch = controllerFunction.functionName.match(/led(\d+)\/on/);
+    
+    // Wenn keine Nummer gefunden wurde, ignoriere diesen Eintrag
+    if (!functionNumberMatch) continue;
+
+    const functionNumber = parseInt(functionNumberMatch[1]);
+
+    // Finde das entsprechende Kompartiment mit derselben Nummer im Namen
+    const matchingCompartment = compartments.find(
+      compartment => compartment.number === functionNumber
+    );
+
+    // Wenn ein passendes Kompartiment gefunden wurde, aktualisiere die Datenbank
+    if (matchingCompartment) {
+      await new Promise((resolve, reject) => {
+        db.run(
+          `UPDATE ControllerFunctions SET compartmentid = ? WHERE controllerfunctionId = ?`,
+          [matchingCompartment.compartmentId, controllerFunction.controllerfunctionId],
+          (err) => {
+            if (err) {
+              reject(err);
+            } else {              
+              resolve();
+            }
+          }
+        );
+      });
+    }
+  }
+}

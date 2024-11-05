@@ -92,7 +92,9 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
   const handleLedOn = async () => {
     if (controllerAvaiable) {
       try {
-        const response = await fetch(`http://${ip}/${controllerFunction}`);
+        const response = await fetch(`http://${ip}/${controllerFunction}`,{
+          mode: "no-cors"
+        });
         if (response.status !== 200) {
           console.log("Network response was not ok");
         }

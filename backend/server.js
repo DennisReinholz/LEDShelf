@@ -147,9 +147,6 @@ app.get("/getShelf", (req, res) => {
 app.post("/getCompartment", (req, res) => {
   DataBaseController.getCompartments(req, res, db);
 });
-// app.get("/getUser", (req, res) => {
-//   DataBaseController.getUsers(req, res, db);
-// });
 app.post("/createUser", (req, res) => {
   DataBaseController.createUser(req, res, db);
 });
@@ -237,7 +234,7 @@ app.post("/deleteLedController", (req, res) => {
 app.post("/controllerOff", (req, res) => {
   DataBaseController.ControllerOff(req, res, db);
 });
-app.get("/pingController", (req, res) => {
+app.post("/pingController", (req, res) => {
   DataBaseController.PingController(req, res, db);
 });
 app.get("/getCompany", (req, res) => {

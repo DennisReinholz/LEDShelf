@@ -25,6 +25,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
         setShelfList(shelf);
       });
   };
+
   const pingController = async () => {
     try {
       const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/pingController`, {
@@ -66,12 +67,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
           } else {
             toast.error("Led-Controller konnte nicht geladen werden");
           }
-        });
-    } else {
-      toast.error(
-        "Led-Controller konnte nicht erreicht werden. Überprüfen sie die Ip Adresse des Controllers"
-      );
-    }
+        });    
   };
   const handleIp = () => {
     if (newIp === undefined) {
@@ -133,7 +129,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
             className={updateEnabled ? "primaryButton" : "disabledButton"}
             onClick={UpdateLedController}
           >
-            Bearbeiten
+            Speichern
           </button>
         </div>
       </div>

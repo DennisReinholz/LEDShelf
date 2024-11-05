@@ -32,8 +32,7 @@ def createLedshelfDb(db_file):
                 shelfid INTEGER PRIMARY KEY,
                 shelfname TEXT NOT NULL,
                 place TEXT,
-                countCompartment INT,
-                controllerId INT
+                countCompartment INT
             );
         ''')
         print("Tabelle 'shelf' erstellt.")

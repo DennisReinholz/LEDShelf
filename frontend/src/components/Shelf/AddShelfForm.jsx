@@ -84,7 +84,7 @@ const AddShelfForm = ({ onClose, setCreatedShelf }) => {
         <button
           className={!createButtonEnabled ? "primaryButton" : "disabledButton"}
           disabled={createButtonEnabled}
-          onClick={createShelf}
+          onClick={()=>createShelf()}
         >
           Erstellen
         </button>

@@ -57,7 +57,7 @@ const ShelfLayout = () => {
     <div className={styles.container}>
         {user != undefined
           ? user.roleid == 1 && (
-            <div>
+            <div className={styles.buttonContainer}>
               <button
               disabled={isEdit}
                 className={!isEdit ? "primaryButton": "disabledButton"}
