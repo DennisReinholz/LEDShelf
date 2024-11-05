@@ -8,14 +8,7 @@ const Sidebar = () => {
   const [version, setVersion] = useState("");
 
   useEffect(() => {
-    fetch("/package.json")
-      .then((response) => response.json())
-      .then((data) => {
-        setVersion(data.version);    
-      })
-      .catch((error) => {
-        console.error("Error fetching version:", error);
-      });
+    setVersion(__APP_VERSION__);
   }, []);
 
   return (
@@ -23,8 +16,8 @@ const Sidebar = () => {
       <div className={styles.content}>
         <Logo />
         <MainNav />
-      </div>
-      <p style={{ color: "White", marginLeft: "1rem" }}>v.{version}</p>
+       </div>
+      <p style={{ color: "White", marginLeft: "1rem" }}>V.{version}</p>
     </aside>
   );
 };

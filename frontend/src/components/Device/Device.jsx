@@ -7,6 +7,7 @@ import styles from "../../styles/Device/device.module.css";
 import EditDeviceForm from "../../components/Device/EditDeviceForm";
 import Modal from "../../components/common/Modal";
 import DeleteDeviceForm from "../../components/Device/DeleteDeviceForm";
+import { useConfig } from "../../ConfigProvider";
 import PropTypes from "prop-types";
 
 const Device = ({ ip, shelfName, shelfid, deviceId }) => {
@@ -20,13 +21,13 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
   const [assignedIsOpen, setAssignedIsOpen] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [deleteDevice, setDeleteDevice] = useState(false);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const pingController = async () => {
-    setControllerStatus("Suche Controller...");
-    try {
-      const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3000";
-  
-      await fetch(`${apiUrl}/pingController`, {
+    try { 
+      setControllerStatus("Suche LedController");
+      await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/pingController`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
