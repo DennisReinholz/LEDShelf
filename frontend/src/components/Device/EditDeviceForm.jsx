@@ -25,7 +25,6 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
         setShelfList(shelf);
       });
   };
-
   const pingController = async () => {
     try {
       const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/pingController`, {
@@ -68,6 +67,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
             toast.error("Led-Controller konnte nicht geladen werden");
           }
         });    
+  };
   };
   const handleIp = () => {
     if (newIp === undefined) {
@@ -127,7 +127,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
           <button
             disabled={!updateEnabled}
             className={updateEnabled ? "primaryButton" : "disabledButton"}
-            onClick={UpdateLedController}
+            onClick={()=>UpdateLedController()}
           >
             Speichern
           </button>
@@ -136,10 +136,11 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
     </div>
   );
 };
+
 EditDeviceForm.propTypes = {
   onClose: PropTypes.func.isRequired,
   ip: PropTypes.node.isRequired,
   shelfid: PropTypes.node.isRequired,
   deviceId: PropTypes.node.isRequired,
-};
+  };
 export default EditDeviceForm;

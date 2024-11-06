@@ -11,15 +11,13 @@ const DeviceLayout = () => {
    // eslint-disable-next-line no-unused-vars
   const [shelfList, setShelfList] = useState([]);
    // eslint-disable-next-line no-unused-vars
-  const {user, setUser, token} = useContext(UserContext);
   const [controllerList, setControllerList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const {user, setUser, token} = useContext(UserContext);
   const config = useConfig();
-  const { backendUrl } = config || {};
-
   const navigate = useNavigate();
+  const { backendUrl } = config || {};
 
   const getShelf = async () => {
     await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getShelf`, {

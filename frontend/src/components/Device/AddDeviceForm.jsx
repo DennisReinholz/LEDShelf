@@ -50,7 +50,7 @@ const AddDeviceForm = ({ onClose }) => {
               toast.error("Controller wurde nicht hinzugefügt");
             }
           });
-      
+      }
     } catch (error) {
       toast.error("Controller nicht erreichbar", error);
     } finally {

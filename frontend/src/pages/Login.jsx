@@ -25,7 +25,7 @@ const Login = () => {
   };
   const getUser = async () => {
     try {
-        const response = await fetch(`http://${backendUrl===undefined?config.localhost:config.backendUrl}:3000/users`, {
+        const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/users`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const Login = () => {
           <div className={styles.buttonContainer}>
             <button className={styles.loginButton} onClick={getUser}>
               Login
-            </button>        
+            </button> 
           </div>
         </div>
       </div>

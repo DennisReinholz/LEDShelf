@@ -116,8 +116,8 @@ def createLedshelfDb(db_file):
         print("Daten in Tabelle 'role' eingefügt.")
 
         #Insert Shelf
-        cursor.execute('INSERT INTO shelf (shelfname, place, countCompartment, controllerId) VALUES (?, ?, ?, ?)',
-                       ('Regal A', 'Ort A', 3, 1))
+        cursor.execute('INSERT INTO shelf (shelfname, place, countCompartment) VALUES (?, ?, ?)',
+                       ('Regal A', 'Ort A', 3))
         print("Daten in Tabelle 'shelf' eingefügt.")
 
         #Insert Article

@@ -1,4 +1,4 @@
 {
     "backendUrl": "192.168.188.52",
-    "prod" : false
+    "Prod": true
 }

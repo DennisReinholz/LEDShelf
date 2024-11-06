@@ -16,16 +16,16 @@ export const ConfigProvider = ({ children }) => {
                     setConfig({ localhost: "http://localhost" });
                 } else {
                     const data = await response.json();
-                    if (data.prod) {
-                        setConfig(data.backendUrl);
+                    if (data.Prod) {
+                        const {backendUrl} = data;
+                        setConfig({backendUrl});
                     }
                     else{
                         setConfig({localhost: "localhost"});
                     }                  
                 }
             } catch (err) {
-                console.error("Error loading config: First start LedShelf in DockerContainer", err);
-                setConfig({ localhost: "http://localhost" });
+                console.error("Error loading config: First start LedShelf in DockerContainer", err);            
                 setError(err);
             } finally {
                 setLoading(false);
