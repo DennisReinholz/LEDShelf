@@ -182,6 +182,7 @@
   }
   .content {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     height: 60rem;
     width: 59rem;

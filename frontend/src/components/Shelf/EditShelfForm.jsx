@@ -8,7 +8,7 @@ const EditShelfForm = ({onClose, inputValue, updateFunction, value, caption, que
     <div className={styles.container}>
         <h2>{caption}</h2>
         <div className={styles.contentContainer}>
-            <h3>{question}</h3>
+            <p>{question}</p>
            {inputEnable && 
             <input className={styles.placeInput}
             placeholder={inputValue || value} 
@@ -17,7 +17,7 @@ const EditShelfForm = ({onClose, inputValue, updateFunction, value, caption, que
         </div>
         <div className={styles.buttonContainer}>
             <button className="secondaryButton" onClick={() => onClose()}>Abbrechen</button>
-            <button className="primaryButton" onClick={() => updateFunction(newValue)}>Speichern</button>
+            <button className="primaryButton" onClick={() => updateFunction(newValue)}>Anwenden</button>
         </div>
     </div>
   );

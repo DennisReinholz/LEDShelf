@@ -256,16 +256,6 @@ const ArticleLayout = () => {
     });
     setCommissionList(filtered);
   };
-  const handleRemoveShelf = (articleId) => {
-    // Filtere das Artikel-Array, um den Artikel ohne Regal zu aktualisieren
-    const updatedArticles = originArticleList.map((article) =>
-      article.articleid === articleId ? { ...article, shelf: null } : article
-    );  
-    // Lokalen Zustand aktualisieren
-    setOriginArticleList(updatedArticles);
-    setArticleListToShow(updatedArticles);
-    setUpdateArticle(true);  // optional für API-Refetch, falls notwendig
-  };
   const GetCategory = (category) => {
     const {result} = category.data;
     const uniqueCategories = new Map();
@@ -289,7 +279,6 @@ const ArticleLayout = () => {
     }));  
      setCategoryList(temp); // Update the state with the unique categories
   };
-
   //Export function and convertion to an csv format
   //Properties which are exportet to csv
   const exportArticleProperties = [
@@ -302,7 +291,6 @@ const ArticleLayout = () => {
     "companyName",
     "minRequirement",
   ];
-
   const filterArticleProperties = (articleList, propertyList) => {
     return articleList.map((article) => {
       let filteredArticle = {};
@@ -398,7 +386,7 @@ const ArticleLayout = () => {
 
       <div className={styles.buttonContainer}>
         {user != undefined
-          ? user.roleid === 1 && (
+          ? user.roleid <= 2 && (
               <button
                 className="primaryButton"
                 onClick={() => setIsModalOpen(true)}
@@ -441,7 +429,7 @@ const ArticleLayout = () => {
                 <th>Fach</th>
                 <th>Firma</th>
                 <th>Kommission</th>
-                {user != undefined ? user.roleid == 1 && <th>Action</th> : ""}
+                {user != undefined ? user.roleid <= 2 && <th>Action</th> : ""}
               </tr>
             </thead>
             {articleListToShow !== undefined ? (
@@ -463,7 +451,7 @@ const ArticleLayout = () => {
                     <td>{c.companyName}</td>
                     <td>{c.commission}</td>
                     {user != undefined
-                      ? user.roleid == 1 && (
+                      ? user.roleid <= 2 && (
                           <td>
                             <div className={styles.editContainer}>
                               <FiEdit2

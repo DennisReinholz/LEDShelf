@@ -10,6 +10,7 @@ import { useConfig } from "../ConfigProvider";
 const CompartmentLayout = () => {
   let { shelfid } = useParams();
   const navigate = useNavigate();
+   // eslint-disable-next-line no-unused-vars
   const {user, setUser, token} = useContext(UserContext);
   const [compartments, setCompartments] = useState();
   const [activeCompartments, setActiveCompartments] = useState([]);

@@ -102,12 +102,10 @@ def createLedshelfDb(db_file):
             );
         ''')
         print("Tabelle 'company' erstellt.")
-
-        password = "admin"
-        saltRounds = 12
-
+        
         # Insert User
         cursor.execute('INSERT INTO user (username, password, role) VALUES (?, ?, ?)', ('admin', '$2b$12$vVr6P4EVInVpFjC45/kGNeEV2jGF9wsoUoST7rCBGT3vkmx3TB7Ou', 1))
+        cursor.execute('INSERT INTO user (username, password, role) VALUES (?, ?, ?)', ('ledshelfadmin', '$2b$12$yCytsaCfyMmEIetIAbUlcu9mqXzdqxG7CKmNgOgyQ/ILSwRV8Hv2m', 1))
         print("Daten in Tabelle 'user' eingefügt.")
 
         #Insert Role

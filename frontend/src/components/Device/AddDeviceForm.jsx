@@ -12,19 +12,6 @@ const AddDeviceForm = ({ onClose }) => {
   const config = useConfig();
   const { backendUrl } = config || {};
 
-  const getShelf = async () => {
-    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getShelf`, {
-      method: "Get",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-cache",
-    })
-      .then((response) => response.json())
-      .then((shelf) => {
-        setShelfList(shelf.result);
-      });
-  };
   const createController = async () => {
     setLoading(true);
     try {
@@ -57,7 +44,6 @@ const AddDeviceForm = ({ onClose }) => {
       setLoading(false);
     }
   };
-
   const pingController = async () => {
     try {
       const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/pingController`, {

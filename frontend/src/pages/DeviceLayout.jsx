@@ -11,10 +11,11 @@ const DeviceLayout = () => {
    // eslint-disable-next-line no-unused-vars
   const [shelfList, setShelfList] = useState([]);
    // eslint-disable-next-line no-unused-vars
-  const [controllerList, setControllerList] = useState([]);
+   const [controllerList, setControllerList] = useState([]);
+   // eslint-disable-next-line no-unused-vars
+  const {user, setUser, token} = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-  const {user, setUser, token} = useContext(UserContext);
   const config = useConfig();
   const navigate = useNavigate();
   const { backendUrl } = config || {};

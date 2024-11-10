@@ -120,7 +120,11 @@ const Shelf = ({ shelfname, place, shelfId, isEdit, setShelfUpdated }) => {
         <Modal onClose={() => setDeleteIsOpen(false)}>
           <EditShelfForm
             onClose={() => setDeleteIsOpen(false)}
-            question={`Das Regal ${shelfname} wirklich  löschen?`}
+            question={
+              <>
+                Das Regal <strong>{shelfname}</strong> wirklich löschen?
+              </>
+            }
             caption="Regal löschen"
             inputValue={shelfname}
             updateFunction={handleDelete}

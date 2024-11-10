@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useConfig } from "../../ConfigProvider";
 
 const CustomerForm = () => {
+  // eslint-disable-next-line no-unused-vars
   const [connection, setConnection] = useState();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

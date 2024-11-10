@@ -54,7 +54,6 @@ module.exports.getUser = async (req, res, db) => {
           frontendPassword,
           result[0].password
         );
-
         if (match) {
           // JWT-Token erstellen
           const token = jwt.sign(
@@ -154,29 +153,57 @@ module.exports.getCompartArticleForm = async (req, res, db) => {
 };
 module.exports.getCompartments = async (req, res, db) => {
   const { shelfid } = req.body;
+
   db.all(
-    `SELECT DISTINCT(compartment.compartmentId), shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number
-    FROM shelf
-    JOIN compartment ON shelf.shelfid = compartment.shelfId 
-    LEFT JOIN article ON compartment.compartmentId = article.compartment
-    WHERE shelf.shelfid =? AND article.compartment ISNULL`,
+    `SELECT DISTINCT compartment.compartmentId, 
+                     shelf.shelfid, 
+                     shelf.shelfname, 
+                     compartment.compartmentname, 
+                     compartment.number,
+                     article.articleId, 
+                     article.articlename
+     FROM shelf
+     JOIN compartment ON shelf.shelfid = compartment.shelfId
+     LEFT JOIN article ON compartment.compartmentId = article.compartment
+     WHERE shelf.shelfid = ?`,
     [shelfid],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-      } else {
-        const data = {
-          result,
-          serverStatus: 2,
-        };
-        res.status(200).json(data);
+      } else {        
+          const compartments = result.reduce((acc, row) => {
+       
+          const compartment = acc.find(c => c.compartmentId === row.compartmentId);
+          if (compartment) {
+       
+            if (row.articleId) {
+              compartment.articles.push({
+                articleId: row.articleId,
+                articlename: row.articlename,
+              });
+            }
+          } else {
+            acc.push({
+              compartmentId: row.compartmentId,
+              shelfid: row.shelfid,
+              shelfname: row.shelfname,
+              compartmentname: row.compartmentname,
+              number: row.number,
+              articles: row.articleId ? [{ articleId: row.articleId, articlename: row.articlename }] : [],
+            });
+          }
+          return acc;
+        }, []);
+
+        // Rückgabe der gegliederten Daten
+        res.status(200).json({ result: compartments, serverStatus: 2 });
       }
     }
   );
 };
 module.exports.getAllUser = async (req, res, db) => {
   db.all(
-    `SELECT user.userid,user.username, role.name FROM user,role WHERE user.role = role.roleid`,
+    `SELECT user.userid,user.username, role.name, user.role FROM user,role WHERE user.role = role.roleid AND user.username != 'ledshelfadmin'`,
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
@@ -676,12 +703,29 @@ module.exports.RenameShelf = async (req, res, db) => {
 };
 module.exports.DeleteShelf = async (req, res, db) => {
   const { shelfId } = req.body;
-  db.run(`DELETE FROM shelf WHERE shelfid = ?`, [shelfId], (err) => {
-    if (err) {
-      res.status(500).json({ serverStatus: -2 });
-    } else {
-      res.status(200).json({ serverStatus: 1 });
-    }
+
+  // Begin transaction to ensure both deletes succeed or fail together
+  db.serialize(() => {
+    db.run("BEGIN TRANSACTION");
+
+    // Delete from 'compartment' table where shelfid matches
+    db.run(`DELETE FROM compartment WHERE shelfid = ?`, [shelfId], (err) => {
+      if (err) {
+        db.run("ROLLBACK"); 
+        return res.status(500).json({ serverStatus: -2, error: "Failed to delete from compartment" });
+      }
+
+      // Delete from 'shelf' table where shelfid matches
+      db.run(`DELETE FROM shelf WHERE shelfid = ?`, [shelfId], (err) => {
+        if (err) {
+          db.run("ROLLBACK"); 
+          return res.status(500).json({ serverStatus: -2, error: "Failed to delete from shelf" });
+        }
+
+        db.run("COMMIT");
+        return res.status(200).json({ serverStatus: 1 });
+      });
+    });
   });
 };
 module.exports.ReplaceShelf = async (req, res, db) => {
