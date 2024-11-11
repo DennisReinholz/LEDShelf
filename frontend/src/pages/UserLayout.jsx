@@ -9,7 +9,7 @@ import { UserContext } from "../helpers/userAuth.jsx";
 import { useConfig } from "../ConfigProvider";
 
 const UserLayout = () => {
-   // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const { user, setUser, token } = useContext(UserContext);
   const [users, setUsers] = useState();
   const [addUserIsOpen, setAddUserIsOpen] = useState();

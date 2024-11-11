@@ -17,7 +17,7 @@ const EditShelfForm = ({onClose, inputValue, updateFunction, value, caption, que
         </div>
         <div className={styles.buttonContainer}>
             <button className="secondaryButton" onClick={() => onClose()}>Abbrechen</button>
-            <button className="primaryButton" onClick={() => updateFunction(newValue)}>Anwenden</button>
+            <button className="primaryButton" onClick={() => updateFunction(newValue)}>löschen</button>
         </div>
     </div>
   );
