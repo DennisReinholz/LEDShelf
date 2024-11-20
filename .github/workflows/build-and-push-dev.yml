@@ -29,7 +29,8 @@ jobs:
           file: ./backend/Dockerfile
           push: true
           tags: itspecialistsimon/led-shelf-backend:latest
-
+          platforms: linux/amd64,linux/arm64
+    
       - name: Build and push frontend
         id: build-push-frontend
         uses: docker/build-push-action@v3
@@ -38,3 +39,4 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: itspecialistsimon/led-shelf-frontend:latest
+          platforms: linux/amd64,linux/arm64
