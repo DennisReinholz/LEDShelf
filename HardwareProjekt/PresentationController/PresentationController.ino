@@ -1,276 +1,130 @@
 #include <WiFi.h>
 #include <WebServer.h>
-#include <Adafruit_NeoPixel.h>
-#include <Wire.h>
-#include <LiquidCrystal_I2C.h>
+#include <FastLED.h>
 
-#define LED_PIN 4
-#define PIN 19
-#define NUMPIXELS  24
-#define SDA 21
-#define SLC 22
+// Pin-Konfiguration
+#define DATA_PIN 19  // Datenpin für LED-Strip
+#define NUM_LEDS 120 // Anzahl der LEDs im Strip
 
-Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
-// LCD Setup
-LiquidCrystal_I2C lcd(0x27,16,2);  // Adresse 0x27, 16x2 LCD
+CRGB leds[NUM_LEDS]; // Array für LEDs
 
+// WLAN-Zugangsdaten
 const char* ssid = "FRITZ!Box 7530 RW";
 const char* password = "85201359361900784181";
 
-int firstColumnCounter = 0;
-int secondColumnCounter = 0;
-int thirdColumnCounter = 0;
-int fourthColumnCounter = 0;
-int fithColumnCounter = 0;
-int sixColumnCounter = 0;
-
+// Webserver auf Port 80
 WebServer server(80);
-String espIP;
 
-void ScanLCD(){
-  byte error, address;
-  int nDevices = 0;
+// Flag für WiFi-Verbindung
+bool shouldConnectWiFi = true; // Setze auf `false`, um die Verbindung zu deaktivieren
 
-  Serial.println("Scanning...");
-
-  for (address = 1; address < 127; address++) {
-    Wire.beginTransmission(address);
-    error = Wire.endTransmission();
-
-    if (error == 0) {
-      Serial.print("I2C device found at address 0x");
-      if (address < 16) Serial.print("0");
-      Serial.print(address, HEX);
-      Serial.println(" !");
-      nDevices++;
-    }
-    else if (error == 4) {
-      Serial.print("Unknown error at address 0x");
-      if (address < 16) Serial.print("0");
-      Serial.println(address, HEX);
-    }
+// LEDs im Bereich einschalten
+void handleLedRangeOn(int startLED, int endLED) {
+  if (startLED < 0 || endLED >= NUM_LEDS || startLED > endLED) {
+    Serial.println("Ungültiger LED-Bereich!");
+    return;
   }
 
-  if (nDevices == 0)
-    Serial.println("No I2C devices found\n");
-  else
-    Serial.println("done\n");
-
-  delay(5000); // Scan alle 5 Sekunden wiederholen
+  for (int i = startLED; i <= endLED; i++) {
+    leds[i] = CRGB::Red; // LEDs auf Rot setzen
+  }
+  FastLED.show(); // Änderungen anzeigen
+  Serial.printf("LEDs eingeschaltet: %d bis %d\n", startLED, endLED);
 }
 
-void handleFirstColumnLedOn(){
-    if(firstColumnCounter % 2 == 0){
-      firstColumnCounter += 1;
-      pixels.setPixelColor(0, pixels.Color(0, 150, 0));
-      pixels.setPixelColor(1, pixels.Color(0, 150, 0));    
-      pixels.setPixelColor(2, pixels.Color(0, 150, 0));    
-      pixels.show();
-    }
-    else{
-      pixels.setPixelColor(0, pixels.Color(0, 0, 0));
-      pixels.setPixelColor(1, pixels.Color(0, 0, 0));    
-      pixels.setPixelColor(2, pixels.Color(0, 0, 0));    
-      pixels.show();
-      firstColumnCounter = 0;
-    } 
+// LEDs im Bereich ausschalten
+void handleLedRangeOff(int startLED, int endLED) {
+  if (startLED < 0 || endLED >= NUM_LEDS || startLED > endLED) {
+    Serial.println("Ungültiger LED-Bereich!");
+    return;
+  }
+
+  for (int i = startLED; i <= endLED; i++) {
+    leds[i] = CRGB::Black; // LEDs ausschalten
+  }
+  FastLED.show(); // Änderungen anzeigen
+  Serial.printf("LEDs ausgeschaltet: %d bis %d\n", startLED, endLED);
 }
 
-void handleSecondColumnLedOn(){
-    if(secondColumnCounter % 2 == 0){
-      secondColumnCounter += 1;
-      pixels.setPixelColor(5, pixels.Color(0, 150, 0));
-      pixels.setPixelColor(6, pixels.Color(0, 150, 0));
-      pixels.setPixelColor(7, pixels.Color(0, 150, 0));
-      pixels.show();
-    }
-    else{
-      pixels.setPixelColor(5, pixels.Color(0, 0, 0));
-      pixels.setPixelColor(6, pixels.Color(0, 0, 0));    
-      pixels.setPixelColor(7, pixels.Color(0, 0, 0));    
-      pixels.show();
-      secondColumnCounter = 0;
-    } 
+// Alle LEDs ausschalten
+void handleLedAllOff() {
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CRGB::Black; // Alle LEDs ausschalten
+  }
+  FastLED.show(); // Änderungen anzeigen
+  Serial.println("Alle LEDs ausgeschaltet");
 }
 
-void handleThirdColumnLedOn(){
-  if(thirdColumnCounter % 2 == 0){
-    thirdColumnCounter += 1;
-    pixels.setPixelColor(8, pixels.Color(0, 150, 0));
-    pixels.setPixelColor(9, pixels.Color(0, 150, 0));
-    pixels.setPixelColor(10, pixels.Color(0, 150, 0));
-    pixels.show();
-  }
-  else{
-    pixels.setPixelColor(8, pixels.Color(0, 0, 0));
-    pixels.setPixelColor(9, pixels.Color(0, 0, 0));    
-    pixels.setPixelColor(10, pixels.Color(0, 0, 0));    
-    pixels.show();
-    thirdColumnCounter = 0;
-  }
-}
+// Verbindung zu WiFi herstellen
+void connectToWiFi() {
+  Serial.printf("Verbinden mit WiFi: %s\n", ssid);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
 
-void handleFourColumnLedOn(){
-  if(fourthColumnCounter % 2 == 0){
-      fourthColumnCounter += 1;
-      pixels.setPixelColor(13, pixels.Color(0, 150, 0));
-      pixels.setPixelColor(14, pixels.Color(0, 150, 0));
-      pixels.setPixelColor(15, pixels.Color(0, 150, 0));
-      pixels.show();
+  int attempts = 0;
+  while (WiFi.status() != WL_CONNECTED && attempts < 20) {
+    delay(1000);
+    Serial.print(".");
+    attempts++;
   }
-  else{
-    pixels.setPixelColor(13, pixels.Color(0, 0, 0));
-    pixels.setPixelColor(14, pixels.Color(0, 0, 0));
-    pixels.setPixelColor(15, pixels.Color(0, 0, 0));
-    pixels.show();
-    fourthColumnCounter = 0;
-  }
-}
 
-void handleFiveColumnLedOn(){
-  if(fithColumnCounter % 2 == 0){
-    fithColumnCounter += 1;
-    pixels.setPixelColor(16, pixels.Color(0, 150, 0));
-    pixels.setPixelColor(17, pixels.Color(0, 150, 0));
-    pixels.setPixelColor(18, pixels.Color(0, 150, 0));
-    pixels.show();    
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("\nErfolgreich verbunden!");
+    Serial.printf("IP-Adresse: %s\n", WiFi.localIP().toString().c_str());
+  } else {
+    Serial.println("\nFehler: Keine Verbindung zum WiFi.");
   }
-  else{
-    pixels.setPixelColor(16, pixels.Color(0, 0, 0));
-    pixels.setPixelColor(17, pixels.Color(0, 0, 0));
-    pixels.setPixelColor(18, pixels.Color(0, 0, 0));
-    pixels.show();
-    fithColumnCounter = 0;
-  }
-}
-
-void handleSixColumnLedOn(){
-  if(sixColumnCounter % 2 == 0){
-    sixColumnCounter += 1;
-    pixels.setPixelColor(21, pixels.Color(0, 150, 0));
-    pixels.setPixelColor(22, pixels.Color(0, 150, 0));
-    pixels.setPixelColor(23, pixels.Color(0, 150, 0));
-    pixels.show();
-  }
-  else{
-    pixels.setPixelColor(21, pixels.Color(0, 0, 0));
-    pixels.setPixelColor(22, pixels.Color(0, 0, 0));
-    pixels.setPixelColor(23, pixels.Color(0, 0, 0));
-    pixels.show();
-    sixColumnCounter = 0;
-  }    
-}
-
-void handleLedOFF(){
-  pixels.clear();
-  pixels.show();
 }
 
 void setup() {
-  // put your setup code here, to run once:
-  pinMode(18, OUTPUT);
-  pinMode(LED_PIN, OUTPUT);
+  // Setup starten
   Serial.begin(9600);
 
-   Wire.begin(SDA, SLC);
-  // LCD Initialisierung
-  lcd.init();
-  lcd.backlight();
-  lcd.setCursor(0, 0);
-  lcd.print("Connecting...");
+  // LED-Strip initialisieren
+  FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
+  FastLED.clear(); // LEDs ausschalten
+  FastLED.show();
 
-
-  WiFi.mode (WIFI_STA);
-  WiFi.begin(ssid, password);
-  int attempt = 1;
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to WiFi...");
-    
-    // Fortschritt auf dem Display anzeigen
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Connecting... ");
-    
-    // Zeige die aktuelle Verbindungsversuche
-    lcd.setCursor(0, 1);
-    lcd.print("Attempt ");
-    lcd.print(attempt);
-
-    attempt++;
+  // WiFi-Verbindung nur herstellen, wenn das Flag gesetzt ist
+  if (shouldConnectWiFi) {
+    connectToWiFi();
+  } else {
+    Serial.println("WiFi-Verbindung übersprungen (Flag deaktiviert).");
   }
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("IP Address:");
-    lcd.setCursor(0, 1);
-    lcd.print(WiFi.localIP()); // IP-Adresse auf dem LCD anzeigen
 
-  Serial.println("Connected to WiFi");
-
-server.on("/led1/on", HTTP_GET, [](){
-    server.sendHeader("Access-Control-Allow-Origin", "http://" + espIP); // Hier werden die CORS-Header gesetzt
-    handleFirstColumnLedOn();
-    server.send(200, "text/plain", "LED1 turned on");
-});
-server.on("/led2/on", HTTP_GET, [](){
-    server.sendHeader("Access-Control-Allow-Origin", "http://" + espIP); // Hier werden die CORS-Header gesetzt
-    handleSecondColumnLedOn();
-    server.send(200, "text/plain", "LED2 turned on");
-});
-server.on("/led3/on", HTTP_GET, [](){
-    server.sendHeader("Access-Control-Allow-Origin", "http://" + espIP); // Hier werden die CORS-Header gesetzt
-    handleThirdColumnLedOn();
-    server.send(200, "text/plain", "LED3 turned on");
-});
-server.on("/led4/on", HTTP_GET, [](){
-    server.sendHeader("Access-Control-Allow-Origin", "http://" + espIP); // Hier werden die CORS-Header gesetzt
-    handleFourColumnLedOn();
-    server.send(200, "text/plain", "LED4 turned on");
-});
-server.on("/led5/on", HTTP_GET, [](){
-    server.sendHeader("Access-Control-Allow-Origin", "http://" + espIP); // Hier werden die CORS-Header gesetzt
-    handleFiveColumnLedOn();
-    server.send(200, "text/plain", "LED5 turned on");
-});
-server.on("/led6/on", HTTP_GET, [](){
-    server.sendHeader("Access-Control-Allow-Origin", "http://" + espIP); // Hier werden die CORS-Header gesetzt
-    handleSixColumnLedOn();
-    server.send(200, "text/plain", "LED6 turned on");
-});
-
-//LEDS OFF
-server.on("/led/off", HTTP_GET, [](){
-    server.sendHeader("Access-Control-Allow-Origin", "http://" + espIP); // Hier werden die CORS-Header gesetzt
-    handleLedOFF();
-    server.send(200, "text/plain", "LED turned off");
-});
-
-  server.onNotFound([](){
-    if (server.method() == HTTP_OPTIONS) {
-      server.sendHeader("Access-Control-Allow-Origin", "http://" + espIP);
-      server.sendHeader("Access-Control-Max-Age", "10000"); 
-      server.sendHeader("Access-Control-Allow-Methods", "PUT,POST,GET,OPTIONS");
-      server.sendHeader("Access-Control-Allow-Headers", "*");
-      server.send(204);
+  // Routen definieren
+  server.on("/led/on", HTTP_GET, []() {
+    if (server.hasArg("startLED") && server.hasArg("endLED")) {
+      int startLED = server.arg("startLED").toInt();
+      int endLED = server.arg("endLED").toInt();
+      handleLedRangeOn(startLED, endLED);
+      server.send(200, "text/plain", "LEDs eingeschaltet");
     } else {
-      server.send(404, "text/plain", "Not found");
+      server.send(400, "text/plain", "Fehlende Parameter: startLED oder endLED");
     }
   });
 
-  server.begin();
-  Serial.println("HTTP server started");
-  Serial.println(WiFi.localIP());
+  server.on("/led/off", HTTP_GET, []() {
+    if (server.hasArg("startLED") && server.hasArg("endLED")) {
+      int startLED = server.arg("startLED").toInt();
+      int endLED = server.arg("endLED").toInt();
+      handleLedRangeOff(startLED, endLED);
+      server.send(200, "text/plain", "LEDs ausgeschaltet");
+    } else {
+      server.send(400, "text/plain", "Fehlende Parameter: startLED oder endLED");
+    }
+  });
 
+  server.on("/led/alloff", HTTP_GET, []() {
+    handleLedAllOff();
+    server.send(200, "text/plain", "Alle LEDs ausgeschaltet");
+  });
+
+  // Server starten
+  server.begin();
+  Serial.println("HTTP-Server gestartet");
 }
 
 void loop() {
-  ScanLCD();
-  if (WiFi.status() == WL_CONNECTED) {
-    digitalWrite(LED_PIN, HIGH);  // LED AN, wenn verbunden
-  } else {
-    digitalWrite(LED_PIN, LOW);   // LED AUS, wenn nicht verbunden
-  }
-  // put your main code here, to run repeatedly:  
-  server.handleClient();  
-
+  server.handleClient();
 }

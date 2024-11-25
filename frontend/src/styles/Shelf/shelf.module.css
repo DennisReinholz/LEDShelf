@@ -51,6 +51,9 @@
     transform: scale(1.05);
     background-color: rgb(23, 23, 23);
   }
+  .editButton{
+    cursor: pointer;
+  }
 }
 @media only screen and (max-width: 1920px) {
   .contentContainer{
@@ -105,6 +108,9 @@
     transform: scale(1.05);
     background-color: rgb(23, 23, 23);
   }
+  .editButton{
+    cursor: pointer;
+  }
 }
 @media only screen and (max-width: 1700px) {
   .contentContainer{
@@ -158,6 +164,9 @@
   .container:hover {
     transform: scale(1.05);
   }
+  .editButton{
+    cursor: pointer;
+  }
 }
 @media only screen and (max-width: 1200px) {
   .contentContainer{
@@ -202,7 +211,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 10rem;
+    width: 13rem;
     height: 3rem;
     font-size: 2em;
     color: white;
@@ -215,6 +224,9 @@
     transform: scale(1.05);
   }
   .replaceButton, .renameButton, .deleteButton {
+    cursor: pointer;
+  }
+  .editButton{
     cursor: pointer;
   }
 }

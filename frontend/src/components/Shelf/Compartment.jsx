@@ -9,7 +9,8 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
   const [article, setArticle] = useState();
   const [counter, setCounter] = useState(0);
   const [ip, setIp] = useState();
-  const [controllerFunction, setControllerFunction] = useState();
+  const [ledStart, setLedStart] = useState();
+  const [ledEnd, setLedEnd] = useState();
   const [controllerAvaiable, setControllerAvaiable] = useState();
   // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
@@ -95,7 +96,8 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
       if (data[0] != null || data[0] != undefined) {
         setControllerAvaiable(true);
         setIp(data[0].ipAdresse);
-        setControllerFunction(data[0].functionName);
+        setLedStart(data[0].startLed);
+        setLedEnd(data[0].endLed);
       }
     } catch (error) {
       console.error("Error fetching controller function:", error);
@@ -104,7 +106,21 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
   const handleLedOn = async () => {
     if (controllerAvaiable) {
       try {
-        const response = await fetch(`http://${ip}/${controllerFunction}`, {
+        const response = await fetch(`http://${ip}/led/on?startLED=${ledStart}&endLED=${ledEnd}`, {
+          mode: "no-cors",
+        });
+        if (response.status !== 200) {
+          console.log("Network response was not ok");
+        }
+      } catch (error) {
+        console.log("There was a problem with the fetch operation:", error);
+      }
+    }
+  };
+  const handleLedOff = async () => {
+    if (controllerAvaiable) {
+      try {
+        const response = await fetch(`http://${ip}/led/off?startLED=${ledStart}&endLED=${ledEnd}`, {
           mode: "no-cors",
         });
         if (response.status !== 200) {
@@ -124,7 +140,7 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
   return (
     <div
       className={styles.compartContainer}
-      onClick={() => !loading && handleLedOn()}
+      onClick={() =>  isActive ? handleLedOff() : handleLedOn()}
     >
       <div
         className={isActive ? styles.containerIsActive : styles.container}

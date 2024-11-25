@@ -57,9 +57,13 @@ def createLedshelfDb(db_file):
             CREATE TABLE IF NOT EXISTS compartment (
                 compartmentId INTEGER PRIMARY KEY,
                 compartmentname TEXT NOT NULL,
+                height FLOAT,
                 articleId INT,
                 shelfId INT,
-                number INT
+                number INT,
+                countLed INT,
+                startLed INT,
+                endLed INT
             );
         ''')
         print("Tabelle 'compartment' erstellt.")

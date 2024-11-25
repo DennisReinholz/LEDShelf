@@ -25,7 +25,7 @@ module.exports = {
     "no-trailing-spaces": "off",
     "padded-blocks": "off",
     "object-shorthand": "off",
-    "dot-notation": false,
+    "dot-notation": 0,
   },
   settings: {
     react: {

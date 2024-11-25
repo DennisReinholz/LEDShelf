@@ -11,7 +11,6 @@ const SysDatabaseController = require("./sysDatabaseController");
 const path = require("path");
 const cors = require("cors");
 const { exec } = require("child_process");
-const jwt = require('jsonwebtoken');
 const execAsync = util.promisify(exec);
 
 const app = express();
@@ -35,7 +34,7 @@ app.use(function (req, res, next) {
 app.use(express.json());
 app.use(bodyParser.json());
 
-app.use(cors({ origin:"*" }));
+app.use(cors({ origin: "*" }));
 app.set("etag", false);
 
 // Betriebssystem prüfen
@@ -143,6 +142,9 @@ app.post("/users", (req, res) => {
 });
 app.get("/getShelf", (req, res) => {
   DataBaseController.getShelf(req, res, db);
+});
+app.post("/getShelfConfig", (req, res) => {
+  DataBaseController.getShelfConfiguration(req, res, db);
 });
 app.post("/getCompartment", (req, res) => {
   DataBaseController.getCompartments(req, res, db);
@@ -252,7 +254,12 @@ app.post("/renameShelf", (req, res) => {
 app.post("/deleteShelf", (req, res) => {
   DataBaseController.DeleteShelf(req, res, db);
 });
-
+app.post("/deleteCompartment", (req, res) => {
+  DataBaseController.deleteCompartment(req, res, db);
+});
+app.post("/updateShelf", (req, res) => {
+  DataBaseController.UpdateShelf(req, res, db);
+});
 // Server starten
 app.listen(PORT, () => {
   console.log(`Server läuft auf Port ${PORT}`);

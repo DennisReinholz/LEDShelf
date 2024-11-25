@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Shelf from "../components/Shelf/Shelf";
-import Modal from "../components/common/Modal";
-import AddShelfForm from "../components/Shelf/AddShelfForm";
 import styles from "../styles/shelfLayout.module.css";
 import { UserContext } from "../helpers/userAuth.jsx";
 import { useConfig } from "../ConfigProvider";
@@ -10,8 +8,6 @@ import { useConfig } from "../ConfigProvider";
 const ShelfLayout = () => {
   const {user, setUser, token} = useContext(UserContext);
   const [shelfList, setShelfList] = useState();
-  const [isShelfOpen, setIsShelfOpen] = useState(false);
-  const [createdShelf, setCreatedShelf] = useState(false);  
   const [shelfUpdated, setShelfUpdated] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const config = useConfig();
@@ -35,6 +31,7 @@ const ShelfLayout = () => {
       return !prevEdit;     
     });
   };
+  
   useEffect(() => {
     getShelfs();
 
@@ -47,11 +44,8 @@ const ShelfLayout = () => {
     }
     if (userStorage === null) {
       navigate("/login");
-    }
-    if (createdShelf) {
-      getShelfs();
-    }
-  }, [createdShelf, isEdit, shelfUpdated]);
+    }    
+  }, [isEdit, shelfUpdated]);
 
   return (
     <div className={styles.container}>
@@ -61,7 +55,7 @@ const ShelfLayout = () => {
               <button
               disabled={isEdit}
                 className={!isEdit ? "primaryButton": "disabledButton"}
-                onClick={() => setIsShelfOpen((o) => !o)}
+                onClick={() => navigate("/regale/konfigurieren")}
               >
                 Erstellen
               </button>
@@ -85,16 +79,6 @@ const ShelfLayout = () => {
             ))
           : "Keine Regale vorhanden"}
       </div>
-      {isShelfOpen && (
-        <Modal onClose={() => setIsShelfOpen(false)}>
-          <AddShelfForm
-            onClose={() => setIsShelfOpen(false)}
-            setShelflist={setShelfList}
-            shelflist={shelfList}
-            setCreatedShelf={setCreatedShelf}
-          />
-        </Modal>
-      )}    
     </div>
   );
 };

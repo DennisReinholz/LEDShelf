@@ -1,21 +1,19 @@
 require("dotenv").config();
-const axios = require("axios");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 const { exec } = require("child_process");
 const util = require("util");
 const execAsync = util.promisify(exec);
 const jwt = require("jsonwebtoken");
-const ping = require('ping');
+const ping = require("ping");
 
 const SECRET_KEY = process.env.AZURE_JSONWEB_TOKEN;
-
 
 module.exports.authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (authHeader) {
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
 
     jwt.verify(token, SECRET_KEY, (err, user) => {
       if (err) {
@@ -28,7 +26,7 @@ module.exports.authenticateJWT = (req, res, next) => {
   } else {
     return res.status(401).json({ serverStatus: -1, error: "Token fehlt" });
   }
-}
+};
 module.exports.CheckDatabase = (dbPath) => {
   if (!fs.existsSync(dbPath)) {
     CreateDatabase();
@@ -59,7 +57,7 @@ module.exports.getUser = async (req, res, db) => {
           const token = jwt.sign(
             { id: result[0].userid, username: result[0].username, roleid: result[0].roleid, role: result[0].name },
             SECRET_KEY,
-            { expiresIn: '8h' }
+            { expiresIn: "8h" }
           );
           res.status(200).json({
             result: {
@@ -129,6 +127,49 @@ module.exports.getShelf = async (req, res, db) => {
     }
   });
 };
+module.exports.getShelfConfiguration = async (req, res, db) => {
+  const { shelfid } = req.body;
+  db.all(
+    `SELECT *
+      FROM shelf
+      JOIN compartment ON shelf.shelfid = compartment.shelfId
+      LEFT JOIN article ON compartment.compartmentId = article.compartment
+      WHERE shelf.shelfid = ?`,
+    [shelfid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -2, err });
+      } else {
+        res.status(200).json({ serverStatus: 1, data: result });
+      }
+    }
+  );
+};
+module.exports.deleteCompartment = async (req, res, db) => {
+  const { compartmentId } = req.body;
+  db.serialize(() => {
+    db.run("BEGIN TRANSACTION");
+
+    // Delete from 'compartment' table where shelfid matches
+    db.run(`DELETE FROM compartment WHERE compartment.compartmentId =?`, [compartmentId], (err) => {
+      if (err) {
+        db.run("ROLLBACK"); 
+        return res.status(500).json({ serverStatus: -2, error: "Failed to delete from compartment" });
+      }
+
+      // Delete references compartment and shelf
+      db.run(`UPDATE article SET compartment = null, shelf = null WHERE article.compartment = ?`, [compartmentId], (err) => {
+        if (err) {
+          db.run("ROLLBACK"); 
+          return res.status(500).json({ serverStatus: -2, error: "Failed to delete from shelf" });
+        }
+
+      });
+      db.run("COMMIT");
+      return res.status(200).json({ serverStatus: 1 });
+    });
+  });
+};
 module.exports.getCompartArticleForm = async (req, res, db) => {
   const { shelfid } = req.body;
   db.all(
@@ -171,7 +212,7 @@ module.exports.getCompartments = async (req, res, db) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
       } else {        
-          const compartments = result.reduce((acc, row) => {
+        const compartments = result.reduce((acc, row) => {
        
           const compartment = acc.find(c => c.compartmentId === row.compartmentId);
           if (compartment) {
@@ -218,7 +259,7 @@ module.exports.getAllUser = async (req, res, db) => {
   );
 };
 module.exports.postCreateShelf = async (req, res, db) => {
-  const { shelfname, shelfPlace, CountCompartment } = req.body;
+  const { shelfname, shelfPlace, CountCompartment, shelves } = req.body;
   db.run(
     `INSERT INTO shelf (shelfname, place, countCompartment) VALUES (?, ?, ?)`,
     [shelfname, shelfPlace, CountCompartment],
@@ -229,7 +270,7 @@ module.exports.postCreateShelf = async (req, res, db) => {
         const shelfId = this.lastID;
 
         // Rufe die CreateCompartments-Funktion auf und übergebe die shelfId
-        CreateCompartments(db, CountCompartment, shelfId);
+        CreateCompartments(db, CountCompartment, shelfId, shelves);
 
         res.status(200).json({ serverStatus: 2, shelfId });
       }
@@ -475,10 +516,12 @@ module.exports.deleteCategory = async (req, res, db) => {
 };
 module.exports.getControllerFunction = async (req, res, db) => {
   const { compId } = req.body;
+
   db.all(
     `
-  SELECT cf.functionName, cf.compartmentid, lc.ipAdresse, c.compartmentname from Controllerfunctions cf, ledcontroller lc, compartment c, shelf
-  WHERE lc.shelfid = shelf.shelfid and c.shelfId = shelf.shelfid and c.compartmentId = cf.compartmentid and c.compartmentid = ?`,
+    SELECT comp.*, ledController.* 
+    FROM compartment comp, ledController
+    WHERE ledController.shelfid = comp.shelfId AND comp.compartmentid = ?`,
     [compId],
     (err, result) => {
       if (err) {
@@ -572,11 +615,11 @@ module.exports.UpdateLedController = async (req, res, db) => {
     }
   );
 
-  let controllerFunctions = await GetControllerFunctions(db, controllerid);
-  let compartments = await GetCompartments(db, shelfid); 
+  const controllerFunctions = await GetControllerFunctions(db, controllerid);
+  const compartments = await GetCompartments(db, shelfid); 
 
   if (controllerFunctions.length > 0 && compartments.length > 0) {
-    await MapControllerOnCompartment(db,controllerFunctions, compartments);
+    await MapControllerOnCompartment(db, controllerFunctions, compartments);
   }
 };
 module.exports.CreateLedController = async (req, res, db) => {
@@ -628,7 +671,7 @@ module.exports.ControllerOff = async (req, res, db) => {
   const { shelfid } = req.body;
   try {
     return new Promise((resolve, reject) => {
-    db.get(
+      db.get(
       `SELECT * FROM ledController WHERE shelfid=?`,
       [shelfid],
       (err, result) => {
@@ -639,10 +682,10 @@ module.exports.ControllerOff = async (req, res, db) => {
           res.status(200).json({ serverStatus: 2 });
         }
       }
-    );
-  });
+      );
+    });
   } catch (error) {
-   res.status(500).json({serverStatus: -1}) 
+    res.status(500).json({ serverStatus: -1 }); 
   }
   
 };
@@ -653,8 +696,7 @@ module.exports.PingController = async (req, res) => {
     const result = await ping.promise.probe(ip);
     if (result.alive) {
       res.status(200).json({ serverStatus: 2 });
-    }
-    else{
+    } else {
       res.status(404).json({ serverStatus: -1 });
     }
   } catch (error) {
@@ -681,16 +723,9 @@ module.exports.RemoveArticleFromShelf = async (req, res, db) => {
     } else {
       res.status(200).json({ serverStatus: 2 });
     }
-  });}
-
-const LedOff = async (ipAdresse) => {
-  try {
-    await fetch(`http:/${ipAdresse}/led/off`);
-  } catch (error) {
-    console.error("Unable to call LED OFF.", error)
-  }
-  
+  });
 };
+
 module.exports.RenameShelf = async (req, res, db) => {
   const { shelfId, shelfname } = req.body;
   db.run(`UPDATE shelf SET shelfname=? WHERE shelfid = ?`, [shelfname, shelfId], (err) => {
@@ -722,8 +757,16 @@ module.exports.DeleteShelf = async (req, res, db) => {
           return res.status(500).json({ serverStatus: -2, error: "Failed to delete from shelf" });
         }
 
-        db.run("COMMIT");
-        return res.status(200).json({ serverStatus: 1 });
+        // delete reference from article
+        db.run(`UPDATE article SET shelf = null WHERE shelf = ?`, [shelfId], (err) => {
+          if (err) {
+            db.run("ROLLBACK"); 
+            return res.status(500).json({ serverStatus: -2, error: "Failed to delete from shelf" });
+          }
+
+          db.run("COMMIT");
+          return res.status(200).json({ serverStatus: 1 });
+        });
       });
     });
   });
@@ -738,24 +781,127 @@ module.exports.ReplaceShelf = async (req, res, db) => {
     }
   });
 };
-const CreateCompartments = (db, countCompartment, shelfId) => {
+module.exports.UpdateShelf = async (req, res, db) => {
+  const { shelfname, shelfPlace, countCompartment, shelves, shelfid } = req.body;
+  
+  try {
+    // Start der Transaktion
+    await new Promise((resolve, reject) => {
+      db.run("BEGIN TRANSACTION", (err) => {
+        if (err) {
+          console.error("Fehler beim Starten der Transaktion:", err);
+          reject(new Error("Fehler beim Starten der Transaktion"));
+        }
+        resolve();
+      });
+    });
 
+    // 1. Regal aktualisieren
+    await new Promise((resolve, reject) => {
+      db.run(
+        `UPDATE shelf SET shelfname = ?, place = ?, countCompartment = ? WHERE shelfid = ?`,
+        [shelfname, shelfPlace, countCompartment, shelfid],
+        function (err) {
+          if (err) {
+            console.error("Fehler beim Aktualisieren des Regals:", err);
+            reject(new Error("Fehler beim Aktualisieren des Regals"));
+          }
+          resolve();
+        }
+      );
+    });
+
+    // 2. Fächer aktualisieren oder neue Fächer hinzufügen
+    for (let index = 0; index < shelves.length; index++) {
+      const compartment = shelves[index];
+      const { compartmentId, height, countLed, startLed, endLed } = compartment;
+
+      // Berechne den Namen und die Nummer des Faches
+      const compartmentname = `${index + 1}-Fach`;
+
+      if (compartmentId) {
+        // Update bestehender Einträge
+        await new Promise((resolve, reject) => {
+          db.run(
+            `UPDATE compartment SET height = ?, countLed = ?, startLed = ?, endLed = ?, compartmentname = ? WHERE compartmentId = ?`,
+            [height, countLed, startLed, endLed, compartmentname, compartmentId],
+            function (err) {
+              if (err) {
+                console.error("Fehler beim Aktualisieren eines Fachs:", err);
+                reject(new Error("Fehler beim Aktualisieren eines Fachs"));
+              }
+              resolve();
+            }
+          );
+        });
+      } else {
+        // Einfügen neuer Fächer
+        await new Promise((resolve, reject) => {
+          db.run(
+            `INSERT INTO compartment (height, countLed, startLed, endLed, shelfId, compartmentname, number) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [height, countLed, startLed, endLed, shelfid, compartmentname, index + 1], // fortlaufende Nummer für die Fächer
+            function (err) {
+              if (err) {
+                console.error("Fehler beim Hinzufügen eines neuen Fachs:", err);
+                reject(new Error("Fehler beim Hinzufügen eines neuen Fachs"));
+              }
+              resolve();
+            }
+          );
+        });
+      }
+    }
+
+    // Wenn alles erfolgreich war, committen der Transaktion
+    await new Promise((resolve, reject) => {
+      db.run("COMMIT", (err) => {
+        if (err) {
+          console.error("Fehler beim Commit der Transaktion:", err);
+          reject(new Error("Fehler beim Commit der Transaktion"));
+        }
+        resolve();
+      });
+    });
+
+    // Erfolgreiche Antwort
+    res.status(200).send({ serverStatus: 1 });
+  } catch (err) {
+    // Im Falle eines Fehlers Rollback der Transaktion und Fehlerantwort
+    console.error("Fehler in der UpdateShelf-Funktion:", err);
+    await new Promise((resolve, reject) => {
+      db.run("ROLLBACK", (err) => {
+        if (err) {
+          console.error("Fehler beim Rollback der Transaktion:", err);
+          reject(new Error("Fehler beim Rollback der Transaktion"));
+        }
+        resolve();
+      });
+    });
+    res.status(500).send({ message: err });
+  }
+};
+
+const LedOff = async (ipAdresse) => {
+  try {
+    await fetch(`http:/${ipAdresse}/led/alloff`);
+  } catch (error) {
+    console.error("Unable to call LED OFF.", error);
+  }
+  
+};
+const CreateCompartments = (db, countCompartment, shelfId, shelves) => {
   db.serialize(() => {
-    // Beginne die Transaktion
     db.run("BEGIN TRANSACTION", (err) => {
       if (err) {
-        console.error("Fehler beim Starten der Transaktion:", err);
-        return;
+        console.error("Fehler beim Starten der Transaktion:", err);       
       }
     });
 
-    const promises = []; // Array für Promises
+    const promises = shelves.map((shelf, index) => {
+      const compartmentName = `${index + 1}-Fach`;
 
-    for (let i = 0; i < countCompartment; i++) {
-      const compartmentName = `${i + 1}-Fach`;
-
-      // Erstelle ein Promise für jeden Einfügungsversuch
-      const promise = new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
+        // Überprüfe, ob das Fach bereits existiert
         db.get(
           `SELECT COUNT(*) AS count FROM compartment WHERE compartmentname = ? AND shelfid = ?`,
           [compartmentName, shelfId],
@@ -765,29 +911,37 @@ const CreateCompartments = (db, countCompartment, shelfId) => {
               return reject(err);
             }
 
-            if (row.count === 0) { // Nur einfügen, wenn das Fach nicht existiert
+            if (row.count === 0) {
+              // Fach existiert nicht, also Einfügen
               db.run(
-                `INSERT INTO compartment (compartmentname, shelfid, number) VALUES (?, ?, ?)`,
-                [compartmentName, shelfId, i + 1],
+                `INSERT INTO compartment (compartmentname, shelfid, number, countLed, startLed, endLed, height) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [
+                  compartmentName,
+                  shelfId,
+                  index + 1,
+                  shelf.leds,
+                  shelf.startLED,
+                  shelf.endLED,
+                  shelf.height
+                ],
                 (err) => {
                   if (err) {
                     console.error("Fehler beim Einfügen in compartment:", err);
                     return reject(err);
                   }
-                  resolve(); // Promise auflösen, wenn die Einfügung erfolgreich war
+                  resolve();
                 }
               );
             } else {
-              resolve(); // Promise auflösen, auch wenn das Fach existiert
+              // Fach existiert bereits
+              resolve();
             }
           }
         );
       });
+    });
 
-      promises.push(promise); // Füge die Promise zum Array hinzu
-    }
-
-    // Warte auf alle Einfügungen, bevor du commitest
+    // Nach allen Einfügungen entweder commit oder rollback
     Promise.all(promises)
       .then(() => {
         db.run("COMMIT", (err) => {
@@ -859,16 +1013,16 @@ const DeleteControllerFunction = async (db, deviceId) => {
 const InsertControllerFunction = async (db, controllerId, countCompartment) => {
   try {
     for (let i = 0; i < countCompartment; i++) {
-    await db.run(
+      await db.run(
       `INSERT INTO ControllerFunctions (controllerId, functionName ) VALUES (?,?)`,
       [controllerId, "led" + (i + 1) + "/on"]
-    );
-  }
+      );
+    }
     // Led off controllerFunction
     await db.run(
       `INSERT INTO ControllerFunctions (controllerId, functionName) VALUES (?,?)`,
       [controllerId, "led/off"]
-  );
+    );
   } catch (error) {
     console.log("Fehler beim einfügen von Controllerfunktion: ", error);
   }
@@ -884,7 +1038,6 @@ const CreateDatabase = () => {
     }
   });
 };
-
 const GetControllerFunctions = (database, controllerId) => {
   return new Promise((resolve, reject) => {
     database.all(`SELECT * FROM ControllerFunctions WHERE controllerId = ?`, [controllerId], (err, result) => {
@@ -929,4 +1082,4 @@ const MapControllerOnCompartment = async (db, functions, compartments) => {
       });
     }
   }
-}
+};

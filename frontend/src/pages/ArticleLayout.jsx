@@ -138,7 +138,6 @@ const ArticleLayout = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.serverStatus == 2) {
-          console.log("gelöscht");
           toast.success("Artikel wurde gelöscht.");
           setDeleteState(false);
         } else {

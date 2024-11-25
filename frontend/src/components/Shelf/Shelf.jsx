@@ -10,6 +10,7 @@ import Modal from "../common/Modal";
 import EditShelfForm from "./EditShelfForm";
 import PropTypes from "prop-types";
 import { useConfig } from "../../ConfigProvider";
+import { RiEditLine } from "react-icons/ri";
 
 const Shelf = ({ shelfname, place, shelfId, isEdit, setShelfUpdated }) => {
   const [replaceIsOpen, setReplaceIsOpen] = useState(false);
@@ -91,6 +92,7 @@ const Shelf = ({ shelfname, place, shelfId, isEdit, setShelfUpdated }) => {
       <MdPlace id="placeIcon" className={styles.replaceButton} onClick={() => setReplaceIsOpen(true)}/>
       <BiRename className={styles.renameButton} onClick={() => setRenameIsOpen(true)}/>
       <BsTrash className={styles.deleteButton} onClick={() => setDeleteIsOpen(true)}/>
+      <RiEditLine className={styles.editButton} onClick={()=> navigate(`/regale/bearbeiten/${shelfId}`)}/>
     </div>}
     {replaceIsOpen && (
         <Modal onClose={() => setReplaceIsOpen(false)}>

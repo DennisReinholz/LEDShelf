@@ -1,0 +1,333 @@
+@media only screen and (max-width: 3000px) {
+    .contentContainer{
+        display: flex;
+        flex-direction: column;
+        color: white;
+        width: 50rem;
+        margin-left: 2rem;
+        width: 100rem;
+        background-color: #212121;
+        border-radius: 0.125rem;
+    }
+    .createContainer{
+        display: flex;
+        flex-direction: row;
+        width: 35rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .inputCreate{
+        height: 1.5rem;
+        width: 10rem;
+    }
+    .shelfContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        color: white;
+        margin-top: 1rem;
+        margin-left: 1rem;
+        gap: 40px;
+    }
+    .shelfHeader {
+        display: flex;
+        flex-direction: row;
+        border-bottom:  0.125rem solid black;
+        height: 3rem;
+        justify-content: center;
+        align-items: center;
+        background-color: #9fcdec;
+        color: black;
+    }
+    .content {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        height: 65em;
+        gap: 20px;
+    }
+    .addCompartmentButton{
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .addCompartmentButton:hover{
+        background-color: rgb(167, 167, 167);
+    }
+    .editContainer{
+        display: flex;
+        flex-direction: column;
+        height: 62rem;
+        width: 30rem;
+        overflow-y: auto;
+    }
+}
+@media only screen and (max-width: 2000px) {
+    .contentContainer{
+        display: flex;
+        flex-direction: column;
+        color: white;
+        width: 50rem;
+        margin-left: 2rem;
+        background-color: #212121;
+        border-radius: 0.125rem;
+    }
+    .createContainer{
+        margin-left: 1rem;
+        display: flex;
+        flex-direction: row;
+        width: 35rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .inputCreate{
+        height: 1.5rem;
+        width: 10rem;
+    }
+    .shelfContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        color: white;
+        margin-top: 1rem;
+        margin-left: 1rem;
+        gap: 40px;
+    }
+    .shelfHeader {
+        display: flex;
+        flex-direction: row;
+        border-bottom:  0.125rem solid black;
+        height: 3rem;
+        justify-content: center;
+        align-items: center;
+        background-color: #9fcdec;
+        color: black;
+    }
+    .content {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        height: 65em;
+        gap: 20px;
+    }
+    .addCompartmentButton{
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .addCompartmentButton:hover{
+        background-color: rgb(167, 167, 167);
+    }
+    .editContainer{
+        display: flex;
+        flex-direction: column;
+        height: 62rem;
+        width: 30rem;
+        overflow-y: auto;
+    }
+}
+@media only screen and (max-width: 1920px) {
+    .contentContainer{
+        display: flex;
+        flex-direction: column;
+        color: white;
+        width: 50rem;
+        margin-left: 2rem;
+        background-color: #212121;
+        border-radius: 0.125rem;
+    }
+    .createContainer{
+        display: flex;
+        flex-direction: row;
+        width: 35rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .inputCreate{
+        height: 1.5rem;
+        width: 10rem;
+    }
+    .shelfContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        color: white;
+        margin-top: 1rem;
+        margin-left: 1rem;
+        gap: 40px;
+    }
+    .shelfHeader {
+        display: flex;
+        flex-direction: row;
+        border-bottom:  0.125rem solid black;
+        height: 3rem;
+        justify-content: center;
+        align-items: center;
+        background-color: #9fcdec;
+        color: black;
+    }
+    .content {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        height: 65em;
+        gap: 20px;
+    }
+    .addCompartmentButton{
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .addCompartmentButton:hover{
+        background-color: rgb(167, 167, 167);
+    }
+    .editContainer{
+        display: flex;
+        flex-direction: column;
+        height: 62rem;
+        width: 30rem;
+        overflow-y: auto;
+    }
+}
+@media only screen and (max-width: 1700px) {
+    .contentContainer{
+        display: flex;
+        flex-direction: column;
+        color: white;
+        width: 50rem;
+        margin-left: 2rem;
+        background-color: #212121;
+        border-radius: 0.125rem;
+    }
+    .createContainer{
+        display: flex;
+        flex-direction: row;
+        width: 35rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .inputCreate{
+        height: 1.5rem;
+        width: 10rem;
+    }
+    .shelfContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        color: white;
+        margin-top: 1rem;
+        margin-left: 1rem;
+        gap: 40px;
+    }
+    .shelfHeader {
+        display: flex;
+        flex-direction: row;
+        border-bottom:  0.125rem solid black;
+        height: 3rem;
+        justify-content: center;
+        align-items: center;
+        background-color: #e1f3ff;
+        color: black;
+    }
+    .content {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        height: 65em;
+        gap: 20px;
+    }
+    .addCompartmentButton{
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .addCompartmentButton:hover{
+        background-color: rgb(167, 167, 167);
+    }
+    .editContainer{
+        display: flex;
+        flex-direction: column;
+        height: 62rem;
+        width: 30rem;
+        overflow-y: auto;
+    }
+}
+@media only screen and (max-width: 1200px) {
+    .contentContainer{
+        display: flex;
+        flex-direction: column;
+        color: white;
+        width: 60rem;
+        margin-left: 2rem;
+        background-color: #212121;
+        border-radius: 0.125rem;
+    }
+    .createContainer{
+        display: flex;
+        flex-direction: row;
+        width: 35rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .inputCreate{
+        height: 1.5rem;
+        width: 10rem;
+    }
+    .shelfContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        color: white;
+        width: 50rem;
+        margin-top: 1rem;
+        margin-left: 1rem;
+        gap: 40px;
+    }
+    .shelfHeader {
+        display: flex;
+        flex-direction: row;
+        border-bottom:  0.125rem solid black;
+        height: 3rem;
+        justify-content: center;
+        align-items: center;
+        background-color: #9fcdec;
+        color: black;
+    }
+    .content {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        height: 65em;
+        gap: 20px;
+    }
+    .addCompartmentButton{
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .addCompartmentButton:hover{
+        background-color: rgb(167, 167, 167);
+    }
+    .editContainer{
+        display: flex;
+        flex-direction: column;
+        height: 62rem;
+        width: 30rem;
+        overflow-y: auto;
+    }
+}

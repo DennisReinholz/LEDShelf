@@ -14,6 +14,8 @@ import CategoryLayout from "../pages/CategoryLayout.jsx";
 import ServiceLayout from "../pages/ServiceLayout.jsx";
 import Administration from "../pages/Administration.jsx";
 import PrivateRoute from "../helpers/PrivateRoute.jsx";
+import ShelfConfiguration from "../pages/ShelfConfiguration.jsx";
+import EditShelfLayout from "../pages/EditShelfLayout.jsx";
 
 function App() {
   return (
@@ -45,6 +47,18 @@ function App() {
                   </PrivateRoute>
                 }
               />
+              <Route path="regale/konfigurieren" 
+            element={
+            <PrivateRoute>
+              <ShelfConfiguration/>
+              </PrivateRoute>
+            }/>
+              <Route path="regale/bearbeiten/:shelfid" 
+            element={
+              <PrivateRoute>
+                <EditShelfLayout/>
+              </PrivateRoute>
+            }/>
               <Route
                 path="benutzer"
                 element={
@@ -93,7 +107,7 @@ function App() {
                   </PrivateRoute>
                 }
               />
-            </Route>
+            </Route>            
           </Routes>
         </BrowserRouter>
         {/* Toast-Benachrichtigungen */}
