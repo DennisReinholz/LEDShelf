@@ -175,7 +175,7 @@ module.exports.deleteCompartment = async (req, res, db) => {
 module.exports.getCompartArticleForm = async (req, res, db) => {
   const { shelfid } = req.body;
   db.all(
-    `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
+    `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId, compartment.height
     FROM shelf
     JOIN compartment ON shelf.shelfid = compartment.shelfId 
     LEFT JOIN article ON compartment.compartmentId = article.compartment
