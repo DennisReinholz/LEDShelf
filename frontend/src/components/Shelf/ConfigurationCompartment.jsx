@@ -14,6 +14,7 @@ const ConfigurationCompartment = ({
     toggleEditing,
     numberled
 }) => {  
+    
     const calculateShelfHeightPercentage = () => {
         if (shelf.height === undefined) {
             return ((numberled * steps / DISPLAY_HEIGHT) * 100);
@@ -21,6 +22,7 @@ const ConfigurationCompartment = ({
             return (shelf.height / DISPLAY_HEIGHT) * 100;
         }
     };
+
     return (
         <div
             className={styles.compartment}

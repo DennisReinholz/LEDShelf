@@ -20,7 +20,11 @@ const EditConfigurationShelf = ({ currentCompartment, height, onHeightChange, re
             <p>Fach - {currentCompartment + 1}</p>
             <div className={styles.buttonContainer}>                
                 <button disabled={numberLed > 120} className={styles.editButton} onClick={handleIncreaseHeight}>▲</button>
-                <p>{height}cm</p>                
+                <div style={{display:"flex", flexDirection:"column", alignItems:"center "
+                }}>
+                    <p style={{margin:"0rem"}}>{height}cm</p>                
+                    <p style={{margin:"0rem"}}>{numberLed} LED´s</p>                
+                </div>
                 <button className={styles.editButton} onClick={handleDecreaseHeight}>▼</button>
             </div>
             <div className={styles.deleteContainer}>
