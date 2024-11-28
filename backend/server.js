@@ -137,6 +137,12 @@ app.post("/createTrelloCard", (req, res) => {
 });
 
 // DatabaseController
+app.get("/exportDatabase", (req, res) => {
+  DataBaseController.ExportDatabase(req, res, ledshelfDatabasePath);
+});
+app.get("/getDatabaseName", (req, res) => {
+  DataBaseController.GetDatabaseName(req, res, ledshelfDatabasePath);
+});
 app.post("/users", (req, res) => {
   DataBaseController.getUser(req, res, db);
 });

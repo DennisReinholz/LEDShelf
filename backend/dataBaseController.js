@@ -6,6 +6,7 @@ const util = require("util");
 const execAsync = util.promisify(exec);
 const jwt = require("jsonwebtoken");
 const ping = require("ping");
+const path = require("path");
 
 const SECRET_KEY = process.env.AZURE_JSONWEB_TOKEN;
 
@@ -52,6 +53,7 @@ module.exports.getUser = async (req, res, db) => {
           frontendPassword,
           result[0].password
         );
+        console.log(match);
         if (match) {
           // JWT-Token erstellen
           const token = jwt.sign(
@@ -194,19 +196,12 @@ module.exports.getCompartArticleForm = async (req, res, db) => {
 };
 module.exports.getCompartments = async (req, res, db) => {
   const { shelfid } = req.body;
-
   db.all(
-    `SELECT DISTINCT compartment.compartmentId, 
-                     shelf.shelfid, 
-                     shelf.shelfname, 
-                     compartment.compartmentname, 
-                     compartment.number,
-                     article.articleId, 
-                     article.articlename
-     FROM shelf
-     JOIN compartment ON shelf.shelfid = compartment.shelfId
-     LEFT JOIN article ON compartment.compartmentId = article.compartment
-     WHERE shelf.shelfid = ?`,
+    `SELECT DISTINCT(compartment.compartmentId), shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number
+    FROM shelf
+    JOIN compartment ON shelf.shelfid = compartment.shelfId 
+    LEFT JOIN article ON compartment.compartmentId = article.compartment
+    WHERE shelf.shelfid =? AND article.compartment ISNULL`,
     [shelfid],
     (err, result) => {
       if (err) {
@@ -244,7 +239,7 @@ module.exports.getCompartments = async (req, res, db) => {
 };
 module.exports.getAllUser = async (req, res, db) => {
   db.all(
-    `SELECT user.userid,user.username, role.name, user.role FROM user,role WHERE user.role = role.roleid AND user.username != 'ledshelfadmin'`,
+    `SELECT user.userid,user.username, role.name FROM user,role WHERE user.role = role.roleid`,
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
@@ -738,7 +733,6 @@ module.exports.RenameShelf = async (req, res, db) => {
 };
 module.exports.DeleteShelf = async (req, res, db) => {
   const { shelfId } = req.body;
-
   // Begin transaction to ensure both deletes succeed or fail together
   db.serialize(() => {
     db.run("BEGIN TRANSACTION");
@@ -771,6 +765,32 @@ module.exports.DeleteShelf = async (req, res, db) => {
     });
   });
 };
+module.exports.GetDatabaseName = async (req, res, ledshelfDatabasePath) => {
+  try {
+    
+    if (ledshelfDatabasePath === undefined) {
+      return res.status(404).json({ serverStatus: -2, message: "Datenbankpfad nicht gefunden" });
+    }
+    const dbPath = ledshelfDatabasePath;
+    const dbName = path.basename(dbPath);
+    res.status(200).json({ serverStatus: 1, databaseName: dbName });
+  } catch (error) {
+    console.error("Fehler beim Abrufen des Datenbanknamens:", error);
+    res.status(500).json({ serverStatus: -2, message: "Interner Serverfehler" });
+  }
+};
+
+module.exports.ExportDatabase = async (req, res, ledshelfDatabasePath) => {
+
+  const dbName = path.basename(ledshelfDatabasePath);
+  res.download(ledshelfDatabasePath, dbName, (err) => {
+    if (err) {
+      console.error("Fehler beim Herunterladen der Datenbank:", err);
+      res.status(500).json({ serverStatus: -2 });
+    }
+  });
+};
+
 module.exports.ReplaceShelf = async (req, res, db) => {
   const { shelfId, place } = req.body;
   db.run(`UPDATE shelf SET place=? WHERE shelfid = ?`, [place, shelfId], (err) => {
@@ -781,6 +801,7 @@ module.exports.ReplaceShelf = async (req, res, db) => {
     }
   });
 };
+
 module.exports.UpdateShelf = async (req, res, db) => {
   const { shelfname, shelfPlace, countCompartment, shelves, shelfid } = req.body;
   
@@ -886,9 +907,9 @@ const LedOff = async (ipAdresse) => {
     await fetch(`http:/${ipAdresse}/led/alloff`);
   } catch (error) {
     console.error("Unable to call LED OFF.", error);
-  }
-  
+  } 
 };
+
 const CreateCompartments = (db, countCompartment, shelfId, shelves) => {
   db.serialize(() => {
     db.run("BEGIN TRANSACTION", (err) => {
