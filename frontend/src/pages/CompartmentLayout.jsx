@@ -113,16 +113,16 @@ const CompartmentLayout = () => {
               <div
                 style={{
                   display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
+                  flexDirection: "row",    
+                    
                 }}
                 key={c.compartmentId}
-              >
+                >
                 <div
                   style={{
                     display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    flexDirection: "row",
+                    
                   }}
                 >
                   <div

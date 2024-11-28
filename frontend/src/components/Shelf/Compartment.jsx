@@ -12,6 +12,8 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
   const [ledStart, setLedStart] = useState();
   const [ledEnd, setLedEnd] = useState();
   const [controllerAvaiable, setControllerAvaiable] = useState();
+  const [isBlocked, setIsBlocked] = useState(false);
+
   // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
   const config = useConfig();
@@ -145,6 +147,11 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
       <div
         className={isActive ? styles.containerIsActive : styles.container}
         onClick={() => handleIsActive(compId)}
+        style={
+          article && article.minRequirement >= article.count && !isActive 
+            ? { borderColor: "yellow" } 
+            : {}
+        }
       >
         <div className={styles.content}>
           <p>{comp}</p>
@@ -158,16 +165,19 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
           >
             {article ? article.count : ""} {article ? article.unit : ""}
           </p>
+          {isBlocked && <p>Fach ist blockiert</p>}
         </div>
       </div>
-      {isActive && (
+      {(isActive && (article !== undefined))? (
         <RemovalCompartment
           UpdateArticleCount={UpdateArticleCount}
           article={article || {}}
           counter={counter}
           setCounter={setCounter}
+          setIsBlocked={setIsBlocked}
+          isBlocked={isBlocked}
         />
-      )}
+      ):""}
     </div>
   );
 };
