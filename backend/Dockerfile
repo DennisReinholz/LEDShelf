@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Installiere Build-Tools, Abhängigkeiten und SQLite3, dann entferne Build-Tools
-RUN apt-get update && apt-get install -y python3 g++ make iputils-ping \
+RUN apt-get update && apt-get install -y python3 g++ make iputils-ping avahi-utils -y \
     && npm install \
     && npm rebuild sqlite3 --build-from-source \
     && apt-get remove -y g++ make \
