@@ -137,7 +137,7 @@ const Compartment = ({ isActive = false, comp, compId, handleIsActive }) => {
   useEffect(() => {
     getCompartmentArticle();
     getControllerFunction();
-  }, []);
+  }, [counter]);
 
   return (
     <div

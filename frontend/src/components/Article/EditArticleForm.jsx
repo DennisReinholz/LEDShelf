@@ -20,7 +20,7 @@ const EditArticleForm = ({ onClose, article, shelf, setUpdateArticle, setArticle
   const { backendUrl } = config || {};
 
   const getCompartments = async (shelfid) => {
-    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCompartment`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getArticleCompartments`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",

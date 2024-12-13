@@ -12,8 +12,7 @@ const CategoryLayout = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [addCategoryIsOpen, setAddIsCategoryIsOpen] = useState(false);
   const [deleteCategory, setDeleteCategory] = useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const {user, setUser, token} = useContext(UserContext);
+  const {user, setUser} = useContext(UserContext);
   const config = useConfig();
   const { backendUrl } = config || {};
 

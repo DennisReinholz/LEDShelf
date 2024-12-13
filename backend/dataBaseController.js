@@ -7,6 +7,7 @@ const execAsync = util.promisify(exec);
 const jwt = require("jsonwebtoken");
 const ping = require("ping");
 const path = require("path");
+const bonjour = require("bonjour")();
 
 const SECRET_KEY = process.env.AZURE_JSONWEB_TOKEN;
 
@@ -53,7 +54,7 @@ module.exports.getUser = async (req, res, db) => {
           frontendPassword,
           result[0].password
         );
-        console.log(match);
+        
         if (match) {
           // JWT-Token erstellen
           const token = jwt.sign(
@@ -201,7 +202,7 @@ module.exports.getCompartments = async (req, res, db) => {
     FROM shelf
     JOIN compartment ON shelf.shelfid = compartment.shelfId 
     LEFT JOIN article ON compartment.compartmentId = article.compartment
-    WHERE shelf.shelfid =? AND article.compartment ISNULL`,
+    WHERE shelf.shelfid =?`,
     [shelfid],
     (err, result) => {
       if (err) {
@@ -237,9 +238,21 @@ module.exports.getCompartments = async (req, res, db) => {
     }
   );
 };
+
 module.exports.getAllUser = async (req, res, db) => {
   db.all(
-    `SELECT user.userid,user.username, role.name FROM user,role WHERE user.role = role.roleid`,
+    `SELECT 
+  user.userid, 
+  user.username, 
+  role.name 
+FROM 
+  user
+INNER JOIN 
+  role 
+ON 
+  user.role = role.roleid
+WHERE 
+  user.username != 'ledshelfadmin';`,
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
@@ -610,12 +623,6 @@ module.exports.UpdateLedController = async (req, res, db) => {
     }
   );
 
-  const controllerFunctions = await GetControllerFunctions(db, controllerid);
-  const compartments = await GetCompartments(db, shelfid); 
-
-  if (controllerFunctions.length > 0 && compartments.length > 0) {
-    await MapControllerOnCompartment(db, controllerFunctions, compartments);
-  }
 };
 module.exports.CreateLedController = async (req, res, db) => {
   const { ipAdress, countCompartment } = req.body;
@@ -686,7 +693,6 @@ module.exports.ControllerOff = async (req, res, db) => {
 };
 module.exports.PingController = async (req, res) => {
   const { ip } = req.body;
-
   try {
     const result = await ping.promise.probe(ip);
     if (result.alive) {
@@ -719,6 +725,14 @@ module.exports.RemoveArticleFromShelf = async (req, res, db) => {
       res.status(200).json({ serverStatus: 2 });
     }
   });
+};
+
+const LedOff = async (ipAdresse) => {
+  try {
+    await fetch(`http:/${ipAdresse}/led/alloff`);
+  } catch (error) {
+    console.error("Unable to call LED OFF.", error);
+  }  
 };
 
 module.exports.RenameShelf = async (req, res, db) => {
@@ -801,6 +815,49 @@ module.exports.ReplaceShelf = async (req, res, db) => {
     }
   });
 };
+module.exports.SearchDevices = async (req, res, db) => {
+  let dbControllers = [];
+  const devices = [];
+  let responseSent = false;
+
+  await db.all(`SELECT ipAdresse FROM ledController`, (err, rows) => {
+    if (err) {
+      return res.status(500).json({ serverStatus: -1, message: "Fehler beim Lesen der Datenbank" });
+    }
+    
+    dbControllers = rows.map(row => row.ipAdresse);
+  });
+
+  // Suche nach Geräten im Netzwerk
+  const browser = bonjour.find({ type: "http" }, (service) => {
+    // Nur ESP32-Geräte berücksichtigen, die nicht in der Datenbank sind
+    if (service.name.includes("esp32") && !dbControllers.includes(service.referer.address)) {
+      devices.push({
+        name: service.name,
+        address: service.referer.address,
+        port: service.port,
+      });
+    }
+  });
+
+  // Nach 5 Sekunden die Suche beenden und Ergebnisse zurückgeben
+  setTimeout(() => {
+    browser.stop();
+
+    if (!responseSent) {
+      if (devices.length > 0) {
+        const devicesWithIndex = devices.map((device, index) => ({
+          ...device,
+          index: index + 1,
+        }));
+        res.status(200).json({ serverStatus: 2, devices: devicesWithIndex });
+      } else {
+        res.status(404).json({ serverStatus: -1, message: "Keine neuen ESP32-Geräte gefunden" });
+      }
+      responseSent = true;
+    }
+  }, 5000); // Timeout auf 5000 ms
+};
 
 module.exports.UpdateShelf = async (req, res, db) => {
   const { shelfname, shelfPlace, countCompartment, shelves, shelfid } = req.body;
@@ -860,7 +917,7 @@ module.exports.UpdateShelf = async (req, res, db) => {
         await new Promise((resolve, reject) => {
           db.run(
             `INSERT INTO compartment (height, countLed, startLed, endLed, shelfId, compartmentname, number) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [height, countLed, startLed, endLed, shelfid, compartmentname, index + 1], // fortlaufende Nummer für die Fächer
+            [height, countLed, startLed, endLed, shelfid, compartmentname, index + 1],
             function (err) {
               if (err) {
                 console.error("Fehler beim Hinzufügen eines neuen Fachs:", err);
@@ -902,72 +959,70 @@ module.exports.UpdateShelf = async (req, res, db) => {
   }
 };
 
-const LedOff = async (ipAdresse) => {
-  try {
-    await fetch(`http:/${ipAdresse}/led/alloff`);
-  } catch (error) {
-    console.error("Unable to call LED OFF.", error);
-  } 
-};
-
 const CreateCompartments = (db, countCompartment, shelfId, shelves) => {
   db.serialize(() => {
     db.run("BEGIN TRANSACTION", (err) => {
       if (err) {
-        console.error("Fehler beim Starten der Transaktion:", err);       
+        console.error("Fehler beim Starten der Transaktion:", err);
       }
     });
 
-    const promises = shelves.map((shelf, index) => {
-      const compartmentName = `${index + 1}-Fach`;
+    const promises = [];
 
-      return new Promise((resolve, reject) => {
-        // Überprüfe, ob das Fach bereits existiert
+    for (let i = 0; i < countCompartment; i++) {
+      const compartmentName = `${i + 1}-Fach`;
+
+      // Zugriff auf das richtige Shelf-Objekt basierend auf der Indexposition
+      const currentShelf = shelves[i];
+      if (!currentShelf) {
+        console.error(`Kein Shelf für Index ${i} gefunden!`);
+        continue; // Falls kein Shelf gefunden wird, überspringen
+      }
+
+      const promise = new Promise((resolve, reject) => {
         db.get(
           `SELECT COUNT(*) AS count FROM compartment WHERE compartmentname = ? AND shelfid = ?`,
           [compartmentName, shelfId],
           (err, row) => {
             if (err) {
-              console.error("Fehler beim Prüfen auf vorhandenes Fach:", err);
               return reject(err);
             }
 
-            if (row.count === 0) {
-              // Fach existiert nicht, also Einfügen
+            if (row.count === 0) {             
               db.run(
                 `INSERT INTO compartment (compartmentname, shelfid, number, countLed, startLed, endLed, height) VALUES (?, ?, ?, ?, ?, ?, ?)`,
                 [
                   compartmentName,
                   shelfId,
-                  index + 1,
-                  shelf.leds,
-                  shelf.startLED,
-                  shelf.endLED,
-                  shelf.height
+                  i + 1,
+                  currentShelf.leds,
+                  currentShelf.startLED,
+                  currentShelf.endLED,
+                  currentShelf.height,
                 ],
                 (err) => {
                   if (err) {
-                    console.error("Fehler beim Einfügen in compartment:", err);
                     return reject(err);
                   }
                   resolve();
                 }
               );
             } else {
-              // Fach existiert bereits
               resolve();
             }
           }
         );
       });
-    });
+      promises.push(promise);
+    }
 
-    // Nach allen Einfügungen entweder commit oder rollback
     Promise.all(promises)
       .then(() => {
         db.run("COMMIT", (err) => {
           if (err) {
             console.error("Fehler beim Commit der Transaktion:", err);
+          } else {
+            console.log("Transaktion erfolgreich abgeschlossen.");
           }
         });
       })
@@ -981,12 +1036,11 @@ const CreateCompartments = (db, countCompartment, shelfId, shelves) => {
       });
   });
 };
+
 const CreateControllerFunction = async (db, res, countCompartment) => {
   try {
-    // last created Controller
     const controllerId = await GetLastInsertRowId(db);
 
-    // insert controllerfunction
     await InsertControllerFunction(db, controllerId, countCompartment);
 
   } catch (error) {
@@ -1004,24 +1058,24 @@ const GetLastInsertRowId = (db) => {
     });
   });
 };
-const GetCompartments = (db, shelf) => {
-  return new Promise((resolve, reject) => {
-    db.all(
-      `SELECT compartment.*
-      FROM compartment
-      LEFT JOIN article ON article.compartment = compartment.compartmentId
-      WHERE compartment.shelfId = ? AND article.compartment IS NULL`,
-      [shelf],
-      (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      }
-    );
-  });
-};
+// const GetCompartments = (db, shelf) => {
+//   return new Promise((resolve, reject) => {
+//     db.all(
+//       `SELECT compartment.*
+//       FROM compartment
+//       LEFT JOIN article ON article.compartment = compartment.compartmentId
+//       WHERE compartment.shelfId = ? AND article.compartment IS NULL`,
+//       [shelf],
+//       (err, result) => {
+//         if (err) {
+//           reject(err);
+//         } else {
+//           resolve(result);
+//         }
+//       }
+//     );
+//   });
+// };
 const DeleteControllerFunction = async (db, deviceId) => {
   try {
     await db.all(`DELETE FROM ControllerFunctions WHERE controllerId =?`, [
@@ -1059,48 +1113,14 @@ const CreateDatabase = () => {
     }
   });
 };
-const GetControllerFunctions = (database, controllerId) => {
-  return new Promise((resolve, reject) => {
-    database.all(`SELECT * FROM ControllerFunctions WHERE controllerId = ?`, [controllerId], (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
-  });
-};
-const MapControllerOnCompartment = async (db, functions, compartments) => {
-  // Schleife durch das controllerFunctions Array
-  for (const controllerFunction of functions) {
-    // Extrahiere die Nummer aus dem functionName, z.B. 'led1/on' wird zu '1'
-    const functionNumberMatch = controllerFunction.functionName.match(/led(\d+)\/on/);
-    
-    // Wenn keine Nummer gefunden wurde, ignoriere diesen Eintrag
-    if (!functionNumberMatch) continue;
-
-    const functionNumber = parseInt(functionNumberMatch[1]);
-
-    // Finde das entsprechende Kompartiment mit derselben Nummer im Namen
-    const matchingCompartment = compartments.find(
-      compartment => compartment.number === functionNumber
-    );
-
-    // Wenn ein passendes Kompartiment gefunden wurde, aktualisiere die Datenbank
-    if (matchingCompartment) {
-      await new Promise((resolve, reject) => {
-        db.run(
-          `UPDATE ControllerFunctions SET compartmentid = ? WHERE controllerfunctionId = ?`,
-          [matchingCompartment.compartmentId, controllerFunction.controllerfunctionId],
-          (err) => {
-            if (err) {
-              reject(err);
-            } else {              
-              resolve();
-            }
-          }
-        );
-      });
-    }
-  }
-};
+// const GetControllerFunctions = (database, controllerId) => {
+//   return new Promise((resolve, reject) => {
+//     database.all(`SELECT * FROM ControllerFunctions WHERE controllerId = ?`, [controllerId], (err, result) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         resolve(result);
+//       }
+//     });
+//   });
+// };

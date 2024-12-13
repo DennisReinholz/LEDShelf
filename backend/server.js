@@ -260,12 +260,10 @@ app.post("/renameShelf", (req, res) => {
 app.post("/deleteShelf", (req, res) => {
   DataBaseController.DeleteShelf(req, res, db);
 });
-app.post("/deleteCompartment", (req, res) => {
-  DataBaseController.deleteCompartment(req, res, db);
+app.get("/searchDevice", (req, res) => {
+  DataBaseController.SearchDevices(req, res, db);
 });
-app.post("/updateShelf", (req, res) => {
-  DataBaseController.UpdateShelf(req, res, db);
-});
+
 // Server starten
 app.listen(PORT, () => {
   console.log(`Server läuft auf Port ${PORT}`);

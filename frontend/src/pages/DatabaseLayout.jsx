@@ -7,8 +7,7 @@ import RecoryDatabase from "../components/Database/RecoryDatabase.jsx";
 
 const DatabaseLayout = () => {
   const navigate = useNavigate();
-  // eslint-disable-next-line no-unused-vars
-  const {user, setUser, token} = useContext(UserContext);
+  const {user, setUser} = useContext(UserContext);
 
   useEffect(() => {
     const userStorage = localStorage.getItem("user");

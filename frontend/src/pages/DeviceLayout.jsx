@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/deviceLayout.module.css";
 import Device from "../components/Device/Device";
 import Modal from "../components/common/Modal";
-import AddDeviceForm from "../components/Device/AddDeviceForm";
 import { UserContext } from "../helpers/userAuth";
 import { useConfig } from "../ConfigProvider";
+import SearchDeviceForm from "../components/Device/SearchDeviceForm";
 
 const DeviceLayout = () => {
    // eslint-disable-next-line no-unused-vars
@@ -16,6 +16,7 @@ const DeviceLayout = () => {
   const {user, setUser, token} = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+
   const config = useConfig();
   const navigate = useNavigate();
   const { backendUrl } = config || {};
@@ -46,6 +47,7 @@ const DeviceLayout = () => {
         setControllerList(controller);
       });
   };
+
 
   useEffect(() => {
     getShelf();
@@ -92,7 +94,7 @@ const DeviceLayout = () => {
       </div>
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-          <AddDeviceForm onClose={() => setIsModalOpen(false)} />
+          <SearchDeviceForm onClose={() => setIsModalOpen(false)} />
         </Modal>
       )}
     </div>

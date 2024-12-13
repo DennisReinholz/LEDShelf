@@ -28,7 +28,7 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
     try { 
       setControllerStatus("Suche LedController");
       await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/pingController`, {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -56,7 +56,7 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
 
   useEffect(() => {
     pingController();
-  }, [assignedShelf]);
+  }, [assignedShelf, ControllerStatus]);
   return (
     <div
       className={
@@ -89,7 +89,9 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
         <TfiReload  className="reconnect"
           style={{ cursor: "pointer" }}
           onClick={() => pingController()}/>
-        <FiEdit2
+        {ControllerStatus === "Verbunden" && 
+        <React.Fragment>
+          <FiEdit2
           className="edit"
           style={{ cursor: "pointer" }}
           onClick={() => setEditModalIsOpen(true)}
@@ -98,7 +100,9 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
           className="delete"
           style={{ cursor: "pointer" }}
           onClick={() => setDeleteFormIsOpen(true)}
-        />
+        /> 
+        </React.Fragment>
+        }
       </div>
      
       {editModalIsOpen && (
@@ -128,7 +132,7 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
 Device.propTypes = {
   ip: PropTypes.node.isRequired,
   shelfName: PropTypes.node.isRequired,
-  shelfid: PropTypes.node.isRequired,
+  shelfid: PropTypes.node.number,
   deviceId: PropTypes.node.isRequired,
 };
 export default Device;

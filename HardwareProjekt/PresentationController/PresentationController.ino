@@ -1,22 +1,22 @@
 #include <WiFi.h>
 #include <WebServer.h>
-#include <FastLED.h>
+#include <NeoPixelBus.h>
+#include <ESPmDNS.h>
 
-// Pin-Konfiguration
-#define DATA_PIN 19  // Datenpin für LED-Strip
+// Einstellungen für LEDs
+#define DATA_PIN 19
 #define NUM_LEDS 120 // Anzahl der LEDs im Strip
 
-CRGB leds[NUM_LEDS]; // Array für LEDs
+// NeoPixelBus-Objekt erstellen
+NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> strip(NUM_LEDS, DATA_PIN);
 
 // WLAN-Zugangsdaten
-const char* ssid = "FRITZ!Box 7530 RW";
-const char* password = "85201359361900784181";
+const char* ssid = "FRITZ!Box 7530 RW"; // Netzwerk anpassen
+const char* password = "85201359361900784181"; // Passwort anpassen
+const char* esp_name = "esp32-Test21639321";
 
-// Webserver auf Port 80
+// Webserver
 WebServer server(80);
-
-// Flag für WiFi-Verbindung
-bool shouldConnectWiFi = true; // Setze auf `false`, um die Verbindung zu deaktivieren
 
 // LEDs im Bereich einschalten
 void handleLedRangeOn(int startLED, int endLED) {
@@ -26,9 +26,9 @@ void handleLedRangeOn(int startLED, int endLED) {
   }
 
   for (int i = startLED; i <= endLED; i++) {
-    leds[i] = CRGB::Red; // LEDs auf Rot setzen
+    strip.SetPixelColor(i, RgbColor(255, 0, 0)); // Rot
   }
-  FastLED.show(); // Änderungen anzeigen
+  strip.Show(); // Änderungen anzeigen
   Serial.printf("LEDs eingeschaltet: %d bis %d\n", startLED, endLED);
 }
 
@@ -40,22 +40,34 @@ void handleLedRangeOff(int startLED, int endLED) {
   }
 
   for (int i = startLED; i <= endLED; i++) {
-    leds[i] = CRGB::Black; // LEDs ausschalten
+    strip.SetPixelColor(i, RgbColor(0, 0, 0)); // Aus
   }
-  FastLED.show(); // Änderungen anzeigen
+  strip.Show(); // Änderungen anzeigen
   Serial.printf("LEDs ausgeschaltet: %d bis %d\n", startLED, endLED);
+}
+
+// LED-Test
+void handleLedTest() {
+  for (int i = 0; i < NUM_LEDS; i++) {
+    strip.SetPixelColor(i, RgbColor(255, 0, 0)); // Rot
+    strip.Show(); // Änderungen anzeigen
+    Serial.printf("LED: %d on\n", i);
+    delay(500);
+    strip.SetPixelColor(i, RgbColor(0, 0, 0)); // Ausschalten
+    strip.Show(); // Änderungen anzeigen
+  }
 }
 
 // Alle LEDs ausschalten
 void handleLedAllOff() {
   for (int i = 0; i < NUM_LEDS; i++) {
-    leds[i] = CRGB::Black; // Alle LEDs ausschalten
+    strip.SetPixelColor(i, RgbColor(0, 0, 0)); // Alle LEDs ausschalten
   }
-  FastLED.show(); // Änderungen anzeigen
+  strip.Show(); // Änderungen anzeigen
   Serial.println("Alle LEDs ausgeschaltet");
 }
 
-// Verbindung zu WiFi herstellen
+// Verbindung zum WLAN herstellen
 void connectToWiFi() {
   Serial.printf("Verbinden mit WiFi: %s\n", ssid);
   WiFi.mode(WIFI_STA);
@@ -71,26 +83,26 @@ void connectToWiFi() {
   if (WiFi.status() == WL_CONNECTED) {
     Serial.println("\nErfolgreich verbunden!");
     Serial.printf("IP-Adresse: %s\n", WiFi.localIP().toString().c_str());
+
+    if (!MDNS.begin(esp_name)) {
+      Serial.println("mDNS konnte nicht gestartet werden.");
+    } else {
+      Serial.printf("ESP32 über %s.local erreichbar\n", esp_name);
+      MDNS.addService("http", "tcp", 80);
+    }
   } else {
     Serial.println("\nFehler: Keine Verbindung zum WiFi.");
   }
 }
 
 void setup() {
-  // Setup starten
   Serial.begin(9600);
 
   // LED-Strip initialisieren
-  FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
-  FastLED.clear(); // LEDs ausschalten
-  FastLED.show();
+  strip.Begin();
+  strip.Show();
 
-  // WiFi-Verbindung nur herstellen, wenn das Flag gesetzt ist
-  if (shouldConnectWiFi) {
-    connectToWiFi();
-  } else {
-    Serial.println("WiFi-Verbindung übersprungen (Flag deaktiviert).");
-  }
+  connectToWiFi();
 
   // Routen definieren
   server.on("/led/on", HTTP_GET, []() {
@@ -118,6 +130,11 @@ void setup() {
   server.on("/led/alloff", HTTP_GET, []() {
     handleLedAllOff();
     server.send(200, "text/plain", "Alle LEDs ausgeschaltet");
+  });
+
+  server.on("/led/test", HTTP_GET, []() {
+    handleLedTest();
+    server.send(200, "text/plain", "LED-Test gestartet");
   });
 
   // Server starten
