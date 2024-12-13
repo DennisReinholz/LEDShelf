@@ -5,7 +5,7 @@ import Device from "../components/Device/Device";
 import Modal from "../components/common/Modal";
 import { UserContext } from "../helpers/userAuth";
 import { useConfig } from "../ConfigProvider";
-import SearchDeviceForm from "../components/Device/SearchDeviceForm";
+import AddDeviceForm from "../components/Device/AddDeviceForm";
 
 const DeviceLayout = () => {
    // eslint-disable-next-line no-unused-vars
@@ -94,7 +94,8 @@ const DeviceLayout = () => {
       </div>
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-          <SearchDeviceForm onClose={() => setIsModalOpen(false)} />
+          {/* <SearchDeviceForm onClose={() => setIsModalOpen(false)} /> */}
+          <AddDeviceForm onClose={() => setIsModalOpen(false)}/>
         </Modal>
       )}
     </div>

@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "private": true,
-  "version": "1.1000.2411.0",
+  "version": "1.1000.2412.0",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"vite\" \"npm run start:backend\"",

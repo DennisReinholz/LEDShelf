@@ -89,8 +89,6 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
         <TfiReload  className="reconnect"
           style={{ cursor: "pointer" }}
           onClick={() => pingController()}/>
-        {ControllerStatus === "Verbunden" && 
-        <React.Fragment>
           <FiEdit2
           className="edit"
           style={{ cursor: "pointer" }}
@@ -100,9 +98,7 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
           className="delete"
           style={{ cursor: "pointer" }}
           onClick={() => setDeleteFormIsOpen(true)}
-        /> 
-        </React.Fragment>
-        }
+        />        
       </div>
      
       {editModalIsOpen && (

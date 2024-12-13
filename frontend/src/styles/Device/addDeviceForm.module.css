@@ -1,0 +1,128 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 15rem;
+    width: 25rem;
+}
+.inputRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 23rem;
+}
+.inputRow input{
+    width: 10rem;
+    height: 1.5rem;
+}
+.buttonContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 23rem;
+    height: 5rem;
+}
+@media only screen and (max-width: 2000px) {
+    .container{
+        display: flex;
+        flex-direction: column;
+        height: 15rem;
+        width: 25rem;
+    }
+    .inputRow{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 23rem;
+    }
+    .inputRow input{
+        width: 10rem;
+        height: 1.5rem;
+    }
+    .buttonContainer{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 23rem;
+        height: 5rem;
+    }
+}
+@media only screen and (max-width: 1920px) {
+    .container{
+        display: flex;
+        flex-direction: column;
+        height: 15rem;
+        width: 25rem;
+    }
+    .inputRow{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 23rem;
+    }
+    .inputRow input{
+        width: 10rem;
+        height: 1.5rem;
+    }
+    .buttonContainer{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 23rem;
+        height: 5rem;
+    }
+}
+@media only screen and (max-width: 1700px) {
+    .container{
+        display: flex;
+        flex-direction: column;
+        height: 15rem;
+        width: 25rem;
+    }
+    .inputRow{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 23rem;
+    }
+    .inputRow input{
+        width: 10rem;
+        height: 1.5rem;
+    }
+    .buttonContainer{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 23rem;
+        height: 5rem;
+    }
+}
+@media only screen and (max-width: 1200px) {
+    .container{
+        display: flex;
+        flex-direction: column;
+        height: 15rem;
+        width: 25rem;
+    }
+    .inputRow{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 23rem;
+    }
+    .inputRow input{
+        width: 10rem;
+        height: 1.5rem;
+    }
+    .buttonContainer{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 23rem;
+        height: 5rem;
+    }
+}
