@@ -9,7 +9,9 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway" 
     volumes:
-      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf  
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/src/config.json:/usr/share/nginx/html/src/config.json
+    restart: unless-stopped
     depends_on:
       - backend
 
@@ -24,3 +26,11 @@ services:
       - AZURE_TENANT_ID=${AZURE_TENANT_ID}
       - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
       - AZURE_JSONWEB_TOKEN=${AZURE_JSONWEB_TOKEN}
+    volumes:
+      - db-data:/home/ledshelf
+      - /var/run/dbus:/var/run/dbus
+      - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
+    restart: unless-stopped
+volumes:
+  db-data:
+  

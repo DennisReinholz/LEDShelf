@@ -1,5 +1,5 @@
 # Verwende eine stabile LTS-Version von Node.js (z.B. 20.x)
-FROM node:18.20.4
+FROM node:20.12.0
 
 # Setze das Arbeitsverzeichnis auf /app
 WORKDIR /app
@@ -21,11 +21,11 @@ COPY . .
 # Erstelle den Datenbankordner
 RUN mkdir -p /home/ledshelf/database
 
+# Copy the Avahi daemon configuration
+COPY avahi-daemon.conf /etc/avahi/avahi-daemon.conf
+
 # Öffne Port 3000 für externe Verbindungen
 EXPOSE 3000
 
-# Öffne Port 5353 für mDNS
-EXPOSE 5353
-
 # Starte die Anwendung
-CMD ["sh", "-c", "service dbus start && service avahi-daemon start && npm start"]
+CMD ["sh", "-c", "service dbus start && npm start"]

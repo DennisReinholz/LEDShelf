@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const ping = require("ping");
 const path = require("path");
 const bonjour = require("bonjour")();
+const dnssd = require('dnssd');
 
 const SECRET_KEY = process.env.AZURE_JSONWEB_TOKEN;
 
@@ -820,43 +821,64 @@ module.exports.SearchDevices = async (req, res, db) => {
   const devices = [];
   let responseSent = false;
 
-  await db.all(`SELECT ipAdresse FROM ledController`, (err, rows) => {
-    if (err) {
-      return res.status(500).json({ serverStatus: -1, message: "Fehler beim Lesen der Datenbank" });
-    }
-    
-    dbControllers = rows.map(row => row.ipAdresse);
-  });
-
-  // Suche nach Geräten im Netzwerk
-  const browser = bonjour.find({ type: "http" }, (service) => {
-    // Nur ESP32-Geräte berücksichtigen, die nicht in der Datenbank sind
-    if (service.name.includes("esp32") && !dbControllers.includes(service.referer.address)) {
-      devices.push({
-        name: service.name,
-        address: service.referer.address,
-        port: service.port,
-      });
-    }
-  });
-
-  // Nach 5 Sekunden die Suche beenden und Ergebnisse zurückgeben
-  setTimeout(() => {
-    browser.stop();
-
-    if (!responseSent) {
-      if (devices.length > 0) {
-        const devicesWithIndex = devices.map((device, index) => ({
-          ...device,
-          index: index + 1,
-        }));
-        res.status(200).json({ serverStatus: 2, devices: devicesWithIndex });
-      } else {
-        res.status(404).json({ serverStatus: -1, message: "Keine neuen ESP32-Geräte gefunden" });
+  console.log("Searching network");
+  
+  try {
+    await db.all(`SELECT ipAdresse FROM ledController`, (err, rows) => {
+      if (err) {
+        return res.status(500).json({ serverStatus: -1, message: "Fehler beim Lesen der Datenbank" });
       }
-      responseSent = true;
-    }
-  }, 5000); // Timeout auf 5000 ms
+      
+      dbControllers = rows.map(row => row.ipAdresse);
+    });
+
+    const browser = new dnssd.Browser(dnssd.tcp('http'));
+
+    browser.on('serviceUp', (service) => {
+      console.log('Gefundener Dienst:', service);
+    });
+    
+    browser.on('serviceDown', (service) => {
+      console.log('Dienst entfernt:', service);
+    });
+    
+    browser.start();
+   
+    // // Suche nach Geräten im Netzwerk
+    // const browser = bonjour.find({ type: "http" }, (service) => {
+    //   console.log("Services: ", service);
+    //   // Nur ESP32-Geräte berücksichtigen, die nicht in der Datenbank sind
+    //   if (service.name.includes("esp32") && !dbControllers.includes(service.referer.address)) {
+    //     devices.push({
+    //       name: service.name,
+    //       address: service.referer.address,
+    //       port: service.port,
+    //     });
+    //   }
+    // });
+  
+    // // // Nach 5 Sekunden die Suche beenden und Ergebnisse zurückgeben
+    // setTimeout(() => {
+    //   console.log("Timeout, searching stopped");
+    //   browser.stop();
+  
+    //   if (!responseSent) {
+    //     if (devices.length > 0) {
+    //       const devicesWithIndex = devices.map((device, index) => ({
+    //         ...device,
+    //         index: index + 1,
+    //       }));
+    //       res.status(200).json({ serverStatus: 2, devices: devicesWithIndex });
+    //     } else {
+    //       res.status(404).json({ serverStatus: -1, message: "Keine neuen ESP32-Geräte gefunden" });
+    //     }
+    //     responseSent = true;
+    //   }
+    // }, 5000); // Timeout auf 5000 ms
+
+  } catch (error) {
+    console.log("Error mDNS: ", error);
+  }
 };
 
 module.exports.UpdateShelf = async (req, res, db) => {
