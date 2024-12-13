@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Installiere Build-Tools, Abhängigkeiten und SQLite3, dann entferne Build-Tools
-RUN apt-get update && apt-get install -y python3 g++ make iputils-ping avahi-utils -y \
+RUN apt update && apt install -y python3 g++ make iputils-ping avahi-utils avahi-daemon dbus \
     && npm install \
     && npm rebuild sqlite3 --build-from-source \
     && apt-get remove -y g++ make \
@@ -24,5 +24,8 @@ RUN mkdir -p /home/ledshelf/database
 # Öffne Port 3000 für externe Verbindungen
 EXPOSE 3000
 
+# Öffne Port 5353 für mDNS
+EXPOSE 5353
+
 # Starte die Anwendung
-CMD ["npm", "start"]
+CMD ["sh", "-c", "service dbus start && service avahi-daemon start && npm start"]
