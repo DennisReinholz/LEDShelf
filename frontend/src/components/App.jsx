@@ -16,6 +16,7 @@ import Administration from "../pages/Administration.jsx";
 import PrivateRoute from "../helpers/PrivateRoute.jsx";
 import ShelfConfiguration from "../pages/ShelfConfiguration.jsx";
 import EditShelfLayout from "../pages/EditShelfLayout.jsx";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (

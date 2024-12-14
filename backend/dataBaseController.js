@@ -75,6 +75,7 @@ module.exports.getUser = async (req, res, db) => {
           res.status(401).json({ serverStatus: -1 });
         }
       } catch (compareError) {
+        console.log("Error:", compareError.message);
         res
           .status(500)
           .json({ serverStatus: -1, error: compareError.message });

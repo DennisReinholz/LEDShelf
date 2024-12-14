@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import styles from "../styles/login.module.css";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/userAuth.jsx";
 import toast from "react-hot-toast";
 import { useConfig } from "../ConfigProvider";
+import "../styles/app.css";
+import "../styles/login.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,42 +19,38 @@ const Login = () => {
     setUserName("");
     setPassword("");
   };
-  const handlePassword = (event) => {
-    setPassword(event.target.value);
-  };
-  const handleUsername = (event) => {
-    setUserName(event.target.value);
-  };
+
+  const handlePassword = (event) => setPassword(event.target.value);
+  const handleUsername = (event) => setUserName(event.target.value);
+
   const getUser = async () => {
     try {
-        const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/users`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            cache: "no-cache",
-            body: JSON.stringify({
-                frontendPassword: password,
-                username: username,
-            }),
-        });
+      const response = await fetch(`http://${backendUrl === undefined ? config.localhost : backendUrl}:3000/users`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-cache",
+        body: JSON.stringify({
+          frontendPassword: password,
+          username: username,
+        }),
+      });
 
-        const data = await response.json();
-        
-        if (data.serverStatus === 2) {
-            setUser(data.result);
-            setToken(data.token);
-            localStorage.setItem("user", JSON.stringify(data.result));
-            localStorage.setItem("token", data.token);
-            navigate("/regale");
-        } else if (data.serverStatus === -1 || data.serverStatus === -2) {
-            toast.error("Login fehlgeschlagen. \n Username oder Passwort ist falsch.");
-            clearLogin();
-        }
-    } catch (error) {
-        console.error("Fehler beim Abrufen der Benutzerdaten:", error);
-        toast.error("Fehler bei der Abfrage aus der Datenbank, bitte starten Sie den Backend-Server neu.");
+      const data = await response.json();
+
+      if (data.serverStatus === 2) {
+        setUser(data.result);
+        setToken(data.token);
+        localStorage.setItem("user", JSON.stringify(data.result));
+        localStorage.setItem("token", data.token);
+        navigate("/regale");
+      } else if (data.serverStatus === -1 || data.serverStatus === -2) {
+        toast.error("Login fehlgeschlagen. \n Username oder Passwort ist falsch.");
         clearLogin();
+      }
+    } catch (error) {
+      console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+      toast.error("Fehler bei der Abfrage aus der Datenbank, bitte starten Sie den Backend-Server neu.");
+      clearLogin();
     }
   };
 
@@ -64,40 +62,35 @@ const Login = () => {
       }
     };
     document.addEventListener("keydown", listener);
-    return () => {
-      document.removeEventListener("keydown", listener);
-    };
+    return () => document.removeEventListener("keydown", listener);
   }, [password, username]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.content}>
-        <p>
-          <strong>LEDShelf</strong>
-        </p>
-        <div className={styles.inputContainer}>
+    <div className="container d-flex justify-content-center align-items-center vh-100">
+      <div className="card p-4 shadow-lg login-Content" style={{ maxWidth: "400px", width: "100%" }}>
+        <p className="text-center fw-bold fs-4 login-AppName">LEDShelf</p>
+        <div className="mb-3">
           <input
-            className={styles.input}
             type="text"
+            className="form-control"
             placeholder="Name"
             value={username}
-            style={{ width: "16rem", height: "2rem", color: "Black" }}
             onChange={handleUsername}
           />
+        </div>
+        <div className="mb-3">
           <input
-            placeholder="Password"
-            size="small"
             type="password"
-            style={{ width: "16rem", height: "2rem", color: "black" }}
+            className="form-control"
+            placeholder="Password"
             value={password}
-            className={styles.input}
             onChange={handlePassword}
           />
-          <div className={styles.buttonContainer}>
-            <button className={styles.loginButton} onClick={getUser}>
-              Login
-            </button> 
-          </div>
+        </div>
+        <div className="d-grid">
+          <button className="btn btn-primary primaryButton" onClick={getUser}>
+            Login
+          </button>
         </div>
       </div>
     </div>

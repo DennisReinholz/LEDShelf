@@ -1,475 +1,85 @@
-html,
-body {
-  height: 100vh;
-  width: 100vw;
+/* Global Styles */
+* {
+  margin: 0;
   padding: 0;
+  box-sizing: border-box; /* Sicherstellen, dass Padding und Border die Größe des Elements nicht erweitern */
 }
+#root {
+  background-color: #0f0f0f; /* Schwarzer Hintergrund */
+  min-height: 100vh; /* Damit der Hintergrund auch den gesamten Viewport abdeckt */
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Höhe des gesamten Viewports */
+  width: 100%; /* Breite des gesamten Viewports */
+  overflow-x: hidden; /* Verhindert horizontales Scrollen */
+  background-color: #0f0f0f;
+  font-family: Arial, sans-serif;
+}
+
+/* Container */
 .container {
-  height: 100vh;
-  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Stellt sicher, dass der Container immer die volle Höhe hat */
+  width: 100vw; /* Stellt sicher, dass der Container die volle Breite einnimmt */
   background-color: #0f0f0f;
 }
-@media only screen and (max-width: 6000px) {
-  html,
-  body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-  }
-  .container {
-    height: 100vh;
-    width: 100vw;
-    background-color: #0f0f0f;
-  }
-  .primaryButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .primaryButton:hover {
-    background-color: #302f2f;
-  }
-  .secondaryButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .secondaryButton:hover {
-    background-color: #6c6a6a;
-  }
-  .disabledButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: gray;
-    color: black;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .inputText {
-    height: 2rem;
-    width: 13rem;
-    font-size: 1em;
-  }
-  .inputText::-webkit-inner-spin-button {
-    height: 3rem;
-  }
+
+/* Buttons */
+.primaryButton,
+.secondaryButton,
+.disabledButton {
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  display: inline-block;
+  border: 1px solid white;
+  transition: background-color 0.3s ease;
 }
-@media only screen and (max-width: 5000px) {
-  html,
-  body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-  }
-  .container {
-    height: 100vh;
-    width: 100vw;
-    background-color: #0f0f0f;
-  }
-  .primaryButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .primaryButton:hover {
-    background-color: #302f2f;
-  }
-  .secondaryButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .secondaryButton:hover {
-    background-color: #6c6a6a;
-  }
-  .disabledButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: gray;
-    color: black;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .inputText {
-    height: 2rem;
-    width: 13rem;
-    font-size: 1em;
-  }
-  .inputText::-webkit-inner-spin-button {
-    height: 3rem;
-  }
+
+.btn.primaryButton {
+  background-color: black;
+  color: white;
+  border-color: white;
 }
-@media only screen and (max-width: 4000px) {
-  html,
-  body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-  }
-  .container {
-    height: 100vh;
-    width: 100vw;
-    background-color: #0f0f0f;
-  }
-  .primaryButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .primaryButton:hover {
-    background-color: #302f2f;
-  }
-  .secondaryButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .secondaryButton:hover {
-    background-color: #6c6a6a;
-  }
-  .disabledButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: gray;
-    color: black;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .inputText {
-    height: 2rem;
-    width: 13rem;
-    font-size: 1em;
-  }
-  .inputText::-webkit-inner-spin-button {
-    height: 3rem;
-  }
+
+.btn.primaryButton:hover {
+  background-color: #302f2f;
+  border-color: white;
 }
-@media only screen and (max-width: 3000px) {
-  html,
-  body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-  }
-  .container {
-    height: 100vh;
-    width: 100vw;
-    background-color: #0f0f0f;
-  }
-  .primaryButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .primaryButton:hover {
-    background-color: #302f2f;
-  }
-  .secondaryButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .secondaryButton:hover {
-    background-color: #6c6a6a;
-  }
-  .disabledButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: gray;
-    color: black;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .inputText {
-    height: 2rem;
-    width: 13rem;
-    font-size: 1em;
-  }
-  .inputText::-webkit-inner-spin-button {
-    height: 3rem;
-  }
+
+.btn.secondaryButton {
+  background-color: white;
+  color: black;
 }
-@media only screen and (max-width: 2000px) {
-  html,
-  body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-  }
-  .container {
-    height: 100vh;
-    width: 100vw;
-    background-color: #0f0f0f;
-  }
-  .primaryButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .primaryButton:hover {
-    background-color: #302f2f;
-  }
-  .secondaryButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .secondaryButton:hover {
-    background-color: #6c6a6a;
-  }
-  .disabledButton {
-    width: 10rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: gray;
-    color: black;
-    cursor: pointer;
-    font-size: 1.15em;
-  }
-  .inputText {
-    height: 2rem;
-    width: 13rem;
-    font-size: 1em;
-  }
-  .inputText::-webkit-inner-spin-button {
-    height: 3rem;
-  }
+
+.btn.secondaryButton:hover {
+  background-color: #6c6a6a;
 }
-@media only screen and (max-width: 1920px) {
-  html,
-  body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-  }
-  .container {
-    height: 100vh;
-    width: 100vw;
-    background-color: #0f0f0f;
-  }
-  .primaryButton {
-    width: 8rem;
-    height: 2.25rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    font-size: 1em;
-  }
-  .primaryButton:hover {
-    background-color: #302f2f;
-  }
-  .secondaryButton {
-    width: 8rem;
-    height: 2.25rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-    font-size: 1em;
-  }
-  .secondaryButton:hover {
-    background-color: #6c6a6a;
-  }
-  .disabledButton {
-    width: 8rem;
-    height: 2.25rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: gray;
-    color: black;
-    cursor: pointer;
-    font-size: 0.75em;
-  }
-  .inputText {
-    height: 2rem;
-    width: 13rem;
-    font-size: 1em;
-  }
-  .inputText::-webkit-inner-spin-button {
-    height: 3rem;
-  }
+
+.btn.disabledButton {
+  background-color: gray;
+  color: black;
+  cursor: not-allowed;
 }
-@media only screen and (max-width: 1700px) {
-  html,
-  body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-  }
-  .container {
-    height: 100vh;
-    width: 100vw;
-    background-color: #0f0f0f;
-  }
-  .primaryButton {
-    width: 8rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    font-size: 0.75em;
-  }
-  .primaryButton:hover {
-    background-color: #302f2f;
-  }
-  .secondaryButton {
-    width: 8rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-    font-size: 0.75em;
-  }
-  .secondaryButton:hover {
-    background-color: #6c6a6a;
-  }
-  .disabledButton {
-    width: 8rem;
-    height: 2rem;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: gray;
-    color: black;
-    cursor: pointer;
-    font-size: 0.75em;
-  }
-  .inputText {
-    height: 2rem;
-    width: 13rem;
-    font-size: 0.75em;
-  }
-  .inputText::-webkit-inner-spin-button {
-    height: 3rem;
-  }
+
+/* Input */
+.inputText {
+  height: 2rem;
+  width: 13rem;
+  font-size: 1rem;
+  margin-bottom: 1rem; /* Abstand zum nächsten Element */
+  padding: 0.5rem; /* Innenabstand für bessere Lesbarkeit */
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  outline: none; /* Entfernt standardmäßigen Fokus-Stil */
 }
-@media only screen and (max-width: 1200px) {
-  html,
-  body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-  }
-  .container {
-    height: 100vh;
-    width: 100vw;
-    background-color: #0f0f0f;
-  }
-  .primaryButton {
-    width: 10rem;
-    height: 3rem;
-    font-size: 1.15em;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-  }
-  .primaryButton:hover {
-    background-color: #302f2f;
-  }
-  .secondaryButton {
-    width: 10rem;
-    height: 3rem;
-    font-size: 1.15em;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-  }
-  .secondaryButton:hover {
-    background-color: #6c6a6a;
-  }
-  .disabledButton {
-    width: 10rem;
-    height: 3rem;
-    font-size: 1.15em;
-    border-radius: 0.5rem;
-    border-color: white;
-    background-color: gray;
-    color: black;
-    cursor: pointer;
-  }
-  .inputText {
-    height: 2rem;
-    width: 13rem;
-    font-size: 0.75em;
-  }
-  .inputText::-webkit-inner-spin-button {
-    height: 3rem;
-  }
+
+.inputText:focus {
+  border-color: #6c6a6a; /* Stiländerung beim Fokus */
 }

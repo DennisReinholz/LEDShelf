@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Logo from "../components/Logo.jsx";
 import MainNav from "./MainNav.jsx";
-import styles from "../styles/Sidebar/sidebar.module.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Sidebar = () => {
   // Initialize state within the component
@@ -12,12 +12,12 @@ const Sidebar = () => {
   }, []);
 
   return (
-    <aside className={styles.container}>
-      <div className={styles.content}>
+    <aside className="d-flex flex-column bg-dark text-white p-3 vh-100">
+      <div className="flex-grow-1">
         <Logo />
         <MainNav />
-       </div>
-      <p style={{ color: "White", marginLeft: "1rem" }}>V.{version}</p>
+      </div>
+      <p className="text-white m-0">V.{version}</p>
     </aside>
   );
 };

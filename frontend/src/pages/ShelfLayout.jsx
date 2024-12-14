@@ -4,6 +4,8 @@ import Shelf from "../components/Shelf/Shelf";
 import styles from "../styles/shelfLayout.module.css";
 import { UserContext } from "../helpers/userAuth.jsx";
 import { useConfig } from "../ConfigProvider";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 const ShelfLayout = () => {
   const {user, setUser, token} = useContext(UserContext);
@@ -48,27 +50,27 @@ const ShelfLayout = () => {
   }, [isEdit, shelfUpdated]);
 
   return (
-    <div className={styles.container}>
-        {user != undefined
-          ? user.roleid == 1 && (
-            <div className={styles.buttonContainer}>
-              <button
-              disabled={isEdit}
-                className={!isEdit ? "primaryButton": "disabledButton"}
-                onClick={() => navigate("/regale/konfigurieren")}
-              >
-                Erstellen
-              </button>
-                <button className="primaryButton" onClick={activateEdit}>Bearbeiten</button>
-              </div>
-            )
-          : ""}
-    
-      <div className={styles.content}>
-        {shelfList != undefined
-          ? shelfList.map((c) => (
+    <div className="container">
+    {user != undefined && user.roleid == 1 && (
+      <div className="d-flex justify-content-end mb-3">
+        <button
+          disabled={isEdit}
+          className={`btn ${!isEdit ? "btn-primary" : "btn-secondary"}`}
+          onClick={() => navigate("/regale/konfigurieren")}
+        >
+          Erstellen
+        </button>
+        <button className="btn btn-primary ms-2" onClick={activateEdit}>
+          Bearbeiten
+        </button>
+      </div>
+    )}
+
+    <div className="row g-3">
+      {shelfList != undefined
+        ? shelfList.map((c) => (
+            <div key={c.shelfid} className="col-md-6 col-lg-4">
               <Shelf
-                key={c.shelfid}
                 shelfname={c.shelfname}
                 place={c.place}
                 compantments={c.countCompartment}
@@ -76,10 +78,11 @@ const ShelfLayout = () => {
                 isEdit={isEdit}
                 setShelfUpdated={setShelfUpdated}
               />
-            ))
-          : "Keine Regale vorhanden"}
-      </div>
+            </div>
+          ))
+        : <div className="text-center">Keine Regale vorhanden</div>}
     </div>
+  </div>
   );
 };
 
