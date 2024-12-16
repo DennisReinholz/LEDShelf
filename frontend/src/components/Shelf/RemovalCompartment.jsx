@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../../styles/Shelf/removalCompartment.module.css";
 import PropTypes from "prop-types";
 
@@ -7,13 +7,21 @@ const RemovalCompartment = ({
   article,
   counter,
   setCounter,
+  setIsBlocked,
+  isBlocked
 }) => {
+
   const decrease = () => {
     setCounter((c) => c - 1);
   };
   const increase = () => {
     setCounter((c) => c + 1);
   };
+
+  useEffect(()=>{
+
+  },[isBlocked]);
+  
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
@@ -24,7 +32,6 @@ const RemovalCompartment = ({
         <button className={styles.articleButton} onClick={() => increase()}>
           +
         </button>
-      </div>
       <button
         className="primaryButton"
         style={{ marginLeft: "1rem" }}
@@ -34,13 +41,20 @@ const RemovalCompartment = ({
       >
         Speichern
       </button>
+      </div>
+      <div className={styles.removeButtonContainer}>
+        {isBlocked ?<button className="primaryButton" onClick={()=>setIsBlocked((blocked)=>!blocked)}>Zurücklegen</button> :
+        <button className="primaryButton" onClick={()=>setIsBlocked((blocked)=>!blocked)}>Entnehmen</button>}
+      </div>
     </div>
   );
 };
 RemovalCompartment.propTypes = {
-  UpdateArticleCount: PropTypes.node.isRequired,
-  article: PropTypes.node.isRequired,
+  UpdateArticleCount: PropTypes.func.isRequired,
+  article: PropTypes.object.isRequired,
   counter: PropTypes.node.isRequired,
-  setCounter: PropTypes.node.isRequired,
+  setCounter: PropTypes.func.isRequired,
+  setIsBlocked: PropTypes.func.isRequired,
+  isBlocked: PropTypes.bool.isRequired,
 };
 export default RemovalCompartment;

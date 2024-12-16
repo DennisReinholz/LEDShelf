@@ -1,0 +1,96 @@
+@media only screen and (max-width: 3000px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+    .led {
+        width: 15px;
+        height: 15px;
+        background-color: #ddd;
+        border: 1px solid #333;
+        margin: 0rem;
+        padding: 0rem;
+        cursor: pointer;
+    }
+    .ledOn {
+        width: 15px;
+        height: 15px;
+        border: 1px solid #333;
+        margin: 0rem;
+        padding: 0rem;
+        cursor: pointer;
+        background-color: green;
+    }
+}
+@media only screen and (max-width: 1920px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+    .led {
+        width: 15px;
+        height: 15px;
+        background-color: #ddd;
+        border: 1px solid #333;
+        margin: 0rem;
+        padding: 0rem;
+        cursor: pointer;
+    }
+    .ledOn {
+        width: 15px;
+        height: 15px;
+        border: 1px solid #333;
+        margin: 0rem;
+        padding: 0rem;
+        cursor: pointer;
+        background-color: green;
+    }
+}
+@media only screen and (max-width: 1700px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+    .led {
+        width: 15px;
+        height: 15px;
+        background-color: #ddd;
+        border: 1px solid #333;
+        margin: 0rem;
+        padding: 0rem;
+        cursor: pointer;
+    }
+    .ledOn {
+        width: 15px;
+        height: 15px;
+        border: 1px solid #333;
+        margin: 0rem;
+        padding: 0rem;
+        cursor: pointer;
+        background-color: green;
+    }
+}
+@media only screen and (max-width: 1200px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+    .led {
+        width: 15px;
+        height: 15px;
+        background-color: #ddd;
+        border: 1px solid #333;
+        margin: 0rem;
+        padding: 0rem;
+        cursor: pointer;
+    }
+    .ledOn {
+        width: 15px;
+        height: 15px;
+        border: 1px solid #333;
+        margin: 0rem;
+        padding: 0rem;
+        cursor: pointer;
+        background-color: green;
+    }
+}

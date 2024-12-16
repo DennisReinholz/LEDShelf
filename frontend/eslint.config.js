@@ -6,8 +6,13 @@ export default [
   { languageOptions: { globals: globals.browser } },
   pluginReact.configs.flat.recommended,
   {
+    settings: {
+    react: {
+      version: "detect", // Automatisches Erkennen der installierten React-Version
+    },
+  },
     rules: {
-      "no-unused-vars": ["warn", { varsIgnorePattern: "^_" }],
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
       "no-prototype-builtins": "off",
       "react-hooks/exhaustive-deps": "off",
       semi: ["error", "always"],

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/Category/articleToCategory.module.css";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const ArticleToCategory = ({
   articleid,
@@ -11,12 +12,13 @@ const ArticleToCategory = ({
 }) => {
   const [inCategory, setInCategory] = useState(hasCategory);
   const [selectedArticle, setSelectedArticle] = useState();
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const handleInCategory = () => {
     setInCategory(hasCategory);
     setSelectedArticle(articleid);
   };
-
   const handleUpdateArticle = (state) => {
     let tempValue = null;
     let editState = false;
@@ -31,7 +33,7 @@ const ArticleToCategory = ({
     UpdateArticleCategory(tempValue, editState);
   };
   const UpdateArticleCategory = async (value, editState) => {
-    await fetch(`http://localhost:3000/UpdateArticleCategory`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/UpdateArticleCategory`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -59,6 +61,7 @@ const ArticleToCategory = ({
   useEffect(() => {
     handleInCategory();
   }, [inCategory]);
+  
   return (
     <div className={styles.container}>
       <input
@@ -74,7 +77,7 @@ const ArticleToCategory = ({
 ArticleToCategory.propTypes = {
   articleid: PropTypes.node.isRequired,
   articlename: PropTypes.node.isRequired,
-  hasCategory: PropTypes.node.isRequired,
+  hasCategory: PropTypes.bool.isRequired,
   categoryID: PropTypes.node.isRequired,
 };
 export default ArticleToCategory;

@@ -7,7 +7,7 @@ import RecoryDatabase from "../components/Database/RecoryDatabase.jsx";
 
 const DatabaseLayout = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useContext(UserContext);
+  const {user, setUser} = useContext(UserContext);
 
   useEffect(() => {
     const userStorage = localStorage.getItem("user");
@@ -21,6 +21,7 @@ const DatabaseLayout = () => {
       navigate("/login");
     }
   }, []);
+  
   return (
     <div className={styles.container}>
       <DatabaseBackup />

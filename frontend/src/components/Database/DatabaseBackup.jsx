@@ -2,14 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import toast from "react-hot-toast";
 import styles from "../../styles/Database/databaseBackup.module.css";
+import { useConfig } from "../../ConfigProvider";
 
 const DatabaseBackup = () => {
+  // eslint-disable-next-line no-unused-vars
   const [databaseBackUpPath, setDatabasePath] = useState();
   const [files, setFiles] = useState();
   const [upDated, setUpdated] = useState();
+  const [databaseName, setDatabaseName] = useState();
+  const config = useConfig();
+  const { backendUrl } = config || {};
+
 
   const getDatabasePath = async () => {
-    await fetch(`http://localhost:3000/getDatabasepath`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getDatabasepath`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -25,7 +31,7 @@ const DatabaseBackup = () => {
       });
   };
   const StartBackUp = async () => {
-    await fetch(`http://localhost:3000/startManualBackup`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/startManualBackup`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +50,7 @@ const DatabaseBackup = () => {
       });
   };
   const GetBackUpFiles = async () => {
-    await fetch(`http://localhost:3000/getRecentBackUpFile`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getRecentBackUpFile`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -62,33 +68,92 @@ const DatabaseBackup = () => {
         }
       });
   };
-  function formatDate(dateStr) {
-    const date = new Date(dateStr);
+  const GetDatabaseName = async () => {
+    const exportUrl = `http://${backendUrl === undefined ? config.localhost : backendUrl}:3000/getDatabaseName`;
+    try {
+      await fetch(exportUrl, {
+        method: "Get",
+        cache: "no-cache",
+      } 
+      )
+      .then((response) => response.json())
+      .then((data)=>{
+        if (data !== undefined) {
+          setDatabaseName(data.databaseName);
+        }
+      });
+    } catch (error) {
+      console.error("Fehler beim Exportieren der Datenbank:", error);
+      toast.error("Fehler beim Exportieren der Datenbank. Bitte erneut versuchen.");
+    }
+  };
 
+  const ExportDatabase = async () => {
+    const exportUrl = `http://${backendUrl === undefined ? config.localhost : backendUrl}:3000/exportDatabase`;
+    try {
+      await fetch(exportUrl, {
+        method: "Get",
+        cache: "no-cache",
+      } 
+      )
+      .then((response) => response.blob())
+      .then((data)=>{
+        const downloadUrl = URL.createObjectURL(data);
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.download = `LEDShelf_${formatDate()}.db`;
+        link.click();
+        URL.revokeObjectURL(downloadUrl);
+        toast.success("Datenbank erfolgreich exportiert!");
+      });
+    } catch (error) {
+      console.error("Fehler beim Exportieren der Datenbank:", error);
+      toast.error("Fehler beim Exportieren der Datenbank. Bitte erneut versuchen.");
+    }
+  };
+
+  function formatDate(dateStr = undefined) {
+    let date;
+    let isTimestamp;
+    if (dateStr === undefined) {
+      date = new Date();
+      isTimestamp = true;
+    }
+    else{
+      date = new Date(dateStr);
+      isTimestamp = false;
+    }
+    
     const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Monate sind 0-basiert
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
 
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
-
-    return `${day}.${month}.${year} - ${hours}:${minutes}`;
-  }
+    return isTimestamp? `${day}${month}${year}_${hours}${minutes}`:`${day}.${month}.${year} - ${hours}:${minutes}`;
+  };
 
   useEffect(() => {
     getDatabasePath();
     GetBackUpFiles();
+    if(databaseName === undefined){
+      GetDatabaseName();
+    }
+    
   }, [files, upDated]);
 
   return (
     <React.Fragment>
-      <Tooltip anchorSelect=".primaryButton" place="right">
+      <Tooltip anchorSelect="[data-tooltip='backup']" ac place="right">
         Starte ein manuelles Backup der Datenbank
       </Tooltip>
-      <fieldset className={styles.backupFieldset.backupFieldset}>
+      <Tooltip anchorSelect="[data-tooltip='export']" place="right">
+        Exportiere die Datenbank als Datei
+      </Tooltip>
+      <fieldset className={styles.backupFieldset}>
         <legend>Datenbank Sicherung</legend>
         <div className={styles.backupContainer}>
-          <p>Letztes Sicherung</p>
+          <p>Letzte Sicherung</p>
           <p>
             {files != undefined
               ? `${formatDate(files.birthtime)}`
@@ -96,8 +161,11 @@ const DatabaseBackup = () => {
           </p>
         </div>
         <div className={styles.buttonContainer}>
-          <button className="primaryButton" onClick={() => StartBackUp()}>
+          <button className="primaryButton" data-tooltip="backup" onClick={() => StartBackUp()}>
             Sichern
+          </button>
+          <button className="primaryButton" data-tooltip="export" onClick={() => ExportDatabase()}>
+            Exportieren
           </button>
         </div>
       </fieldset>

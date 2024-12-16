@@ -6,15 +6,18 @@ import DeleteCategory from "./DeleteCategoryForm.jsx";
 import Modal from "../common/Modal.jsx";
 import styles from "../../styles/Category/category.module.css";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const Category = ({ category, setDeleteCategory }) => {
   const [editCategoryOpen, setEditCategoryOpen] = useState(false);
   const [deleteCategoryOpen, setDeleteCategoryOpen] = useState(false);
   const [editCategory, setEditCategory] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const deleteCategoryById = async () => {
-    await fetch(`http://localhost:3000/deleteCategory`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/deleteCategory`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +86,7 @@ const Category = ({ category, setDeleteCategory }) => {
   );
 };
 Category.propTypes = {
-  category: PropTypes.node.isRequired,
-  setDeleteCategory: PropTypes.node.isRequired,
+  category: PropTypes.object.isRequired,
+  setDeleteCategory: PropTypes.func.isRequired,
 };
 export default Category;

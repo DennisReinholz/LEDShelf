@@ -17,11 +17,11 @@
   }
   .content {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     height: 63rem;
     width: 100rem;
     margin-top: 1rem;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   .containerCompartment {
     display: flex;
@@ -32,7 +32,7 @@
   }
   .containerCompartmentIsActiv {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     cursor: pointer;
     height: 15rem;
@@ -73,11 +73,11 @@
   }
   .content {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     height: 65rem;
     width: 100rem;
     margin-top: 1rem;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   .containerCompartment {
     display: flex;
@@ -88,7 +88,7 @@
   }
   .containerCompartmentIsActiv {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     cursor: pointer;
     height: 15rem;
@@ -128,10 +128,10 @@
   }
   .content {
     display: flex;
-    flex-wrap: wrap;
-    height: 30rem;
+    flex-direction: column;
+    height: 65rem;
     width: 85rem;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   .containerCompartment {
     display: flex;
@@ -142,7 +142,7 @@
   }
   .containerCompartmentIsActiv {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     cursor: pointer;
     height: 15rem;
@@ -182,24 +182,26 @@
   }
   .content {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
     height: 60rem;
-    width: 59rem;
-    overflow-y: scroll;
+    width: 60rem;
+    overflow-y: auto;
   }
   .containerCompartment {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     cursor: pointer;
     height: 12rem;
   }
   .containerCompartmentIsActiv {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     cursor: pointer;
     height: 15rem;
+    width: 20rem;
   }
   .input {
     height: 2rem;

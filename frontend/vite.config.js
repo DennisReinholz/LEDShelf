@@ -5,6 +5,10 @@ import { version } from "./package.json";
 export default defineConfig({
   plugins: [react()],
   define: {
-    "process.env.VERSION": JSON.stringify(version),
+    __APP_VERSION__: JSON.stringify(version),
   },
+  server: {
+    host: "0.0.0.0",
+    port: 5137
+  }
 });

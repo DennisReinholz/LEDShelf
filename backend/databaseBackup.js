@@ -9,12 +9,13 @@ const backupPathDev = "./Database/BackUp";
 const databasePathDev = "./Database/Ledshelf.db";
 
 // Docker container
-const backupPathProd = "/home/ledshelf/backup";
-const databasePathProd = "/home/ledshelf";
+
+const backupPathProd = "/home/ledshelf/database/backup";
+const databasePathProd = "/home/ledshelf/database/ledshelf.db";
 
 const platform = os.platform();
 
-// True if windows system and false for production (linux)
+// true if windows system and false for production (linux)
 const isDocker = platform === "win32";
 
 if (isDocker) {
@@ -45,7 +46,6 @@ function formatBackup(path) {
   const day = String(now.getDate()).padStart(2, "0");
   const timestamp = `${year}${month}${day}`;
   const backupFile = path.join(path, `database_backup_${timestamp}.db`);
-  console.log(path);
 
   try {
     fs.copyFileSync(path, backupFile);
@@ -88,7 +88,7 @@ module.exports.GetBackUpPath = (req, res) => {
     }
   } else {
     if (backupPathProd) {
-      res.status(200).json({ backUpPath: backupPathDev });
+      res.status(200).json({ backUpPath: backupPathProd });
     } else {
       res.status(500).json({ serverStatus: -2 });
     }

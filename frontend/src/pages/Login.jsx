@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/login.module.css";
-
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/userAuth.jsx";
 import toast from "react-hot-toast";
+import { useConfig } from "../ConfigProvider";
 
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  // eslint-disable-next-line no-unused-vars
-  const [user, setUser] = useContext(UserContext);
+  const { setUser, setToken } = useContext(UserContext);
+  const config = useConfig();
+  const { backendUrl } = config;
 
   const clearLogin = () => {
     setUserName("");
@@ -24,41 +25,34 @@ const Login = () => {
   };
   const getUser = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-cache",
-        body: JSON.stringify({
-          frontendPassword: password,
-          username: username,
-        }),
-      });
+        const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/users`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cache: "no-cache",
+            body: JSON.stringify({
+                frontendPassword: password,
+                username: username,
+            }),
+        });
 
-      const data = await response.json();
-
-      if (data.serverStatus === 2) {
-        setUser(data.result);
-        localStorage.setItem("user", JSON.stringify(data.result));
-        navigate("/regale");
-      } else if (data.serverStatus === -1) {
-        toast.error(
-          "Login fehlgeschlagen. \n Username oder Passwort ist falsch."
-        );
-        clearLogin();
-      } else if (data.serverStatus === -2) {
-        toast.error(
-          "Login fehlgeschlagen. \n Username oder Passwort ist falsch."
-        );
-        clearLogin();
-      }
+        const data = await response.json();
+        
+        if (data.serverStatus === 2) {
+            setUser(data.result);
+            setToken(data.token);
+            localStorage.setItem("user", JSON.stringify(data.result));
+            localStorage.setItem("token", data.token);
+            navigate("/regale");
+        } else if (data.serverStatus === -1 || data.serverStatus === -2) {
+            toast.error("Login fehlgeschlagen. \n Username oder Passwort ist falsch.");
+            clearLogin();
+        }
     } catch (error) {
-      console.error("Fehler beim Abrufen der Benutzerdaten:", error);
-      toast.error(
-        "Fehler bei der Abfrage aus der Datenbank, bitte starten Sie den Backend-Server neu."
-      );
-      clearLogin();
+        console.error("Fehler beim Abrufen der Benutzerdaten:", error);
+        toast.error("Fehler bei der Abfrage aus der Datenbank, bitte starten Sie den Backend-Server neu.");
+        clearLogin();
     }
   };
 
@@ -102,7 +96,7 @@ const Login = () => {
           <div className={styles.buttonContainer}>
             <button className={styles.loginButton} onClick={getUser}>
               Login
-            </button>
+            </button> 
           </div>
         </div>
       </div>

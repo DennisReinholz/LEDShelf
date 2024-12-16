@@ -42,7 +42,7 @@ const ArticleFilter = ({
   useEffect(() => {
     const newFilterList = [];
 
-    if (categoryList.data && categoryList.data.result.length > 0) {
+    if (categoryList && categoryList.length > 0) {
       const initialCategory = "All";
       setCategoryFilter(initialCategory);
       newFilterList[0] = initialCategory;
@@ -74,8 +74,8 @@ const ArticleFilter = ({
           }
         >
           <option value={"All"}>Alle</option>
-          {categoryList.data != undefined
-            ? categoryList.data.result.map((c) => (
+          {categoryList != undefined
+            ? categoryList.map((c) => (
                 <option key={c.categoryid} value={c.categoryid}>
                   {c.categoryname}
                 </option>
@@ -131,12 +131,10 @@ const ArticleFilter = ({
           Filter
         </button>
         {user != undefined
-          ? user[0].role == 1 && (
-              // <Tooltip text="Erstellt eine csv Datei aus der Artikelliste mit dem angewendeten Filter">
+          ? user.roleid === 1 && (
               <button className="primaryButton" onClick={() => exportToCSV()}>
                 Exportieren
               </button>
-              // </Tooltip>
             )
           : ""}
       </div>
@@ -144,13 +142,13 @@ const ArticleFilter = ({
   );
 };
 ArticleFilter.propTypes = {
-  categoryList: PropTypes.node.isRequired,
-  companyList: PropTypes.node.isRequired,
-  commissionList: PropTypes.node.isRequired,
-  setFilterList: PropTypes.node.isRequired,
-  ApplyFilter: PropTypes.node.isRequired,
-  exportToCSV: PropTypes.node.isRequired,
-  user: PropTypes.node.isRequired,
+  categoryList: PropTypes.array.isRequired,
+  companyList: PropTypes.array.isRequired,
+  commissionList: PropTypes.array.isRequired,
+  setFilterList: PropTypes.func.isRequired,
+  ApplyFilter: PropTypes.func.isRequired,
+  exportToCSV: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default ArticleFilter;

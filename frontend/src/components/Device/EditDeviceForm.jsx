@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react";
 import styles from "../../styles/Device/editDeviceForm.module.css";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
   const [shelfList, setShelfList] = useState([]);
   const [newIp, setNewIp] = useState();
   const [newShelf, setNewShelf] = useState();
   const [updateEnabled, setUpdateEnabled] = useState();
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const getShelf = async () => {
-    await fetch(`http://localhost:3000/getShelf`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getShelf`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -24,7 +27,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
   };
   const pingController = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/pingController`, {
+      const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/pingController`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +45,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
   const UpdateLedController = async () => {
     const isHeartbeat = await pingController();
     if (isHeartbeat) {
-      await fetch(`http://localhost:3000/updateLedController`, {
+      await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/updateLedController`, {
         method: "Post",
         headers: {
           "Content-Type": "application/json",
@@ -63,12 +66,8 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
           } else {
             toast.error("Led-Controller konnte nicht geladen werden");
           }
-        });
-    } else {
-      toast.error(
-        "Led-Controller konnte nicht erreicht werden. Überprüfen sie die Ip Adresse des Controllers"
-      );
-    }
+        });    
+  };
   };
   const handleIp = () => {
     if (newIp === undefined) {
@@ -97,8 +96,7 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
           <p>IP</p>
           <input
             type="text"
-            value={newIp}
-            defaultValue={ip}
+            value={newIp || ""}
             className={styles.editInput}
             onChange={(e) => setNewIp(e.target.value)}
           />
@@ -106,11 +104,11 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
         <div className={styles.controllerProps}>
           <p>Regal</p>
           <select
-            defaultValue={shelfid}
+            value={newShelf || ""}
             className={styles.shelfSelection}
             onChange={(e) => setNewShelf(e.target.value)}
           >
-            <option value="undefined">Regal auswählen</option>
+            <option value=""> Regal auswählen</option>
             {shelfList.result != undefined
               ? shelfList.result.map((s) => (
                   <option value={s.shelfid} key={s.shelfid}>
@@ -129,19 +127,20 @@ const EditDeviceForm = ({ onClose, ip, shelfid, deviceId }) => {
           <button
             disabled={!updateEnabled}
             className={updateEnabled ? "primaryButton" : "disabledButton"}
-            onClick={UpdateLedController}
+            onClick={()=>UpdateLedController()}
           >
-            Bearbeiten
+            Speichern
           </button>
         </div>
       </div>
     </div>
   );
 };
+
 EditDeviceForm.propTypes = {
-  onClose: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
   ip: PropTypes.node.isRequired,
   shelfid: PropTypes.node.isRequired,
   deviceId: PropTypes.node.isRequired,
-};
+  };
 export default EditDeviceForm;

@@ -3,12 +3,15 @@ import styles from "../../styles/Category/editCategoryForm.module.css";
 import toast from "react-hot-toast";
 import ArticleToCategory from "./ArticleToCategory";
 import PropTypes from "prop-types";
+import { useConfig } from "../../ConfigProvider";
 
 const EditCategoryForm = ({ category }) => {
   const [articleList, setArticleList] = useState([]);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const getArticleWithCategory = async () => {
-    await fetch(`http://localhost:3000/getArticleWithCategory`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getArticleWithCategory`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -27,30 +30,32 @@ const EditCategoryForm = ({ category }) => {
         }
       });
   };
+
   useEffect(() => {
     getArticleWithCategory();
   }, []);
+  
   return (
     <div className={styles.container}>
       <h3>{category.categoryname}</h3>
       <div className={styles.content}>
-        {articleList != undefined
+        {articleList != undefined && articleList.length > 0
           ? articleList.map((article) => (
               <ArticleToCategory
                 key={article.articleid}
                 articleid={article.articleid}
                 articlename={article.articlename}
                 categoryid={article.categoryid}
-                hasCategory={article.categoryid !== null ? true : false}
+                hasCategory={article.categoryid !== null}
                 categoryID={category.categoryid}
               />
             ))
-          : "Es wurden keine Artikel gefunden"}
+          : <p>Keine Artikel zum zuordnen gefunden</p>}
       </div>
     </div>
   );
 };
 EditCategoryForm.propTypes = {
-  category: PropTypes.node.isRequired,
+  category: PropTypes.object.isRequired,
 };
 export default EditCategoryForm;

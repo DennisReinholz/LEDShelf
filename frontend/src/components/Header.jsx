@@ -4,14 +4,14 @@ import { UserContext } from "../helpers/userAuth.jsx";
 
 const Header = () => {
   // eslint-disable-next-line no-unused-vars
-  const [user, setUser] = useContext(UserContext);
+  const {user, setUser, token} = useContext(UserContext);
   return (
     <div className={styles.container}>
       <div className={styles.content}>
         <p className={styles.username}>
-          {user != undefined ? user[0].username : "Unbekannt"}
+          {user != undefined ? user.username : "Unbekannt"}
         </p>
-        <p>Rolle: {user != undefined ? user[0].name : "keine Rolle"}</p>
+        <p>Rolle: {user != undefined ? user.role : "keine Rolle"}</p>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 const express = require("express");
 const os = require("os");
 const fs = require("fs");
+const util = require("util");
 const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
 const BackUpController = require("./databaseBackup");
@@ -9,9 +10,17 @@ const TrelloController = require("./trelloController");
 const SysDatabaseController = require("./sysDatabaseController");
 const path = require("path");
 const cors = require("cors");
+const { exec } = require("child_process");
+const execAsync = util.promisify(exec);
 
 const app = express();
 const PORT = 3000;
+const platform = os.platform();
+
+let db;
+let ledshelfDatabasePath;
+let SysDatabasePath;
+let sysDatabase;
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -25,14 +34,10 @@ app.use(function (req, res, next) {
 app.use(express.json());
 app.use(bodyParser.json());
 
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.set("etag", false);
 
 // Betriebssystem prüfen
-const platform = os.platform();
-let sysDatabase;
-let SysDatabasePath;
-
 if (platform === "win32") {
   SysDatabasePath = "./Database/System.db";
 } else if (platform === "linux") {
@@ -41,16 +46,15 @@ if (platform === "win32") {
   throw new Error(`Unbekanntes Betriebssystem: ${platform}`);
 }
 
-let db;
-let ledshelfDatabasePath;
-
-async function ensureDatabaseExists(dbPath) {
+async function createDatabase() {
   try {
-    if (!fs.existsSync(dbPath)) {
-      await DataBaseController.CreateDatabase();
+    const { stderr } = await execAsync(`python3 ./Scripts/InitialDatabase.py`);
+
+    if (stderr) {
+      console.error(`Python script error: ${stderr}`);   
     }
-  } catch {
-    console.error("Fehler beim erstellen der Datenbank");
+  } catch (error) {
+    console.error(`Error executing Python script: ${error.message}`);
   }
 }
 
@@ -71,9 +75,12 @@ async function getDatabasePath(sysDatabase) {
 
 (async () => {
   try {
-    sysDatabase = new sqlite3.Database(SysDatabasePath);
-    await ensureDatabaseExists(SysDatabasePath);
 
+    if (!fs.existsSync(SysDatabasePath)) {      
+      await createDatabase();
+    }
+
+    sysDatabase = new sqlite3.Database(SysDatabasePath);
     ledshelfDatabasePath = await getDatabasePath(sysDatabase);
 
     if (ledshelfDatabasePath) {
@@ -119,25 +126,34 @@ app.get("/getBackUpFiles", (req, res) => {
 });
 
 // TrelloController
+app.get("/connectToAzure", (req, res) => {
+  TrelloController.getAzureSecrets(req, res);
+});
 app.get("/trelloLabels", (req, res) => {
-  TrelloController.getLabels(req, res);
+  TrelloController.getLabels(req, res, sysDatabase);
 });
 app.post("/createTrelloCard", (req, res) => {
-  TrelloController.createCard(req, res);
+  TrelloController.createCard(req, res, sysDatabase);
 });
 
 // DatabaseController
+app.get("/exportDatabase", (req, res) => {
+  DataBaseController.ExportDatabase(req, res, ledshelfDatabasePath);
+});
+app.get("/getDatabaseName", (req, res) => {
+  DataBaseController.GetDatabaseName(req, res, ledshelfDatabasePath);
+});
 app.post("/users", (req, res) => {
   DataBaseController.getUser(req, res, db);
 });
 app.get("/getShelf", (req, res) => {
   DataBaseController.getShelf(req, res, db);
 });
+app.post("/getShelfConfig", (req, res) => {
+  DataBaseController.getShelfConfiguration(req, res, db);
+});
 app.post("/getCompartment", (req, res) => {
   DataBaseController.getCompartments(req, res, db);
-});
-app.get("/getUser", (req, res) => {
-  DataBaseController.getUsers(req, res, db);
 });
 app.post("/createUser", (req, res) => {
   DataBaseController.createUser(req, res, db);
@@ -226,11 +242,26 @@ app.post("/deleteLedController", (req, res) => {
 app.post("/controllerOff", (req, res) => {
   DataBaseController.ControllerOff(req, res, db);
 });
-app.get("/pingController", (req, res) => {
+app.post("/pingController", (req, res) => {
   DataBaseController.PingController(req, res, db);
 });
 app.get("/getCompany", (req, res) => {
   DataBaseController.getCompany(req, res, db);
+});
+app.post("/removeArticleFromShelf", (req, res) => {
+  DataBaseController.RemoveArticleFromShelf(req, res, db);
+});
+app.post("/replaceShelf", (req, res) => {
+  DataBaseController.ReplaceShelf(req, res, db);
+});
+app.post("/renameShelf", (req, res) => {
+  DataBaseController.RenameShelf(req, res, db);
+});
+app.post("/deleteShelf", (req, res) => {
+  DataBaseController.DeleteShelf(req, res, db);
+});
+app.get("/searchDevice", (req, res) => {
+  DataBaseController.SearchDevices(req, res, db);
 });
 
 // Server starten

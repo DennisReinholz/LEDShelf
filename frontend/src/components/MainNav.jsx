@@ -1,5 +1,4 @@
-import React from "react";
-import { useContext } from "react";
+import React,{ useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
 import { BsBookshelf } from "react-icons/bs";
@@ -9,7 +8,7 @@ import { VscSettingsGear } from "react-icons/vsc";
 import styles from "../styles/Sidebar/mainNav.module.css";
 
 const MainNav = () => {
-  const [user, setUser] = useContext(UserContext);
+  const {user, setUser}= useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -35,7 +34,7 @@ const MainNav = () => {
         </div>
 
         {user !== null
-          ? user[0].role == 1 && (
+          ? user.roleid === 1 && (
               <>
                 <div
                   className={styles.nav}

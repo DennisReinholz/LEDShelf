@@ -15,7 +15,7 @@ module.exports = {
   plugins: ["react", "import", "n", "promise"],
   extends: ["standard", "plugin:react/recommended"],
   rules: {
-    "no-unused-vars": ["warn", { varsIgnorePattern: "^_" }],
+    "no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
     "no-prototype-builtins": "off",
     "react-hooks/exhaustive-deps": "off",
     semi: ["error", "always"],
@@ -25,6 +25,7 @@ module.exports = {
     "no-trailing-spaces": "off",
     "padded-blocks": "off",
     "object-shorthand": "off",
+    "dot-notation": 0,
   },
   settings: {
     react: {

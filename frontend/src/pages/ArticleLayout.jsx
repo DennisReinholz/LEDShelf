@@ -13,9 +13,10 @@ import { BsTrash } from "react-icons/bs";
 import { Tooltip } from "react-tooltip";
 import { FiAirplay } from "react-icons/fi";
 import { HiOutlineExclamationTriangle } from "react-icons/hi2";
+import { useConfig } from "../ConfigProvider";
 
 const ArticleLayout = () => {
-  const [user, setUser] = useContext(UserContext);
+  const {user, setUser, token, setToken} = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editArticleOpen, setEditArticleOpen] = useState(false);
   const [deleteArticleOpen, setDeleteArticleOpen] = useState(false);
@@ -33,6 +34,9 @@ const ArticleLayout = () => {
   const [filteredArticleList, setFilteredArticleList] = useState([]);
   const [companyList, setCompanyList] = useState([]);
   const [commissionList, setCommissionList] = useState([]);
+  const [articleRemoved, setArticleRemoved] = useState();
+  const config = useConfig();
+  const { backendUrl } = config || {};
   // eslint-disable-next-line no-unused-vars
   const [activeUser, setActiveUser] = useState();
   // eslint-disable-next-line no-unused-vars
@@ -42,7 +46,7 @@ const ArticleLayout = () => {
   const navigate = useNavigate();
 
   const getArticle = async () => {
-    await fetch(`http://localhost:3000/getAllArticle`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getAllArticle`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -59,10 +63,11 @@ const ArticleLayout = () => {
       });
   };
   const getCompartments = async (shelfid) => {
-    await fetch(`http://localhost:3000/getCompartment`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCompartment`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
       cache: "no-cache",
       body: JSON.stringify({
@@ -75,33 +80,52 @@ const ArticleLayout = () => {
       });
   };
   const getShelf = async () => {
-    await fetch(`http://localhost:3000/getShelf`, {
-      method: "Get",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-cache",
-    })
-      .then((response) => response.json())
-      .then((shelf) => {
-        setShelf(shelf);
-      });
-  };
+    try {
+        const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getShelf`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cache: "no-cache",
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+          const shelf = await response.json();
+          setShelf(shelf);         
+   
+    } catch (error) {
+        console.error("Error fetching shelf data:", error);
+    }
+};
   const getCategory = async () => {
-    await fetch(`http://localhost:3000/getCategory`, {
-      method: "Get",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-cache",
-    })
-      .then((response) => response.json())
-      .then((category) => {
-        setCategoryList(category);
-      });
-  };
+    try {
+        const response = await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCategory`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cache: "no-cache",
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data !== undefined ) {          
+          GetCategory(data);
+        } else {
+          console.error("Expected data.result to be an array.");
+        }
+
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+        toast.error("Daten konnte nicht geladen werden, bitte überprüfen Sie das Backend");
+    }
+};
   const deleteArticle = async (article) => {
-    await fetch(`http://localhost:3000/deleteArticle`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/deleteArticle`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -114,7 +138,6 @@ const ArticleLayout = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.serverStatus == 2) {
-          console.log("gelöscht");
           toast.success("Artikel wurde gelöscht.");
           setDeleteState(false);
         } else {
@@ -140,14 +163,14 @@ const ArticleLayout = () => {
   };
   const ApplyFilter = (categoryFilter, companyFilter, commissionFilter) => {
     if (
-      categoryFilter === "All" &&
-      companyFilter === "All" &&
-      commissionFilter === "All"
+      categoryFilter == "All" &&
+      companyFilter == "All" &&
+      commissionFilter == "All"
     ) {
       setArticleListToShow(originArticleList);
     } else {
       let tempList = [];
-      for (let index = 0; index < originArticleList.length; index++) {
+      for (let index = 0; index < originArticleList.length; index++) {        
         if (
           originArticleList[index].companyId == companyFilter &&
           commissionFilter == "All" &&
@@ -175,7 +198,7 @@ const ArticleLayout = () => {
         } else if (
           originArticleList[index].companyId == companyFilter &&
           commissionFilter == "All" &&
-          originArticleList[index].categoryid == categoryFilter
+          originArticleList[index].categoryid == categoryFilter.categoryid
         ) {
           tempList.push(originArticleList[index]);
         } else if (
@@ -187,7 +210,7 @@ const ArticleLayout = () => {
         } else if (
           originArticleList[index].companyId == companyFilter &&
           originArticleList[index].commission == commissionFilter &&
-          originArticleList[index].categoryid == categoryFilter
+          originArticleList[index].categoryid == categoryFilter.categoryid
         ) {
           tempList.push(originArticleList[index]);
         }
@@ -198,7 +221,7 @@ const ArticleLayout = () => {
   const handleUser = () => {
     if (user != undefined) {
       setActiveUser(true);
-      if (user[0].role == 1) {
+      if (user.roleid == 1) {
         setIsAdmin(true);
       } else {
         setIsAdmin(false);
@@ -232,7 +255,29 @@ const ArticleLayout = () => {
     });
     setCommissionList(filtered);
   };
-
+  const GetCategory = (category) => {
+    const {result} = category.data;
+    const uniqueCategories = new Map();
+    
+    const filteredCategories = result.filter((category) => {
+    //   // Assuming each article has 'categoryid' and 'categoryname'
+     const { categoryid, categoryname } = category;
+  
+      // Check for unique categories based on categoryid
+      if (categoryid && !uniqueCategories.has(categoryid)) {
+        uniqueCategories.set(categoryid, categoryname);
+        return true; // Include this article's category
+      }
+      return false; // Skip duplicates
+    });
+    
+    // // Extract unique categories from the filtered articles
+    const temp = filteredCategories.map(category => ({
+      categoryid: category.categoryid,
+      categoryname: category.categoryname
+    }));  
+     setCategoryList(temp); // Update the state with the unique categories
+  };
   //Export function and convertion to an csv format
   //Properties which are exportet to csv
   const exportArticleProperties = [
@@ -287,11 +332,24 @@ const ArticleLayout = () => {
   };
 
   useEffect(() => {
-    getArticle();
-    getShelf();
-    getCategory();
-    getCompartments();
-    handleUser();
+    const userStorage = localStorage.getItem("user");
+    const storedToken = localStorage.getItem("token");
+
+    if (storedToken) {
+      // Setze den Token in den Zustand oder Kontexts
+      setToken(storedToken);
+    }
+    if (userStorage) {
+      setUser(JSON.parse(userStorage));
+    } 
+
+    if (storedToken && userStorage) {
+    // Wenn Token und Benutzer vorhanden sind, hole die Daten
+      getArticle();
+      getShelf();
+      getCategory();
+      handleUser();
+    }
 
     if (deleteState) {
       deleteArticle(selectedArticle);
@@ -300,21 +358,17 @@ const ArticleLayout = () => {
       getArticle();
       getShelf();
       getCompartments();
+      setUpdateArticle(false);
     }
     if (articleCreated) {
       setArticleCreated(false);
     }
-    const userStorage = localStorage.getItem("user");
-    if (
-      userStorage !== undefined ||
-      (userStorage !== null && user === undefined)
-    ) {
-      setUser(JSON.parse(userStorage));
-    }
+  
     if (userStorage === null) {
       navigate("/login");
     }
-  }, [deleteState, updateArticle, articleCreated]);
+  }, [deleteState, updateArticle, articleCreated, articleRemoved, editArticle]);
+
   return (
     <div className={styles.container}>
       <Tooltip anchorSelect=".edit" place="left">
@@ -332,7 +386,7 @@ const ArticleLayout = () => {
 
       <div className={styles.buttonContainer}>
         {user != undefined
-          ? user[0].role == 1 && (
+          ? user.roleid <= 2 && (
               <button
                 className="primaryButton"
                 onClick={() => setIsModalOpen(true)}
@@ -350,7 +404,8 @@ const ArticleLayout = () => {
         />
       </div>
       <div className={styles.content}>
-        <div>
+      {user ?
+      ( <div>
           <ArticleFilter
             categoryList={categoryList}
             companyList={companyList}
@@ -358,9 +413,11 @@ const ArticleLayout = () => {
             setFilterList={setFilterList}
             ApplyFilter={ApplyFilter}
             exportToCSV={ExportToCSV}
-            user={user}
+            user={user}           
           />
+        
         </div>
+      ) : null}
         <div className={styles.tableContainer}>
           <table>
             <thead>
@@ -372,7 +429,7 @@ const ArticleLayout = () => {
                 <th>Fach</th>
                 <th>Firma</th>
                 <th>Kommission</th>
-                {user != undefined ? user[0].role == 1 && <th>Action</th> : ""}
+                {user != undefined ? user.roleid <= 2 && <th>Action</th> : ""}
               </tr>
             </thead>
             {articleListToShow !== undefined ? (
@@ -394,7 +451,7 @@ const ArticleLayout = () => {
                     <td>{c.companyName}</td>
                     <td>{c.commission}</td>
                     {user != undefined
-                      ? user[0].role == 1 && (
+                      ? user.roleid <= 2 && (
                           <td>
                             <div className={styles.editContainer}>
                               <FiEdit2
@@ -406,12 +463,12 @@ const ArticleLayout = () => {
                                 className="delete"
                                 style={{ cursor: "pointer" }}
                                 onClick={() => handleDeleteArticle(c)}
-                              />
+                              />{c.shelf != null &&
                               <FiAirplay
                                 className="navigateShelf"
                                 style={{ cursor: "pointer" }}
                                 onClick={() => navigate(`/regale/${c.shelf}`)}
-                              />
+                              />}
                               <div
                                 className={
                                   !(c.count < c.minRequirement) &&
@@ -447,6 +504,7 @@ const ArticleLayout = () => {
           <AddArticleForm
             onClose={() => setIsModalOpen(false)}
             setArticleCreated={setArticleCreated}
+            token={token}
           />
         </Modal>
       )}
@@ -458,6 +516,7 @@ const ArticleLayout = () => {
             compartment={compartment}
             shelf={shelf}
             setUpdateArticle={setUpdateArticle}
+            setArticleRemoved={setArticleRemoved}
           />
         </Modal>
       )}

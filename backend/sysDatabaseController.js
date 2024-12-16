@@ -1,4 +1,5 @@
 const { exec } = require("child_process");
+const os = require("os");
 
 module.exports.GetDatabasePath = (sysDatabase) => {
   return new Promise((resolve, reject) => {
@@ -24,9 +25,17 @@ module.exports.GetCurrentDatabasePath = (req, res, sysDatabase) => {
 };
 module.exports.SetNewDatabasePath = (req, res, sysDatabase) => {
   const { selectedBackup } = req.body;
+  const system = os.platform();
+  let target;
+
+  if (system === "win32") {
+    target = `./Database/BackUp/${selectedBackup}`;
+  } else {
+    target = `/home/ledshelf/database/backup/${selectedBackup}`; 
+  }
   sysDatabase.all(
     `UPDATE system SET databasepath = ?`,
-    [selectedBackup],
+    [target],
     (err) => {
       if (err) {
         res.status(200).json({ serverStatus: -2 });
@@ -38,28 +47,40 @@ module.exports.SetNewDatabasePath = (req, res, sysDatabase) => {
 };
 module.exports.OverrideProdDatabase = (req, res, sysDatabase) => {
   const { currentDatabase } = req.body;
-  const ziel = "./Datenbank/Ledshelf.db";
-  const pythonScript = `python3 ./Scripts/OverrideProdDatabase.py ${currentDatabase} ${ziel}`;
+  const system = os.platform();
+  let target;
+  let backupfilePath;
+
+  if (system === "win32") {    
+    target = "./Database/Ledshelf.db";
+    backupfilePath = `./Database/BackUp/${currentDatabase}`;
+  } else {
+    target = "/home/ledshelf/database/ledshelf.db";
+    backupfilePath = `/home/ledshelf/database/backup/${currentDatabase}`; 
+  }
+
+  const pythonScript = `python3 ./Scripts/OverrideProdDatabase.py ${backupfilePath} ${target}`;
 
   exec(pythonScript, (error, stdout, stderr) => {
     if (error) {
       console.error(`Fehler beim Ausführen des Skripts: ${error.message}`);
-      return res.status(200).json({ serverStatus: -2, error: error.message });
+      return res.status(500).json({ serverStatus: -2, error: error.message });
     }
 
     if (stderr) {
       console.error(`Fehler im Skript: ${stderr}`);
-      return res.status(200).json({ serverStatus: -2, error: stderr });
+      return res.status(500).json({ serverStatus: -2, error: stderr });
     }
-  });
-  sysDatabase.run(
-    `UPDATE system SET dataBasepath = "./Datenbank/Ledshelf.db"`,
-    (err) => {
+
+    // Wenn das Python-Skript erfolgreich war, dann führe die Datenbankaktualisierung durch
+    sysDatabase.run(`UPDATE system SET dataBasepath = ?`, [target], (err) => {
       if (err) {
-        res.status(200).json({ serverStatus: -2 });
+        console.error(`Fehler beim Aktualisieren der Datenbank: ${err}`);
+        return res.status(500).json({ serverStatus: -2 });
       } else {
-        res.status(200).json({ serverStatus: 1 });
+        // Nur hier wird die Antwort gesendet, wenn alles erfolgreich war
+        return res.status(200).json({ serverStatus: 1 });
       }
-    }
-  );
+    });
+  });
 };

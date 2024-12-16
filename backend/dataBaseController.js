@@ -1,11 +1,34 @@
 require("dotenv").config();
-const axios = require("axios");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
-const util = require("util");
 const { exec } = require("child_process");
+const util = require("util");
 const execAsync = util.promisify(exec);
+const jwt = require("jsonwebtoken");
+const ping = require("ping");
+const path = require("path");
+const bonjour = require("bonjour")();
 
+const SECRET_KEY = process.env.AZURE_JSONWEB_TOKEN;
+
+module.exports.authenticateJWT = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader) {
+    const token = authHeader.split(" ")[1];
+
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+      if (err) {
+        return res.status(403).json({ serverStatus: -1, error: "Token ist ungültig" });
+      }
+
+      req.user = user;
+      next();
+    });
+  } else {
+    return res.status(401).json({ serverStatus: -1, error: "Token fehlt" });
+  }
+};
 module.exports.CheckDatabase = (dbPath) => {
   if (!fs.existsSync(dbPath)) {
     CreateDatabase();
@@ -15,15 +38,15 @@ module.exports.getUser = async (req, res, db) => {
   const { frontendPassword, username } = req.body;
 
   db.all(
-    "SELECT user.*, role.name FROM user, role WHERE user.username=? AND user.role = role.roleid",
+    "SELECT user.*, role.* FROM user, role WHERE user.username=? AND user.role = role.roleid",
     [username],
     async (err, result) => {
       if (err) {
         return res.status(500).json({ serverStatus: -1, error: err.message });
       }
-
+      
       if (result.length === 0) {
-        return res.status(404).json({ serverStatus: -1 }); // Benutzer nicht gefunden
+        return res.status(404).json({ serverStatus: -1 });
       }
 
       try {
@@ -31,13 +54,29 @@ module.exports.getUser = async (req, res, db) => {
           frontendPassword,
           result[0].password
         );
+        
         if (match) {
-          return res.status(200).json({ result, serverStatus: 2 });
+          // JWT-Token erstellen
+          const token = jwt.sign(
+            { id: result[0].userid, username: result[0].username, roleid: result[0].roleid, role: result[0].name },
+            SECRET_KEY,
+            { expiresIn: "8h" }
+          );
+          res.status(200).json({
+            result: {
+              id: result[0].userid,
+              username: result[0].username,
+              roleid: result[0].roleid,
+              role: result[0].name,
+            },
+            token, 
+            serverStatus: 2,
+          });
         } else {
-          return res.status(401).json({ serverStatus: -1 }); // Passwort falsch
+          res.status(401).json({ serverStatus: -1 });
         }
       } catch (compareError) {
-        return res
+        res
           .status(500)
           .json({ serverStatus: -1, error: compareError.message });
       }
@@ -62,7 +101,6 @@ module.exports.getUserData = async (req, res, db) => {
   const { userid } = req.body;
   db.all(`SELECT * from user WHERE userid=?`, [userid], (err, result) => {
     if (err) {
-      console.log(`Unable to get UserData from ${userid}`);
       res.sendStatus(500);
     } else {
       res.status(200).json(result);
@@ -92,10 +130,53 @@ module.exports.getShelf = async (req, res, db) => {
     }
   });
 };
+module.exports.getShelfConfiguration = async (req, res, db) => {
+  const { shelfid } = req.body;
+  db.all(
+    `SELECT *
+      FROM shelf
+      JOIN compartment ON shelf.shelfid = compartment.shelfId
+      LEFT JOIN article ON compartment.compartmentId = article.compartment
+      WHERE shelf.shelfid = ?`,
+    [shelfid],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ serverStatus: -2, err });
+      } else {
+        res.status(200).json({ serverStatus: 1, data: result });
+      }
+    }
+  );
+};
+module.exports.deleteCompartment = async (req, res, db) => {
+  const { compartmentId } = req.body;
+  db.serialize(() => {
+    db.run("BEGIN TRANSACTION");
+
+    // Delete from 'compartment' table where shelfid matches
+    db.run(`DELETE FROM compartment WHERE compartment.compartmentId =?`, [compartmentId], (err) => {
+      if (err) {
+        db.run("ROLLBACK"); 
+        return res.status(500).json({ serverStatus: -2, error: "Failed to delete from compartment" });
+      }
+
+      // Delete references compartment and shelf
+      db.run(`UPDATE article SET compartment = null, shelf = null WHERE article.compartment = ?`, [compartmentId], (err) => {
+        if (err) {
+          db.run("ROLLBACK"); 
+          return res.status(500).json({ serverStatus: -2, error: "Failed to delete from shelf" });
+        }
+
+      });
+      db.run("COMMIT");
+      return res.status(200).json({ serverStatus: 1 });
+    });
+  });
+};
 module.exports.getCompartArticleForm = async (req, res, db) => {
   const { shelfid } = req.body;
   db.all(
-    `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId
+    `SELECT shelf.shelfid, shelf.shelfname, compartment.compartmentname, compartment.number, compartmentId, compartment.height
     FROM shelf
     JOIN compartment ON shelf.shelfid = compartment.shelfId 
     LEFT JOIN article ON compartment.compartmentId = article.compartment
@@ -121,24 +202,57 @@ module.exports.getCompartments = async (req, res, db) => {
     FROM shelf
     JOIN compartment ON shelf.shelfid = compartment.shelfId 
     LEFT JOIN article ON compartment.compartmentId = article.compartment
-    WHERE shelf.shelfid =? `,
+    WHERE shelf.shelfid =?`,
     [shelfid],
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
-      } else {
-        const data = {
-          result,
-          serverStatus: 2,
-        };
-        res.status(200).json(data);
+      } else {        
+        const compartments = result.reduce((acc, row) => {
+       
+          const compartment = acc.find(c => c.compartmentId === row.compartmentId);
+          if (compartment) {
+       
+            if (row.articleId) {
+              compartment.articles.push({
+                articleId: row.articleId,
+                articlename: row.articlename,
+              });
+            }
+          } else {
+            acc.push({
+              compartmentId: row.compartmentId,
+              shelfid: row.shelfid,
+              shelfname: row.shelfname,
+              compartmentname: row.compartmentname,
+              number: row.number,
+              articles: row.articleId ? [{ articleId: row.articleId, articlename: row.articlename }] : [],
+            });
+          }
+          return acc;
+        }, []);
+
+        // Rückgabe der gegliederten Daten
+        res.status(200).json({ result: compartments, serverStatus: 2 });
       }
     }
   );
 };
+
 module.exports.getAllUser = async (req, res, db) => {
   db.all(
-    `SELECT user.userid,user.username, role.name FROM user,role WHERE user.role = role.roleid`,
+    `SELECT 
+  user.userid, 
+  user.username, 
+  role.name 
+FROM 
+  user
+INNER JOIN 
+  role 
+ON 
+  user.role = role.roleid
+WHERE 
+  user.username != 'ledshelfadmin';`,
     (err, result) => {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
@@ -153,16 +267,20 @@ module.exports.getAllUser = async (req, res, db) => {
   );
 };
 module.exports.postCreateShelf = async (req, res, db) => {
-  const { shelfname, shelfPlace, CountCompartment } = req.body;
-  db.all(
-    `INSERT INTO shelf (shelfname,place,countCompartment) VALUES (?,?,?)`,
+  const { shelfname, shelfPlace, CountCompartment, shelves } = req.body;
+  db.run(
+    `INSERT INTO shelf (shelfname, place, countCompartment) VALUES (?, ?, ?)`,
     [shelfname, shelfPlace, CountCompartment],
-    (err, result) => {
+    function (err) {
       if (err) {
         res.status(500).json({ serverStatus: -1 });
       } else {
-        CreateCompartments(db, CountCompartment);
-        res.status(200).json(result);
+        const shelfId = this.lastID;
+
+        // Rufe die CreateCompartments-Funktion auf und übergebe die shelfId
+        CreateCompartments(db, CountCompartment, shelfId, shelves);
+
+        res.status(200).json({ serverStatus: 2, shelfId });
       }
     }
   );
@@ -252,10 +370,11 @@ module.exports.createArticle = async (req, res, db) => {
 module.exports.getSelectedArticle = async (req, res, db) => {
   const { articleid } = req.body;
   db.all(
-    `SELECT article.*, shelf.shelfname 
-    FROM article 
-    LEFT JOIN shelf ON article.shelf = shelf.shelfid
-    WHERE articleid=?`,
+    `SELECT article.*, shelf.shelfname, compartment.* 
+   FROM article 
+   LEFT JOIN shelf ON article.shelf = shelf.shelfid
+   LEFT JOIN compartment ON article.compartment = compartment.compartmentId
+   WHERE article.articleid = ?`,
     [articleid],
     (err, result) => {
       if (err) {
@@ -405,10 +524,12 @@ module.exports.deleteCategory = async (req, res, db) => {
 };
 module.exports.getControllerFunction = async (req, res, db) => {
   const { compId } = req.body;
+
   db.all(
     `
-  SELECT cf.functionName, cf.compartmentid, lc.ipAdresse, c.compartmentname from Controllerfunctions cf, ledcontroller lc, compartment c, shelf
-  WHERE lc.shelfid = shelf.shelfid and c.shelfId = shelf.shelfid and c.compartmentId = cf.compartmentid and c.compartmentid = ?`,
+    SELECT comp.*, ledController.* 
+    FROM compartment comp, ledController
+    WHERE ledController.shelfid = comp.shelfId AND comp.compartmentid = ?`,
     [compId],
     (err, result) => {
       if (err) {
@@ -501,37 +622,38 @@ module.exports.UpdateLedController = async (req, res, db) => {
       }
     }
   );
+
 };
 module.exports.CreateLedController = async (req, res, db) => {
-  const { ipAdress, shelf } = req.body;
-  // Ping LEDController for status
+  console.log(req.body);
+  const { ip } = req.body;
   let tempStatus;
   try {
-    const response = await axios.get("http://192.168.188.48");
-    if (response.status === 200) {
+    const result = await ping.promise.probe(ip);
+    if (result.alive) {
+
       tempStatus = "Connected";
     } else {
       tempStatus = "Disconnected";
     }
   } catch (error) {
-    console.log("Error pinging ESP32:", error);
     tempStatus = "undefinded";
   }
   const status = tempStatus;
-
+  console.log(status);
+  console.log(ip);
   // Create n Controllerfunction with ledControllerid
   db.all(
-    `INSERT INTO ledController (ipAdresse, shelfid, status) VALUES (?,?,?)`,
-    [ipAdress, shelf, status],
-    (error, result) => {
+    `INSERT INTO ledController (ipAdresse ,status) VALUES (?,?)`,
+    [ip, status],
+    (error) => {
       if (error) {
         res.status(500).json({ serverStatus: -1 });
       } else {
-        res.status(200).json({ result: result, serverStatus: 2 });
+        res.status(200).json({ serverStatus: 2 });
       }
     }
   );
-  CreateControllerFunction(db, res, shelf);
 };
 module.exports.DeleteLedController = async (req, res, db) => {
   const { deviceId } = req.body;
@@ -550,26 +672,31 @@ module.exports.DeleteLedController = async (req, res, db) => {
 };
 module.exports.ControllerOff = async (req, res, db) => {
   const { shelfid } = req.body;
-  return new Promise((resolve, reject) => {
-    db.get(
+  try {
+    return new Promise((resolve, reject) => {
+      db.get(
       `SELECT * FROM ledController WHERE shelfid=?`,
       [shelfid],
       (err, result) => {
         if (err) {
           reject(err);
         } else {
-          LedOff(result.ipAdresse);
+          LedOff(result?.ipAdresse);
           res.status(200).json({ serverStatus: 2 });
         }
       }
-    );
-  });
+      );
+    });
+  } catch (error) {
+    res.status(500).json({ serverStatus: -1 }); 
+  }
+  
 };
 module.exports.PingController = async (req, res) => {
   const { ip } = req.body;
   try {
-    const ping = await fetch(`http://${ip}`);
-    if (ping.status === 200) {
+    const result = await ping.promise.probe(ip);
+    if (result.alive) {
       res.status(200).json({ serverStatus: 2 });
     } else {
       res.status(404).json({ serverStatus: -1 });
@@ -590,59 +717,324 @@ module.exports.CreateDatabase = async () => {
     console.error(`Error executing Python script: ${error.message}`);
   }
 };
-const LedOff = async (ipAdresse) => {
-  await fetch(`http:/${ipAdresse}/led/off`);
-};
-const CreateCompartments = (db, countCompartment) => {
-  db.get("SELECT last_insert_rowid() as shelfId", (row) => {
-    const shelfId = row.shelfId;
-
-    for (let i = 0; i < countCompartment; i++) {
-      db.all(
-        `INSERT INTO compartment (compartmentname,shelfid,number) VALUES(?,?,?)`,
-        [i + 1 + "-Fach", shelfId, i + 1]
-      );
+module.exports.RemoveArticleFromShelf = async (req, res, db) => {
+  const { articleid } = req.body;
+  db.run(`UPDATE article SET compartment = null, shelf = null WHERE articleid =?`, [articleid], (err) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -1 });
+    } else {
+      res.status(200).json({ serverStatus: 2 });
     }
   });
 };
-const CreateControllerFunction = async (db, res, shelf) => {
+
+const LedOff = async (ipAdresse) => {
   try {
-    // get list of compartments from shelfs
-    const compartmentList = await getCompartments(db, shelf);
-
-    // last created Controller
-    const controllerId = await getLastInsertRowId(db);
-
-    // insert controllerfunction
-    await insertControllerFunction(db, controllerId, compartmentList);
+    await fetch(`http:/${ipAdresse}/led/alloff`);
   } catch (error) {
-    console.error(error);
-  }
+    console.error("Unable to call LED OFF.", error);
+  }  
 };
-const getLastInsertRowId = (db) => {
-  return new Promise((resolve, reject) => {
-    db.get("SELECT last_insert_rowid() as ledControllerid", (err, row) => {
+
+module.exports.RenameShelf = async (req, res, db) => {
+  const { shelfId, shelfname } = req.body;
+  db.run(`UPDATE shelf SET shelfname=? WHERE shelfid = ?`, [shelfname, shelfId], (err) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -2 });
+    } else {
+      res.status(200).json({ serverStatus: 1 });
+    }
+  });
+};
+module.exports.DeleteShelf = async (req, res, db) => {
+  const { shelfId } = req.body;
+  // Begin transaction to ensure both deletes succeed or fail together
+  db.serialize(() => {
+    db.run("BEGIN TRANSACTION");
+
+    // Delete from 'compartment' table where shelfid matches
+    db.run(`DELETE FROM compartment WHERE shelfid = ?`, [shelfId], (err) => {
       if (err) {
-        reject(err);
-      } else {
-        resolve(row.ledControllerid);
+        db.run("ROLLBACK"); 
+        return res.status(500).json({ serverStatus: -2, error: "Failed to delete from compartment" });
       }
+
+      // Delete from 'shelf' table where shelfid matches
+      db.run(`DELETE FROM shelf WHERE shelfid = ?`, [shelfId], (err) => {
+        if (err) {
+          db.run("ROLLBACK"); 
+          return res.status(500).json({ serverStatus: -2, error: "Failed to delete from shelf" });
+        }
+
+        // delete reference from article
+        db.run(`UPDATE article SET shelf = null WHERE shelf = ?`, [shelfId], (err) => {
+          if (err) {
+            db.run("ROLLBACK"); 
+            return res.status(500).json({ serverStatus: -2, error: "Failed to delete from shelf" });
+          }
+
+          db.run("COMMIT");
+          return res.status(200).json({ serverStatus: 1 });
+        });
+      });
     });
   });
 };
-const getCompartments = (db, shelf) => {
-  return new Promise((resolve, reject) => {
-    db.all(
-      `SELECT compartmentId from compartment WHERE shelfId = ?`,
-      [shelf],
-      (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
+module.exports.GetDatabaseName = async (req, res, ledshelfDatabasePath) => {
+  try {
+    
+    if (ledshelfDatabasePath === undefined) {
+      return res.status(404).json({ serverStatus: -2, message: "Datenbankpfad nicht gefunden" });
+    }
+    const dbPath = ledshelfDatabasePath;
+    const dbName = path.basename(dbPath);
+    res.status(200).json({ serverStatus: 1, databaseName: dbName });
+  } catch (error) {
+    console.error("Fehler beim Abrufen des Datenbanknamens:", error);
+    res.status(500).json({ serverStatus: -2, message: "Interner Serverfehler" });
+  }
+};
+
+module.exports.ExportDatabase = async (req, res, ledshelfDatabasePath) => {
+
+  const dbName = path.basename(ledshelfDatabasePath);
+  res.download(ledshelfDatabasePath, dbName, (err) => {
+    if (err) {
+      console.error("Fehler beim Herunterladen der Datenbank:", err);
+      res.status(500).json({ serverStatus: -2 });
+    }
+  });
+};
+
+module.exports.ReplaceShelf = async (req, res, db) => {
+  const { shelfId, place } = req.body;
+  db.run(`UPDATE shelf SET place=? WHERE shelfid = ?`, [place, shelfId], (err) => {
+    if (err) {
+      res.status(500).json({ serverStatus: -2 });
+    } else {
+      res.status(200).json({ serverStatus: 1 });
+    }
+  });
+};
+module.exports.SearchDevices = async (req, res, db) => {
+  let dbControllers = [];
+  const devices = [];
+  let responseSent = false;
+
+  await db.all(`SELECT ipAdresse FROM ledController`, (err, rows) => {
+    if (err) {
+      return res.status(500).json({ serverStatus: -1, message: "Fehler beim Lesen der Datenbank" });
+    }
+    
+    dbControllers = rows.map(row => row.ipAdresse);
+  });
+
+  // Suche nach Geräten im Netzwerk
+  const browser = bonjour.find({ type: "http" }, (service) => {
+    // Nur ESP32-Geräte berücksichtigen, die nicht in der Datenbank sind
+    if (service.name.includes("esp32") && !dbControllers.includes(service.referer.address)) {
+      devices.push({
+        name: service.name,
+        address: service.referer.address,
+        port: service.port,
+      });
+    }
+  });
+
+  // Nach 5 Sekunden die Suche beenden und Ergebnisse zurückgeben
+  setTimeout(() => {
+    browser.stop();
+
+    if (!responseSent) {
+      if (devices.length > 0) {
+        const devicesWithIndex = devices.map((device, index) => ({
+          ...device,
+          index: index + 1,
+        }));
+        res.status(200).json({ serverStatus: 2, devices: devicesWithIndex });
+      } else {
+        res.status(404).json({ serverStatus: -1, message: "Keine neuen ESP32-Geräte gefunden" });
       }
-    );
+      responseSent = true;
+    }
+  }, 5000); // Timeout auf 5000 ms
+};
+
+module.exports.UpdateShelf = async (req, res, db) => {
+  const { shelfname, shelfPlace, countCompartment, shelves, shelfid } = req.body;
+  
+  try {
+    // Start der Transaktion
+    await new Promise((resolve, reject) => {
+      db.run("BEGIN TRANSACTION", (err) => {
+        if (err) {
+          console.error("Fehler beim Starten der Transaktion:", err);
+          reject(new Error("Fehler beim Starten der Transaktion"));
+        }
+        resolve();
+      });
+    });
+
+    // 1. Regal aktualisieren
+    await new Promise((resolve, reject) => {
+      db.run(
+        `UPDATE shelf SET shelfname = ?, place = ?, countCompartment = ? WHERE shelfid = ?`,
+        [shelfname, shelfPlace, countCompartment, shelfid],
+        function (err) {
+          if (err) {
+            console.error("Fehler beim Aktualisieren des Regals:", err);
+            reject(new Error("Fehler beim Aktualisieren des Regals"));
+          }
+          resolve();
+        }
+      );
+    });
+
+    // 2. Fächer aktualisieren oder neue Fächer hinzufügen
+    for (let index = 0; index < shelves.length; index++) {
+      const compartment = shelves[index];
+      const { compartmentId, height, countLed, startLed, endLed } = compartment;
+
+      // Berechne den Namen und die Nummer des Faches
+      const compartmentname = `${index + 1}-Fach`;
+
+      if (compartmentId) {
+        // Update bestehender Einträge
+        await new Promise((resolve, reject) => {
+          db.run(
+            `UPDATE compartment SET height = ?, countLed = ?, startLed = ?, endLed = ?, compartmentname = ? WHERE compartmentId = ?`,
+            [height, countLed, startLed, endLed, compartmentname, compartmentId],
+            function (err) {
+              if (err) {
+                console.error("Fehler beim Aktualisieren eines Fachs:", err);
+                reject(new Error("Fehler beim Aktualisieren eines Fachs"));
+              }
+              resolve();
+            }
+          );
+        });
+      } else {
+        // Einfügen neuer Fächer
+        await new Promise((resolve, reject) => {
+          db.run(
+            `INSERT INTO compartment (height, countLed, startLed, endLed, shelfId, compartmentname, number) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [height, countLed, startLed, endLed, shelfid, compartmentname, index + 1],
+            function (err) {
+              if (err) {
+                console.error("Fehler beim Hinzufügen eines neuen Fachs:", err);
+                reject(new Error("Fehler beim Hinzufügen eines neuen Fachs"));
+              }
+              resolve();
+            }
+          );
+        });
+      }
+    }
+
+    // Wenn alles erfolgreich war, committen der Transaktion
+    await new Promise((resolve, reject) => {
+      db.run("COMMIT", (err) => {
+        if (err) {
+          console.error("Fehler beim Commit der Transaktion:", err);
+          reject(new Error("Fehler beim Commit der Transaktion"));
+        }
+        resolve();
+      });
+    });
+
+    // Erfolgreiche Antwort
+    res.status(200).send({ serverStatus: 1 });
+  } catch (err) {
+    // Im Falle eines Fehlers Rollback der Transaktion und Fehlerantwort
+    console.error("Fehler in der UpdateShelf-Funktion:", err);
+    await new Promise((resolve, reject) => {
+      db.run("ROLLBACK", (err) => {
+        if (err) {
+          console.error("Fehler beim Rollback der Transaktion:", err);
+          reject(new Error("Fehler beim Rollback der Transaktion"));
+        }
+        resolve();
+      });
+    });
+    res.status(500).send({ message: err });
+  }
+};
+
+const CreateCompartments = (db, countCompartment, shelfId, shelves) => {
+  db.serialize(() => {
+    db.run("BEGIN TRANSACTION", (err) => {
+      if (err) {
+        console.error("Fehler beim Starten der Transaktion:", err);
+      }
+    });
+
+    const promises = [];
+
+    for (let i = 0; i < countCompartment; i++) {
+      const compartmentName = `${i + 1}-Fach`;
+
+      // Zugriff auf das richtige Shelf-Objekt basierend auf der Indexposition
+      const currentShelf = shelves[i];
+      if (!currentShelf) {
+        console.error(`Kein Shelf für Index ${i} gefunden!`);
+        continue; // Falls kein Shelf gefunden wird, überspringen
+      }
+
+      const promise = new Promise((resolve, reject) => {
+        db.get(
+          `SELECT COUNT(*) AS count FROM compartment WHERE compartmentname = ? AND shelfid = ?`,
+          [compartmentName, shelfId],
+          (err, row) => {
+            if (err) {
+              return reject(err);
+            }
+
+            if (row.count === 0) {             
+              db.run(
+                `INSERT INTO compartment (compartmentname, shelfid, number, countLed, startLed, endLed, height) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [
+                  compartmentName,
+                  shelfId,
+                  i + 1,
+                  currentShelf.leds,
+                  currentShelf.startLED,
+                  currentShelf.endLED,
+                  currentShelf.height,
+                ],
+                (err) => {
+                  if (err) {
+                    return reject(err);
+                  }
+                  resolve();
+                }
+              );
+            } else {
+              resolve();
+            }
+          }
+        );
+      });
+      promises.push(promise);
+    }
+
+    Promise.all(promises)
+      .then(() => {
+        db.run("COMMIT", (err) => {
+          if (err) {
+            console.error("Fehler beim Commit der Transaktion:", err);
+          } else {
+            console.log("Transaktion erfolgreich abgeschlossen.");
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Fehler beim Erstellen der Fächer:", error);
+        db.run("ROLLBACK", (err) => {
+          if (err) {
+            console.error("Fehler beim Rollback der Transaktion:", err);
+          }
+        });
+      });
   });
 };
 const DeleteControllerFunction = async (db, deviceId) => {
@@ -653,19 +1045,6 @@ const DeleteControllerFunction = async (db, deviceId) => {
   } catch (error) {
     console.log(error);
   }
-};
-const insertControllerFunction = async (db, controllerId, compartmentList) => {
-  for (let i = 0; i < compartmentList.length; i++) {
-    await db.run(
-      `INSERT INTO ControllerFunctions (controllerId, functionName, compartmentid) VALUES (?,?,?)`,
-      [controllerId, "led" + (i + 1) + "/on", compartmentList[i].compartmentId]
-    );
-  }
-  // Led off controllerFunction
-  await db.run(
-    `INSERT INTO ControllerFunctions (controllerId, functionName) VALUES (?,?)`,
-    [controllerId, "led/off"]
-  );
 };
 const CreateDatabase = () => {
   exec(`python3 ./Scripts/InitialDatabase.py`, (error, stderr) => {

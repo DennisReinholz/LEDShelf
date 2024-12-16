@@ -8,11 +8,12 @@ import { FiEdit2 } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import PropTypes from "prop-types";
 
-const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
+const User = ({ name, role, setDeleteUser, setEditUser, userid, lastadmin }) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   useEffect(() => {}, [deleteModalOpen]);
+  
   return (
     <div className={styles.container}>
       <Tooltip anchorSelect=".edit" place="left">
@@ -32,11 +33,11 @@ const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
           style={{ cursor: "pointer" }}
           onClick={() => setEditModalOpen(true)}
         />
-        <BsTrash
+        {lastadmin || <BsTrash
           className="delete"
           style={{ cursor: "pointer" }}
           onClick={() => setDeleteModalOpen(true)}
-        />
+        />}
       </div>
       {editModalOpen && (
         <Modal onClose={() => setEditModalOpen(false)}>
@@ -67,9 +68,10 @@ const User = ({ name, role, setDeleteUser, setEditUser, userid }) => {
 User.propTypes = {
   name: PropTypes.node.isRequired,
   role: PropTypes.node.isRequired,
-  setDeleteUser: PropTypes.node.isRequired,
-  setEditUser: PropTypes.node.isRequired,
+  setDeleteUser: PropTypes.func.isRequired,
+  setEditUser: PropTypes.func.isRequired,
   userid: PropTypes.node.isRequired,
+  lastadmin: PropTypes.bool.isRequired,
 };
 
 export default User;

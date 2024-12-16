@@ -1,7 +1,7 @@
 @media only screen and (max-width: 2000px) {
   .compartContainer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     color: white;
@@ -58,7 +58,7 @@
 @media only screen and (max-width: 1920px) {
   .compartContainer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     color: white;
@@ -115,7 +115,7 @@
 @media only screen and (max-width: 1700px) {
   .compartContainer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     color: white;
@@ -172,7 +172,7 @@
 @media only screen and (max-width: 1200px) {
   .compartContainer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     color: white;

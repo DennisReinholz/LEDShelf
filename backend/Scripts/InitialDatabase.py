@@ -2,7 +2,7 @@ import os
 import sqlite3
 import platform
 
-def create_database_and_insert_data(db_file):
+def createLedshelfDb(db_file):
 
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
@@ -32,8 +32,7 @@ def create_database_and_insert_data(db_file):
                 shelfid INTEGER PRIMARY KEY,
                 shelfname TEXT NOT NULL,
                 place TEXT,
-                countCompartment INT,
-                controllerId INT
+                countCompartment INT
             );
         ''')
         print("Tabelle 'shelf' erstellt.")
@@ -58,9 +57,13 @@ def create_database_and_insert_data(db_file):
             CREATE TABLE IF NOT EXISTS compartment (
                 compartmentId INTEGER PRIMARY KEY,
                 compartmentname TEXT NOT NULL,
+                height FLOAT,
                 articleId INT,
                 shelfId INT,
-                number INT
+                number INT,
+                countLed INT,
+                startLed INT,
+                endLed INT
             );
         ''')
         print("Tabelle 'compartment' erstellt.")
@@ -103,12 +106,10 @@ def create_database_and_insert_data(db_file):
             );
         ''')
         print("Tabelle 'company' erstellt.")
-
-        password = "admin"
-        saltRounds = 12
-
+        
         # Insert User
         cursor.execute('INSERT INTO user (username, password, role) VALUES (?, ?, ?)', ('admin', '$2b$12$vVr6P4EVInVpFjC45/kGNeEV2jGF9wsoUoST7rCBGT3vkmx3TB7Ou', 1))
+        cursor.execute('INSERT INTO user (username, password, role) VALUES (?, ?, ?)', ('ledshelfadmin', '$2b$12$yCytsaCfyMmEIetIAbUlcu9mqXzdqxG7CKmNgOgyQ/ILSwRV8Hv2m', 1))
         print("Daten in Tabelle 'user' eingefügt.")
 
         #Insert Role
@@ -117,20 +118,20 @@ def create_database_and_insert_data(db_file):
         print("Daten in Tabelle 'role' eingefügt.")
 
         #Insert Shelf
-        cursor.execute('INSERT INTO shelf (shelfname, place, countCompartment, controllerId) VALUES (?, ?, ?, ?)',
-                       ('Shelf A', 'Place A', 3, 1))
+        cursor.execute('INSERT INTO shelf (shelfname, place, countCompartment) VALUES (?, ?, ?)',
+                       ('Regal A', 'Ort A', 3))
         print("Daten in Tabelle 'shelf' eingefügt.")
 
         #Insert Article
         cursor.execute('''
             INSERT INTO article (articlename, count, compartment, shelf, unit, categoryid, company, commission, minRequirement)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-            ('Article A', 100, 1, 1, 'Meter', 1, 1, 'Commission A', 10))
+            ('Artikel A', 100, 1, 1, 'Meter', 1, 1, 'Kommission A', 10))
         print("Daten in Tabelle 'article' eingefügt.")
 
         #Insert Compartment
         for inserts in range(5):
-            compartment_name = f'Compartment {inserts}'    
+            compartment_name = f'Fach {inserts}'    
          
             cursor.execute('INSERT INTO compartment (compartmentname, articleId, shelfId, number) VALUES (?, ?, ?, ?)',
                        (compartment_name, None, 1, 0))        
@@ -142,7 +143,7 @@ def create_database_and_insert_data(db_file):
         print("Daten in Tabelle 'ledController' eingefügt.")
 
         #Insert Category
-        cursor.execute('INSERT INTO category (categoryname) VALUES (?)', ('Category A',))
+        cursor.execute('INSERT INTO category (categoryname) VALUES (?)', ('Kategorie A',))
         print("Daten in Tabelle 'category' eingefügt.")
 
         #Insert Controllerfunctions
@@ -152,7 +153,7 @@ def create_database_and_insert_data(db_file):
 
         #Insert Company
         cursor.execute('INSERT INTO company (companyName, street, plz) VALUES (?, ?, ?)',
-                       ('Company A', 'Street A', '12345'))
+                       ('Firma A', 'Straße A', '12345'))
         print("Daten in Tabelle 'company' eingefügt.")
 
         # Saving changes
@@ -165,7 +166,7 @@ def create_database_and_insert_data(db_file):
         conn.close()
         print("Datenbankverbindung geschlossen.")
 
-def create_sysDatabase_and_insert_data(sysDB_file, system):
+def createSystemDb(sysDB_file, system):
 
     conn = sqlite3.connect(sysDB_file)
     cursor = conn.cursor()
@@ -187,6 +188,15 @@ def create_sysDatabase_and_insert_data(sysDB_file, system):
         elif system == 'Windows':
             cursor.execute('INSERT INTO system (backUpPath, dataBasepath) VALUES (?, ?)', ('./Database/BackUp', './Database/Ledshelf.db'))
     
+       # Create table trello
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS trello (
+                trelloID INTEGER PRIMARY KEY,              
+                customerBoard TEXT NOT NULL,
+                customerRequestList TEXT NOT NULL
+            );
+        ''')
+        cursor.execute('INSERT INTO trello (customerBoard, customerRequestList ) VALUES (?, ?)', ('66b8ed3e4477bbb0ce31abf1','66b8ed6239d0edab8f6118c3'))    
         conn.commit()       
 
     except sqlite3.Error as e:
@@ -202,6 +212,7 @@ if __name__ == "__main__":
     sysDB_file = ""
     # Check Operating system
     system = platform.system()
+    print("System: " + system)
 
     if system == 'Linux':
         # Production path /home/ledshelf/       
@@ -223,5 +234,5 @@ if __name__ == "__main__":
         db_file = os.path.join(database_dir, 'Ledshelf.db')
         sysDb_file = os.path.join(database_dir, 'System.db')
 
-    create_database_and_insert_data(db_file)
-    create_sysDatabase_and_insert_data(sysDb_file, system)
+    createSystemDb(sysDb_file, system)
+    createLedshelfDb(db_file)

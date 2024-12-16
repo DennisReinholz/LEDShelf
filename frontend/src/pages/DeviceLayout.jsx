@@ -3,20 +3,26 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/deviceLayout.module.css";
 import Device from "../components/Device/Device";
 import Modal from "../components/common/Modal";
-import AddDeviceForm from "../components/Device/AddDeviceForm";
 import { UserContext } from "../helpers/userAuth";
+import { useConfig } from "../ConfigProvider";
+import AddDeviceForm from "../components/Device/AddDeviceForm";
 
 const DeviceLayout = () => {
-  // eslint-disable-next-line no-unused-vars
+   // eslint-disable-next-line no-unused-vars
   const [shelfList, setShelfList] = useState([]);
-  const [controllerList, setControllerList] = useState([]);
+   // eslint-disable-next-line no-unused-vars
+   const [controllerList, setControllerList] = useState([]);
+   // eslint-disable-next-line no-unused-vars
+  const {user, setUser, token} = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-  const [user, setUser] = useContext(UserContext);
+
+  const config = useConfig();
   const navigate = useNavigate();
+  const { backendUrl } = config || {};
 
   const getShelf = async () => {
-    await fetch(`http://localhost:3000/getShelf`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getShelf`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +35,7 @@ const DeviceLayout = () => {
       });
   };
   const getController = async () => {
-    await fetch(`http://localhost:3000/getController`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getController`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -41,6 +47,7 @@ const DeviceLayout = () => {
         setControllerList(controller);
       });
   };
+
 
   useEffect(() => {
     getShelf();
@@ -87,7 +94,8 @@ const DeviceLayout = () => {
       </div>
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-          <AddDeviceForm onClose={() => setIsModalOpen(false)} />
+          {/* <SearchDeviceForm onClose={() => setIsModalOpen(false)} /> */}
+          <AddDeviceForm onClose={() => setIsModalOpen(false)}/>
         </Modal>
       )}
     </div>

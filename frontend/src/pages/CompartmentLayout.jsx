@@ -5,13 +5,16 @@ import Compartment from "../components/Shelf/Compartment";
 import styles from "../styles/compartmentLayout.module.css";
 import { UserContext } from "../helpers/userAuth.jsx";
 import toast from "react-hot-toast";
+import { useConfig } from "../ConfigProvider";
 
 const CompartmentLayout = () => {
   let { shelfid } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useContext(UserContext);
+  const {user, setUser} = useContext(UserContext);
   const [compartments, setCompartments] = useState();
   const [activeCompartments, setActiveCompartments] = useState([]);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const handleIsActive = (index) => {
     setActiveCompartments((prevState) => {
@@ -20,13 +23,13 @@ const CompartmentLayout = () => {
       return newState;
     });
   };
-  const hanleAllOff = () => {
+  const handleAllOff = () => {
     setActiveCompartments(Array(compartments.length).fill(false));
     handleLedOff();
   };
   const handleLedOff = async () => {
     try {
-      await fetch(`http://localhost:3000/controllerOff`, {
+      await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/controllerOff`, {
         method: "Post",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +52,7 @@ const CompartmentLayout = () => {
     }
   };
   const getCompartments = async () => {
-    await fetch(`http://localhost:3000/getCompartment`, {
+    await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/getCompartment`, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
@@ -72,6 +75,7 @@ const CompartmentLayout = () => {
         }
       });
   };
+
   useEffect(() => {
     getCompartments();
     const userStorage = localStorage.getItem("user");
@@ -85,6 +89,7 @@ const CompartmentLayout = () => {
       navigate("/login");
     }
   }, []);
+  
   return (
     <div className={styles.container}>
       <div className={styles.buttonContainer}>
@@ -96,9 +101,9 @@ const CompartmentLayout = () => {
         <button
           className="primaryButton"
           style={{ marginLeft: "2rem" }}
-          onClick={hanleAllOff}
+          onClick={handleAllOff}
         >
-          All off
+         Alle aus
         </button>
       </div>
       <div className={styles.content}>
@@ -107,16 +112,16 @@ const CompartmentLayout = () => {
               <div
                 style={{
                   display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
+                  flexDirection: "row",    
+                    
                 }}
                 key={c.compartmentId}
-              >
+                >
                 <div
                   style={{
                     display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    flexDirection: "row",
+                    
                   }}
                 >
                   <div
@@ -129,7 +134,7 @@ const CompartmentLayout = () => {
                   >
                     <Compartment
                       compId={c.compartmentId}
-                      isActive={activeCompartments[c.compartmentId]}
+                      isActive={activeCompartments[c.compartmentId] ? activeCompartments[c.compartmentId] : false}
                       comp={c.compartmentname}
                       article={c.articlename}
                       count={c.count}

@@ -28,8 +28,11 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: itspecialistsimon/led-shelf-backend:latest
-
+          platforms: linux/amd64,linux/arm64
+    
       - name: Build and push frontend
         id: build-push-frontend
         uses: docker/build-push-action@v3
@@ -37,4 +40,7 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: itspecialistsimon/led-shelf-frontend:latest
+          platforms: linux/amd64,linux/arm64

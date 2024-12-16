@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
 import { Tooltip } from "react-tooltip";
+import { TfiReload } from "react-icons/tfi";
 import styles from "../../styles/Device/device.module.css";
 import EditDeviceForm from "../../components/Device/EditDeviceForm";
 import Modal from "../../components/common/Modal";
 import DeleteDeviceForm from "../../components/Device/DeleteDeviceForm";
+import { useConfig } from "../../ConfigProvider";
 import PropTypes from "prop-types";
 
 const Device = ({ ip, shelfName, shelfid, deviceId }) => {
@@ -19,14 +21,18 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
   const [assignedIsOpen, setAssignedIsOpen] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [deleteDevice, setDeleteDevice] = useState(false);
+  const config = useConfig();
+  const { backendUrl } = config || {};
 
   const pingController = async () => {
-    try {
-      await fetch(`http://localhost:3000/pingController`, {
-        method: "Get",
+    try { 
+      setControllerStatus("Suche LedController");
+      await fetch(`http://${backendUrl===undefined?config.localhost:backendUrl}:3000/pingController`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ ip }),
         cache: "no-cache",
       })
         .then((response) => response.json())
@@ -36,24 +42,30 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
           } else if (controller.serverStatus === 2) {
             setControllerStatus("Verbunden");
           } else if (controller.status === 500) {
+            console.log("Serverfehler");
           }
         })
-        .catch(console.log(`Contoller wurde nicht gefunden: ${ip}`));
+        .catch((error) => {
+          console.log(`Controller wurde nicht gefunden: ${error}`);
+        });
     } catch (error) {
-      console.log("Error:", err.message);
       setResponse(null);
+      console.log("Fehler beim Abrufen des Controllers:", error);
     }
   };
 
   useEffect(() => {
     pingController();
-  }, [assignedShelf, ip]);
+  }, [assignedShelf, ControllerStatus]);
   return (
     <div
       className={
         assignedIsOpen ? styles.container : styles.assignedIsOpenContainer
       }
     >
+      <Tooltip anchorSelect=".reconnect" place="left">
+        Mit Controller verbinden
+      </Tooltip>
       <Tooltip anchorSelect=".edit" place="left">
         Bearbeiten des Controllers
       </Tooltip>
@@ -70,10 +82,14 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
         <p>{deviceId}</p>
         <p>{shelfName == null ? "Nicht zugewiesen" : shelfName}</p>
         <p>{ip}</p>
-        <p>{ControllerStatus != undefined ? ControllerStatus : ""}</p>
-      </div>
+        {!ControllerStatus ? <p>Ping Controller..</p> :
+        <p>{ControllerStatus != undefined ? ControllerStatus : ""}</p>}
+      </div> 
       <div className={styles.editContainer}>
-        <FiEdit2
+        <TfiReload  className="reconnect"
+          style={{ cursor: "pointer" }}
+          onClick={() => pingController()}/>
+          <FiEdit2
           className="edit"
           style={{ cursor: "pointer" }}
           onClick={() => setEditModalIsOpen(true)}
@@ -82,8 +98,9 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
           className="delete"
           style={{ cursor: "pointer" }}
           onClick={() => setDeleteFormIsOpen(true)}
-        />
+        />        
       </div>
+     
       {editModalIsOpen && (
         <Modal onClose={() => setEditModalIsOpen(false)}>
           <EditDeviceForm
@@ -111,7 +128,7 @@ const Device = ({ ip, shelfName, shelfid, deviceId }) => {
 Device.propTypes = {
   ip: PropTypes.node.isRequired,
   shelfName: PropTypes.node.isRequired,
-  shelfid: PropTypes.node.isRequired,
+  shelfid: PropTypes.node.number,
   deviceId: PropTypes.node.isRequired,
 };
 export default Device;
